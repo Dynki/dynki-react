@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Route } from 'react-router-dom';
-import Login from './login';
-import Signup from './signup';
+import { Login, Signup } from '../../auth';
+
 
 class PreAuthShell extends React.Component {
     render() {

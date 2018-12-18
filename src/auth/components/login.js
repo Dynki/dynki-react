@@ -24,9 +24,12 @@ class LoginForm extends React.Component {
                 <Form onSubmit={this.handleSubmit}>
                     <FormItem>
                         {getFieldDecorator('userName', {
-                            rules: [{ required: true, message: 'Please input your username!' }],
+                            rules: [
+                                { required: true, message: 'Please input an email!' },
+                                { type: 'email', message: 'Not a valid email address!' }
+                            ],
                         })(
-                            <Input size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+                            <Input size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
                         )}
                     </FormItem>
                     <FormItem>

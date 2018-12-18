@@ -12,11 +12,11 @@
     justify-content: center;
     align-content: center;
     align-items: center;
-    width: 90%;
 
     min-height: 378px;
     background-color: #ffffff;
     padding: 36px!important;
+    width: 88%;
     
     &--forgot {
         float: right;
@@ -40,6 +40,10 @@
 
     nz-form-item {
         width: 100%;
+    }
+
+    form {
+        min-width: 100%;
     }
 }
 

@@ -1,21 +1,35 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
-import PreAuthShell from './shell/components/pre-auth';
+import { compose, createStore } from 'redux'
+import { reactReduxFirebase } from 'react-redux-firebase'
+import firebase from 'firebase'
 
-const routing = (
-    <Router>
-      <div>
-        <Route exact path="/" component={App} />
-        <Route path="/auth" component={PreAuthShell} />
-      </div>
-    </Router>
-  )
+import Root from './root';
+import fbConfig from './config';
+import rootReducer from './shell/reducers';
+
+firebase.initializeApp(fbConfig)
+
+// react-redux-firebase options
+const config = {
+  userProfile: 'users', // firebase root where user profiles are stored
+  enableLogging: false, // enable/disable Firebase's database logging
+}
+
+// Add redux Firebase to compose
+const createStoreWithFirebase = compose(
+  reactReduxFirebase(firebase, config)
+)(createStore)
+
+// Create store with reducers and initial state
+const store = createStoreWithFirebase(rootReducer)
   
-ReactDOM.render(routing, document.getElementById('root'));
+render(
+  <Root store={store} />,
+  document.getElementById('root')
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
