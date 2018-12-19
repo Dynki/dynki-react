@@ -6,11 +6,12 @@ export default function SecuredRoute ({
   authenticated,
   ...rest
 }) {
+  console.log(authenticated);
   return (
     <Route
       {...rest}
       render={props =>
-        authenticated === true ? (
+        authenticated.uid ? (
           <Component {...props} {...rest} />
         ) : (
           <Redirect to="/auth/login" />

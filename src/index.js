@@ -2,30 +2,32 @@ import React from 'react';
 import { render } from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import { compose, createStore } from 'redux'
-import { reactReduxFirebase } from 'react-redux-firebase'
+import { compose, createStore, applyMiddleware } from 'redux'
+import { reactReduxFirebase, getFirebase } from 'react-redux-firebase'
 import firebase from 'firebase'
 
 import Root from './root';
 import fbConfig from './config';
-import rootReducer from './shell/reducers';
+import rootReducer from './store/reducers/rootReducers';
+import thunk from 'redux-thunk'
+import { reduxFirestore, getFirestore } from 'redux-firestore';
 
 firebase.initializeApp(fbConfig)
 
 // react-redux-firebase options
 const config = {
-  userProfile: 'users', // firebase root where user profiles are stored
   enableLogging: false, // enable/disable Firebase's database logging
 }
 
 // Add redux Firebase to compose
-const createStoreWithFirebase = compose(
-  reactReduxFirebase(firebase, config)
-)(createStore)
+const store = createStore(rootReducer,
+  compose(
+    applyMiddleware(thunk.withExtraArgument({getFirebase, getFirestore})),
+    reactReduxFirebase(firebase, config),
+    reduxFirestore(fbConfig) // redux bindings for firestore
+  )
+);
 
-// Create store with reducers and initial state
-const store = createStoreWithFirebase(rootReducer)
-  
 render(
   <Root store={store} />,
   document.getElementById('root')

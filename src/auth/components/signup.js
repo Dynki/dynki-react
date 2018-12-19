@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 import {
     Form, Icon, Input, Button, Checkbox,
 } from 'antd';
+import { connect } from 'react-redux';
 
 const FormItem = Form.Item;
 
-class LoginForm extends React.Component {
+class SignUpForm extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -60,6 +61,6 @@ class LoginForm extends React.Component {
     }
 }
 
-const Login = Form.create()(LoginForm);
+const SignUp = Form.create()(SignUpForm);
 
-export default Login;
+export default connect()(SignUp);
