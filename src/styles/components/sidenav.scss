@@ -25,7 +25,9 @@
 }
 
 .side-menu {
+    height: 100vh;
     border-right: 1px solid #e8e8e8;
+    margin-top: 65px;
 
     &__brand {
         background-color: #e1e4e5;

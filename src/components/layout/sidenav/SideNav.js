@@ -16,7 +16,7 @@ class SideNav extends React.Component {
     render() {
         let items = [];
         if (this.props.boards) {
-            items = this.props.boards.map(b => ({ title: b.title, description: b.description }))
+            items = this.props.boards.map(b => ({ title: b.title }))
         }
 
         const MenuItems = [

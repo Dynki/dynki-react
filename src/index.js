@@ -19,6 +19,7 @@ firebase.firestore();
 // react-redux-firebase options
 const config = {
   enableLogging: false, // enable/disable Firebase's database logging
+  attachAuthIsReady: true
 }
 
 // Add redux Firebase to compose
@@ -30,12 +31,15 @@ const store = createStore(rootReducer,
   )
 );
 
-render(
-  <Root store={store} />,
-  document.getElementById('root')
-);
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+store.firebaseAuthIsReady.then(() => {
+  render(
+    <Root store={store} />,
+    document.getElementById('root')
+  );
+  
+  // If you want your app to work offline and load faster, you can change
+  // unregister() to register() below. Note this comes with some pitfalls.
+  // Learn more about service workers: http://bit.ly/CRA-PWA
+  serviceWorker.unregister();
+  
+});

@@ -10,11 +10,21 @@ class PostAuthShell extends React.Component {
     }
 
     render() {
-        console.log('Shell::Component::Render')
-        return <div className="post-auth__content">
-            <Toolbar></Toolbar>
-            <SideNav domainName="Dynki Team"></SideNav>
-        </div>
+        if (this.props.domainId) {
+            console.log('Shell::Component::Render')
+            return <div className="post-auth__content">
+                <Toolbar></Toolbar>
+                <SideNav domainName="Dynki Team"></SideNav>
+            </div>
+        }
+
+        return null;
+    }
+}
+
+const mapStateToProps = (state) => {
+    return {
+        domainId: state.auth.domainId
     }
 }
 
@@ -24,4 +34,4 @@ const mapDispatchToPros = (dispatch) => {
     }
   }
 
-export default connect(null, mapDispatchToPros)(PostAuthShell);
+export default connect(mapStateToProps, mapDispatchToPros)(PostAuthShell);

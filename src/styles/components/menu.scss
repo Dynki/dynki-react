@@ -208,6 +208,10 @@ dyn-sub-menu {
     cursor: pointer;
 }
 
+.ant-menu {
+    height: calc(100% - 110px);
+}
+
 .ant-menu-item, .ant-menu-submenu {
     text-align: start;
 }

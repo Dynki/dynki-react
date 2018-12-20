@@ -12,11 +12,9 @@ export const getBoards = () => {
             .doc(domainId)
             .collection('boardsInDomain')
             .doc('appBoards')
-            .snapshotChanges(function (querySnapshot) {
-                var boards = [];
-                querySnapshot.forEach(function (doc) {
-                    boards.push(doc.data());
-                });
+            .get().then(function (doc) {
+                const data = doc.data();
+                const boards = data.boards;
                 dispatch({ type: 'REFRESH_BOARDS', payload: boards });
             });
     }
