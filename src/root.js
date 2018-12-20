@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
-import PreAuthShell from './shell/components/pre-auth';
+import { PreAuthShell } from './components';
 import App from './App';
 
 const Root = ({ store }) => (

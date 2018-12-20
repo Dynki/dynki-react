@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Menu, Dropdown } from 'antd';
-import { Link } from 'react-router-dom'
-import { signOut } from '../../store/actions/authActions';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom'
+import { Menu, Dropdown } from 'antd';
+
+import { signOut } from '../../../store/actions/authActions';
 
 class Toolbar extends React.Component {
     

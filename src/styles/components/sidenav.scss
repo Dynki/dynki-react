@@ -1,0 +1,198 @@
+.post-auth {
+    &__logo {
+        font-size: 25px;
+        color: black;
+        opacity: 0.54 !important;
+        font-family: "Raleway", "Open Sans", sans-serif;
+        padding: 0px;
+        font-weight: 500!important;
+        font-size: 30px;
+        padding-left: 5px;
+    }
+}
+
+// .mdc-top-app-bar {
+//     background-color: #ffffff!important;
+// }
+
+.side-menu__wrapper {
+    background: #ffffff!important;
+}
+
+.side-menu__bc {
+    padding: 10px!important;
+    padding-top: 15px!important;
+}
+
+.side-menu {
+    border-right: 1px solid #e8e8e8;
+
+    &__brand {
+        background-color: #e1e4e5;
+        min-height: 57px;
+    }
+
+    &__bc {
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;    
+    }
+    
+    &__img {
+        margin-left: 23px;
+        margin-right: 5px;
+        // background-color: #3095de;
+        width: 40px;
+        height: 43px;
+        margin-left: 11px;
+        display: inline-block;
+        background-image: url(/assets/img/logo-blue-sm.png), none;
+        background-size: 47px 40px;
+        // -webkit-mask: url(/assets/img/logo-blue-sm.png) no-repeat 50% 50%;
+        // mask: url(/assets/img/logo-blue-sm.png) no-repeat 50% 50%;
+        // -webkit-mask-size: cover;
+        // mask-size: cover;
+    }
+
+    &__heading {
+            
+        color: $logo-color;
+        font-family: $font-family;
+        font-size: $logo-font-size;
+        background-color: $primary-color;
+        margin: 10px;
+    }
+
+    &__content {
+        display: grid;
+        grid-template-rows: 150px auto 100px;
+        grid-template-columns: minmax(200px, 3fr) 9fr;
+        grid-template-areas: "header header"
+                            "nav    content"
+                            "nav    footer";
+        }
+        dyn-toolbar {
+            grid-area: header;
+        }
+        dyn-side-menu {
+            grid-area: nav;
+        }    
+        router-outlet {
+            grid-area: content;
+        }
+        
+        footer {
+            grid-area: footer;
+        }
+    }
+
+.sidebar {
+
+
+    &__main-content {
+        background-color: #ffffff;
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+        padding: 10px!important;
+    }
+
+    &__handle {
+        padding: 2px;
+    }
+
+    &__handle-container {
+        height: 60px;
+        width: 56px;
+        padding: 0;
+        padding-top: 10px;
+        margin: 0;
+        list-style: none;
+        display: flex;
+        align-items: start;
+        justify-content: start;
+        overflow: hidden;
+    }
+
+    // &__handle-button {
+    //     background-color: red;
+    //     border-radius: 25px;
+    // }
+
+    // &__handle-button :hover {
+    //     background-color: #c1dff58f;
+    //     border-radius: 25px;
+    // }
+
+    // &__handle-icon {
+    //     display:block;
+    //     color: #3095de;
+    // }
+}
+
+.material-icons.blue {
+    color: #3095de!important;
+}
+
+.ng-sidebar {
+    height:100%;
+
+
+    &--closed {
+        // transform: translateX(100%) translateX(-56px)!important;
+    }
+
+    &--inert {
+        pointer-events: auto!important;
+        touch-action: auto!important;
+    }
+
+    aside {
+        overflow: hidden!important;
+    }
+}
+
+ng-sidebar {
+    aside {
+        overflow: hidden!important;
+    }
+}
+
+
+.height {
+    &-100 {
+        height: 100%;
+    }
+}
+
+.app__navbar {
+    border-bottom: 1px solid #d7d7d7;
+}
+
+.sidemenu {
+    position: absolute;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    top: 65px;
+    height: calc(100% - 65px);
+    width: 260px;
+    padding-right: 0px;    
+
+    &::-webkit-scrollbar-track
+    {
+        background-color: #ffffff;  
+    }
+
+    &::-webkit-scrollbar
+    {
+	    width: 6px;
+	    background-color: #ffffff;
+    }
+
+    &::-webkit-scrollbar-thumb
+    {
+	    border-radius: 10px;
+	    -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,.3);
+	    background-color: #767676;
+    }
+
+}

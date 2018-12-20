@@ -1,0 +1,217 @@
+
+.draggable-source--is-dragging {
+    ul {
+        transform: scale(0.8);
+        background: lightgray;
+    }
+
+    .table__row {
+        transform: scale(0.8);
+        background: lightgray;
+
+        &__cell__container {
+            background-color: #e6f7ff;
+        }
+
+        &__cell--text {
+            background-color: #e6f7ff;
+        }
+
+        &__menu {
+            background-color: #fff;
+        }
+
+        .row__terminator__body {
+            background-color: #e6f7ff;
+        }
+    }
+}
+
+.draggable-mirror {
+    ul {
+        background: #ababab82;
+        width: 150px;
+        transform: rotate(-5deg);
+        display: block;
+    }
+}
+
+dyn-sub-menu {
+    outline: none;
+}
+
+
+.menu {
+
+    overflow-y: scroll;
+    overflow-x: hidden; 
+    height: 100%;
+    border-right: none;
+    
+    &::-webkit-scrollbar-track
+    {
+        background-color: #ffffff;  
+    }
+
+    &::-webkit-scrollbar
+    {
+	    width: 6px;
+	    background-color: #ffffff;
+    }
+
+    &::-webkit-scrollbar-thumb
+    {
+	    border-radius: 10px;
+	    -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,.3);
+	    background-color: #767676;
+    }
+
+    &__item {
+        outline: none;
+
+        &--dashed {
+            outline: dashed;
+        }
+
+        &__button {
+            float: left; 
+            left:200px; 
+            top: 11px; 
+            margin-bottom:-24px;
+            z-index: 1000;
+
+        }
+
+        &__subitems {
+            outline: none;
+        }
+
+        &__badge {
+            margin-left: auto!important;
+            margin-right: 13px!important;
+
+            .ant-badge-count {
+                background: #3095DE;
+                height: 18px!important;
+                min-width:18px!important;
+                line-height: 18px!important;
+            }
+        }
+
+        &__title {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: start;
+            align-content: center;
+        }
+    }
+
+    &__folder-item {
+        position: relative;
+        &__input {
+            width: 93%!important;
+        }
+        &__edit {
+            position: absolute;
+            top: 14px;
+            right: 30px;
+        }
+        &__delete {
+            position: absolute;
+            top: 14px;
+            right: 10px;
+        }
+    }
+
+    &__submenu-item {
+
+        span {
+            width: 10px!important;
+        }
+
+        position: relative!important;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        outline: none;
+
+        &:hover {
+            li {
+                // padding-left: 32px!important;
+                outline: none!important;
+                // transition: padding-left .3s linear;
+                // -moz-transition: padding-left .3s linear;
+                // -o-transition: padding-left  .3s linear;
+                // -webkit-transition: padding-left  .3s linear;
+            }
+
+            li:hover {
+                // padding-left: 32px!important;
+            }
+        }
+
+        li {
+            padding-left: 42px!important;
+            outline: none!important;
+            // transition: padding-left .3s linear;
+            // -moz-transition: padding-left .3s linear;
+            // -o-transition: padding-left  .3s linear;
+            // -webkit-transition: padding-left  .3s linear;
+        }
+
+        li:hover {
+            // padding-left: 32px!important;
+        }
+
+        &__button {
+            float: right;
+            right: 50px;
+            top: 7px;
+            z-index: 1000;
+            position: absolute!important;
+
+            span {
+                display: contents!important;
+            }
+        }
+
+        .draghandle {
+            cursor: pointer;
+            transform: rotate(-45deg);
+            max-height: 40px;
+       }
+    }
+}
+
+.menu-item-mirror {
+    transform: rotate(-5deg);
+    display: block;
+    
+    ul {
+        background: #ababab82;
+        width: 200px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        transform: rotate(-5deg);
+    }
+
+    .table__row {
+        transform: rotate(-2deg);
+    }
+}
+
+.draghandle {
+    cursor: pointer;
+}
+
+.ant-menu-item, .ant-menu-submenu {
+    text-align: start;
+}
+
+.ant-menu-inline .ant-menu-item, .ant-menu-inline .ant-menu-submenu-title {
+    width: 100%!important;
+}

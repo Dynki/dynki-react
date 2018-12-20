@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import './App.scss';
-import SecuredRoute from './shell/components/securedRoute';
-import Shell from './shell/components/shell';
 import { connect } from 'react-redux'
+
+import './App.scss';
+import { SecuredRoute, PostAuthShell } from './components';
 
 class App extends Component {
 
@@ -18,7 +18,7 @@ class App extends Component {
       <div className="App">
         <SecuredRoute
             path="/"
-            component={Shell}
+            component={PostAuthShell}
             authenticated={auth}
         />
       </div>

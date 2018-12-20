@@ -1,6 +1,8 @@
 const initialState = {
     authError: null,
-    pending: false
+    pending: false,
+    noDomain: false,
+    domainId: null
 }
 
 const authReducer = (state = initialState, action) => {
@@ -28,6 +30,20 @@ const authReducer = (state = initialState, action) => {
         case 'SIGNOUT_SUCCESS':
             console.log('Signout Success')
             return state;
+        case 'SET_DOMAIN':
+            console.log('Set Domain')
+            return {
+                ...state,
+                noDomain: false,
+                domainId: action.payload
+            }
+        case 'NO_DOMAIN':
+            console.log('No Domain')
+            return {
+                ...state,
+                noDomain: true,
+                domainId: null
+            }
         default:
             return state;
     }

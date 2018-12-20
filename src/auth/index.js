@@ -1,1 +1,0 @@
-export { Login, SignUp } from './components';

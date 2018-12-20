@@ -1,18 +1,20 @@
 import React from 'react';
+import firebase from 'firebase'
 import { render } from 'react-dom';
-import './index.css';
-import * as serviceWorker from './serviceWorker';
 import { compose, createStore, applyMiddleware } from 'redux'
 import { reactReduxFirebase, getFirebase } from 'react-redux-firebase'
-import firebase from 'firebase'
+import thunk from 'redux-thunk'
+import { reduxFirestore, getFirestore } from 'redux-firestore';
+
+import './index.css';
+import * as serviceWorker from './serviceWorker';
 
 import Root from './root';
 import fbConfig from './config';
 import rootReducer from './store/reducers/rootReducers';
-import thunk from 'redux-thunk'
-import { reduxFirestore, getFirestore } from 'redux-firestore';
 
 firebase.initializeApp(fbConfig)
+firebase.firestore();
 
 // react-redux-firebase options
 const config = {
