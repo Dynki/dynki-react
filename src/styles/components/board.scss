@@ -1,0 +1,116 @@
+.text, .text__large {
+    &--no-border {
+        border: none!important;
+        border-radius: 1px!important;
+        padding: 4px!important;
+
+        &:hover {
+            outline-width: 0px;
+            border: dashed!important;
+            border-width: 1px!important;
+            cursor: pointer!important;
+            padding: 3px!important;
+        }
+
+        &:focus {
+            padding: 3px!important;
+            outline-width: 0px!important;
+            border: dashed!important;
+            border-width: 1px!important;
+        }
+    }
+
+}
+
+.text__large--no-border {
+    font-size: 30px!important;
+}
+
+.choose-board {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: minmax(180px, 3fr) 9fr;
+    grid-template-areas: "menu content";
+    overflow: hidden;
+    height: calc(100vh - 54px);
+    
+    dyn-menu {
+        height: calc(100vh - 54px);
+        grid-area: menu;
+    }
+
+    &__content {
+        padding-left: 15px;  
+        grid-area: content;
+
+        .board_img {
+            width: 100%;
+        }
+    }    
+
+}
+
+.dyn-modal-content {
+    .ant-modal {
+        padding: 0px;
+        overflow: hidden;
+    }
+
+    .ant-modal-body {
+        padding: 0px!important;
+    }
+
+    .ant-modal-content {
+        height: 100%!important;
+        border-radius: 0px;
+    }
+}
+
+.board {
+
+    &__header {
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: 20fr 1fr;
+        grid-template-areas: "content menu";
+        padding-right: 10px;
+    }
+
+    &__detail {
+        margin-top: 40px;
+        grid-area: "content";
+        padding-right: 8px;
+    }
+
+    &__menu {
+        display: flex!important;
+        align-items: center;
+        justify-content: flex-end;
+        grid-area: "menu"!important;
+        padding-right: 10px;
+
+        button {
+            i {
+                font-size: 16px!important;
+            }
+        }
+    }
+
+    &__form {
+        padding: 10px;
+
+        &__description {
+            margin-top: 5px;
+            margin-left: 2px;
+        }
+
+        .description {
+            margin-top: 4px;
+            margin-left: 3px;
+        }
+
+        .ant-form-item {
+            margin-bottom: 0px!important;
+        }
+    }
+}

@@ -2,6 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Toolbar, SideNav } from '..';
 import { setDomain } from '../../../store/actions/authActions';
+import { Route } from 'react-router-dom';
+import Board from '../../boards/Board';
 
 class PostAuthShell extends React.Component {
 
@@ -15,6 +17,10 @@ class PostAuthShell extends React.Component {
             return <div className="post-auth__content">
                 <Toolbar></Toolbar>
                 <SideNav domainName="Dynki Team"></SideNav>
+                <main>
+                    <Route  path={'/board/:id'} component={Board}></Route>
+                </main>
+
             </div>
         }
 

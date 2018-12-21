@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Breadcrumb, Button, Icon } from 'antd';
 
 import DynMenu from '../menu/Menu';
-import { getBoards } from '../../../store/actions/boardActions'; 
+import { getBoards, getBoard } from '../../../store/actions/boardActions'; 
 
 
 class SideNav extends React.Component {
@@ -16,7 +16,7 @@ class SideNav extends React.Component {
     render() {
         let items = [];
         if (this.props.boards) {
-            items = this.props.boards.map(b => ({ title: b.title }))
+            items = this.props.boards.map(b => ({ id: b.id, title: b.title }))
         }
 
         const MenuItems = [
@@ -52,7 +52,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getBoards: () => dispatch(getBoards())
+        getBoards: () => dispatch(getBoards()),
+        getBoard: (id) => dispatch(getBoard(id))
     }
 }
 
