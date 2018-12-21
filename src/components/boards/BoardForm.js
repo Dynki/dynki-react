@@ -1,8 +1,5 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import { Form, Input } from 'antd';
-import { updateBoard } from '../../store/actions/boardActions';
-import { debounce } from 'lodash';
 
 const FormItem = Form.Item;
 
@@ -19,10 +16,6 @@ const BForm = Form.create({
           }),
         };
     },
-
-    // onFieldsChange(props, changedFields) {
-    //     props.onChange(changedFields);
-    // },
 
     onValuesChange(props, values) {
         props.onChange(values);
@@ -56,56 +49,34 @@ const BForm = Form.create({
     )
 });
 
-class BoardForm extends Component {
+const BoardForm = (props) => {
 
-    constructor(props) {
-        super(props)
-        this.onUpdateBoard = debounce(this.onUpdateBoard, 500)
+    const handleFormChange = (changedFields) => {
+        const updatedBoard = { ...props.board, ...changedFields }
+        props.onUpdateBoard(updatedBoard);
     }
 
-    handleFormChange = (changedFields) => {
-        const updatedBoard = { ...this.props.currentBoard, ...changedFields }
-        this.onUpdateBoard(updatedBoard);
-    }
-
-    onUpdateBoard(board) {
+    const onUpdateBoard = (board) => {
         console.log('UPDATE Board with values::', board);
-        this.props.updateBoard(board);
+        props.onUpdateBoard(board);
     }
 
-    render() {
-        const state = {
-            fields: {
-              title: {
-                value: this.props.currentBoard ? this.props.currentBoard.title : '',
-              },
-              description: {
-                  value: this.props.currentBoard ? this.props.currentBoard.description : ''
-              }
-            },
-        };
-        const fields = state.fields;
-        return (
-            <div>
-            <BForm {...fields} onChange={this.handleFormChange} />
-            <pre className="language-bash">
-                {JSON.stringify(fields, null, 2)}
-            </pre>
-            </div>
-        );
-    }
+    const fields = {
+        title: {
+        value: props.board ? props.board.title : '',
+        },
+        description: {
+            value: props.board ? props.board.description : ''
+        }
+
+    };
+
+    return (
+        <div>
+            <BForm {...fields} onChange={handleFormChange} />
+        </div>
+    );
 }
 
-const mapStateToProps = (state) => {
-    return{
-      currentBoard: state.boards.currentBoard
-    }
-}
 
-const mapDispatchToProps = (dispatch) => {
-    return{
-      updateBoard: (board) => dispatch(updateBoard(board)) 
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(BoardForm);
+export default BoardForm;

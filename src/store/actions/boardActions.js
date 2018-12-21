@@ -72,6 +72,8 @@ export const updateBoard = (board) => {
 
         dispatch({ type: 'ATTEMPT_UPDATE_BOARD', payload: board })
 
+        delete board['unsubscribe'];
+
         firebase.firestore()
             .collection('domains')
             .doc(domainId)
