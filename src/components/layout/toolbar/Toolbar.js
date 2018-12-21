@@ -21,7 +21,6 @@ class Toolbar extends React.Component {
             </Menu>
         );
         
-        console.log('Shell::Component::Render')
         return <div className="toolbar">
             <div className="toolbar__img"></div>
             <div className="toolbar__brand">Dynki</div>

@@ -14,12 +14,37 @@ class SideNav extends React.Component {
     }
 
     render() {
+
+        return (
+            <div className="side-menu">
+                <Breadcrumb className="side-menu__bc">
+                    <Breadcrumb.Item>
+                        <Icon type="home" />
+                    </Breadcrumb.Item>
+                    <Breadcrumb.Item>
+                        <Button type="dashed">{this.props.domainName}</Button>
+                    </Breadcrumb.Item>
+                </Breadcrumb>
+                <DynMenu menu={this.props.menuItems()}></DynMenu>        
+            </div>
+        )
+    }
+}
+
+const mapStateToProps = (state) => {
+    return {
+      menuItems: () => {
         let items = [];
-        if (this.props.boards) {
-            items = this.props.boards.map(b => ({ id: b.id, title: b.title }))
+        if (state.boards.boards) {
+            items = state.boards.boards.map(b => ({ 
+                id: b.id,
+                title: b.title,
+                target: `/board/${b.id}`,
+                action: getBoard(b.id) 
+            }))
         }
 
-        const MenuItems = [
+        const menuItems = [
             { title: 'Inbox', icon: 'mail', },
             { title: 'Boards', icon: 'schedule', 
                 items: items },
@@ -27,26 +52,8 @@ class SideNav extends React.Component {
             { title: 'Tags', icon: 'tags' }
         ]
 
-        return (
-            <div className="side-menu">
-            <Breadcrumb className="side-menu__bc">
-                <Breadcrumb.Item>
-                    <Icon type="home" />
-                </Breadcrumb.Item>
-                <Breadcrumb.Item>
-                    <Button type="dashed">{this.props.domainName}</Button>
-                </Breadcrumb.Item>
-            </Breadcrumb>
-            <DynMenu menu={MenuItems}></DynMenu>
-            
-            </div>
-        )
-    }
-}
-
-const mapStateToProps = (state, ownProps) => {
-    return {
-      boards: state.boards.boards
+        return menuItems;
+      }
     }
 }
 
