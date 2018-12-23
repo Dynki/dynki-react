@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { debounce } from 'lodash';
 
 import BoardHeader from './BoardHeader';
+import BoardDetail from './BoardDetail';
 import { updateBoard } from '../../store/actions/boardActions';
 
 class Board extends React.Component {
@@ -25,6 +26,7 @@ class Board extends React.Component {
                     onUpdateBoard={this.onUpdateBoard}
                     board={this.props.board}>
                 </BoardHeader>
+                { this.props.board ? <BoardDetail board={this.props.board}></BoardDetail> : null }
             </section>
         )
     }
