@@ -4,7 +4,7 @@ import BoardRowHeader from './BoardRowHeader';
 const BoardDetail = (props) => {
     return (
         <section className="table">
-            <BoardRowHeader columns={props.board.columns}></BoardRowHeader>
+            <BoardRowHeader onUpdateBoard={props.onUpdateBoard} board={props.board}></BoardRowHeader>
             {/* <BoardRow rows={props.rows}></BoardRow>
             <BoardNewRow></BoardNewRow>             */}
         </section>

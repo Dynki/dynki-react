@@ -21,13 +21,18 @@ class Board extends React.Component {
 
     render() {
         return (
-            <section className="board">
-                <BoardHeader 
-                    onUpdateBoard={this.onUpdateBoard}
-                    board={this.props.board}>
-                </BoardHeader>
-                { this.props.board ? <BoardDetail board={this.props.board}></BoardDetail> : null }
-            </section>
+            (this.props.board ? 
+                <section className="board">
+                    <BoardHeader 
+                        onUpdateBoard={this.onUpdateBoard}
+                        board={this.props.board}>
+                    </BoardHeader>
+                    <BoardDetail 
+                        onUpdateBoard={this.onUpdateBoard}
+                        board={this.props.board}>
+                    </BoardDetail>
+                </section> : null 
+            )
         )
     }
 }

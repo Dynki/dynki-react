@@ -6,14 +6,10 @@ const FormItem = Form.Item;
 const BRHForm = Form.create({
     mapPropsToFields(props) {
         return {
-          title: Form.createFormField({
-            ...props.title,
-            value: props.title.value,
-          }),
-          description: Form.createFormField({
-            ...props.description,
-            value: props.description.value
-          }),
+          headerValue: Form.createFormField({
+            ...props.headerValue,
+            value: props.headerValue.value,
+          })
         };
     },
 
@@ -24,35 +20,21 @@ const BRHForm = Form.create({
     const { getFieldDecorator } = props.form;
 
     return (
-        <div className="board__form">
-            <Form>
-                <FormItem>
-                    {getFieldDecorator('title', {
-                        rules: [],
-                    })(
-                        <Input 
-                        className="text__large--no-border board__form__description"
-                        size="large" 
-                        placeholder="Board title goes here" 
-                        autoComplete="false" />
-                    )}
-                </FormItem>
-                <FormItem>
-                    {getFieldDecorator('description', {
-                        rules: [],
-                    })(
-                        <Input className="text--no-border description" placeholder="Add a board descripton" autoComplete="false"/>
-                    )}
-                </FormItem>
-            </Form>
-        </div>
+        <Form>
+            <FormItem>
+                {getFieldDecorator('headervalue', {})(
+                    <Input className="table__header__input text--no-border" autoComplete="false" />
+                )}
+            </FormItem>
+        </Form>
     )
 });
 
 const BoardRowHeaderForm = (props) => {
 
     const handleFormChange = (changedFields) => {
-        const updatedBoard = { ...props.board, ...changedFields }
+        const updatedBoard = props.board;
+        updatedBoard.columns[props.colIdx] = changedFields['headerValue'];
         props.onUpdateBoard(updatedBoard);
     }
 
@@ -62,19 +44,13 @@ const BoardRowHeaderForm = (props) => {
     }
 
     const fields = {
-        input: {
-        value: props.board ? props.board.title : '',
-        },
-        description: {
-            value: props.board ? props.board.description : ''
+        headerValue: {
+        value: props.board ? props.board.columns[props.colIdx] : '',
         }
-
     };
 
     return (
-        <div>
-            <BRHForm {...fields} onChange={handleFormChange} />
-        </div>
+        <BRHForm {...fields} onChange={handleFormChange} />
     );
 }
 
