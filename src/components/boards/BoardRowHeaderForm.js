@@ -22,7 +22,7 @@ const BRHForm = Form.create({
     return (
         <Form>
             <FormItem>
-                {getFieldDecorator('headervalue', {})(
+                {getFieldDecorator('headerValue', {})(
                     <Input className="table__header__input text--no-border" autoComplete="false" />
                 )}
             </FormItem>
@@ -45,7 +45,7 @@ const BoardRowHeaderForm = (props) => {
 
     const fields = {
         headerValue: {
-        value: props.board ? props.board.columns[props.colIdx] : '',
+        value: props.board ? props.board.columns[props.colIdx].title : '',
         }
     };
 
