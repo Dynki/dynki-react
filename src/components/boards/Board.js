@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { debounce } from 'lodash';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 import BoardHeader from './BoardHeader';
 import BoardDetail from './BoardDetail';
@@ -19,6 +20,10 @@ class Board extends React.Component {
         this.props.updateBoard(board);
     }
 
+    onDragEnd() {
+
+    }
+
     render() {
         return (
             (this.props.board ? 
@@ -27,10 +32,12 @@ class Board extends React.Component {
                         onUpdateBoard={this.onUpdateBoard}
                         board={this.props.board}>
                     </BoardHeader>
-                    <BoardDetail 
-                        onUpdateBoard={this.onUpdateBoard}
-                        board={this.props.board}>
-                    </BoardDetail>
+                    <DragDropContext onDragEnd={this.onDragEnd}>
+                        <BoardDetail 
+                            onUpdateBoard={this.onUpdateBoard}
+                            board={this.props.board}>
+                        </BoardDetail>
+                    </DragDropContext>
                 </section> : null 
             )
         )

@@ -1,5 +1,5 @@
 $iron: #D1D3D4;
-$athens-gray: #EFF1F3;
+$athens-gray: #eff1f3;
 $curious-blue: #3095DE;
 $mariner: #2b82c1;
 
@@ -9,16 +9,40 @@ $mariner: #2b82c1;
     padding: 4px !important;
 }
 
+.table_menu__link {
+    width: 100px;
+
+    i {
+        margin-right: 15px;
+    }
+}
 
 .table {
+
+    td {
+        padding: 10px;
+    }
+
     padding: 10px;
     padding-left: 0px;
     width: 100%;
     outline: none;
 
+    .ant-form-item {
+        margin-bottom: 0px!important;
+
+    }
+
+    form {
+        padding: 0px!important;
+        padding-left: 5px!important;
+        padding-right: 5px!important;
+    }
 
     &__rc {
         outline: none;
+        margin: 15px;
+        margin-top: 0px;
     }
 
     &__column {
@@ -59,16 +83,14 @@ $mariner: #2b82c1;
     }
 
     &__header {
-        display: grid;
-        grid-template-columns: 20fr 35px;
-        grid-template-rows: auto;
-        grid-template-areas: "headercols headermenu";
+        display: flex;
+        flex-direction: row;
+
         margin-bottom: 10px;
-        padding-left: 22px;
+        padding-left: 10px;
 
         &__columns {
 
-            grid-area: headercols;
             display: flex;
             flex-direction: row;
             align-content: center;
@@ -107,7 +129,6 @@ $mariner: #2b82c1;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                width: 150px;
                 min-height: 52px;
                 flex-grow: 0;
                 padding-top: 10px;
@@ -160,8 +181,11 @@ $mariner: #2b82c1;
             align-content: center;
             justify-content: flex-end;
             align-items: center;
-            grid-area: headermenu;
-
+            font-size: 22px;
+            width: 45px;
+            padding-bottom: 6px;
+            padding-right: 6px;
+        
             &__dropdown {
                 
                 &__icon {
@@ -186,6 +210,25 @@ $mariner: #2b82c1;
         &__content {
             display: flex;
             width: 100%;
+            outline: none;
+            align-items: center;
+            display: flex;
+            height: 40px;
+            justify-content: center;
+            align-items: flex-end;
+            text-align: left;
+            width: 100%;
+
+            form { 
+                width: 100%;
+
+                input { 
+                    background-color: $athens-gray;
+                    color: $mariner;
+                }
+            }
+
+    
 
             .draghandle {
                 
@@ -209,6 +252,7 @@ $mariner: #2b82c1;
             &__column--first {
                 flex-grow: 1;
             }
+
 
         }
 
