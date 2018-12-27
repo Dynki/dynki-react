@@ -6,7 +6,7 @@ const BoardRowHeader = (props) => {
     const menu = (
         <Menu>
           <Menu.Item>
-            <a class="table_menu__link"><Icon type="form" />Text</a>
+            <a className="table_menu__link"><Icon type="form" />Text</a>
           </Menu.Item>
         </Menu>
     );

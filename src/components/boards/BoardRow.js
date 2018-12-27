@@ -8,12 +8,16 @@ const BoardRow = (props) => {
         <Draggable draggableId={props.rowIdx.toString()} index={props.rowIdx}>
             {provided => (
                 <td 
+                    ref={provided.innerRef}
                     {...provided.draggableProps}
-                    {...provided.dragHandleProps}
                     className="table__row"
                 >
                     <div className="row__content">
-                        <div className="draghandle" tabIndex="0"></div>
+                        <div 
+                            {...provided.dragHandleProps}
+                            className="draghandle"
+                            tabIndex="0">
+                        </div>
                         {props.board.columns.map((c, idx) => {
                             return idx === 0 ? (
                                 <div key={idx}  className="row__content__column--first">

@@ -13,6 +13,7 @@ class Board extends React.Component {
         super(props);
         this.onUpdateBoard = this.onUpdateBoard.bind(this);
         this.onUpdateBoard = debounce(this.onUpdateBoard, 1000)
+        this.onDragEnd = this.onDragEnd.bind(this);
     }
 
     onUpdateBoard(board) {
@@ -20,8 +21,29 @@ class Board extends React.Component {
         this.props.updateBoard(board);
     }
 
-    onDragEnd() {
+    // a little function to help us with reordering the result
+    reorder = (list, startIndex, endIndex) => {
+        const result = Array.from(list);
+        const [removed] = result.splice(startIndex, 1);
+        result.splice(endIndex, 0, removed);
+    
+        return result;
+    };
 
+    onDragEnd(result) {
+        // dropped outside the list
+        if (!result.destination) {
+            return;
+        }
+             
+        const newBoard = this.props.board;
+        newBoard.entities = this.reorder(
+            newBoard.entities,
+            result.source.index,
+            result.destination.index
+        );
+
+        this.onUpdateBoard(newBoard);
     }
 
     render() {

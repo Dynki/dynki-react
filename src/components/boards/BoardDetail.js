@@ -12,8 +12,8 @@ const BoardDetail = (props) => {
                 </tr>
                 <Droppable droppableId={props.board.id}>
                     {provided =>(
-                        <tr ref={provided.innerRef}
-                            innerRef={provided.innerRef}
+                        <tr 
+                            ref={provided.innerRef}
                             {...provided.droppableProps}
                             className="table__rc"
                         >                    
