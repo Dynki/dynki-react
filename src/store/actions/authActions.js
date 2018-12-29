@@ -37,6 +37,41 @@ export const signIn = (credentials) => {
   }
 }
 
+export const signUp = (credentials) => {
+  return (dispatch, getState, { getFirebase }) => {
+    console.log('Signing Up');
+    const firebase = getFirebase();
+
+    dispatch({ type: 'ATTEMPT_SIGNUP' })
+
+    firebase.auth().createUserWithEmailAndPassword(
+      credentials.email,
+      credentials.password
+    ).then(() => {
+      console.log('SIGNUP Success');
+
+      firebase.auth.currentUser.reload();
+      firebase.auth.currentUser.sendEmailVerification()
+      .then(() => {
+        dispatch({ type: 'SIGNUP_SUCCESS' });
+        notifiy({ type: 'success', message: 'Please Verify Account', description: 'Please check your email to verify your account' })
+        })
+      .catch((err) => {
+        console.log('Verification Error');
+        dispatch({ type: 'VERIFICATION_ERROR', err });
+        notifiy({ type: 'warning', message: 'Verification Failure', description: err.message })
+      })
+
+    }).catch((err) => {
+      console.log('Sign up Error');
+      dispatch({ type: 'SIGNUP_ERROR', err });
+      notifiy({ type: 'warning', message: 'Sign up Failure', description: err.message })
+    });
+
+  }
+}
+
+
 export const signOut = () => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
