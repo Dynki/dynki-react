@@ -59,7 +59,7 @@ class LoginForm extends Component {
                         <Button type="dashed" htmlType="submit" className="domain__btn" loading={this.props.pending}>
                             Sign In
                             <Icon type="enter" />
-                </Button>
+                        </Button>
                         Or <Link to="/auth/signup">register now!</Link>
                     </FormItem>
                 </Form>

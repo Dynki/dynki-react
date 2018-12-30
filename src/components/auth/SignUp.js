@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { signUp } from '../../store/actions/authActions';
 
 const FormItem = Form.Item;
 
@@ -12,6 +13,7 @@ class SignUpForm extends React.Component {
             if (!err) {
                 console.log('Received values of form: ', values);
             }
+            this.props.signUp(values);
         });
     }
 
@@ -46,7 +48,7 @@ class SignUpForm extends React.Component {
                         })(
                             <Checkbox>Agree Terms</Checkbox>
                         )}
-                        <Button type="dashed" htmlType="submit" className="domain__btn">
+                        <Button type="dashed" htmlType="submit" className="domain__btn" loading={this.props.pending}>
                             Go
                             <Icon type="check" />
                         </Button>
@@ -61,4 +63,18 @@ class SignUpForm extends React.Component {
 
 const SignUp = Form.create()(SignUpForm);
 
-export default connect()(SignUp);
+const mapStateToProps = (state) => {
+    return{
+      authError: state.auth.authError,
+      pending: state.auth.pending,
+      auth: state.firebase.auth
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        signUp: (creds) => dispatch(signUp(creds))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

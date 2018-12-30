@@ -18,6 +18,7 @@ class PostAuthShell extends React.Component {
                 <SideNav domainName="Dynki Team"></SideNav>
                 <main>
                     <Route  path={'/board/:id'} component={Board}></Route>
+                    <Route  path={'/setdomain'} component={Board}></Route>
                 </main>
 
             </div>

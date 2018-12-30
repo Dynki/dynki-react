@@ -13,6 +13,19 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 pending: true
             }
+        case 'ATTEMPT_SIGNUP':
+            console.log('Atempt Sign Up')
+            return {
+                ...state,
+                pending: true
+            }
+        case 'SIGNUP_ERROR':
+            console.log('Sign Up Error')
+            return {
+                ...state,
+                authError: 'Sign Up Failed',
+                pending: false
+            }
         case 'LOGIN_ERROR':
             console.log('Login Error')
             return {
@@ -20,8 +33,22 @@ const authReducer = (state = initialState, action) => {
                 authError: 'Login Failed',
                 pending: false
             }
+        case 'VERIFICATION_ERROR':
+            console.log('Verification Error')
+            return {
+                ...state,
+                authError: 'Verification Failed',
+                pending: false
+            }
         case 'LOGIN_SUCCESS':
             console.log('Login Success')
+            return {
+                ...state,
+                authError: null,
+                pending: false
+            }
+        case 'SIGNUP_SUCCESS':
+            console.log('Sign Up Success')
             return {
                 ...state,
                 authError: null,

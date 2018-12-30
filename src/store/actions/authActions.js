@@ -39,19 +39,19 @@ export const signIn = (credentials) => {
 
 export const signUp = (credentials) => {
   return (dispatch, getState, { getFirebase }) => {
-    console.log('Signing Up');
     const firebase = getFirebase();
 
     dispatch({ type: 'ATTEMPT_SIGNUP' })
+    console.log('Signing Up', credentials);
 
     firebase.auth().createUserWithEmailAndPassword(
-      credentials.email,
+      credentials.userName,
       credentials.password
     ).then(() => {
       console.log('SIGNUP Success');
 
-      firebase.auth.currentUser.reload();
-      firebase.auth.currentUser.sendEmailVerification()
+      firebase.auth().currentUser.reload();
+      firebase.auth().currentUser.sendEmailVerification()
       .then(() => {
         dispatch({ type: 'SIGNUP_SUCCESS' });
         notifiy({ type: 'success', message: 'Please Verify Account', description: 'Please check your email to verify your account' })
