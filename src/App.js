@@ -10,7 +10,6 @@ class App extends Component {
     return <p>Loading..</p>;
   }
 
-
   render() {
     const { auth } = this.props;
 
@@ -28,7 +27,8 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.firebase.auth
+    auth: state.firebase.auth,
+    domain: state.auth.domain
   }
 }
 

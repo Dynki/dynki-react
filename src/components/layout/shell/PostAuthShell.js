@@ -1,24 +1,19 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Toolbar, SideNav } from '..';
-import { setDomain } from '../../../store/actions/authActions';
 import { Route } from 'react-router-dom';
 import Board from '../../boards/Board';
 
 class PostAuthShell extends React.Component {
 
-    componentWillMount() {
-        this.props.setDomain();
-    }
-
     render() {
+        console.log('PostAuthShell::Render');
         if (this.props.domainId) {
             return <div className="post-auth__content">
                 <Toolbar></Toolbar>
                 <SideNav domainName="Dynki Team"></SideNav>
                 <main>
-                    <Route  path={'/board/:id'} component={Board}></Route>
-                    <Route  path={'/setdomain'} component={Board}></Route>
+                    <Route path={'/board/:id'} component={Board}></Route>
                 </main>
 
             </div>
@@ -34,10 +29,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToPros = (dispatch) => {
-    return {
-      setDomain: () => dispatch(setDomain())
-    }
-  }
-
-export default connect(mapStateToProps, mapDispatchToPros)(PostAuthShell);
+export default connect(mapStateToProps)(PostAuthShell);
