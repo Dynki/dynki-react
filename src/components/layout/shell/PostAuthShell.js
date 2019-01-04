@@ -8,14 +8,13 @@ class PostAuthShell extends React.Component {
 
     render() {
         console.log('PostAuthShell::Render');
-        if (this.props.domainId) {
+        if (this.props.domain) {
             return <div className="post-auth__content">
                 <Toolbar></Toolbar>
                 <SideNav domainName="Dynki Team"></SideNav>
                 <main>
                     <Route path={'/board/:id'} component={Board}></Route>
                 </main>
-
             </div>
         }
 

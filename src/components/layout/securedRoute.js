@@ -4,15 +4,17 @@ import { Route, Redirect } from "react-router-dom";
 export default function SecuredRoute ({
   component: Component,
   authenticated,
+  domain,
   ...rest
 }) {
-  console.log(authenticated);
+  console.log('Authenticated::', authenticated);
+  console.log('Domain::', domain);
   return (
     <Route
       {...rest}
       render={props =>
         authenticated.uid ? (
-          (authenticated.domainId ? <Component {...props} {...rest} /> : <Redirect to="/auth/domain"/>)
+          (domain ? <Component {...props} {...rest} /> : <Redirect to="/auth/domain"/>)
         ) : (
           <Redirect to="/auth/login" />
         )

@@ -13,8 +13,11 @@ export const getBoards = () => {
             .doc('appBoards')
             .onSnapshot({}, function (doc) {
                 const data = doc.data();
-                const boards = data.boards;
-                dispatch({ type: 'REFRESH_BOARDS', payload: boards });
+
+                if (data) {
+                    const boards = data.boards;
+                    dispatch({ type: 'REFRESH_BOARDS', payload: boards });
+                }
             });
     }
 }
