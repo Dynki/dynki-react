@@ -51,3 +51,44 @@ export const checkDomain = (name) => {
         }
     }
 }
+
+export const createDomain = (name) => {
+
+     return async (dispatch, getState, { getFirebase, getFirestore }) => {
+ 
+         dispatch({ type: 'CREATING_DOMAIN' })
+ 
+         const url = `https://us-central1-dynki-c5141.cloudfunctions.net/domains`;
+         const firebase = getFirebase();
+ 
+         try {
+             const token = await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+             const uid = firebase.auth().currentUser.uid;
+             
+             await axios.post(url, 
+                {
+                    uid,
+                    name: name,
+                    email: firebase.auth().currentUser.email,
+                    displayName: firebase.auth().currentUser.displayName
+                },
+                { headers: { token , uid }})
+
+            firebase.auth().currentUser.getIdTokenResult()
+            .then((idTokenResult) => {
+                // Confirm the user is an Admin.
+                if (idTokenResult.claims.domainId) {
+                    dispatch({ type: 'SET_DOMAIN', payload: idTokenResult.claims.domainId });
+                } else {
+                    dispatch({ type: 'NO_DOMAIN' });
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+ 
+         } catch (error) {
+             dispatch({ type: 'DOMAIN_CREATION_ERROR' })
+         }
+     }
+ }

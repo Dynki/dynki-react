@@ -17,6 +17,7 @@ const DForm = Form.create({
             if (!err) {
                 console.log('Received values of form: ', values);
             }
+            props.onCreateDomain(values.name)
         });
     }
 
@@ -35,7 +36,7 @@ const DForm = Form.create({
                     <Input size="large" prefix={<Icon type="team" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Enter your team name" autoComplete="off" />
                 )}
             </FormItem>
-            <Button type="dashed" htmlType="submit" className="domain__btn" loading={props.pending}>
+            <Button type="dashed" htmlType="submit" className="domain__btn" loading={props.pending} disabled={!props.domainValid}>
                 Create Team
                 <Icon type="arrow-right" />
             </Button>
@@ -48,12 +49,6 @@ const DomainForm = (props) => {
     const handleFormChange = (name) => {
         props.onCheckDomain(name);
     }
-
-    // const fields = {
-    //     name: {
-    //         value: props.name,
-    //     }
-    // };
 
     return (
         <div style={{width: "100%" }}>
