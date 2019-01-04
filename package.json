@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "antd": "^3.11.2",
+    "axios": "^0.18.0",
     "firebase": "^5.7.0",
     "lodash": "^4.17.11",
     "node-sass": "^4.11.0",
