@@ -76,7 +76,7 @@ const mapStateToProps = (state) => {
       authError: state.auth.authError,
       pending: state.auth.pending,
       auth: state.firebase.auth,
-      domain: state.auth.domain
+      domain: state.domain.domainId
     }
   }
   

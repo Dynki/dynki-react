@@ -25,7 +25,7 @@ class PostAuthShell extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        domainId: state.auth.domainId
+        domain: state.domain
     }
 }
 

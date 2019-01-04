@@ -28,7 +28,7 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
-    domain: state.auth.domain
+    domain: state.domain.domainId
   }
 }
 

@@ -1,15 +1,46 @@
 import axios from 'axios';
 
-export const checkDomain = () => {
+export const checkDomain = (name) => {
+
+   const domainValidForSubmission = (value, dispatch) => {
+
+        if (value === undefined || value === null || value.length === 0){
+            return false;
+        }
+
+        if (value.length > 0 && value.length < 4) {
+            dispatch({ type: 'DOMAIN_TOO_SHORT' })
+            return false;
+        }
+        
+        if (value.length > 50) {
+            dispatch({ type: 'DOMAIN_TOO_LONG' })
+            return false;
+        }
+
+        const re = RegExp('^[0-9a-zA-Z \b]+$');
+        if (value.length > 0 && !re.test(value)) {
+            dispatch({ type: 'DOMAIN_INVALID_CHARS' })
+            return false;
+
+        }
+
+        return true;
+    }
+
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
+
+        if (!domainValidForSubmission(name, dispatch)) {
+            return;
+        }
 
         dispatch({ type: 'VALIDATING_DOMAIN' })
 
-        const url = 'https://us-central1-dynki-c5141.cloudfunctions.net/domains';
+        const url = `https://us-central1-dynki-c5141.cloudfunctions.net/checkdomain/${name}`;
         const firebase = getFirebase();
 
         try {
-            const token = await firebase.auth().currentUser.getIdTokenResult()
+            const token = await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
             const uid = firebase.auth().currentUser.uid;
             
             await axios.get(url, { headers: { token , uid }})

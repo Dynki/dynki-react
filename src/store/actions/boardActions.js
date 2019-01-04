@@ -4,7 +4,7 @@ export const getBoards = () => {
 
         dispatch({ type: 'ATTEMPT_LOADING_BOARDS' })
 
-        const domainId = getState().auth.domainId;
+        const domainId = getState().domain.domainId;
 
         firebase.firestore()
             .collection('domains')
@@ -26,7 +26,7 @@ export const getBoard = (id) => {
 
         dispatch({ type: 'ATTEMPT_LOADING_BOARD', payload: id })
 
-        const domainId = getState().auth.domainId;
+        const domainId = getState().domain.domainId;
         const currentBoard = getState().boards.currentBoard;
 
         
@@ -53,7 +53,7 @@ export const updateBoard = (board) => {
         console.log('UPDATE BOARD::');
         const firebase = getFirebase();
         const boards = getState().boards.boards;
-        const domainId = getState().auth.domainId;
+        const domainId = getState().domain.domainId;
         const boardIdx = boards.findIndex(b => b.id === board.id);
 
         if (boards[boardIdx].title !== board.title) {
