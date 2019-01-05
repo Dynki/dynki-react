@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
-import { Menu, Icon, Button } from 'antd';
+import { Menu, Icon, Button, Tooltip } from 'antd';
 
 const SubMenu = Menu.SubMenu;
 
@@ -33,7 +33,9 @@ class DynSubMenu extends React.Component {
                         </Menu.Item>)) 
                     }
                     </SubMenu>
-                    <Button type="dashed" shape="circle" icon="plus"></Button>
+                    <Tooltip placement="right" title="New Board">
+                        <Button type="dashed" shape="circle" icon="plus"></Button>
+                    </Tooltip>
                 </div>
             ): (
                 <div>
