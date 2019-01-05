@@ -1,4 +1,18 @@
 
+.submenu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .ant-menu-submenu {
+        flex-grow: 1;
+
+        .ant-btn {
+            margin-top: 7px!important;
+        }
+    }
+}
+
 .draggable-source--is-dragging {
     ul {
         transform: scale(0.8);

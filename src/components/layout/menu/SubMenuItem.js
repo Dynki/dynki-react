@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
-import { Menu, Icon } from 'antd';
+import { Menu, Icon, Button } from 'antd';
 
 const SubMenu = Menu.SubMenu;
 
@@ -23,16 +23,22 @@ class DynSubMenu extends React.Component {
         return (
             <div>
             { items ? (
-                <SubMenu {...other} key={title} title={<span><Icon type={icon} /><span>{title}</span></span>}>
-                { items.map(i => (
-                    <Menu.Item {...other} key={i.title}>
-                        <Link onClick={(e) => this.handleClick(e, i.action)} to={i.target} key={i.id}>
-                            {i.title}
-                        </Link>
-                    </Menu.Item>)) }
-                </SubMenu>
+                <div className="submenu">
+                    <SubMenu {...other} key={title} title={<span><Icon type={icon} /><span>{title}</span></span>}>
+                    { items.map(i => (
+                        <Menu.Item {...other} key={i.title}>
+                            <Link onClick={(e) => this.handleClick(e, i.action)} to={i.target} key={i.id}>
+                                {i.title}
+                            </Link>
+                        </Menu.Item>)) 
+                    }
+                    </SubMenu>
+                    <Button type="dashed" shape="circle" icon="plus"></Button>
+                </div>
             ): (
-                <Menu.Item {...other} key={title}><Icon type={icon}/>{title}</Menu.Item>
+                <div>
+                    <Menu.Item {...other} key={title}><Icon type={icon}/>{title}</Menu.Item>
+                </div>
             )}
             </div>
         );
