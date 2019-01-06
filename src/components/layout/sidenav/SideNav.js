@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Breadcrumb, Button, Icon } from 'antd';
 
 import DynMenu from '../menu/Menu';
-import { getBoards, getBoard } from '../../../store/actions/boardActions'; 
+import { getBoards, getBoard, newBoard } from '../../../store/actions/boardActions'; 
 
 
 class SideNav extends React.Component {
@@ -46,7 +46,7 @@ const mapStateToProps = (state) => {
 
         const menuItems = [
             { title: 'Inbox', icon: 'mail', },
-            { title: 'Boards', icon: 'schedule', 
+            { title: 'Boards', icon: 'schedule', action: newBoard(),
                 items: items },
             { title: 'Projects', icon: 'rocket' },
             { title: 'Tags', icon: 'tags' }
@@ -60,7 +60,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getBoards: () => dispatch(getBoards()),
-        getBoard: (id) => dispatch(getBoard(id))
+        getBoard: (id) => dispatch(getBoard(id)),
+        newBoard: () => dispatch(newBoard())
     }
 }
 

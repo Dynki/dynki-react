@@ -11,15 +11,20 @@ class DynSubMenu extends React.Component {
         super(props);
         // This binding is necessary to make `this` work in the callback
         this.handleClick = this.handleClick.bind(this);
+        this.handleBtnClick = this.handleBtnClick.bind(this);
     }
 
     handleClick(e, action) {
         this.props.itemClicked(action);
     }
 
+    handleBtnClick(e, action) {
+        this.props.btnClicked(action);
+    }
+
     render() {
-        const {itemClicked, title, icon , items, action, ...other} = this.props;
-    
+        const {itemClicked, btnClicked, title, icon , items, act, ...other} = this.props;
+
         return (
             <div>
             { items ? (
@@ -27,20 +32,18 @@ class DynSubMenu extends React.Component {
                     <SubMenu {...other} key={title} title={<span><Icon type={icon} /><span>{title}</span></span>}>
                     { items.map(i => (
                         <Menu.Item {...other} key={i.title}>
-                            <Link onClick={(e) => this.handleClick(e, i.action)} to={i.target} key={i.id}>
+                            <Link onClick={(e) => this.handleClick(e, i.btnction)} to={i.target} key={i.id}>
                                 {i.title}
                             </Link>
                         </Menu.Item>)) 
                     }
                     </SubMenu>
                     <Tooltip placement="right" title="New Board">
-                        <Button type="dashed" shape="circle" icon="plus"></Button>
+                        <Button onClick={(e) => this.handleBtnClick(e, act)}  type="dashed" shape="circle" icon="plus"></Button>
                     </Tooltip>
                 </div>
             ): (
-                <div>
-                    <Menu.Item {...other} key={title}><Icon type={icon}/>{title}</Menu.Item>
-                </div>
+                <Menu.Item {...other} key={title}><Icon type={icon}/>{title}</Menu.Item>
             )}
             </div>
         );
@@ -52,6 +55,9 @@ const mapDispatchToProps = (dispatch) => {
         itemClicked: (dispatchAction) => { 
             return dispatch(dispatchAction)
         },
+        btnClicked: (dispatchAction) => {
+            return dispatch(dispatchAction)
+        }
     }
 }
 

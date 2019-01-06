@@ -9,7 +9,7 @@ const DynMenu = (props) => {
         className="menu" 
         mode="inline"
       >
-      { props.menu.map((c, i) => <DynSubMenu key={i} target={c.target} items={c.items} title={c.title} icon={c.icon}></DynSubMenu>) }
+      { props.menu.map((c, i) => <DynSubMenu key={i} target={c.target} items={c.items} title={c.title} icon={c.icon} act={c.action}></DynSubMenu>) }
       </Menu>
     );
 }

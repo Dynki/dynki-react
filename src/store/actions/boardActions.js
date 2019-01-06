@@ -22,6 +22,14 @@ export const getBoards = () => {
     }
 }
 
+export const newBoard = () => {
+    return (dispatch, getState, { getFirebase, getFirestore }) => {
+
+        dispatch({ type: 'NEW_BOARD' });
+        console.log('New Board Action');
+    }
+}
+
 export const getBoard = (id) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         console.log('GET BOARD::', id);
