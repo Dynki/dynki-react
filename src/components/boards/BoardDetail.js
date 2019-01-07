@@ -4,6 +4,7 @@ import BoardRow from './BoardRow';
 import { Droppable } from 'react-beautiful-dnd';
 
 const BoardDetail = (props) => {
+    console.log('BoardRow::Props::', props);
     return (
         <table className="table">
             <tbody>
@@ -17,14 +18,14 @@ const BoardDetail = (props) => {
                             {...provided.droppableProps}
                             className="table__rc"
                         >                    
-                            {props.board.entities.map((r, idx) => (
+                            {props.board.entities ? props.board.entities.map((r, idx) => (
                                 <BoardRow 
                                     key={idx}
                                     onUpdateBoard={props.onUpdateBoard}
                                     rowIdx={idx}
                                     board={props.board}>
                                 </BoardRow>
-                            ))}
+                            )) : null }
                             {provided.placeHolder}
                         </tr>
 

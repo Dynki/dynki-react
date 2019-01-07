@@ -32,7 +32,7 @@ class DynSubMenu extends React.Component {
                     <SubMenu {...other} key={title} title={<span><Icon type={icon} /><span>{title}</span></span>}>
                     { items.map(i => (
                         <Menu.Item {...other} key={i.title}>
-                            <Link onClick={(e) => this.handleClick(e, i.btnction)} to={i.target} key={i.id}>
+                            <Link onClick={(e) => this.handleClick(e, i.action)} to={i.target} key={i.id}>
                                 {i.title}
                             </Link>
                         </Menu.Item>)) 

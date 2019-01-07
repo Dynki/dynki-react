@@ -1,3 +1,6 @@
+import moment from 'moment';
+import newGuid from '../utils/guid';
+
 export const getBoards = () => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firebase = getFirebase();
@@ -23,10 +26,54 @@ export const getBoards = () => {
 }
 
 export const newBoard = () => {
-    return (dispatch, getState, { getFirebase, getFirestore }) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
 
-        dispatch({ type: 'NEW_BOARD' });
-        console.log('New Board Action');
+        const firebase = getFirebase();
+        const domainId = getState().domain.domainId;
+
+        const newBoard = {
+            id: newGuid(),
+            createdBy: firebase.auth().currentUser.uid,
+            createdDate: moment().toDate(),
+            description: '',
+            title: 'Scratch',
+            isFolder: false,
+            entities: [],
+            columns: [{ title: 'Description', model: 'description', class: 'text' }],
+            type: 'Scratch'
+        }
+
+        const data = JSON.parse(JSON.stringify(newBoard));
+        await firebase.firestore().collection('domains').doc(domainId).collection('boards').doc(newBoard.id).set(data);
+        const newDoc = await firebase.firestore().collection('domains').doc(domainId).collection('boards').doc(newBoard.id).get();
+        const boardsRef = await firebase.firestore().collection('domains').doc(domainId).collection('boardsInDomain').doc('appBoards').get()
+
+        const newBoards = boardsRef.boards ? boardsRef.boards.push({ id: newDoc.id, title: 'Scratch' }) : [{ id: newDoc.id, title: 'Scratch' }];
+
+        await firebase.firestore()
+            .collection('domains')
+            .doc(domainId)
+            .collection('boardsInDomain')
+            .doc('appBoards')
+            .set({
+                boards: newBoards
+            });
+
+        await firebase.firestore()
+            .collection('domains')
+            .doc(domainId)
+            .collection('boardsInDomain')
+            .doc('appBoards')
+            .onSnapshot({}, function (doc) {
+                const data = doc.data();
+
+                if (data) {
+                    const boards = data.boards;
+                    dispatch({ type: 'REFRESH_BOARDS', payload: boards });
+                }
+            });
+
+        return Promise.resolve({ id: newDoc.id, ...newDoc.data() });
     }
 }
 
