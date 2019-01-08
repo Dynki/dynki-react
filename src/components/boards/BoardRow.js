@@ -3,7 +3,6 @@ import BoardRowForm from './BoardRowForm';
 import { Draggable } from 'react-beautiful-dnd';
 
 const BoardRow = (props) => {
-    console.log('BoardRowProps::', {props});
     return (
         <Draggable draggableId={props.rowIdx.toString()} index={props.rowIdx}>
             {provided => (

@@ -10,8 +10,12 @@
 
         .ant-btn {
             margin-top: 7px!important;
+            }
+        .ant-menu-item-selected {
+            width: calc(100% + 40px)!important;
         }
     }
+
 }
 
 .draggable-source--is-dragging {

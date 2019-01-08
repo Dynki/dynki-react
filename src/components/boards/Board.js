@@ -5,23 +5,38 @@ import { DragDropContext } from 'react-beautiful-dnd';
 
 import BoardHeader from './BoardHeader';
 import BoardDetail from './BoardDetail';
+import BoardNewRow from './BoardNewRow';
+
 import { updateBoard } from '../../store/actions/boardActions';
 
+// Container for board components.
 class Board extends React.Component {
 
     constructor(props) {
         super(props);
-        this.onUpdateBoard = this.onUpdateBoard.bind(this);
-        this.onUpdateBoard = debounce(this.onUpdateBoard, 1000)
-        this.onDragEnd = this.onDragEnd.bind(this);
+
+        // Debounce update methods, to stop spamming persitence logic.
+        // The board updates are triggered by user input, specifically the key presses 
+        // when editing existing or new row descriptions.
+        // The debounce forces the code to wait until 1 second after the last key press, 
+        // before it fires the persitence logic. 
+        this.onUpdateBoard = debounce(this.onUpdateBoard, 1000);
+        this.onNewRow = debounce(this.onNewRow, 1000);
     }
 
-    onUpdateBoard(board) {
+    // Triggered by child board detail component. 
+    onUpdateBoard = (board) => {
         console.log('BOARD::VAL::', board);
         this.props.updateBoard(board);
     }
 
-    // a little function to help us with reordering the result
+    // Triggered by child new row component.
+    onNewRow = (row) => {
+        console.log('BOARD::OnNewRow::', row);
+        // this.props.updateBoard(board);
+    }
+
+    // Helper function for drag drop reordering or board rows.
     reorder = (list, startIndex, endIndex) => {
         const result = Array.from(list);
         const [removed] = result.splice(startIndex, 1);
@@ -30,7 +45,9 @@ class Board extends React.Component {
         return result;
     };
 
-    onDragEnd(result) {
+    // Triggered when drag of board row have ended.
+    // Reorders the entities (rows) within the board and calls logic to persist result.
+    onDragEnd = (result) => {
         // dropped outside the list
         if (!result.destination) {
             return;
@@ -60,6 +77,7 @@ class Board extends React.Component {
                             board={this.props.board}>
                         </BoardDetail>
                     </DragDropContext>
+                    <BoardNewRow onNewRow={this.onNewRow}></BoardNewRow>
                 </section> : null 
             )
         )

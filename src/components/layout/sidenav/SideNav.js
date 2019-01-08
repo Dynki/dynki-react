@@ -9,6 +9,7 @@ import { getBoards, getBoard, newBoard } from '../../../store/actions/boardActio
 
 class SideNav extends React.Component {
 
+    // Ensure the boards have been retrieved before rendering this component.
     componentWillMount() {
         this.props.getBoards();
     }
@@ -33,6 +34,8 @@ class SideNav extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+
+      // Declare the menu items in this application.
       menuItems: () => {
         let items = [];
         if (state.boards.boards) {

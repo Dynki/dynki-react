@@ -14,11 +14,15 @@ class DynSubMenu extends React.Component {
         this.handleBtnClick = this.handleBtnClick.bind(this);
     }
 
+    // Triggered by clicking a menu item.
     handleClick(e, action) {
+        // Dispatches the action associated with this menu item's properties.
         this.props.itemClicked(action);
     }
 
+    // Triggered by clicking a menu items function button (e.g. the add new board button).
     handleBtnClick(e, action) {
+        // Dispatches the action associated with this menu item's properties.
         this.props.btnClicked(action);
     }
 
@@ -39,7 +43,7 @@ class DynSubMenu extends React.Component {
                     }
                     </SubMenu>
                     <Tooltip placement="right" title="New Board">
-                        <Button onClick={(e) => this.handleBtnClick(e, act)}  type="dashed" shape="circle" icon="plus"></Button>
+                        <Button className="btn-add-board" onClick={(e) => this.handleBtnClick(e, act)}  type="dashed" shape="circle" icon="plus"></Button>
                     </Tooltip>
                 </div>
             ): (

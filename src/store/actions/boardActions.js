@@ -1,12 +1,12 @@
 import moment from 'moment';
 import newGuid from '../utils/guid';
 
+// Get all boards within this user's domain/team.
 export const getBoards = () => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
-        const firebase = getFirebase();
-
         dispatch({ type: 'ATTEMPT_LOADING_BOARDS' })
 
+        const firebase = getFirebase();
         const domainId = getState().domain.domainId;
 
         firebase.firestore()
@@ -25,6 +25,7 @@ export const getBoards = () => {
     }
 }
 
+// Create a new blank board with this user's domain/team.
 export const newBoard = () => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
 
@@ -38,18 +39,24 @@ export const newBoard = () => {
             description: '',
             title: 'Scratch',
             isFolder: false,
-            entities: [],
+            entities: [{ id: 0, description: '' }],
             columns: [{ title: 'Description', model: 'description', class: 'text' }],
             type: 'Scratch'
         }
 
+        // Firebase requires the data to be parsed this way!!.
         const data = JSON.parse(JSON.stringify(newBoard));
+
+        // Create the new board document, and then get it to get it's ID.
         await firebase.firestore().collection('domains').doc(domainId).collection('boards').doc(newBoard.id).set(data);
         const newDoc = await firebase.firestore().collection('domains').doc(domainId).collection('boards').doc(newBoard.id).get();
-        const boardsRef = await firebase.firestore().collection('domains').doc(domainId).collection('boardsInDomain').doc('appBoards').get()
 
+        // Get from firestore the list of boards in this domain. 
+        // Then create a reference with the new boards added.
+        const boardsRef = await firebase.firestore().collection('domains').doc(domainId).collection('boardsInDomain').doc('appBoards').get()
         const newBoards = boardsRef.boards ? boardsRef.boards.push({ id: newDoc.id, title: 'Scratch' }) : [{ id: newDoc.id, title: 'Scratch' }];
 
+        // Update the boards in this domain with data from above.
         await firebase.firestore()
             .collection('domains')
             .doc(domainId)
@@ -59,6 +66,7 @@ export const newBoard = () => {
                 boards: newBoards
             });
 
+        // Get a refreshed list of boards in this domain and dispatch the REFRESH_BOARDS action to refresh the side menu.
         await firebase.firestore()
             .collection('domains')
             .doc(domainId)
@@ -77,6 +85,7 @@ export const newBoard = () => {
     }
 }
 
+// Get an individual board by id.
 export const getBoard = (id) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         console.log('GET BOARD::', id);
@@ -87,7 +96,7 @@ export const getBoard = (id) => {
         const domainId = getState().domain.domainId;
         const currentBoard = getState().boards.currentBoard;
 
-        
+        // This is required to stop firestore creating multiple subscriptions, which then spam the system.
         if (currentBoard && currentBoard.unsubscribe) {
             currentBoard.unsubscribe();
         }
@@ -99,6 +108,8 @@ export const getBoard = (id) => {
             .doc(id)
             .onSnapshot({}, function (doc) {
                 const board = doc.data();
+
+                // Add the subscription to the current board so we can kill it later.
                 board.unsubscribe = sub;
                 dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
             });

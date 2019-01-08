@@ -23,7 +23,7 @@ const BRForm = Form.create({
         <Form className="table__row__cell__container" autoComplete="off">
             <FormItem >
                 {getFieldDecorator('columnValue', {})(
-                    <Input className="table__header__input text--no-border"/>
+                    <Input placeholder="enter some text here..." className="table__header__input text--no-border"/>
                 )}
             </FormItem>
         </Form>
@@ -36,11 +36,6 @@ const BoardRowForm = (props) => {
         const updatedBoard = props.board;
         updatedBoard.entities[props.rowIdx][props.modelName] = changedFields['columnValue'];
         props.onUpdateBoard(updatedBoard);
-    }
-
-    const onUpdateBoard = (board) => {
-        console.log('UPDATE Board with values::', board);
-        props.onUpdateBoard(board);
     }
 
     const fields = {

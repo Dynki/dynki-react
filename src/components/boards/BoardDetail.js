@@ -1,7 +1,8 @@
 import React from 'react';
+import { Droppable } from 'react-beautiful-dnd';
+
 import BoardRowHeader from './BoardRowHeader';
 import BoardRow from './BoardRow';
-import { Droppable } from 'react-beautiful-dnd';
 
 const BoardDetail = (props) => {
     console.log('BoardRow::Props::', props);
@@ -32,7 +33,6 @@ const BoardDetail = (props) => {
                     )}
                 </Droppable>
             </tbody>
-            {/* <BoardNewRow></BoardNewRow>              */}
         </table>
     )
 }

@@ -8,23 +8,22 @@ import { checkDomain, createDomain } from '../../store/actions/domainActions';
 class Domain extends Component {
     constructor(props) {
         super(props);
-        this.onCheckDomain = this.onCheckDomain.bind(this);
-        this.onCreateDomain = this.onCreateDomain.bind(this);
         this.onCheckDomain = debounce(this.onCheckDomain, 1000)
     }
 
-    onCheckDomain(name) {
+    // Call logic to determine this this domain name is valid and unique.
+    onCheckDomain = (name) => {
         console.log('Name::', name);
         this.props.CheckDomain(name);
     }
 
-    onCreateDomain(name) {
+    // Fire logic to persist the new domain name.
+    onCreateDomain = (name) => {
         console.log('OnCreateDomain::Name', name);
         this.props.CreateDomain(name);
     }
       
     render() {
-
         const {...domain } = this.props.domain;
  
         return (

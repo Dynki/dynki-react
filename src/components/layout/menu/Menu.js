@@ -4,6 +4,7 @@ import { Menu } from 'antd';
 
 const DynMenu = (props) => {
 
+    // Map over items in this menu to create menu items. 
     return (
       <Menu 
         className="menu" 
