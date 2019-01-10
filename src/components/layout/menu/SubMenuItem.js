@@ -7,21 +7,14 @@ const SubMenu = Menu.SubMenu;
 
 class DynSubMenu extends React.Component {
 
-    constructor(props) {
-        super(props);
-        // This binding is necessary to make `this` work in the callback
-        this.handleClick = this.handleClick.bind(this);
-        this.handleBtnClick = this.handleBtnClick.bind(this);
-    }
-
     // Triggered by clicking a menu item.
-    handleClick(e, action) {
+    handleClick = (e, action) => {
         // Dispatches the action associated with this menu item's properties.
         this.props.itemClicked(action);
     }
 
     // Triggered by clicking a menu items function button (e.g. the add new board button).
-    handleBtnClick(e, action) {
+    handleBtnClick = (e, action) => {
         // Dispatches the action associated with this menu item's properties.
         this.props.btnClicked(action);
     }
