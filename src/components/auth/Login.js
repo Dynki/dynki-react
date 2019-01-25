@@ -23,7 +23,6 @@ class LoginForm extends Component {
         const { auth } = this.props;
 
         if (auth.uid) {
-            console.log('Login::Auth::Uid', auth.uid)
             return <Redirect to='/' />
         }
 

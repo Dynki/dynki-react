@@ -30,9 +30,9 @@ class App extends Component {
 
   render() {
     const { auth, domain } = this.props;
+    console.log('App.js::Render::', domain);
 
-    if (this.state.domainLoaded && domain) {
-      console.log('State::DomainLoaded', this.state.domainLoaded);
+    if (domain) {
       return (
 
         <div className="App">

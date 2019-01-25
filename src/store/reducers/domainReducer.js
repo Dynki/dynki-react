@@ -57,7 +57,7 @@ const domainReducer = (state = initialState, action) => {
                 domainValid: true
             }
         case 'SET_DOMAIN':
-            console.log('Set Domain')
+            console.log('Set Domain::', action.payload);
             return {
                 ...state,
                 noDomain: false,

@@ -18,7 +18,7 @@ export const signIn = (credentials) => {
           // Confirm the user is an Admin.
           if (idTokenResult.claims.domainId) {
             console.log('SignIn::Set domain::', idTokenResult.claims);
-            dispatch({ type: 'SET_DOMAIN' }, idTokenResult.claims.domainId);
+            dispatch({ type: 'SET_DOMAIN', payload: idTokenResult.claims.domainId });
             dispatch({ type: 'LOGIN_SUCCESS' });
           } else {
             console.log('SignIn::No domain::', idTokenResult.claims);

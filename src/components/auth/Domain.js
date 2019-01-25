@@ -13,13 +13,11 @@ class Domain extends Component {
 
     // Call logic to determine this this domain name is valid and unique.
     onCheckDomain = (name) => {
-        console.log('Name::', name);
         this.props.CheckDomain(name);
     }
 
     // Fire logic to persist the new domain name.
     onCreateDomain = (name) => {
-        console.log('OnCreateDomain::Name', name);
         this.props.CreateDomain(name);
     }
       
