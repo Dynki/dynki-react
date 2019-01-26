@@ -1,5 +1,6 @@
 import moment from 'moment';
 import newGuid from '../utils/guid';
+import * as _ from 'lodash';
 
 // Get all boards within this user's domain/team.
 export const getBoards = () => {
@@ -88,7 +89,6 @@ export const newBoard = () => {
 // Get an individual board by id.
 export const getBoard = (id) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
-        console.log('GET BOARD::', id);
         const firebase = getFirebase();
 
         dispatch({ type: 'ATTEMPT_LOADING_BOARD', payload: id })
@@ -152,3 +152,26 @@ export const updateBoard = (board) => {
     }
 }
 
+
+export const newRow = (row) => {
+    return (dispatch, getState, { getFirebase, getFirestore }) => {
+        console.log('ADD BOARD ROW::');
+        const firebase = getFirebase();
+        const currentBoard = getState().boards.currentBoard;
+        const domainId = getState().domain.domainId;
+
+        // Add the new row to the current board, this MUST include the columns too.
+        currentBoard.entities.push({ id: newGuid(), description: row.description });
+
+        // Need to remove subscription function before saving.
+        const updatedBoard = _.cloneDeep(currentBoard);
+        delete updatedBoard.unsubscribe;
+
+        firebase.firestore()
+            .collection('domains')
+            .doc(domainId)
+            .collection('boards')
+            .doc(updatedBoard.id)
+            .set(updatedBoard);
+    }
+}

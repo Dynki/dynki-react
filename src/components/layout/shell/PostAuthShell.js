@@ -7,7 +7,6 @@ import Board from '../../boards/Board';
 class PostAuthShell extends React.Component {
 
     render() {
-        console.log('PostAuthShell::Render');
         if (this.props.domain.domainId) {
             return <div className="post-auth__content">
                 <Toolbar></Toolbar>

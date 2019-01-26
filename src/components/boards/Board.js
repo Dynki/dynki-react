@@ -7,7 +7,7 @@ import BoardHeader from './BoardHeader';
 import BoardDetail from './BoardDetail';
 import BoardNewRow from './BoardNewRow';
 
-import { updateBoard } from '../../store/actions/boardActions';
+import { updateBoard, newRow } from '../../store/actions/boardActions';
 
 // Container for board components.
 class Board extends React.Component {
@@ -26,14 +26,12 @@ class Board extends React.Component {
 
     // Triggered by child board detail component. 
     onUpdateBoard = (board) => {
-        console.log('BOARD::VAL::', board);
         this.props.updateBoard(board);
     }
 
     // Triggered by child new row component.
-    onNewRow = (row) => {
-        console.log('BOARD::OnNewRow::', row);
-        // this.props.updateBoard(board);
+    onNewRow = (description) => {
+        this.props.newRow(description);
     }
 
     // Helper function for drag drop reordering or board rows.
@@ -92,7 +90,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return{
-      updateBoard: (board) => dispatch(updateBoard(board)) 
+      updateBoard: (board) => dispatch(updateBoard(board)),
+      newRow: (description) => dispatch(newRow(description))
     }
 }
 

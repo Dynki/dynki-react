@@ -5,7 +5,6 @@ const FormItem = Form.Item;
 
 const DForm = Form.create({
     onValuesChange(props, values) {
-        console.log(props);
         props.onChange(values.name);
     }
 })((props) => {
