@@ -3,6 +3,20 @@ $athens-gray: #eff1f3;
 $curious-blue: #3095DE;
 $mariner: #2b82c1;
 
+
+.new-row {
+    display: flex;
+    flex-direction: row;
+
+    &__btn {
+        border-radius: 0px;
+        margin-top: 1px;
+        background-color: #3095DE;
+        color: #fff;
+        height: 40px;
+    }
+}
+
 .text--no-border, .text__large--no-border {
     border: none !important;
     border-radius: 1px !important;

@@ -1,21 +1,41 @@
 import React from 'react';
-import { Form, Input } from 'antd';
+import { Form, Input, Button, Icon } from 'antd';
 
 const FormItem = Form.Item;
 
-const BNRForm = Form.create({
-    onValuesChange(props, values) {
-        props.onChange(values);
-    }
-})((props) => {
+const BNRForm = Form.create({})((props) => {
     const { getFieldDecorator } = props.form;
 
+    const handleKeyPress = (ev) => {
+        if (ev.key === 'Enter') {
+            props.onChange({ newValue: ev.target.value });
+            props.form.resetFields();
+        }
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+            }
+            props.onChange(values);
+        });
+        props.form.resetFields();
+    }
+
     return (
-        <Form className="table__row__new" autoComplete="off">
+        <Form className="table__row__new" autoComplete="off" onSubmit={handleSubmit}>
             <FormItem >
-                {getFieldDecorator('newValue', {})(
-                    <Input placeholder="+ Create new row"/>
-                )}
+                <div className="new-row">
+                    {getFieldDecorator('newValue', { })(
+                        <Input onKeyPress={value => handleKeyPress(value)} placeholder="+ Create new row"/>
+                    )}
+                    <Button htmlType="submit" className="new-row__btn">
+                        Create
+                        <Icon type="enter" />
+                    </Button>
+                </div>
             </FormItem>
         </Form>
     )
