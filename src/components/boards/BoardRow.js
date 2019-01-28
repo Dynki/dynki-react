@@ -1,52 +1,88 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import BoardRowForm from './BoardRowForm';
 import { Draggable } from 'react-beautiful-dnd';
+import { Menu, Icon, Dropdown } from 'antd';
 
-const BoardRow = (props) => {
-    return (
-        <Draggable draggableId={props.rowIdx.toString()} index={props.rowIdx}>
-            {provided => (
-                <td 
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    className="table__row"
-                >
-                    <div className="row__content">
-                        <div 
-                            {...provided.dragHandleProps}
-                            className="draghandle"
-                            tabIndex="0">
+class BoardRow extends React.Component {
+
+    constructor(props) {
+        super();
+        this.state = { hovering: false };
+    }
+
+    mouseEnter() {
+        this.setState({ hovering: true });
+    }
+
+    mouseLeave() {
+        this.setState({ hovering: false });
+    }
+
+    menu = (
+        <Menu>
+            <Menu.Item>
+                <Icon type="delete" />Remove Row
+          </Menu.Item>
+        </Menu>
+    );
+
+    render() {
+        return (
+            <Draggable draggableId={this.props.rowIdx.toString()} index={this.props.rowIdx}>
+                {provided => (
+                    <td
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        className="table__row"
+                        onMouseEnter={this.mouseEnter.bind(this)}
+                        onMouseLeave={this.mouseLeave.bind(this)}
+                    >
+                        <div className="row__content">
+                            <div className="row__content__menu">
+                                {this.state.hovering ? 
+                                    <Dropdown overlay={this.menu} placement="bottomCenter">
+                                        <Icon type="down-circle" />
+                                    </Dropdown>
+                                    : null
+                                }
+                            </div>
+                            <div
+                                {...provided.dragHandleProps}
+                                className="draghandle"
+                                tabIndex="0">
+                            </div>
+                            {this.props.board.columns.map((c, idx) => {
+                                return idx === 0 ? (
+                                    <div key={idx} className="row__content__column--first">
+                                        <BoardRowForm
+                                            onUpdateBoard={this.props.onUpdateBoard}
+                                            board={this.props.board}
+                                            rowIdx={this.props.rowIdx}
+                                            modelName={c.model}>
+                                        </BoardRowForm>
+                                    </div>
+                                ) : (
+                                        <div key={idx} className="row__content__column">
+                                            <BoardRowForm
+                                                onUpdateBoard={this.props.onUpdateBoard}
+                                                board={this.props.board}
+                                                rowIdx={this.props.rowIdx}
+                                                modelName={c.model}>
+                                            </BoardRowForm>
+                                        </div>
+                                    )
+                            })}
                         </div>
-                        {props.board.columns.map((c, idx) => {
-                            return idx === 0 ? (
-                                <div key={idx}  className="row__content__column--first">
-                                    <BoardRowForm 
-                                        onUpdateBoard={props.onUpdateBoard}
-                                        board={props.board}
-                                        rowIdx={props.rowIdx}
-                                        modelName={c.model}>
-                                    </BoardRowForm>
-                                </div>
-                            ) : (
-                                <div key={idx} className="row__content__column">
-                                    <BoardRowForm
-                                        onUpdateBoard={props.onUpdateBoard}
-                                        board={props.board}
-                                        rowIdx={props.rowIdx}
-                                        modelName={c.model}>
-                                    </BoardRowForm>
-                                </div>
-                            )
-                        })}
-                    </div>
-                    <section className="row__terminator" tabIndex="-1">
-                        <div className="row__terminator__body"></div>
-                        <div className="row__terminator__border"></div>
-                    </section>
-                </td>
-            )}
-        </Draggable>
-    )
+                        <section className="row__terminator" tabIndex="-1">
+                            <div className="row__terminator__body"></div>
+                            <div className="row__terminator__border"></div>
+                        </section>
+                    </td>
+                )}
+            </Draggable>
+        )
+    }
 }
 
 export default BoardRow;

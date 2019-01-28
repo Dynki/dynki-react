@@ -56,11 +56,6 @@ const BoardForm = (props) => {
         props.onUpdateBoard(updatedBoard);
     }
 
-    const onUpdateBoard = (board) => {
-        console.log('UPDATE Board with values::', board);
-        props.onUpdateBoard(board);
-    }
-
     const fields = {
         title: {
         value: props.board ? props.board.title : '',
