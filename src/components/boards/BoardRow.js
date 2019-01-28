@@ -2,7 +2,7 @@
 import React from 'react';
 import BoardRowForm from './BoardRowForm';
 import { Draggable } from 'react-beautiful-dnd';
-import { Menu, Icon, Dropdown } from 'antd';
+import BoardRowMenu from './BoardRowMenu';
 
 class BoardRow extends React.Component {
 
@@ -19,14 +19,6 @@ class BoardRow extends React.Component {
         this.setState({ hovering: false });
     }
 
-    menu = (
-        <Menu>
-            <Menu.Item>
-                <Icon type="delete" />Remove Row
-          </Menu.Item>
-        </Menu>
-    );
-
     render() {
         return (
             <Draggable draggableId={this.props.rowIdx.toString()} index={this.props.rowIdx}>
@@ -39,39 +31,21 @@ class BoardRow extends React.Component {
                         onMouseLeave={this.mouseLeave.bind(this)}
                     >
                         <div className="row__content">
-                            <div className="row__content__menu">
-                                {this.state.hovering ? 
-                                    <Dropdown overlay={this.menu} placement="bottomCenter">
-                                        <Icon type="down-circle" />
-                                    </Dropdown>
-                                    : null
-                                }
-                            </div>
+                            <BoardRowMenu hovering={this.state.hovering}></BoardRowMenu>
                             <div
                                 {...provided.dragHandleProps}
                                 className="draghandle"
                                 tabIndex="0">
                             </div>
                             {this.props.board.columns.map((c, idx) => {
-                                return idx === 0 ? (
-                                    <div key={idx} className="row__content__column--first">
-                                        <BoardRowForm
-                                            onUpdateBoard={this.props.onUpdateBoard}
-                                            board={this.props.board}
-                                            rowIdx={this.props.rowIdx}
-                                            modelName={c.model}>
-                                        </BoardRowForm>
-                                    </div>
-                                ) : (
-                                        <div key={idx} className="row__content__column">
-                                            <BoardRowForm
-                                                onUpdateBoard={this.props.onUpdateBoard}
-                                                board={this.props.board}
-                                                rowIdx={this.props.rowIdx}
-                                                modelName={c.model}>
-                                            </BoardRowForm>
-                                        </div>
-                                    )
+                                return <div key={idx} className={idx === 0 ? "row__content__column--first" : "row__content__column"}>
+                                    <BoardRowForm
+                                        onUpdateBoard={this.props.onUpdateBoard}
+                                        board={this.props.board}
+                                        rowIdx={this.props.rowIdx}
+                                        modelName={c.model}>
+                                    </BoardRowForm>
+                                </div>
                             })}
                         </div>
                         <section className="row__terminator" tabIndex="-1">
