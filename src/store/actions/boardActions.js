@@ -1,7 +1,8 @@
 import moment from 'moment';
 import newGuid from '../utils/guid';
 import * as _ from 'lodash';
-
+import history from '../utils/history';
+ 
 // Get all boards within this user's domain/team.
 export const getBoards = () => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
@@ -80,6 +81,7 @@ export const newBoard = () => {
                 if (data) {
                     const boards = data.boards;
                     dispatch({ type: 'REFRESH_BOARDS', payload: boards });
+                    dispatch({ type: 'SET_CURRENT_BOARD', payload: newDoc.data() });
                 }
             });
 
@@ -111,8 +113,10 @@ export const getBoard = (id) => {
                 const board = doc.data();
 
                 // Add the subscription to the current board so we can kill it later.
-                board.unsubscribe = sub;
-                dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
+                if (board) {
+                    board.unsubscribe = sub;
+                    dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
+                }
             });
 
     }
@@ -199,5 +203,81 @@ export const removeRow = (rowIdxToRemove) => {
             .collection('boards')
             .doc(updatedBoard.id)
             .set(updatedBoard);
+    }
+}
+
+// Remove the specified board via the board id supplied
+export const removeBoard = (boardId) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+
+        const firebase = getFirebase();
+        const domainId = getState().domain.domainId;
+
+        // Create the new board document, and then get it, to get it's ID.
+        await firebase.firestore().collection('domains').doc(domainId).collection('boards').doc(boardId).delete();
+
+        // Get from firestore the list of boards in this domain. 
+        // Then create a reference with the new boards added.
+        const boardsRef = await firebase.firestore().collection('domains').doc(domainId).collection('boardsInDomain').doc('appBoards').get()
+        let existingBoards = boardsRef.data().boards ? boardsRef.data().boards.filter(b => b.id !== boardId) : [];
+
+        // Update the boards in this domain with data from above.
+        await firebase.firestore()
+            .collection('domains')
+            .doc(domainId)
+            .collection('boardsInDomain')
+            .doc('appBoards')
+            .set({
+                boards: existingBoards
+            });
+
+        let nextBoardId;   
+            
+        // Get a refreshed list of boards in this domain and dispatch the REFRESH_BOARDS action to refresh the side menu.
+        await firebase.firestore()
+            .collection('domains')
+            .doc(domainId)
+            .collection('boardsInDomain')
+            .doc('appBoards')
+            .onSnapshot({}, function (doc) {
+                const data = doc.data();
+
+                if (data) {
+                    const boards = data.boards;
+                    dispatch({ type: 'REFRESH_BOARDS', payload: boards });
+                }
+            });
+
+        const currentBoard = getState().boards.currentBoard;
+        const currentBoards = getState().boards.boards;
+
+        if (currentBoards) {
+            nextBoardId = currentBoards[0].id;
+        }
+
+        // This is required to stop firestore creating multiple subscriptions, which then spam the system.
+        if (currentBoard && currentBoard.unsubscribe) {
+            currentBoard.unsubscribe();
+        }
+    
+        if (nextBoardId) {
+            const sub = firebase.firestore()
+                .collection('domains')
+                .doc(domainId)
+                .collection('boards')
+                .doc(nextBoardId)
+                .onSnapshot({}, function (doc) {
+                    const board = doc.data();
+    
+                    // Add the subscription to the current board so we can kill it later.
+                    if (board) {
+                        board.unsubscribe = sub;
+                        console.log('RemoveBoard::SettingCurrentBoard::', board);
+                        dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
+                    }
+                });
+        }
+
+        return Promise.resolve();
     }
 }

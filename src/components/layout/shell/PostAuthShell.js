@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Toolbar, SideNav } from '..';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import Board from '../../boards/Board';
 
 class PostAuthShell extends React.Component {
@@ -12,7 +12,7 @@ class PostAuthShell extends React.Component {
                 <Toolbar></Toolbar>
                 <SideNav domainName="Dynki Team"></SideNav>
                 <main>
-                    <Route path={'/board/:id'} component={Board}></Route>
+                    <Route exact path={'/board/:id'} component={Board}></Route>
                 </main>
             </div>
         }
@@ -27,4 +27,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(PostAuthShell);
+export default withRouter(connect(mapStateToProps)(PostAuthShell));

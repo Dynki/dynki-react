@@ -62,6 +62,8 @@ class Board extends React.Component {
     }
 
     render() {
+        console.log('Rerendering Board Component');
+
         return (
             (this.props.board ? 
                 <section className="board">
