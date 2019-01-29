@@ -1,20 +1,41 @@
 import React from 'react';
-import { Menu, Icon, Dropdown } from 'antd';
+import { Icon, Popconfirm } from 'antd';
+import { connect } from 'react-redux';
+import { removeRow } from '../../store/actions/boardActions';
 
-const BoardRowMenu = (props) => {
+class BoardRowMenu extends React.Component {
 
-    const menu = (<Menu>
-        <Menu.Item><Icon type="delete" />Remove Row</Menu.Item>
-    </Menu>);
+    handleConfirm = (e) => {
+        console.log('confirmed::', this.props.rowIdx);
+        this.props.removeRow(this.props.rowIdx)
+    }
 
-    return <div className="row__content__menu">
-        {props.hovering ? 
-            <Dropdown overlay={menu} placement="bottomCenter">
-                <Icon type="down-circle" />
-            </Dropdown>
+    render() {
+        return <div className="row__content__menu">
+            {this.props.hovering ? 
+                <Popconfirm title="Are you sure delete this row?" 
+                    okText="Yes"
+                    cancelText="No Way"
+                    trigger="click"
+                    onConfirm={this.handleConfirm.bind(this)}>
+                        <Icon type="delete" />
+                </Popconfirm>
             : null
-        }
-    </div>
+            }
+        </div>
+    }
 }
 
-export default BoardRowMenu;
+const mapStateToProps = (state) => {
+    return{
+      board: state.boards.currentBoard
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        removeRow: (rowIdx) => dispatch(removeRow(rowIdx))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BoardRowMenu);

@@ -31,7 +31,7 @@ class BoardRow extends React.Component {
                         onMouseLeave={this.mouseLeave.bind(this)}
                     >
                         <div className="row__content">
-                            <BoardRowMenu hovering={this.state.hovering}></BoardRowMenu>
+                            <BoardRowMenu hovering={this.state.hovering} rowIdx={this.props.rowIdx}></BoardRowMenu>
                             <div
                                 {...provided.dragHandleProps}
                                 className="draghandle"

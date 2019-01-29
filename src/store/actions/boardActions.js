@@ -48,14 +48,15 @@ export const newBoard = () => {
         // Firebase requires the data to be parsed this way!!.
         const data = JSON.parse(JSON.stringify(newBoard));
 
-        // Create the new board document, and then get it to get it's ID.
+        // Create the new board document, and then get it, to get it's ID.
         await firebase.firestore().collection('domains').doc(domainId).collection('boards').doc(newBoard.id).set(data);
         const newDoc = await firebase.firestore().collection('domains').doc(domainId).collection('boards').doc(newBoard.id).get();
 
         // Get from firestore the list of boards in this domain. 
         // Then create a reference with the new boards added.
         const boardsRef = await firebase.firestore().collection('domains').doc(domainId).collection('boardsInDomain').doc('appBoards').get()
-        const newBoards = boardsRef.boards ? boardsRef.boards.push({ id: newDoc.id, title: 'Scratch' }) : [{ id: newDoc.id, title: 'Scratch' }];
+        let existingBoards = boardsRef.data().boards ? boardsRef.data().boards : [];
+        existingBoards.push({ id: newDoc.id, title: 'Scratch' });
 
         // Update the boards in this domain with data from above.
         await firebase.firestore()
@@ -64,7 +65,7 @@ export const newBoard = () => {
             .collection('boardsInDomain')
             .doc('appBoards')
             .set({
-                boards: newBoards
+                boards: existingBoards
             });
 
         // Get a refreshed list of boards in this domain and dispatch the REFRESH_BOARDS action to refresh the side menu.
@@ -162,6 +163,31 @@ export const newRow = (row) => {
 
         // Add the new row to the current board, this MUST include the columns too.
         currentBoard.entities.push({ id: newGuid(), description: row.description });
+
+        // Need to remove subscription function before saving.
+        const updatedBoard = _.cloneDeep(currentBoard);
+        delete updatedBoard.unsubscribe;
+
+        const data = JSON.parse(JSON.stringify(updatedBoard));
+
+        firebase.firestore()
+            .collection('domains')
+            .doc(domainId)
+            .collection('boards')
+            .doc(data.id)
+            .set(data);
+    }
+}
+
+export const removeRow = (rowIdxToRemove) => {
+    return (dispatch, getState, { getFirebase, getFirestore }) => {
+        console.log('REMOVE BOARD ROW::');
+        const firebase = getFirebase();
+        const currentBoard = getState().boards.currentBoard;
+        const domainId = getState().domain.domainId;
+
+        // Add the new row to the current board, this MUST include the columns too.
+        currentBoard.entities = currentBoard.entities.filter((e, idx) => idx !== rowIdxToRemove);
 
         // Need to remove subscription function before saving.
         const updatedBoard = _.cloneDeep(currentBoard);

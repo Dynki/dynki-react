@@ -6,13 +6,6 @@ const FormItem = Form.Item;
 const BNRForm = Form.create({})((props) => {
     const { getFieldDecorator } = props.form;
 
-    const handleKeyPress = (ev) => {
-        if (ev.key === 'Enter') {
-            props.onChange({ newValue: ev.target.value });
-            props.form.resetFields();
-        }
-    }
-
     const handleSubmit = (e) => {
         e.preventDefault();
         props.form.validateFields((err, values) => {
@@ -29,7 +22,7 @@ const BNRForm = Form.create({})((props) => {
             <FormItem >
                 <div className="new-row">
                     {getFieldDecorator('newValue', { })(
-                        <Input onKeyPress={value => handleKeyPress(value)} placeholder="+ Create new row"/>
+                        <Input placeholder="+ Create new row"/>
                     )}
                     <Button htmlType="submit" className="new-row__btn">
                         Create

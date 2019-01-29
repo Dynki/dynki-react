@@ -26,10 +26,10 @@ class DynSubMenu extends React.Component {
             <div>
             { items ? (
                 <div className="submenu">
-                    <SubMenu {...other} key={title} title={<span><Icon type={icon} /><span>{title}</span></span>}>
-                    { items.map(i => (
-                        <Menu.Item {...other} key={i.title}>
-                            <Link onClick={(e) => this.handleClick(e, i.action)} to={i.target} key={i.id}>
+                    <SubMenu {...other} key={this.props.key+title} title={<span><Icon type={icon} /><span>{title}</span></span>}>
+                    { items.map((i, idx) => (
+                        <Menu.Item {...other} key={idx+title}>
+                            <Link onClick={(e) => this.handleClick(e, i.action)} to={i.target} key={idx+title}>
                                 {i.title}
                             </Link>
                         </Menu.Item>)) 
@@ -40,7 +40,7 @@ class DynSubMenu extends React.Component {
                     </Tooltip>
                 </div>
             ): (
-                <Menu.Item {...other} key={title}><Icon type={icon}/>{title}</Menu.Item>
+                <Menu.Item {...other} key={this.props.key+title}><Icon type={icon}/>{title}</Menu.Item>
             )}
             </div>
         );
