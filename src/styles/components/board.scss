@@ -71,7 +71,50 @@
     }
 }
 
+@keyframes move
+    {
+        0%   {
+          left: 0%;
+          transform: rotateZ(0deg) ;
+        }
+        15% {
+          transform: rotateZ(360deg);
+        }
+        30% {
+          transform: rotateZ(720deg);
+        }
+        45% {
+           transform: rotateZ(1080deg);
+        }
+        60% {
+            transform: rotateZ(1440deg);
+        }
+        75% {
+            transform: rotateZ(1800deg);
+        }
+        90% {
+            transform: rotateZ(2160deg);
+        }
+        100% {
+          left: 100%;
+          transform: rotateZ(2520deg);
+        }
+    }
+
 .board {
+
+    &__load-indicator {
+        width: 18px;
+        height: 18px;
+        // color: red;
+        // background-color: red;
+        position: absolute;
+        top: 55px;
+        animation: move 22s linear both infinite;
+        -webkit-animation: move 22s linear forwards infinite;
+        -moz-animation: move 22s linear forwards infinite;
+        -o-animation: move 22s linear forwards infinite;
+    }
 
     &__header {
         display: grid;

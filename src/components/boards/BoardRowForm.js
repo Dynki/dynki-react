@@ -23,7 +23,7 @@ const BRForm = Form.create({
         <Form className="table__row__cell__container" autoComplete="off">
             <FormItem >
                 {getFieldDecorator('columnValue', {})(
-                    <Input placeholder="enter some text here..." className="table__header__input text--no-border"/>
+                    <Input placeholder="Enter some text here..." className="table__header__input text--no-border"/>
                 )}
             </FormItem>
         </Form>

@@ -3,13 +3,15 @@ import { connect } from 'react-redux';
 import { Toolbar, SideNav } from '..';
 import { Route, withRouter } from 'react-router-dom';
 import Board from '../../boards/Board';
+import { Icon } from 'antd';
+import SparkleSvg from '../../../store/utils/sparkle';
 
 class PostAuthShell extends React.Component {
 
     render() {
         if (this.props.domain.domainId) {
             return <div className="post-auth__content">
-                <Toolbar></Toolbar>
+                <Toolbar progress={this.props.progress}></Toolbar>
                 <SideNav domainName="Dynki Team"></SideNav>
                 <main>
                     <Route exact path={'/board/:id'} component={Board}></Route>
@@ -23,7 +25,8 @@ class PostAuthShell extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        domain: state.domain
+        domain: state.domain,
+        progress: state.base.progress
     }
 }
 

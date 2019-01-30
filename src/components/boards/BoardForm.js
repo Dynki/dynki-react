@@ -25,7 +25,7 @@ const BForm = Form.create({
 
     return (
         <div className="board__form">
-            <Form>
+            <Form autoComplete="off">
                 <FormItem>
                     {getFieldDecorator('title', {
                         rules: [],
@@ -34,7 +34,7 @@ const BForm = Form.create({
                         className="text__large--no-border board__form__description"
                         size="large" 
                         placeholder="Board title goes here" 
-                        autoComplete="false" />
+                        autoComplete="no way" />
                     )}
                 </FormItem>
                 <FormItem>

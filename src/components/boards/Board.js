@@ -77,7 +77,7 @@ class Board extends React.Component {
                             board={this.props.board}>
                         </BoardDetail>
                     </DragDropContext>
-                    <BoardNewRow onNewRow={this.onNewRow}></BoardNewRow>
+                    <BoardNewRow onNewRow={this.onNewRow} progress={this.props.progress}></BoardNewRow>
                 </section> : null 
             )
         )
@@ -86,7 +86,8 @@ class Board extends React.Component {
 
 const mapStateToProps = (state) => {
     return{
-      board: state.boards.currentBoard
+      board: state.boards.currentBoard,
+      progress: state.base.progress
     }
 }
 

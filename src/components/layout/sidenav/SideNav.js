@@ -26,7 +26,7 @@ class SideNav extends React.Component {
                         <Button type="dashed">{this.props.domainName}</Button>
                     </Breadcrumb.Item>
                 </Breadcrumb>
-                <DynMenu menu={this.props.menuItems()}></DynMenu>        
+                <DynMenu menu={this.props.menuItems()} selectedKeys={this.props.selectedKeys}></DynMenu>        
             </div>
         )
     }
@@ -34,6 +34,8 @@ class SideNav extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+
+      selectedKeys: state.boards.currentBoard ? [state.boards.currentBoard.id] : [],
 
       // Declare the menu items in this application.
       menuItems: () => {
@@ -48,11 +50,11 @@ const mapStateToProps = (state) => {
         }
 
         const menuItems = [
-            { title: 'Inbox', icon: 'mail', },
-            { title: 'Boards', icon: 'schedule', action: newBoard(),
+            { key: 1, title: 'Inbox', icon: 'mail', },
+            { key: 2, title: 'Boards', icon: 'schedule', action: newBoard(),
                 items: items },
-            { title: 'Projects', icon: 'rocket' },
-            { title: 'Tags', icon: 'tags' }
+            { key: 3, title: 'Projects', icon: 'rocket' },
+            { key: 4, title: 'Tags', icon: 'tags' }
         ]
 
         return menuItems;

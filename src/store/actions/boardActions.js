@@ -1,7 +1,6 @@
 import moment from 'moment';
 import newGuid from '../utils/guid';
 import * as _ from 'lodash';
-import history from '../utils/history';
  
 // Get all boards within this user's domain/team.
 export const getBoards = () => {
@@ -30,6 +29,7 @@ export const getBoards = () => {
 // Create a new blank board with this user's domain/team.
 export const newBoard = () => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
 
         const firebase = getFirebase();
         const domainId = getState().domain.domainId;
@@ -84,6 +84,8 @@ export const newBoard = () => {
                     dispatch({ type: 'SET_CURRENT_BOARD', payload: newDoc.data() });
                 }
             });
+
+        dispatch({ type: 'SET_PROGRESS', payload: false });
 
         return Promise.resolve({ id: newDoc.id, ...newDoc.data() });
     }
@@ -159,7 +161,9 @@ export const updateBoard = (board) => {
 
 
 export const newRow = (row) => {
-    return (dispatch, getState, { getFirebase, getFirestore }) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
         console.log('ADD BOARD ROW::');
         const firebase = getFirebase();
         const currentBoard = getState().boards.currentBoard;
@@ -174,17 +178,20 @@ export const newRow = (row) => {
 
         const data = JSON.parse(JSON.stringify(updatedBoard));
 
-        firebase.firestore()
+        await firebase.firestore()
             .collection('domains')
             .doc(domainId)
             .collection('boards')
             .doc(data.id)
             .set(data);
+
+            dispatch({ type: 'SET_PROGRESS', payload: false });
     }
 }
 
 export const removeRow = (rowIdxToRemove) => {
-    return (dispatch, getState, { getFirebase, getFirestore }) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
         console.log('REMOVE BOARD ROW::');
         const firebase = getFirebase();
         const currentBoard = getState().boards.currentBoard;
@@ -197,18 +204,22 @@ export const removeRow = (rowIdxToRemove) => {
         const updatedBoard = _.cloneDeep(currentBoard);
         delete updatedBoard.unsubscribe;
 
-        firebase.firestore()
+        await firebase.firestore()
             .collection('domains')
             .doc(domainId)
             .collection('boards')
             .doc(updatedBoard.id)
             .set(updatedBoard);
+
+        dispatch({ type: 'SET_PROGRESS', payload: false });
     }
 }
 
 // Remove the specified board via the board id supplied
 export const removeBoard = (boardId) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
+
+        dispatch({ type: 'SET_PROGRESS', payload: true });
 
         const firebase = getFirebase();
         const domainId = getState().domain.domainId;
@@ -274,6 +285,7 @@ export const removeBoard = (boardId) => {
                         board.unsubscribe = sub;
                         console.log('RemoveBoard::SettingCurrentBoard::', board);
                         dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
+                        dispatch({ type: 'SET_PROGRESS', payload: false });
                     }
                 });
         }

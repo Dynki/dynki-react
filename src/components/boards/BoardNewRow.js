@@ -26,7 +26,7 @@ const BNRForm = Form.create({})((props) => {
                     )}
                     <Button htmlType="submit" className="new-row__btn">
                         Create
-                        <Icon type="enter" />
+                        {props.progress ? <Icon type="loading" /> : <Icon type="enter"/>}
                     </Button>
                 </div>
             </FormItem>

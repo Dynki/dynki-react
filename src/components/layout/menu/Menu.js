@@ -4,13 +4,16 @@ import { Menu } from 'antd';
 
 const DynMenu = (props) => {
 
+    console.log('DynMenu::Props::', props);
+
     // Map over items in this menu to create menu items. 
     return (
       <Menu 
         className="menu" 
         mode="inline"
+        selectedKeys={props.selectedKeys}
       >
-      { props.menu.map((c, i) => <DynSubMenu key={i} target={c.target} items={c.items} title={c.title} icon={c.icon} act={c.action}></DynSubMenu>) }
+      { props.menu.map((c, i) => <DynSubMenu key={c.key} target={c.target} items={c.items} title={c.title} icon={c.icon} act={c.action}></DynSubMenu>) }
       </Menu>
     );
 }

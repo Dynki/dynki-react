@@ -22,7 +22,7 @@ class Toolbar extends React.Component {
         );
         
         return <div className="toolbar">
-            <div className="toolbar__img"></div>
+            <div className={this.props.progress ? "toolbar__img--progress" : "toolbar__img"}></div>
             <div className="toolbar__brand">Dynki</div>
             <Dropdown overlay={menu}>
                 <label id="userprofile-icon" className="toolbar__user-profile">D</label>            
