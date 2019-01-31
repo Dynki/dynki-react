@@ -3,6 +3,7 @@ import { Form, Input } from 'antd';
 
 const FormItem = Form.Item;
 
+
 const BRForm = Form.create({
     mapPropsToFields(props) {
         return {
@@ -18,7 +19,7 @@ const BRForm = Form.create({
     }
 })((props) => {
     const { getFieldDecorator } = props.form;
-
+    const {...restProps} = props
     return (
         <Form className="table__row__cell__container" autoComplete="off">
             <FormItem >

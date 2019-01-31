@@ -15,6 +15,9 @@ class BoardRowHeaderMenu extends React.Component {
           <Menu.Item key="text">
             <a className="table_menu__link"><Icon type="form" />Text</a>
           </Menu.Item>
+          <Menu.Item key="select">
+            <a className="table_menu__link"><Icon type="arrow-down" />Select</a>
+          </Menu.Item>
         </Menu>
     );
 

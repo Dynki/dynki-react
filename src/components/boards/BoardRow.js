@@ -4,6 +4,7 @@ import BoardRowForm from './BoardRowForm';
 import { Draggable } from 'react-beautiful-dnd';
 import BoardRowMenu from './BoardRowMenu';
 import { Tooltip } from 'antd';
+import SelectCell from './cellTypes/SelectCell';
 
 class BoardRow extends React.Component {
 
@@ -18,6 +19,28 @@ class BoardRow extends React.Component {
 
     mouseLeave() {
         this.setState({ hovering: false });
+    }
+
+    renderSwitch = (col, idx) => {
+        const {...restProps} = this.props;
+        switch(col.class) {
+            case 'text': 
+             return <BoardRowForm
+                    onUpdateBoard={this.props.onUpdateBoard}
+                    board={this.props.board}
+                    rowIdx={this.props.rowIdx}
+                    colIdx={idx}
+                    modelName={col.model}>
+                </BoardRowForm>;
+
+            case 'select':
+                return <div className="table__row__cell__container">
+                  <SelectCell className="table__header__input text--no-border" {...restProps }></SelectCell>
+                </div>
+        
+            default:
+                return null;
+        }
     }
 
     render() {
@@ -42,13 +65,7 @@ class BoardRow extends React.Component {
                             </Tooltip>
                             {this.props.board.columns.map((c, idx) => {
                                 return <div key={idx} className={idx === 0 ? "row__content__column--first" : "row__content__column"}>
-                                    <BoardRowForm
-                                        onUpdateBoard={this.props.onUpdateBoard}
-                                        board={this.props.board}
-                                        rowIdx={this.props.rowIdx}
-                                        colIdx={idx}
-                                        modelName={c.model}>
-                                    </BoardRowForm>
+                                    {this.renderSwitch(c, idx)}
                                 </div>
                             })}
                         </div>

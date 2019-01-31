@@ -161,6 +161,7 @@ $mariner: #2b82c1;
                     width: 100%;
                 }
 
+
                 &:hover { 
 
                     nz-dropdown {
@@ -404,8 +405,16 @@ $mariner: #2b82c1;
             border-bottom-width: 1px;
             border-bottom-color: $iron;
             padding: 5px;
-            width: 150px;
+            width: 100%;
             height: 40px;
+
+            .select-cell {
+                width: 100%;
+                display: block;
+                min-width: 164px;
+                height: 100%;            
+            }
+
         }
 
         &__cell__container__first {
