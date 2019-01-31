@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { Toolbar, SideNav } from '..';
 import { Route, withRouter } from 'react-router-dom';
 import Board from '../../boards/Board';
-import { Icon } from 'antd';
-import SparkleSvg from '../../../store/utils/sparkle';
 
 class PostAuthShell extends React.Component {
 

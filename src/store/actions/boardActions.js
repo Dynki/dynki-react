@@ -1,7 +1,8 @@
 import moment from 'moment';
 import newGuid from '../utils/guid';
 import * as _ from 'lodash';
- 
+import { CellFactory } from '../model/board-cell.factory';
+
 // Get all boards within this user's domain/team.
 export const getBoards = () => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
@@ -224,11 +225,10 @@ export const removeBoard = (boardId) => {
         const firebase = getFirebase();
         const domainId = getState().domain.domainId;
 
-        // Create the new board document, and then get it, to get it's ID.
+        // Delete the board document from the 'boards' collection.
         await firebase.firestore().collection('domains').doc(domainId).collection('boards').doc(boardId).delete();
 
-        // Get from firestore the list of boards in this domain. 
-        // Then create a reference with the new boards added.
+        // Get a reference from firestore to the list of 'boardsInDomain' collection. 
         const boardsRef = await firebase.firestore().collection('domains').doc(domainId).collection('boardsInDomain').doc('appBoards').get()
         let existingBoards = boardsRef.data().boards ? boardsRef.data().boards.filter(b => b.id !== boardId) : [];
 
@@ -293,3 +293,62 @@ export const removeBoard = (boardId) => {
         return Promise.resolve();
     }
 }
+
+export const addColumn = (columnType) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        console.log('BoardActions::AddColumn::type', columnType);
+
+        const firebase = getFirebase();
+        const currentBoard = getState().boards.currentBoard;
+        const domainId = getState().domain.domainId;
+
+        const model = newGuid();
+        const cellFactory = new CellFactory();
+        const newCell = JSON.parse(JSON.stringify(cellFactory.createCell(columnType, model, model)));
+        currentBoard.columns.push(newCell);
+
+        delete currentBoard['unsubscribe'];
+
+        await firebase.firestore()
+        .collection('domains')
+        .doc(domainId)
+        .collection('boards')
+        .doc(currentBoard.id)
+        .set(currentBoard);
+
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+    }
+}
+
+export const removeColumn = (modelId) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        const firebase = getFirebase();
+        const currentBoard = getState().boards.currentBoard;
+        const domainId = getState().domain.domainId;
+
+        // Remove the column data
+        currentBoard.columns = currentBoard.columns.filter(c => c.model !== modelId);
+
+        // Remove the orphaned entity data for this column.
+        currentBoard.entities = currentBoard.entities.map(e => {
+            delete e[modelId];
+            return e;
+        })
+
+        delete currentBoard['unsubscribe'];
+
+        await firebase.firestore()
+        .collection('domains')
+        .doc(domainId)
+        .collection('boards')
+        .doc(currentBoard.id)
+        .set(currentBoard);
+
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+    }
+}
+

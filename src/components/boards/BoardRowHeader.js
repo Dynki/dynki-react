@@ -1,41 +1,59 @@
 import React from 'react';
-import { Icon, Dropdown, Menu } from 'antd';
+import { Icon, Popconfirm } from 'antd';
+import { connect } from 'react-redux';
+
 import BoardRowHeaderForm from './BoardRowHeaderForm';
+import BoardRowHeaderMenu from './BoardRowHeaderMenu';
+import { removeColumn } from '../../store/actions/boardActions';
 
-const BoardRowHeader = (props) => {
-    const menu = (
-        <Menu>
-          <Menu.Item>
-            <a className="table_menu__link"><Icon type="form" />Text</a>
-          </Menu.Item>
-        </Menu>
-    );
+class BoardRowHeader extends React.Component {
 
-    return ( 
-        <th className="table__header">
+    removeColumn(model) {
+        this.props.removeColumn(model);
+    }
+
+    render() {
+        return <th className="table__header">
             <section className="table__header__columns">
-                {props.board.columns.map((c, idx) => {
+                {this.props.board.columns.map((c, idx) => {
                     return idx === 0 ? (
                         <div key={idx} className="table__header__columns__container--first">
-                            <BoardRowHeaderForm onUpdateBoard={props.onUpdateBoard} board={props.board} colIdx={idx}></BoardRowHeaderForm>
+                            <BoardRowHeaderForm 
+                                onUpdateBoard={this.props.onUpdateBoard}
+                                board={this.props.board}
+                                colIdx={idx}>
+                            </BoardRowHeaderForm>
                         </div>
                     ) : (
                         <div key={idx} className="table__header__columns__container">
-                            <Icon type="close-square" />
-                            <BoardRowHeaderForm onUpdateBoard={props.onUpdateBoard} board={props.board} colIdx={idx}></BoardRowHeaderForm>
+                            <Popconfirm title="Are you sure delete this?" 
+                                okText="Yes"
+                                cancelText="Nada"
+                                trigger="click"
+                                onConfirm={() => this.removeColumn(c.model)}>
+                                <Icon type="close-square" />
+                            </Popconfirm>
+                            <BoardRowHeaderForm
+                                onUpdateBoard={this.props.onUpdateBoard}
+                                board={this.props.board}
+                                colIdx={idx}>
+                            </BoardRowHeaderForm>
                         </div>
                     )
                 })
                 }
-                <div className="table__header__menu__container">
-                    <Dropdown overlay={menu} className="table__header__menu__container__dropdown">
-                        <Icon type="plus-circle" />
-                    </Dropdown>
-                </div>
+                <BoardRowHeaderMenu></BoardRowHeaderMenu>
             </section>
         </th>
-    
-    )
+    }
 }
 
-export default BoardRowHeader;
+
+const mapDispatchToProps = (dispatch) => {
+    return{
+      removeColumn: (model) => dispatch(removeColumn(model))
+    }
+}
+
+
+export default connect(null, mapDispatchToProps)(BoardRowHeader);

@@ -3,6 +3,7 @@ import React from 'react';
 import BoardRowForm from './BoardRowForm';
 import { Draggable } from 'react-beautiful-dnd';
 import BoardRowMenu from './BoardRowMenu';
+import { Tooltip } from 'antd';
 
 class BoardRow extends React.Component {
 
@@ -32,17 +33,20 @@ class BoardRow extends React.Component {
                     >
                         <div className="row__content">
                             <BoardRowMenu hovering={this.state.hovering} rowIdx={this.props.rowIdx}></BoardRowMenu>
-                            <div
-                                {...provided.dragHandleProps}
-                                className="draghandle"
-                                tabIndex="0">
-                            </div>
+                            <Tooltip title="Drag me">
+                                <div
+                                    {...provided.dragHandleProps}
+                                    className="draghandle"
+                                    tabIndex="0">
+                                </div>
+                            </Tooltip>
                             {this.props.board.columns.map((c, idx) => {
                                 return <div key={idx} className={idx === 0 ? "row__content__column--first" : "row__content__column"}>
                                     <BoardRowForm
                                         onUpdateBoard={this.props.onUpdateBoard}
                                         board={this.props.board}
                                         rowIdx={this.props.rowIdx}
+                                        colIdx={idx}
                                         modelName={c.model}>
                                     </BoardRowForm>
                                 </div>
