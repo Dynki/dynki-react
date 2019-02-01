@@ -22,6 +22,7 @@ const BoardDetail = (props) => {
                                 key={idx}
                                 onUpdateBoard={props.onUpdateBoard}
                                 rowIdx={idx}
+                                rowId={r.id}
                                 board={props.board}>
                             </BoardRow>
                         )) : null }

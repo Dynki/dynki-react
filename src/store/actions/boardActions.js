@@ -352,3 +352,32 @@ export const removeColumn = (modelId) => {
     }
 }
 
+export const selectCellValue = (key, model, rowId) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        const firebase = getFirebase();
+        const domainId = getState().domain.domainId;
+        const currentBoard = getState().boards.currentBoard;
+
+        currentBoard.entities = currentBoard.entities.map(e => {
+            // Is this the row we wish to update?
+            if (e.id === rowId) {
+                e[model] = key;
+            }
+
+            return e;
+        });
+
+        delete currentBoard['unsubscribe'];
+
+        await firebase.firestore()
+        .collection('domains')
+        .doc(domainId)
+        .collection('boards')
+        .doc(currentBoard.id)
+        .set(currentBoard);
+
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+    }
+}

@@ -7,6 +7,7 @@ $mariner: #2b82c1;
 .new-row {
     display: flex;
     flex-direction: row;
+    margin-top: 5px;
 
     &__btn {
         border-radius: 0px;
@@ -101,7 +102,7 @@ $mariner: #2b82c1;
         display: flex;
         flex-direction: row;
 
-        margin-bottom: 5px;
+        margin-bottom: 3px;
         padding-left: 10px;
 
         &__columns {
@@ -201,12 +202,13 @@ $mariner: #2b82c1;
             font-size: 22px;
             width: 45px;
             padding-bottom: 6px;
-            padding-right: 6px;
+            padding-right: 12px;
         
             &__dropdown {
+                cursor: pointer;
                 
                 &__icon {
-                    font-size: 21px!important;
+                    font-size: 23px!important;
                     cursor: pointer;
                 }
     
@@ -309,7 +311,7 @@ $mariner: #2b82c1;
     }
 
     &__row {
-        margin-bottom: 2px;
+        // margin-bottom: 2px;
         width: 100%;
         outline: none;
         padding: 0px!important;
@@ -399,7 +401,7 @@ $mariner: #2b82c1;
             border: none;
             border-right: solid;
             border-right-width: 1px;
-            border-right-color: #ffffff;
+            border-right-color: #cdd3da;
             background-color: $athens-gray;
             border-bottom: solid;
             border-bottom-width: 1px;
@@ -412,6 +414,28 @@ $mariner: #2b82c1;
                 width: 100%;
                 display: block;
                 min-width: 164px;
+                height: 100%;            
+            }
+
+        }
+
+        &__cell__container--nopadding {
+            cursor: pointer;
+            border: none;
+            border-right: solid;
+            border-right-width: 1px;
+            border-right-color: #cdd3da;
+            background-color: $athens-gray;
+            border-bottom: solid;
+            border-bottom-width: 1px;
+            border-bottom-color: $iron;
+            width: 100%;
+            height: 40px;
+
+            .select-cell {
+                width: 100%;
+                display: block;
+                min-width: 174px;
                 height: 100%;            
             }
 

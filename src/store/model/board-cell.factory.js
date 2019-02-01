@@ -28,7 +28,7 @@ class SelectCell extends BaseCell {
         this.title = 'select';
 
         this.values = [
-            { key: newGuid(), title: 'Yes', color: '1E8E3E' },
+            { key: newGuid(), title: 'Yes', color: '039BE5' },
             { key: newGuid(), title: 'No', color: 'D73026' }];
     }
 }

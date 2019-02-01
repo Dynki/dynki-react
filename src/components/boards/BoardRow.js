@@ -29,13 +29,14 @@ class BoardRow extends React.Component {
                     onUpdateBoard={this.props.onUpdateBoard}
                     board={this.props.board}
                     rowIdx={this.props.rowIdx}
+                    rowId={this.props.rowId}
                     colIdx={idx}
                     modelName={col.model}>
                 </BoardRowForm>;
 
             case 'select':
-                return <div className="table__row__cell__container">
-                  <SelectCell className="table__header__input text--no-border" {...restProps }></SelectCell>
+                return <div className="table__row__cell__container--nopadding">
+                  <SelectCell col={col} rowId={this.props.rowId} {...restProps }></SelectCell>
                 </div>
         
             default:
