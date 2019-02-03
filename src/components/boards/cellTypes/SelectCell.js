@@ -35,6 +35,7 @@ class SelectCell extends React.Component {
                             </Button>
                         })}
                     </div>
+                    <Button type="dashed" icon="edit" size="small">Edit Labels</Button>
                 </div>
             </div>
         );

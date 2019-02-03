@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
-import { Menu, Dropdown } from 'antd';
+import { Menu, Dropdown, Icon } from 'antd';
 
 import { signOut } from '../../../store/actions/authActions';
 
@@ -12,11 +12,11 @@ class Toolbar extends React.Component {
         const menu = (
             <Menu>
               <Menu.Item>
-                <Link to='/'>User Profile</Link>
+                <Link to='/'><Icon type="robot" /> User Profile</Link>
               </Menu.Item>
               <Menu.Divider />
               <Menu.Item>
-                <a onClick={this.props.signOut}>Log Out</a>
+                <a onClick={this.props.signOut}><Icon type="logout" /> Log Out</a>
               </Menu.Item>
             </Menu>
         );

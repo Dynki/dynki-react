@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Toolbar, SideNav } from '..';
-import { Route, withRouter } from 'react-router-dom';
+import { Route, withRouter, Redirect } from 'react-router-dom';
 import Board from '../../boards/Board';
+
 
 class PostAuthShell extends React.Component {
 
@@ -24,7 +25,8 @@ class PostAuthShell extends React.Component {
 const mapStateToProps = (state) => {
     return {
         domain: state.domain,
-        progress: state.base.progress
+        progress: state.base.progress,
+        boards: state.boards.boards
     }
 }
 

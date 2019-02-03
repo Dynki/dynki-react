@@ -87,21 +87,28 @@ export const setDomain = () => {
   return async (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
 
-    await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+    try {
+      await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
 
-    firebase.auth().currentUser.getIdTokenResult()
-      .then((idTokenResult) => {
-        // Confirm the user is an Admin.
-        if (idTokenResult.claims.domainId) {
-          console.log('setDomain::set domain::', idTokenResult.claims);
-          dispatch({ type: 'SET_DOMAIN', payload: idTokenResult.claims.domainId });
-        } else {
-          console.log('SetDomain::NO_DOMAIN',idTokenResult.claims);
-          dispatch({ type: 'NO_DOMAIN' });
-        }
+      firebase.auth().currentUser.getIdTokenResult()
+        .then((idTokenResult) => {
+          // Confirm the user is an Admin.
+          if (idTokenResult.claims.domainId) {
+            console.log('setDomain::set domain::', idTokenResult.claims);
+            dispatch({ type: 'SET_DOMAIN', payload: idTokenResult.claims.domainId });
+          } else {
+            console.log('SetDomain::NO_DOMAIN',idTokenResult.claims);
+            dispatch({ type: 'NO_DOMAIN' });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      firebase.auth().signOut().then(() => {
+        dispatch({ type: 'SIGNOUT_SUCCESS' });
       })
-      .catch((error) => {
-        console.log(error);
-      });
+        
+    }
   }
 }
