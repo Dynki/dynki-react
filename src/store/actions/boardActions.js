@@ -31,6 +31,7 @@ export const getBoards = () => {
 export const newBoard = () => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
+        console.log('New Board Called');
 
         const firebase = getFirebase();
         const domainId = getState().domain.domainId;
@@ -71,20 +72,22 @@ export const newBoard = () => {
             });
 
         // Get a refreshed list of boards in this domain and dispatch the REFRESH_BOARDS action to refresh the side menu.
-        await firebase.firestore()
-            .collection('domains')
-            .doc(domainId)
-            .collection('boardsInDomain')
-            .doc('appBoards')
-            .onSnapshot({}, function (doc) {
-                const data = doc.data();
+        // await firebase.firestore()
+        //     .collection('domains')
+        //     .doc(domainId)
+        //     .collection('boardsInDomain')
+        //     .doc('appBoards')
+        //     .onSnapshot({}, function (doc) {
+        //         const data = doc.data();
 
-                if (data) {
-                    const boards = data.boards;
-                    dispatch({ type: 'REFRESH_BOARDS', payload: boards });
-                    dispatch({ type: 'SET_CURRENT_BOARD', payload: newDoc.data() });
-                }
-            });
+        //         if (data) {
+        //             const boards = data.boards;
+        //             console.log('Setting Current Board From:: newBoard');
+        //         }
+        //     });
+
+        dispatch({ type: 'REFRESH_BOARDS', payload: existingBoards });
+        dispatch({ type: 'SET_CURRENT_BOARD', payload: newDoc.data() });
 
         dispatch({ type: 'SET_PROGRESS', payload: false });
 
@@ -118,6 +121,7 @@ export const getBoard = (id) => {
                 // Add the subscription to the current board so we can kill it later.
                 if (board) {
                     board.unsubscribe = sub;
+                    console.log('Setting Current Board From:: getBoard');
                     dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
                 }
             });
@@ -127,7 +131,7 @@ export const getBoard = (id) => {
 
 export const updateBoard = (board) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
-        console.log('UPDATE BOARD::');
+        console.log('UPDATE BOARD::', board);
         const firebase = getFirebase();
         const boards = getState().boards.boards;
         const domainId = getState().domain.domainId;
@@ -148,6 +152,8 @@ export const updateBoard = (board) => {
         }
 
         dispatch({ type: 'ATTEMPT_UPDATE_BOARD', payload: board })
+        console.log('Setting Current Board From:: updateBoard');
+        dispatch({ type: 'SET_CURRENT_BOARD', payload: board })
 
         delete board['unsubscribe'];
 
@@ -284,6 +290,7 @@ export const removeBoard = (boardId) => {
                     if (board) {
                         board.unsubscribe = sub;
                         console.log('RemoveBoard::SettingCurrentBoard::', board);
+                        console.log('Setting Current Board From:: removeBoard');
                         dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
                         dispatch({ type: 'SET_PROGRESS', payload: false });
                     }

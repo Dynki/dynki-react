@@ -18,10 +18,13 @@ const BForm = Form.create({
     },
 
     onValuesChange(props, values) {
+        console.log('BoardForm::onValuesChange::', values);
         props.onChange(values);
     }
 })((props) => {
     const { getFieldDecorator } = props.form;
+
+    console.log('BoardForm::props', props);
 
     return (
         <div className="board__form">

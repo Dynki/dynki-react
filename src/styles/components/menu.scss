@@ -62,7 +62,7 @@ dyn-sub-menu {
 
 .menu {
 
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden; 
     height: 100%;
     border-right: none;
@@ -228,7 +228,7 @@ dyn-sub-menu {
 }
 
 .ant-menu {
-    height: calc(100% - 110px);
+    height: calc(100% - 120px);
 }
 
 .ant-menu-item, .ant-menu-submenu {

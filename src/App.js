@@ -4,6 +4,7 @@ import { setDomain } from './store/actions/authActions'
 
 import './App.scss';
 import { SecuredRoute, PostAuthShell } from './components';
+import MainErrorBoundary from './components/core/MainErrorBoundry';
 
 class App extends Component {
 
@@ -32,28 +33,27 @@ class App extends Component {
     const { auth, domain } = this.props;
     console.log('App.js::Render::', domain);
 
-    if (domain) {
-      return (
-
-        <div className="App">
-          <SecuredRoute
-              path="/"
-              component={PostAuthShell}
-              authenticated={auth}
-              domain={domain}
-          />
-        </div>
+      return (this.props.domainChecked ? 
+        <MainErrorBoundary>
+          <div className="App">
+            <SecuredRoute
+                path="/"
+                component={PostAuthShell}
+                authenticated={auth}
+                domain={domain}
+            />
+          </div>
+        </MainErrorBoundary> 
+        : null
       );
-    }
-
-    return null;
   }
 }
 
 const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
-    domain: state.domain.domainId
+    domain: state.domain.domainId,
+    domainChecked: state.domain.domainChecked
   }
 }
 

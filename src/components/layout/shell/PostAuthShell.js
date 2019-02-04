@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Toolbar, SideNav } from '..';
-import { Route, withRouter, Redirect } from 'react-router-dom';
+import { Route, withRouter, Switch } from 'react-router-dom';
 import Board from '../../boards/Board';
-
+import NotFoundComponent from '../../core/NotFoundComponent';
 
 class PostAuthShell extends React.Component {
 
@@ -13,7 +13,10 @@ class PostAuthShell extends React.Component {
                 <Toolbar progress={this.props.progress}></Toolbar>
                 <SideNav domainName="Dynki Team"></SideNav>
                 <main>
-                    <Route exact path={'/board/:id'} component={Board}></Route>
+                    <Switch>
+                        <Route exact path={'/board/:id'} component={Board}></Route>
+                        <Route path="*" component={NotFoundComponent} />
+                    </Switch>
                 </main>
             </div>
         }

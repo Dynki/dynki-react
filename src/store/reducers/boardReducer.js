@@ -12,7 +12,7 @@ const boardReducer = (state = initialState, action) => {
                 boards: action.payload
             }
         case 'SET_CURRENT_BOARD':
-            console.log('Set Current Board')
+            console.log('Set Current Board::', action.payload);
             return {
                 ...state,
                 currentBoard: action.payload

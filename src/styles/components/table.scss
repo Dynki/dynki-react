@@ -261,6 +261,9 @@ $mariner: #2b82c1;
                 width: 7px;
                 height: 40px;
                 background-color: $mariner;
+                border-bottom: solid;
+                border-bottom-color: #fff;
+                border-bottom-width: 1px;
 
                 &:hover {
                     background-color: lighten($mariner, 30%);

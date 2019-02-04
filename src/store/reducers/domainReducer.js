@@ -2,6 +2,7 @@ const initialState = {
     validateFeedback: undefined,
     validateStatus: undefined,
     domainValid: false,
+    domainChecked: false,
     noDomain: false,
     domainId: null,
     pending: false
@@ -63,7 +64,8 @@ const domainReducer = (state = initialState, action) => {
                 noDomain: false,
                 domainId: action.payload,
                 domainValid: true,
-                pending: false
+                pending: false,
+                domainChecked: true
             }
         case 'NO_DOMAIN':
             console.log('No Domain')
@@ -71,7 +73,8 @@ const domainReducer = (state = initialState, action) => {
                 ...state,
                 noDomain: true,
                 domainId: null,
-                domainValid: false
+                domainValid: false,
+                domainChecked: true
             }
         case 'CREATE_DOMAIN':
             console.log('Create Domain')
