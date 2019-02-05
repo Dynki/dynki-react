@@ -13,4 +13,45 @@
         color: #ffffff;
         padding-top: 9px!important;
     }
+
+    &__input {
+        color: white!important;
+        height: 32px;
+        line-height: 1.499;
+        width: 150px;
+        font-size: 14px!important;
+        text-align: center;
+        margin: 5px!important;
+
+        &:focus {
+            border: solid!important;
+            border-color: #2B82C1!important;
+            border-width: 2px!important;
+        }
+
+    }
+
+    &__form {
+        .ant-form-item {
+            margin-bottom: 0px!important;
+        }
+    }
+
+    &__color {
+        margin-top: 5px;
+
+
+    }
+
+    &__swatchbtn {
+        height: 23px;
+        width: 23px!important;
+        min-width: 23px!important;
+        padding: 0px;
+
+        &--first {
+            margin-right: 3px; 
+            border-radius: 25px!important;
+        }
+    }
 }

@@ -4,7 +4,7 @@ import BoardRowForm from './BoardRowForm';
 import { Draggable } from 'react-beautiful-dnd';
 import BoardRowMenu from './BoardRowMenu';
 import { Tooltip } from 'antd';
-import SelectCell from './cellTypes/SelectCell';
+import SelectCell from './cellTypes/Select/SelectCell';
 
 class BoardRow extends React.Component {
 

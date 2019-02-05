@@ -1,17 +1,24 @@
 import React from "react";
-import { Tooltip, Button } from 'antd';
+import { Tooltip, Button, Icon } from 'antd';
 import { connect } from 'react-redux';
-import { selectCellValue } from '../../../store/actions/boardActions';
+import { selectCellValue } from '../../../../store/actions/boardActions';
+import SelectCellBtn from "./SelectCellBtn";
+import SelectCellForm from "./SelectCellInput";
+import SelectColorSwatch from "./SelectColorSwatch";
 
 class SelectCell extends React.Component {
 
     constructor() {
         super();
-        this.state = { visible: false };
+        this.state = { visible: false, editing: false };
     }
 
     onClick = () => {
         this.setState({ visible: true });
+    }
+
+    onToggleEdit = () => {
+        this.setState({ editing: !this.state.editing });
     }
 
     selectOption = (key, model, rowId) => {
@@ -25,17 +32,16 @@ class SelectCell extends React.Component {
                 <div className={`ant-popover-inner-content`}>
                     <div className={`ant-popover-message select`}>
                         {this.props.col.values.map((c, i) => {
-                            return <Button 
-                                key={i}
-                                className="select__option"
-                                style={{backgroundColor: `#${c.color}`}}
-                                onClick={() => this.selectOption(c.key, this.props.col.model, this.props.rowId)}
-                            >
-                                {c.title}
-                            </Button>
+                            return (this.state.editing ? 
+                                <SelectCellForm key={i} col={c}></SelectCellForm>
+                                :
+                                <SelectCellBtn key={i} col={c} rowId={this.props.rowId}></SelectCellBtn>)
                         })}
                     </div>
-                    <Button type="dashed" icon="edit" size="small">Edit Labels</Button>
+                    <Button onClick={this.onToggleEdit} type="dashed" size="small">
+                        <Icon type="edit" theme={this.state.editing ? "filled" : "outlined"}/> Edit Labels
+                    </Button>
+                    {this.state.editing ? <SelectColorSwatch></SelectColorSwatch> : null}
                 </div>
             </div>
         );
@@ -70,11 +76,6 @@ class SelectCell extends React.Component {
 
         const colKey = this.props.board.entities[this.props.rowIdx][this.props.col.model];
         const colObj = this.props.col.values.find(c => c.key === colKey);
-
-        // console.log('this.props.rowIdx::', this.props.rowIdx);
-        // console.log('this.props.modelName::', this.props.col.model);
-        // console.log('this.props.board::', this.props.board);
-        // console.log('colKey::', colKey);
 
         return <Tooltip
             {...restProps}

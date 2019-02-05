@@ -62,6 +62,7 @@ class Board extends React.Component {
     }
 
     render() {
+        console.log('Board::Render', this.props.board);
         return (
             (this.props.board ? 
                 <section className="board">
@@ -76,7 +77,9 @@ class Board extends React.Component {
                         </BoardDetail>
                     </DragDropContext>
                     <BoardNewRow onNewRow={this.onNewRow} progress={this.props.progress}></BoardNewRow>
-                </section> : null 
+                </section> 
+            : 
+                null 
             )
         )
     }

@@ -1,11 +1,16 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Toolbar, SideNav } from '..';
-import { Route, withRouter, Switch } from 'react-router-dom';
+import { Route, withRouter, Switch, Redirect } from 'react-router-dom';
 import Board from '../../boards/Board';
-import NotFoundComponent from '../../core/NotFoundComponent';
+import { getBoard } from '../../../store/actions/boardActions';
 
 class PostAuthShell extends React.Component {
+
+    onDispatchBoardAction(id) {
+        console.log('PostAuthShell::OnDispatch::id', id);
+        this.props.getBoard(id);
+    }
 
     render() {
         if (this.props.domain.domainId) {
@@ -14,10 +19,18 @@ class PostAuthShell extends React.Component {
                 <SideNav domainName="Dynki Team"></SideNav>
                 <main>
                     <Switch>
-                        <Route exact path={'/board/:id'} component={Board}></Route>
-                        <Route path="*" component={NotFoundComponent} />
+                        {this.props.boards && this.props.boards.length > 0 ?
+                                <Redirect exact from='/' to={`/board/${this.props.boards[0].id}`}/>
+                                : null
+                            }
+                        <Route path={'/board/:id'} component={Board}></Route>
                     </Switch>
-                </main>
+                    {this.props.boards && this.props.boards.length > 0 ?
+                                this.onDispatchBoardAction(this.props.boards[0].id)
+                                : null
+                            }
+
+            </main>
             </div>
         }
 
@@ -33,4 +46,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default withRouter(connect(mapStateToProps)(PostAuthShell));
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getBoard: (id) => dispatch(getBoard(id))
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostAuthShell));
