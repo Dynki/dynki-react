@@ -10,7 +10,7 @@ class SelectCell extends React.Component {
 
     constructor() {
         super();
-        this.state = { visible: false, editing: false };
+        this.state = { visible: false, editing: false, selectedColor: null };
     }
 
     onClick = () => {
@@ -26,22 +26,39 @@ class SelectCell extends React.Component {
         this.props.selectCellValue(key, model, rowId);
     }
 
+    onSelectBtn = (col) => {
+        if (this.state.editing) {
+            this.setState({ selectedColor: col.color });
+            console.log('SelectedColor::Set::color', col.color);
+        }
+    }
+
     overlay = () => {
         return (
             <div>
-                <div className={`ant-popover-inner-content`}>
+                <div className={`select__inner-content`}>
                     <div className={`ant-popover-message select`}>
                         {this.props.col.values.map((c, i) => {
                             return (this.state.editing ? 
-                                <SelectCellForm key={i} col={c}></SelectCellForm>
+                                <SelectCellForm onSelected={this.onSelectBtn} key={i} col={c}></SelectCellForm>
                                 :
                                 <SelectCellBtn key={i} col={c} rowId={this.props.rowId}></SelectCellBtn>)
                         })}
                     </div>
+                    {this.state.editing ? 
+                        <div className="select-swatches">
+                            <SelectColorSwatch title="Color"></SelectColorSwatch>
+                            <SelectColorSwatch 
+                                selectedColor={this.state.selectedColor} 
+                                title="Background">
+                            </SelectColorSwatch>
+                        </div>
+                        : 
+                        null
+                    }
                     <Button onClick={this.onToggleEdit} type="dashed" size="small">
                         <Icon type="edit" theme={this.state.editing ? "filled" : "outlined"}/> Edit Labels
                     </Button>
-                    {this.state.editing ? <SelectColorSwatch></SelectColorSwatch> : null}
                 </div>
             </div>
         );
@@ -103,5 +120,11 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
+const mapStateToProps = (state) => {
+    return{
+      board: state.boards.currentBoard
+    }
+}
 
-export default connect(null, mapDispatchToProps)(SelectCell);
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectCell);

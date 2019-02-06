@@ -8,7 +8,7 @@ const SelectCellBtn = (props) => {
         key={key}
         className="select__option"
         style={{backgroundColor: `#${col.color}`}}
-        onClick={() => this.selectOption(col.key, col.model, rowId)}
+        // onClick={() => this.selectOption(col.key, col.model, rowId)}
     >
         {col.title}
     </Button>

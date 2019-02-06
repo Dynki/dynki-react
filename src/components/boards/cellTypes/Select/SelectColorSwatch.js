@@ -2,17 +2,22 @@ import React from 'react';
 import { Button } from 'antd';
 
 const SelectColorSwatch = (props) => {
-    const colors = ['EB144C', 'FF6900', '0693E3', '00D084'];
+    const colors = ['ffffff', 'D73026', 'FF6900', 'FCB900', '00D084', '7BDCB5', '039BE5', '9900EF'];
+    var checkmark = '✔';
 
-    return <div className="select__color">
-        <Button className="select__swatchbtn select__swatchbtn--first" style={{backgroundColor: `#${props.selectedColor}`}}></Button>
-        {colors.map((c, i) => {
-        return <Button 
-            key={i}
-            className="select__swatchbtn"
-            style={{backgroundColor: `#${c}`}}
-        >
-        </Button>})}
+    return <div className="select-color">
+        <div>{props.title}</div>
+        <div className="select-color__colors">
+
+            {colors.map((c, i) => {
+            return <Button 
+                key={i}
+                className={i === 0 ? "select-color__swatchbtn select-color__swatchbtn--first" : "select-color__swatchbtn"}
+                style={{backgroundColor: `#${c}`}}
+            >
+                {props.selectedColor === c ? <div className="text">{checkmark}</div> : null}
+            </Button>})}
+        </div>
     </div>
 }
 

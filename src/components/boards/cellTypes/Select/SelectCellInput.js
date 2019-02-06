@@ -33,6 +33,7 @@ const SelectCForm = Form.create({
                         placeholder="Label goes here" 
                         autoComplete="no way" 
                         style={{backgroundColor: `#${props.col.color}`}}
+                        onClick={() => props.onSelected(props.col.color)}
                         />
                     )}
                 </FormItem>
@@ -56,7 +57,7 @@ const SelectCellForm = (props) => {
 
     return (
         <div>
-            <SelectCForm {...fields} col={props.col} onChange={handleFormChange} />
+            <SelectCForm {...fields} col={props.col} onSelected={() => props.onSelected(props.col)} onChange={handleFormChange} />
         </div>
     );
 }
