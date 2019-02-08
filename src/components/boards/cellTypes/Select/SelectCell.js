@@ -1,5 +1,5 @@
 import React from "react";
-import { Tooltip, Button, Icon } from 'antd';
+import { Button, Icon } from 'antd';
 import { connect } from 'react-redux';
 import { selectCellValue } from '../../../../store/actions/boardActions';
 import SelectCellBtn from "./SelectCellBtn";
@@ -8,109 +8,112 @@ import SelectColorSwatch from "./SelectColorSwatch";
 
 class SelectCell extends React.Component {
 
+    defaultState = { editing: false, selectedColorKey: 0, selectedColor: null, selectedFgColor: null };
+
     constructor() {
         super();
-        this.state = { visible: false, editing: false, selectedColor: null };
+        this.state = this.defaultState;
     }
 
-    onClick = () => {
-        this.setState({ visible: true });
+    componentDidMount() {
+        this.resetStateModel();
+    }
+
+    componentWillReceiveProps() {
+        if (this.props.parentVisible) {
+            this.resetStateModel();
+        }
+    }
+
+    resetStateModel() {
+        this.setState(this.defaultState);
+        this.selectDefaultColorKey();
+    }
+
+    selectDefaultColorKey = () => {
+        const colKey = this.props.board.entities[this.props.rowIdx][this.props.col.model];
+
+        this.props.col.values.forEach((v, i) => {
+            if (colKey === v.key) {
+                this.setState({ selectedColorKey: i });
+            }
+        });
     }
 
     onToggleEdit = () => {
         this.setState({ editing: !this.state.editing });
     }
 
-    selectOption = (key, model, rowId) => {
-        this.setVisible(false);
+    onSelectOption = (key, model, rowId) => {
+        this.props.setVisible(false);
+
+        console.log('OnSelectOption::col', key, model, rowId);
         this.props.selectCellValue(key, model, rowId);
     }
 
-    onSelectBtn = (col) => {
+    onSelectBtn = (key, col) => {
         if (this.state.editing) {
-            this.setState({ selectedColor: col.color });
-            console.log('SelectedColor::Set::color', col.color);
+            this.setState({ selectedColorKey: key, selectedColor: col.color });
+            console.log('SelectedColor::Set::colorKey', key);
         }
     }
 
-    overlay = () => {
-        return (
-            <div>
-                <div className={`select__inner-content`}>
-                    <div className={`ant-popover-message select`}>
-                        {this.props.col.values.map((c, i) => {
-                            return (this.state.editing ? 
-                                <SelectCellForm onSelected={this.onSelectBtn} key={i} col={c}></SelectCellForm>
-                                :
-                                <SelectCellBtn key={i} col={c} rowId={this.props.rowId}></SelectCellBtn>)
-                        })}
-                    </div>
-                    {this.state.editing ? 
-                        <div className="select-swatches">
-                            <SelectColorSwatch title="Color"></SelectColorSwatch>
-                            <SelectColorSwatch 
-                                selectedColor={this.state.selectedColor} 
-                                title="Background">
-                            </SelectColorSwatch>
-                        </div>
-                        : 
-                        null
-                    }
-                    <Button onClick={this.onToggleEdit} type="dashed" size="small">
-                        <Icon type="edit" theme={this.state.editing ? "filled" : "outlined"}/> Edit Labels
-                    </Button>
-                </div>
-            </div>
-        );
-    };
-
-    saveTooltip = (node) => {
-        this.tooltip = node;
-    };
-
-    getPopupDomNode() {
-        return this.tooltip.getPopupDomNode();
+    onColorSelected = (colorHex) => {
+        this.setState({ selectedColor: colorHex });
     }
 
-    onVisibleChange = (visible) => {
-        this.setVisible(visible);
-    };
-
-    setVisible(visible, e) {
-        const props = this.props;
-        if (!('visible' in props)) {
-            this.setState({ visible });
-        }
-
-        const { onVisibleChange } = props;
-        if (onVisibleChange) {
-            onVisibleChange(visible, e);
-        }
+    onFgColorSelected = (colorHex) => {
+        this.setState({ selectedFgColor: colorHex });
     }
 
     render() {
-        const { ...restProps } = this.props;
+        const { col, rowId } = this.props;
 
-        const colKey = this.props.board.entities[this.props.rowIdx][this.props.col.model];
-        const colObj = this.props.col.values.find(c => c.key === colKey);
-
-        return <Tooltip
-            {...restProps}
-            visible={this.state.visible}
-            prefixCls={"ant-popover"}
-            overlay={this.overlay}
-            ref={this.saveTooltip}
-            onVisibleChange={this.onVisibleChange}
-            trigger="click"
-            placement="bottom"
-        >
-            <div className="select-cell select__cell" 
-                onClick={this.onClick}
-                style={{backgroundColor: `#${colObj ? colObj.color : 'EFF1F3'}`}}
-            >
-                {colObj ? colObj.title : ''}
+        return <div>
+        <div className={`select__inner-content`}>
+            <div className={`ant-popover-message select`}>
+                {col.values.map((c, i) => {
+                    return (this.state.editing ? 
+                        <SelectCellForm 
+                            selectedColor={this.state.selectedColor}
+                            selectedFgColor={this.state.selectedFgColor}
+                            selectedKey={this.state.selectedColorKey}
+                            onSelected={this.onSelectBtn}
+                            cellKey={i}
+                            key={i}
+                            col={c}>
+                        </SelectCellForm>
+                        :
+                        <SelectCellBtn
+                            onSelectOption={this.onSelectOption}
+                            key={i}
+                            color={c}
+                            column={col}
+                            rowId={rowId}>
+                        </SelectCellBtn>)
+                })}
             </div>
-        </Tooltip>
+            {this.state.editing ? 
+                <div className="select-swatches">
+                    <SelectColorSwatch 
+                        selectedColor={this.state.selectedFgColor} 
+                        onColorSelected={this.onFgColorSelected}
+                        title="Color">
+                    </SelectColorSwatch>
+                    <SelectColorSwatch 
+                        selectedColor={this.state.selectedColor} 
+                        onColorSelected={this.onColorSelected}
+                        title="Background">
+                    </SelectColorSwatch>
+                </div>
+                : 
+                null
+            }
+            <Button onClick={this.onToggleEdit} type="dashed" size="small">
+                <Icon type="edit" theme={this.state.editing ? "filled" : "outlined"}/> Edit Labels
+            </Button>
+        </div>
+    </div>
     }
 }
 

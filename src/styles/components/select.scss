@@ -22,7 +22,7 @@
     }
 
     &__input {
-        color: white!important;
+        // color: white!important;
         height: 32px;
         line-height: 1.499;
         width: 150px;
@@ -31,9 +31,22 @@
         margin: 5px!important;
 
         &:focus {
-            border: solid!important;
-            border-color: #595959!important;
-            border-width: 2px!important;
+            // border: solid!important;
+            // border-color: #595959!important;
+            // border-width: 2px!important;
+            outline: 2px solid #9fafc1;
+            outline-offset: 3px;
+            outline-style: dashed;
+        }
+
+        &--selected {
+            outline: 2px solid #9fafc1;
+            outline-offset: 3px;
+            outline-style: dashed;
+
+            // border: solid!important;
+            // border-color: #595959!important;
+            // border-width: 2px!important;
         }
 
     }

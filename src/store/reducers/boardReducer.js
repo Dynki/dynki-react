@@ -1,6 +1,7 @@
 const initialState = {
     boards: null,
-    currentBoard: null
+    currentBoard: null,
+    firstLoad: true
 }
 
 const boardReducer = (state = initialState, action) => {
@@ -15,7 +16,8 @@ const boardReducer = (state = initialState, action) => {
             console.log('Set Current Board::', action.payload);
             return {
                 ...state,
-                currentBoard: action.payload
+                currentBoard: action.payload,
+                firstLoad: false
             }
         default:
             return state;

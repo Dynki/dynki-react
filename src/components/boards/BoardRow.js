@@ -4,7 +4,7 @@ import BoardRowForm from './BoardRowForm';
 import { Draggable } from 'react-beautiful-dnd';
 import BoardRowMenu from './BoardRowMenu';
 import { Tooltip } from 'antd';
-import SelectCell from './cellTypes/Select/SelectCell';
+import SelectCellModal from './cellTypes/Select/SelectCellModal';
 
 class BoardRow extends React.Component {
 
@@ -36,7 +36,7 @@ class BoardRow extends React.Component {
 
             case 'select':
                 return <div className="table__row__cell__container--nopadding">
-                  <SelectCell col={col} rowId={this.props.rowId} {...restProps }></SelectCell>
+                  <SelectCellModal col={col} rowId={this.props.rowId} {...restProps }></SelectCellModal>
                 </div>
         
             default:

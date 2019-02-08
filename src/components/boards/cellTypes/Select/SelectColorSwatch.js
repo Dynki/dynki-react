@@ -14,6 +14,7 @@ const SelectColorSwatch = (props) => {
                 key={i}
                 className={i === 0 ? "select-color__swatchbtn select-color__swatchbtn--first" : "select-color__swatchbtn"}
                 style={{backgroundColor: `#${c}`}}
+                onClick={() => props.onColorSelected(c)}
             >
                 {props.selectedColor === c ? <div className="text">{checkmark}</div> : null}
             </Button>})}

@@ -19,7 +19,17 @@ const SelectCForm = Form.create({
 })((props) => {
     const { getFieldDecorator } = props.form;
 
-    console.log('BoardForm::props', props);
+    console.log('SelectCellForm::props', props);
+
+    let bgColor = props.col.color;
+    if (props.selectedColor && props.selected) {
+        bgColor = props.selectedColor;
+    }
+
+    let fgColor = 'ffffff';
+    if (props.selectedFgColor && props.selected) {
+        fgColor = props.selectedFgColor;
+    }
 
     return (
         <div className="select__form">
@@ -29,11 +39,16 @@ const SelectCForm = Form.create({
                         rules: [],
                     })(
                         <Input 
-                        className="select__input"
+                        className={"select__input " + (props.selected ? "select__input--selected" : "")} 
                         placeholder="Label goes here" 
                         autoComplete="no way" 
-                        style={{backgroundColor: `#${props.col.color}`}}
-                        onClick={() => props.onSelected(props.col.color)}
+                        ref={ref => { 
+                            if(props.cellKey === 0) {
+                                // ref.focus();
+                            }  
+                        }}
+                        style={{backgroundColor: `#${bgColor}`, color: `#${fgColor}`}}
+                        onClick={() => props.onSelected()}
                         />
                     )}
                 </FormItem>
@@ -42,24 +57,44 @@ const SelectCForm = Form.create({
     )
 });
 
-const SelectCellForm = (props) => {
+class SelectCellForm extends React.Component {
 
-    const handleFormChange = (changedFields) => {
-        const updatedBoard = { ...props.board, ...changedFields }
-        props.onUpdateBoard(updatedBoard);
+    componentDidMount() {
+        if (this.props.cellKey === this.props.selectedKey) {
+            this.props.onSelected(this.props.cellKey, this.props.col);
+        }
     }
 
-    const fields = {
+    handleFormChange = (changedFields) => {
+        const updatedBoard = { ...this.props.board, ...changedFields }
+        this.props.onUpdateBoard(updatedBoard);
+    }
+
+    fields = {
         title: {
-        value: props.col ? props.col.title : '',
+        value: this.props.col ? this.props.col.title : '',
         },
     };
 
-    return (
-        <div>
-            <SelectCForm {...fields} col={props.col} onSelected={() => props.onSelected(props.col)} onChange={handleFormChange} />
-        </div>
-    );
+    onSelected = () => {
+        this.props.onSelected(this.props.cellKey, this.props.col);
+    }
+
+    render() {
+        return (
+            <div>
+                <SelectCForm 
+                    {...this.fields}
+                    cellKey={this.props.cellKey}
+                    col={this.props.col}
+                    selected={this.props.selectedKey === this.props.cellKey ? true : false}
+                    onSelected={this.onSelected}
+                    selectedColor={this.props.selectedColor}
+                    selectedFgColor={this.props.selectedFgColor}
+                    onChange={this.handleFormChange} />
+            </div>
+        );
+    }
 }
 
 

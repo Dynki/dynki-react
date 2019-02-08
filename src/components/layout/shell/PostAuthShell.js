@@ -19,16 +19,16 @@ class PostAuthShell extends React.Component {
                 <SideNav domainName="Dynki Team"></SideNav>
                 <main>
                     <Switch>
-                        {this.props.boards && this.props.boards.length > 0 ?
+                        {(this.props.firstLoad && this.props.boards && this.props.boards.length > 0) ?
                                 <Redirect exact from='/' to={`/board/${this.props.boards[0].id}`}/>
                                 : null
                             }
                         <Route path={'/board/:id'} component={Board}></Route>
                     </Switch>
-                    {this.props.boards && this.props.boards.length > 0 ?
-                                this.onDispatchBoardAction(this.props.boards[0].id)
-                                : null
-                            }
+                    {this.props.firstLoad && this.props.boards && this.props.boards.length > 0 ?
+                        this.onDispatchBoardAction(this.props.boards[0].id)
+                        : null
+                    }
 
             </main>
             </div>
@@ -42,7 +42,8 @@ const mapStateToProps = (state) => {
     return {
         domain: state.domain,
         progress: state.base.progress,
-        boards: state.boards.boards
+        boards: state.boards.boards,
+        firstLoad: state.boards.firstLoad
     }
 }
 

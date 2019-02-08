@@ -2,15 +2,15 @@ import React from 'react';
 import { Button } from 'antd';
 
 const SelectCellBtn = (props) => {
-    const { key, col, rowId } = props;
+    const { key, color, column, rowId } = props;
 
     return <Button 
         key={key}
         className="select__option"
-        style={{backgroundColor: `#${col.color}`}}
-        // onClick={() => this.selectOption(col.key, col.model, rowId)}
+        style={{backgroundColor: `#${color.color}`}}
+        onClick={() => props.onSelectOption(color.key, column.model, rowId)}
     >
-        {col.title}
+        {color.title}
     </Button>
 }
 
