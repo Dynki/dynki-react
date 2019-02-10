@@ -388,3 +388,113 @@ export const selectCellValue = (key, model, rowId) => {
         dispatch({ type: 'SET_PROGRESS', payload: false });
     }
 }
+
+export const updateColumnValue = (valueKey, newTitle, columnModel) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        const firebase = getFirebase();
+        const domainId = getState().domain.domainId;
+        const currentBoard = getState().boards.currentBoard;
+
+        currentBoard.columns = currentBoard.columns.map(c => {
+            if (c.model === columnModel) {
+                c.values = c.values.map(v => {
+                    if (v.key === valueKey) {
+                        v.title = newTitle
+                    }
+                    return v;
+                })
+            }
+            return c;
+        });
+
+        dispatch({ type: 'SET_CURRENT_BOARD', payload: currentBoard });
+
+        delete currentBoard['unsubscribe'];
+
+        await firebase.firestore()
+        .collection('domains')
+        .doc(domainId)
+        .collection('boards')
+        .doc(currentBoard.id)
+        .set(currentBoard);
+
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+    }
+}
+
+
+export const updateColumnValueColor = (valueKey, newColor, columnModel, fgColor) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        const firebase = getFirebase();
+        const domainId = getState().domain.domainId;
+        const currentBoard = getState().boards.currentBoard;
+
+        currentBoard.columns = currentBoard.columns.map(c => {
+            if (c.model === columnModel) {
+                c.values = c.values.map(v => {
+                    if (v.key === valueKey) {
+                        if (fgColor) {
+                            v.fgColor = newColor
+                        } else {
+                            v.color = newColor
+                        }
+                    }
+                    return v;
+                })
+            }
+            return c;
+        });
+
+        dispatch({ type: 'SET_CURRENT_BOARD', payload: currentBoard });
+
+        delete currentBoard['unsubscribe'];
+
+        await firebase.firestore()
+        .collection('domains')
+        .doc(domainId)
+        .collection('boards')
+        .doc(currentBoard.id)
+        .set(currentBoard);
+
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+    }
+}
+
+export const updateColumnValueStatus = (valueKey, disabled, columnModel) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        const firebase = getFirebase();
+        const domainId = getState().domain.domainId;
+        const currentBoard = getState().boards.currentBoard;
+
+        currentBoard.columns = currentBoard.columns.map(c => {
+            if (c.model === columnModel) {
+                c.values = c.values.map(v => {
+                    if (v.key === valueKey) {
+                        v.disabled = disabled;
+                    }
+                    return v;
+                })
+            }
+            return c;
+        });
+
+        dispatch({ type: 'SET_CURRENT_BOARD', payload: currentBoard });
+
+        delete currentBoard['unsubscribe'];
+
+        await firebase.firestore()
+        .collection('domains')
+        .doc(domainId)
+        .collection('boards')
+        .doc(currentBoard.id)
+        .set(currentBoard);
+
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+    }
+}

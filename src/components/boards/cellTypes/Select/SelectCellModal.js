@@ -58,6 +58,7 @@ class SelectCellModal extends React.Component {
 
         const colKey = this.props.board.entities[this.props.rowIdx][this.props.col.model];
         const colObj = this.props.col.values.find(c => c.key === colKey);
+        const fgColor = (colObj && colObj.fgColor) ? colObj.fgColor : 'ffffff';
 
         return <Tooltip
             {...restProps}
@@ -71,7 +72,7 @@ class SelectCellModal extends React.Component {
         >
             <div className="select-cell select__cell" 
                 onClick={this.onClick}
-                style={{backgroundColor: `#${colObj ? colObj.color : 'EFF1F3'}`}}
+                style={{backgroundColor: `#${colObj ? colObj.color : 'EFF1F3'}`, color: `#${fgColor}`}}
             >
                 {colObj ? colObj.title : ''}
             </div>

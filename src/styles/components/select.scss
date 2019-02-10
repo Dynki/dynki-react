@@ -12,7 +12,7 @@
     &__option {
         min-width: 150px!important;
         margin: 5px;
-        color: #ffffff!important;
+        // color: #ffffff!important;
     }
 
     &__cell {
@@ -29,6 +29,11 @@
         font-size: 14px!important;
         text-align: center;
         margin: 5px!important;
+
+        &:read-only {
+            background-color: #bfbfbf!important;
+            color: #ffffff!important;
+        }
 
         &:focus {
             // border: solid!important;
@@ -51,12 +56,26 @@
 
     }
 
+    &__newbtn {
+        margin-left: 5px;
+        margin-bottom: 15px;
+        min-width: 150px;
+    }
+
     &__form {
         .ant-form-item {
             margin-bottom: 0px!important;
         }
     }
 
+    &__switch {
+        margin-left: 85px;
+
+    }
+}
+
+.ant-switch-checked {
+    background-color: #3095de!important;
 }
 
 .select-color {

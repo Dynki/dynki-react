@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'antd';
 
 const SelectColorSwatch = (props) => {
-    const colors = ['ffffff', 'D73026', 'FF6900', 'FCB900', '00D084', '7BDCB5', '039BE5', '9900EF'];
+    const colors = props.colors || ['ffffff', 'EB144C', 'FF6900', 'FCB900', '00D084', 'EFF1F3', '039BE5', '9900EF'];
     var checkmark = '✔';
 
     return <div className="select-color">

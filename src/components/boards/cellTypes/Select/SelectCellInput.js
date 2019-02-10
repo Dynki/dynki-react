@@ -40,6 +40,7 @@ const SelectCForm = Form.create({
                     })(
                         <Input 
                         className={"select__input " + (props.selected ? "select__input--selected" : "")} 
+                        readOnly={(props.col && props.col.disabled) ? true : false}
                         placeholder="Label goes here" 
                         autoComplete="no way" 
                         ref={ref => { 
@@ -59,6 +60,12 @@ const SelectCForm = Form.create({
 
 class SelectCellForm extends React.Component {
 
+    fields = {
+        title: {
+        value: this.props.col ? this.props.col.title : '',
+        },
+    };
+
     componentDidMount() {
         if (this.props.cellKey === this.props.selectedKey) {
             this.props.onSelected(this.props.cellKey, this.props.col);
@@ -66,15 +73,18 @@ class SelectCellForm extends React.Component {
     }
 
     handleFormChange = (changedFields) => {
-        const updatedBoard = { ...this.props.board, ...changedFields }
-        this.props.onUpdateBoard(updatedBoard);
+        console.log('ChangedFields::', changedFields);
+
+        this.props.onTitleChanged(this.props.col, changedFields.title);
     }
 
-    fields = {
-        title: {
-        value: this.props.col ? this.props.col.title : '',
-        },
-    };
+    componentWillReceiveProps() {
+        this.fields = {
+            title: {
+            value: this.props.col ? this.props.col.title : '',
+            },
+        };
+    }
 
     onSelected = () => {
         this.props.onSelected(this.props.cellKey, this.props.col);
@@ -91,6 +101,7 @@ class SelectCellForm extends React.Component {
                     onSelected={this.onSelected}
                     selectedColor={this.props.selectedColor}
                     selectedFgColor={this.props.selectedFgColor}
+                    selectedValueObj={this.props.selectedValueObj}
                     onChange={this.handleFormChange} />
             </div>
         );
