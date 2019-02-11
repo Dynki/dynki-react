@@ -3,6 +3,24 @@ $athens-gray: #eff1f3;
 $curious-blue: #3095DE;
 $mariner: #2b82c1;
 
+.table__wrapper {
+    position: relative;
+}
+
+.table__scroller {
+    margin-left: 141px;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding-bottom: 5px;
+    width: calc(100% -300px);
+}
+
+.table__stickycol {
+    left: 0;
+    position: absolute;
+    top: auto;
+    width: 300px;
+}
 
 .new-row {
     display: flex;
@@ -34,6 +52,10 @@ $mariner: #2b82c1;
 
 .table {
 
+    thead {
+        display: block;
+    }
+
     td {
         padding: 10px;
         padding-bottom: 0px;
@@ -43,6 +65,8 @@ $mariner: #2b82c1;
     padding-left: 0px;
     width: 100%;
     outline: none;
+    overflow-x: auto;
+    display: block;
 
     .ant-form-item {
         margin-bottom: 0px!important;
@@ -101,9 +125,19 @@ $mariner: #2b82c1;
     &__header {
         display: flex;
         flex-direction: row;
+        justify-content: flex-end;
 
         margin-bottom: 3px;
         padding-left: 10px;
+
+        &__columns--first {
+            flex: 1!important;
+        }
+
+        &__input {
+            width: 100%;
+            min-width: 165px;
+        }
 
         &__columns {
 
@@ -112,6 +146,9 @@ $mariner: #2b82c1;
             align-content: center;
             justify-content: flex-start;
             width: 100%;
+            flex: 0;
+            min-width: 174px;
+
 
             nz-dropdown {
                 display: none!important;
@@ -143,11 +180,12 @@ $mariner: #2b82c1;
             &__container {
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
+                justify-content: flex-end;
                 align-items: center;
                 min-height: 52px;
                 flex-grow: 0;
                 padding-top: 10px;
+                width: 100%;
 
                 i {
                     color: #c8e5f3;
@@ -179,6 +217,7 @@ $mariner: #2b82c1;
                 flex-grow: 1;
                 min-height: 52px;
                 margin-left: 10px;
+                min-width: 250px!important;
                 
                 input {
                     width: 100%;
@@ -203,6 +242,7 @@ $mariner: #2b82c1;
             width: 45px;
             padding-bottom: 6px;
             padding-right: 12px;
+            margin-bottom: 10px;
         
             &__dropdown {
                 cursor: pointer;
@@ -259,6 +299,7 @@ $mariner: #2b82c1;
             .draghandle {
                 
                 width: 7px;
+                min-width: 7px;
                 height: 40px;
                 background-color: $mariner;
                 border-bottom: solid;
@@ -276,10 +317,12 @@ $mariner: #2b82c1;
     
             &__column {
                 flex-grow: 0;
+
             }
 
             &__column--first {
                 flex-grow: 1;
+                min-width: 250px;
             }
 
 
@@ -318,8 +361,8 @@ $mariner: #2b82c1;
         width: 100%;
         outline: none;
         padding: 0px!important;
-        padding-right: 12px!important;
-        padding-left: 1px!important;
+        // padding-right: 12px!important;
+        // padding-left: 1px!important;
 
         &__menu {
             display: flex;
@@ -446,6 +489,7 @@ $mariner: #2b82c1;
 
         &__cell__container__first {
             width: 100%;
+            min-width: 250px;
         }
 
         &__cell--text {
@@ -476,7 +520,7 @@ $mariner: #2b82c1;
 
         outline: none;
         align-items: center;
-        display: flex;
+        // display: flex;
         height: 40px;
         justify-content: center;
         align-items: flex-end;

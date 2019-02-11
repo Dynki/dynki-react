@@ -22,11 +22,11 @@ class BoardRowHeaderMenu extends React.Component {
     );
 
     render() {
-        return <div className="table__header__menu__container">
+        return <td className="table__header__menu__container">
             <Dropdown overlay={this.menu} className="table__header__menu__container__dropdown">
                 <Icon type="plus-circle" />
             </Dropdown>
-        </div>
+        </td>
     }
 }
 

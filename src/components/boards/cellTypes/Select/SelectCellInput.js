@@ -29,6 +29,8 @@ const SelectCForm = Form.create({
     let fgColor = 'ffffff';
     if (props.selectedFgColor && props.selected) {
         fgColor = props.selectedFgColor;
+    } else if (props.col.fgColor) {
+        fgColor = props.col.fgColor;
     }
 
     return (

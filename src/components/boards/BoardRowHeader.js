@@ -13,41 +13,34 @@ class BoardRowHeader extends React.Component {
     }
 
     render() {
-        return <th className="table__header">
-            <section className="table__header__columns">
-                {this.props.board.columns.map((c, idx) => {
-                    return idx === 0 ? (
-                        <div key={idx} className="table__header__columns__container--first">
-                            <BoardRowHeaderForm 
-                                onUpdateBoard={this.props.onUpdateBoard}
-                                board={this.props.board}
-                                colIdx={idx}>
-                            </BoardRowHeaderForm>
-                        </div>
-                    ) : (
-                        <div key={idx} className="table__header__columns__container">
-                            <Popconfirm title="Are you sure delete this?" 
-                                okText="Yes"
-                                cancelText="Nada"
-                                trigger="click"
-                                onConfirm={() => this.removeColumn(c.model)}>
-                                <Icon type="close-square" />
-                            </Popconfirm>
-                            <BoardRowHeaderForm
-                                onUpdateBoard={this.props.onUpdateBoard}
-                                board={this.props.board}
-                                colIdx={idx}>
-                            </BoardRowHeaderForm>
-                        </div>
-                    )
-                })
-                }
-                <BoardRowHeaderMenu></BoardRowHeaderMenu>
-            </section>
-        </th>
+        return <tr className="table__header"> 
+        {this.props.board.columns.map((c, idx) => {
+            return <th 
+                    key={idx} 
+                    className={idx === 0 ? "table__header__columns table__header__columns--first" : "table__header__columns"}
+                >
+                <div key={idx} className="table__header__columns__container">
+                    {idx > 0 ? (
+                        <Popconfirm title="Are you sure delete this?" 
+                            okText="Yes"
+                            cancelText="Nada"
+                            trigger="click"
+                            onConfirm={() => this.removeColumn(c.model)}>
+                            <Icon type="close-square" />
+                        </Popconfirm>) : null
+                    }
+                    <BoardRowHeaderForm 
+                        onUpdateBoard={this.props.onUpdateBoard}
+                        board={this.props.board}
+                        colIdx={idx}>
+                    </BoardRowHeaderForm>
+                </div>
+            </th>
+            })}
+            <BoardRowHeaderMenu></BoardRowHeaderMenu>
+        </tr>
     }
 }
-
 
 const mapDispatchToProps = (dispatch) => {
     return{

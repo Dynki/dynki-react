@@ -7,7 +7,8 @@ import {
     selectCellValue,
     updateColumnValue,
     updateColumnValueColor,
-    updateColumnValueStatus
+    updateColumnValueStatus,
+    addNewColumnValue
 } from '../../../../store/actions/boardActions';
 
 import SelectCellBtn from "./SelectCellBtn";
@@ -64,7 +65,7 @@ class SelectCell extends React.Component {
 
     onSelectBtn = (key, col) => {
         if (this.state.editing) {
-            this.setState({ selectedColorKey: key, selectedValueKey: col.key, selectedColor: col.color, selectedValue: col });
+            this.setState({ selectedColorKey: key, selectedValueKey: col.key, selectedColor: col.color, selectedFgColor: col.fgColor, selectedValue: col });
             console.log('SelectedColor::Set::colorKey', key);
         }
     }
@@ -84,6 +85,10 @@ class SelectCell extends React.Component {
         this.props.updateColumnValue(col.key, title, this.props.col.model);
     }
 
+    onAddNewLabel = () => {
+        this.props.addNewColumnValue(this.props.col.model);
+    }
+
     onColorStatusChange = (enabled) => {
         const selectedValue = this.state.selectedValue;
         selectedValue.disabled = !enabled;
@@ -99,7 +104,7 @@ class SelectCell extends React.Component {
 
         return <div>
             <div className={`select__inner-content`}>
-                <div className={`ant-popover-message select`}>
+                <div className={`ant-popover-message select select__btnwrapper`}>
                     {col.values.map((c, i) => {
                         return (this.state.editing ?
                             <SelectCellForm
@@ -128,15 +133,15 @@ class SelectCell extends React.Component {
                 </div>
                 {this.state.editing ?
                     <div>
-                        <Button className="select__newbtn" onClick={this.onToggleEdit} type="dashed" size="small">
+                        <Button className="select__newbtn" onClick={this.onAddNewLabel} type="dashed" size="small">
                             <Icon type="plus" />New Label
-                    </Button>
+                        </Button>
                         <Switch
                             className="select__switch"
                             checkedChildren="enabled"
                             unCheckedChildren="disabled"
                             defaultChecked
-                            checked={!this.state.selectedValue.disabled}
+                            checked={this.state.selectedValue && !this.state.selectedValue.disabled}
                             onClick={this.onColorStatusChange}
                         />
                         <div className="select-swatches">
@@ -159,7 +164,7 @@ class SelectCell extends React.Component {
                 }
                 <Button onClick={this.onToggleEdit} type="dashed" size="small">
                     <Icon type="edit" theme={this.state.editing ? "filled" : "outlined"} /> Edit Labels
-            </Button>
+                </Button>
             </div>
         </div>
     }
@@ -170,7 +175,8 @@ const mapDispatchToProps = (dispatch) => {
         selectCellValue: (key, model, rowId) => dispatch(selectCellValue(key, model, rowId)),
         updateColumnValue: (valueKey, newTitle, columnModel) => dispatch(updateColumnValue(valueKey, newTitle, columnModel)),
         updateColumnValueColor: (valueKey, newTitle, columnModel, isFgColor) => dispatch(updateColumnValueColor(valueKey, newTitle, columnModel, isFgColor)),
-        updateColumnValueStatus: (valueKey, isDisabled, columnModel) => dispatch(updateColumnValueStatus(valueKey, isDisabled, columnModel))
+        updateColumnValueStatus: (valueKey, isDisabled, columnModel) => dispatch(updateColumnValueStatus(valueKey, isDisabled, columnModel)),
+        addNewColumnValue: (columnModel) => dispatch(addNewColumnValue(columnModel))
     }
 }
 

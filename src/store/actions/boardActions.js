@@ -498,3 +498,33 @@ export const updateColumnValueStatus = (valueKey, disabled, columnModel) => {
         dispatch({ type: 'SET_PROGRESS', payload: false });
     }
 }
+
+export const addNewColumnValue = (columnModel) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        const firebase = getFirebase();
+        const domainId = getState().domain.domainId;
+        const currentBoard = getState().boards.currentBoard;
+
+        currentBoard.columns = currentBoard.columns.map(c => {
+            if (c.model === columnModel) {
+                c.values = [...c.values, { key: newGuid(), color: 'EFF1F3', fgColor: '595959', title: 'New Label', disabled: false }];
+            }
+            return c;
+        });
+
+        dispatch({ type: 'SET_CURRENT_BOARD', payload: currentBoard });
+
+        delete currentBoard['unsubscribe'];
+
+        await firebase.firestore()
+        .collection('domains')
+        .doc(domainId)
+        .collection('boards')
+        .doc(currentBoard.id)
+        .set(currentBoard);
+
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+    }
+}
