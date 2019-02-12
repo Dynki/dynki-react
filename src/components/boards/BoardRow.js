@@ -51,35 +51,29 @@ class BoardRow extends React.Component {
 
                     return <td
                         key={idx}
-                        className="table__row"
+                        className={isFirst ? "table__column table__column--first" : "table__column"}
                         onMouseEnter={this.mouseEnter.bind(this)}
                         onMouseLeave={this.mouseLeave.bind(this)}
                     >
-                    <div className="row__content">
-                        {isFirst ? <BoardRowMenu hovering={this.state.hovering} rowIdx={this.props.rowIdx}></BoardRowMenu> : null }
-                        {isFirst ?
-                                <Tooltip title="Drag me">
-                                    <div
-                                        {...this.props.provided.dragHandleProps}
-                                        className="draghandle"
-                                        tabIndex="0">
-                                    </div>
-                                </Tooltip>
-                        : null }
-                        <div key={idx} className={idx === 0 ? "row__content__column--first" : "row__content__column"}>
-                            {this.renderSwitch(c, idx)}
-                        </div>
-                        {idx === this.props.board.columns.length-1 ? 
-                            <div className="row__terminator" tabIndex="-1">
-                                <div className="row__terminator__body"></div>
-                                <div className="row__terminator__border"></div>
-                            </div>
-                            :
-                            null 
-                        }
-                    </div>
+                    {isFirst ? <BoardRowMenu hovering={this.state.hovering} rowIdx={this.props.rowIdx}></BoardRowMenu> : null }
+                    {isFirst ?
+                            <Tooltip title="Drag me">
+                                <div
+                                    {...this.props.provided.dragHandleProps}
+                                    className="draghandle"
+                                    tabIndex="0">
+                                </div>
+                            </Tooltip>
+                    : null }
+                    {this.renderSwitch(c, idx)}
                 </td>
             })}
+            <td>
+                <div className="row__terminator" tabIndex="-1">
+                    <div className="row__terminator__body"></div>
+                    <div className="row__terminator__border"></div>
+                </div>
+            </td>
             </>
         )
     }
