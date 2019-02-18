@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render full component when domain has been checked 1`] = `
+<MainErrorBoundary>
+  <div
+    className="App"
+  >
+    <SecuredRoute
+      component={[Function]}
+      path="/"
+    />
+  </div>
+</MainErrorBoundary>
+`;
+
+exports[`should render null when domain not checked 1`] = `""`;

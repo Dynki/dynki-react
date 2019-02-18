@@ -6,7 +6,7 @@ import './App.scss';
 import { SecuredRoute, PostAuthShell } from './components';
 import MainErrorBoundary from './components/core/MainErrorBoundry';
 
-class App extends Component {
+export class App extends Component {
 
   constructor(props) {
     super(props)
@@ -18,10 +18,6 @@ class App extends Component {
 
   componentDidMount() {
     this.onSetDomain()
-  }
-
-  if (loading) {
-    return <p>Loading..</p>;
   }
 
   onSetDomain() {
@@ -49,7 +45,7 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
     domain: state.domain.domainId,
@@ -57,7 +53,7 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+export const mapDispatchToProps = (dispatch) => {
   return {
       SetDomain: () => dispatch(setDomain())
   }
