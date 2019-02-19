@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render full component when domain has been checked 1`] = `
+<div
+  className="login"
+>
+  <h1
+    className="registration__heading"
+  >
+    Name your team
+  </h1>
+  <h4>
+    Give your team a name they can be proud of
+  </h4>
+  <DomainForm
+    onCheckDomain={[Function]}
+    onCreateDomain={[Function]}
+  />
+</div>
+`;

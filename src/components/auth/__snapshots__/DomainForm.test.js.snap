@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render full component when domain has been checked 1`] = `
+<div
+  style={
+    Object {
+      "width": "100%",
+    }
+  }
+>
+  <Form(WrappedComponent)
+    onChange={[Function]}
+  />
+</div>
+`;

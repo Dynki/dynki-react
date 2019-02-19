@@ -5,7 +5,7 @@ import { debounce } from 'lodash';
 import DomainForm from './DomainForm';
 import { checkDomain, createDomain } from '../../store/actions/domainActions';
 
-class Domain extends Component {
+export class Domain extends Component {
     constructor(props) {
         super(props);
         this.onCheckDomain = debounce(this.onCheckDomain, 1000)
@@ -34,8 +34,8 @@ class Domain extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return{
+export const mapStateToProps = (state) => {
+    return {
       authError: state.auth.authError,
       pending: state.auth.pending,
       auth: state.firebase.auth,
@@ -43,7 +43,7 @@ const mapStateToProps = (state) => {
     }
   }
   
-const mapDispatchToProps = (dispatch) => {
+export const mapDispatchToProps = (dispatch) => {
     return {
         CheckDomain: (name) => dispatch(checkDomain(name)),
         CreateDomain: (name) => dispatch(createDomain(name))
