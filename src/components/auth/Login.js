@@ -13,8 +13,8 @@ class LoginForm extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                this.props.signIn(values);
             }
-            this.props.signIn(values);
         });
     }
 
@@ -68,9 +68,9 @@ class LoginForm extends Component {
     }
 }
 
-const Login = Form.create()(LoginForm);
+export const Login = Form.create()(LoginForm);
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
     return{
       authError: state.auth.authError,
       pending: state.auth.pending,
@@ -79,7 +79,7 @@ const mapStateToProps = (state) => {
     }
   }
   
-const mapDispatchToProps = (dispatch) => {
+export const mapDispatchToProps = (dispatch) => {
     return {
         signIn: (creds) => dispatch(signIn(creds))
     }

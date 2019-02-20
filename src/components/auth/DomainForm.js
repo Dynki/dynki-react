@@ -3,7 +3,7 @@ import { Form, Icon, Input, Button } from 'antd';
 
 const FormItem = Form.Item;
 
-const DForm = Form.create({
+export const DForm = Form.create({
     onValuesChange(props, values) {
         props.onChange(values.name);
     }
@@ -15,8 +15,8 @@ const DForm = Form.create({
         props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                props.onCreateDomain(values.name)
             }
-            props.onCreateDomain(values.name)
         });
     }
 

@@ -12,8 +12,8 @@ class SignUpForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                this.props.signUp(values);
             }
-            this.props.signUp(values);
         });
     }
 
@@ -61,9 +61,9 @@ class SignUpForm extends React.Component {
     }
 }
 
-const SignUp = Form.create()(SignUpForm);
+export const SignUp = Form.create()(SignUpForm);
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
     return{
       authError: state.auth.authError,
       pending: state.auth.pending,
@@ -71,7 +71,7 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
+export const mapDispatchToProps = (dispatch) => {
     return {
         signUp: (creds) => dispatch(signUp(creds))
     }
