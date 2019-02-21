@@ -10,7 +10,7 @@ import BoardNewRow from './BoardNewRow';
 import { updateBoard, newRow } from '../../store/actions/boardActions';
 
 // Container for board components.
-class Board extends React.Component {
+export class Board extends React.Component {
 
     constructor(props) {
         super(props);
@@ -85,14 +85,14 @@ class Board extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
     return{
       board: state.boards.currentBoard,
       progress: state.base.progress
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
+export const mapDispatchToProps = (dispatch) => {
     return{
       updateBoard: (board) => dispatch(updateBoard(board)),
       newRow: (description) => dispatch(newRow(description))

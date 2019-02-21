@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render full component when boards are present 1`] = `
+<section
+  className="board"
+>
+  <BoardHeader
+    board={true}
+    onUpdateBoard={[Function]}
+  />
+  <DragDropContext
+    onDragEnd={[Function]}
+  >
+    <BoardDetail
+      board={true}
+      onUpdateBoard={[Function]}
+    />
+  </DragDropContext>
+  <BoardNewRow
+    onNewRow={[Function]}
+  />
+</section>
+`;
+
+exports[`should render null when no boards 1`] = `""`;
