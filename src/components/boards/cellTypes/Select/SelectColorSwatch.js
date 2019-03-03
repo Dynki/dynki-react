@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from 'antd';
 
-const SelectColorSwatch = (props) => {
+const SelectColorSwatch = props => {
     const colors = props.colors || ['ffffff', 'EB144C', 'FF6900', 'FCB900', '00D084', 'EFF1F3', '039BE5', '9900EF'];
     var checkmark = '✔';
+
+    const [selectedColor, setSelectedColor] = useState(undefined);
+
+    useEffect(() => {
+        setSelectedColor(props.selectedColor);
+    }, props.selectedColor)
 
     return <div className="select-color">
         <div>{props.title}</div>
@@ -16,7 +22,7 @@ const SelectColorSwatch = (props) => {
                 style={{backgroundColor: `#${c}`}}
                 onClick={() => props.onColorSelected(c)}
             >
-                {props.selectedColor === c ? <div className="text">{checkmark}</div> : null}
+                {selectedColor === c ? <div className="text">{checkmark}</div> : null}
             </Button>})}
         </div>
     </div>

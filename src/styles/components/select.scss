@@ -27,6 +27,19 @@
     display: flex;
     flex-direction: row;
 
+    &__drawer-colors {
+        display: grid;
+        grid-auto-flow: row;
+        grid-template-columns: 150px 150px;
+        grid-template-rows: auto;
+        grid-gap: 15px;
+        margin-bottom: 30px;
+        padding-bottom: 30px;
+        border-bottom: dashed;
+        border-bottom-color: #626262;
+        border-bottom-width: 1px;
+    }
+
     &__btnwrapper {
         display: grid;
         grid-auto-flow: row;

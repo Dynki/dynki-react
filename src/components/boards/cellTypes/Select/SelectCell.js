@@ -11,6 +11,7 @@ import {
     addNewColumnValue
 } from '../../../../store/actions/boardActions';
 
+import SelectDrawer from "./SelectDrawer";
 import SelectCellBtn from "./SelectCellBtn";
 import SelectCellForm from "./SelectCellInput";
 import SelectColorSwatch from "./SelectColorSwatch";
@@ -53,7 +54,8 @@ class SelectCell extends React.Component {
     }
 
     onToggleEdit = () => {
-        this.setState({ editing: !this.state.editing });
+        // this.setState({ editing: !this.state.editing });
+        this.props.setVisible(false);
     }
 
     onSelectOption = (key, model, rowId) => {
@@ -162,9 +164,10 @@ class SelectCell extends React.Component {
                     :
                     null
                 }
-                <Button onClick={this.onToggleEdit} type="dashed" size="small">
+                <SelectDrawer column={col} onToggleEdit={this.onToggleEdit.bind(this)}></SelectDrawer>
+                {/* <Button onClick={this.onToggleEdit} type="dashed" size="small">
                     <Icon type="edit" theme={this.state.editing ? "filled" : "outlined"} /> Edit Labels
-                </Button>
+                </Button> */}
             </div>
         </div>
     }
