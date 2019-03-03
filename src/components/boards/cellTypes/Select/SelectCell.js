@@ -117,7 +117,8 @@ class SelectCell extends React.Component {
                                 onTitleChanged={this.onTitleChanged}
                                 cellKey={i}
                                 key={i}
-                                col={c}>
+                                col={c}
+                                >
                             </SelectCellForm>
                             :
                             (c.disabled ?
@@ -164,7 +165,7 @@ class SelectCell extends React.Component {
                     :
                     null
                 }
-                <SelectDrawer column={col} onToggleEdit={this.onToggleEdit.bind(this)}></SelectDrawer>
+                <SelectDrawer column={col} rowValue={this.props.rowValue} onToggleEdit={this.onToggleEdit.bind(this)}></SelectDrawer>
                 {/* <Button onClick={this.onToggleEdit} type="dashed" size="small">
                     <Icon type="edit" theme={this.state.editing ? "filled" : "outlined"} /> Edit Labels
                 </Button> */}

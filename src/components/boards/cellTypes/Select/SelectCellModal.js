@@ -19,6 +19,7 @@ class SelectCellModal extends React.Component {
 
     overlay = () => {
         return (<SelectCell
+            rowValue={this.props.rowValue}
             rowIdx={this.props.rowIdx}
             rowId={this.props.rowId}
             col={this.props.col}

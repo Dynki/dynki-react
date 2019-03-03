@@ -35,7 +35,7 @@ class BoardRow extends React.Component {
 
             case 'select':
                 return <div className="table__row__cell__container--nopadding">
-                  <SelectCellModal col={col} rowId={this.props.rowId} {...restProps }></SelectCellModal>
+                  <SelectCellModal col={col} rowId={this.props.rowId} rowValue={this.props.board.entities[this.props.rowIdx][col.model]} {...restProps }></SelectCellModal>
                 </div>
         
             default:

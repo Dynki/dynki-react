@@ -4,16 +4,27 @@ import SelectCellForm from './SelectCellInput';
 import SelectColorSwatch from './SelectColorSwatch';
 
 const SelectDrawer = (props) => {
+
+    const fgColors = ['ffffff', '595959', 'EB144C', 'FF6900', 'FCB900', '00D084', '039BE5', '9900EF'];
+
     const [visible, setVisible] = useState(false);
+
+    const [selectedValue, setSelectedValue] = useState(undefined);
 
     const showDrawer = () => {
         props.onToggleEdit();
         setVisible(true);
+        setSelectedValue(props.column.values.find(v => v.key === props.rowValue));
     };
 
     const onClose = () => {
         setVisible(false);
     };
+
+    const onSelectOption = (option) => {
+        setSelectedValue(option);
+    }
+
 
     return (
         <React.Fragment>
@@ -38,11 +49,13 @@ const SelectDrawer = (props) => {
                             // selectedColor={this.state.selectedColor}
                             // selectedFgColor={this.state.selectedFgColor}
                             // selectedKey={this.state.selectedColorKey}
-                            // onSelected={this.onSelectBtn}
+                            onSelected={onSelectOption}
                             // onTitleChanged={this.onTitleChanged}
-                            cellKey={i}
+                            // cellKey={i}
                             key={i}
-                            col={c}>
+                            // col={c}
+                            option={c}
+                            selectedOption={selectedValue}>
                         </SelectCellForm>
                     })}
                 </div>
@@ -54,26 +67,23 @@ const SelectDrawer = (props) => {
                     checkedChildren="enabled"
                     unCheckedChildren="disabled"
                     defaultChecked
-                    // checked={this.state.selectedValue && !this.state.selectedValue.disabled}
-                    // onClick={this.onColorStatusChange}
+                    checked={selectedValue && !selectedValue.disabled}
+                    // onClick={this.onToggleOptionDisabled}
                 />
                 <div className="select-swatches">
                     <SelectColorSwatch
-                        // selectedColor={this.state.selectedFgColor}
+                        selectedColor={selectedValue ? selectedValue.fgColor : undefined}
                         // onColorSelected={this.onFgColorSelected}
                         title="Color"
-                        // colors={this.fgColors}
+                        colors={fgColors}
                     >
                     </SelectColorSwatch>
                     <SelectColorSwatch
-                        // selectedColor={this.state.selectedColor}
+                        selectedColor={selectedValue ? selectedValue.color : undefined}
                         // onColorSelected={this.onColorSelected}
                         title="Background">
                     </SelectColorSwatch>
                 </div>
-
-
-
             </Drawer>
         </React.Fragment>
     );
