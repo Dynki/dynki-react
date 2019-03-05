@@ -21,8 +21,23 @@ const SelectDrawer = (props) => {
         setVisible(false);
     };
 
-    const onSelectOption = (option) => {
+    const onSelectOption = option => {
         setSelectedValue(option);
+    }
+
+    const onFgColorSelected = color => {
+        selectedValue.fgColor = color;
+        const column = {...props.column};
+        column.values.map(v => v.key === selectedValue.key ? (v = selectedValue) : v);
+    }
+
+    const onColorSelected = color => {
+        selectedValue.color = color;
+        const column = {...props.column};
+        column.values.map(v => v.key === selectedValue.key ? (v = selectedValue) : v);
+    }
+
+    const updateColumn = () => {
     }
 
 
@@ -73,7 +88,7 @@ const SelectDrawer = (props) => {
                 <div className="select-swatches">
                     <SelectColorSwatch
                         selectedColor={selectedValue ? selectedValue.fgColor : undefined}
-                        // onColorSelected={this.onFgColorSelected}
+                        onColorSelected={this.onFgColorSelected}
                         title="Color"
                         colors={fgColors}
                     >

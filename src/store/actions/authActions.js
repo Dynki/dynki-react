@@ -106,6 +106,7 @@ export const setDomain = () => {
         });
     } catch (error) {
       firebase.auth().signOut().then(() => {
+        dispatch({ type: 'NO_DOMAIN' });
         dispatch({ type: 'SIGNOUT_SUCCESS' });
       })
         
