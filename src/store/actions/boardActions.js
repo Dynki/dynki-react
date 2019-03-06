@@ -424,17 +424,20 @@ export const updateColumnValue = (valueKey, newTitle, columnModel) => {
     }
 }
 
-export const updateColumn = (updatedColumn, columnModel) => {
+export const updateColumn = (updatedColumn) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        console.log('Action::UpdateColumn::', updateColumn);
 
         const firebase = getFirebase();
         const domainId = getState().domain.domainId;
         const currentBoard = getState().boards.currentBoard;
 
         currentBoard.columns = currentBoard.columns.map(c => {
-            if (c.model === columnModel) {
+            if (c.model === updatedColumn.model) {
                 c = updatedColumn;
+                console.log('Column Updated in Action::', c);
             }
             return c;
         });

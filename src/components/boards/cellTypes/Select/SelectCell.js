@@ -1,10 +1,10 @@
 import React from "react";
-import { Button, Icon, Switch } from 'antd';
 import { connect } from 'react-redux';
 import { debounce } from 'lodash';
 
 import {
     selectCellValue,
+    updateColumn,
     updateColumnValue,
     updateColumnValueColor,
     updateColumnValueStatus,
@@ -13,19 +13,14 @@ import {
 
 import SelectDrawer from "./SelectDrawer";
 import SelectCellBtn from "./SelectCellBtn";
-import SelectCellForm from "./SelectCellInput";
-import SelectColorSwatch from "./SelectColorSwatch";
 
 class SelectCell extends React.Component {
 
     defaultState = { editing: false, selectedColorKey: 0, selectedValueKey: undefined, selectedValue: null, selectedColor: null, selectedFgColor: null };
-    fgColors = ['ffffff', '595959', 'EB144C', 'FF6900', 'FCB900', '00D084', '039BE5', '9900EF'];
 
     constructor() {
         super();
         this.state = this.defaultState;
-        this.onTitleChanged = debounce(this.onTitleChanged, 1000);
-
     }
 
     componentDidMount() {
@@ -54,7 +49,6 @@ class SelectCell extends React.Component {
     }
 
     onToggleEdit = () => {
-        // this.setState({ editing: !this.state.editing });
         this.props.setVisible(false);
     }
 
@@ -65,62 +59,14 @@ class SelectCell extends React.Component {
         this.props.selectCellValue(key, model, rowId);
     }
 
-    onSelectBtn = (key, col) => {
-        if (this.state.editing) {
-            this.setState({ selectedColorKey: key, selectedValueKey: col.key, selectedColor: col.color, selectedFgColor: col.fgColor, selectedValue: col });
-            console.log('SelectedColor::Set::colorKey', key);
-        }
-    }
-
-    onColorSelected = (colorHex) => {
-        this.setState({ selectedColor: colorHex });
-        this.props.updateColumnValueColor(this.state.selectedValueKey, colorHex, this.props.col.model, false);
-    }
-
-    onFgColorSelected = (colorHex) => {
-        this.setState({ selectedFgColor: colorHex });
-        this.props.updateColumnValueColor(this.state.selectedValueKey, colorHex, this.props.col.model, true);
-    }
-
-    onTitleChanged = (col, title) => {
-        console.log('onTitleChanged::col', col);
-        this.props.updateColumnValue(col.key, title, this.props.col.model);
-    }
-
-    onAddNewLabel = () => {
-        this.props.addNewColumnValue(this.props.col.model);
-    }
-
-    onColorStatusChange = (enabled) => {
-        const selectedValue = this.state.selectedValue;
-        selectedValue.disabled = !enabled;
-        this.setState({ selectedValue });
-        console.log('onColorStatusChange::', this.state.selectedValueKey, !enabled, this.props.col.model);
-        this.props.updateColumnValueStatus(this.state.selectedValueKey, !enabled, this.props.col.model);
-    }
-
     render() {
         const { col, rowId } = this.props;
-
-        console.log('SelectCell::Render::state', this.state);
 
         return <div>
             <div className={`select__inner-content`}>
                 <div className={`ant-popover-message select select__btnwrapper`}>
                     {col.values.map((c, i) => {
-                        return (this.state.editing ?
-                            <SelectCellForm
-                                selectedColor={this.state.selectedColor}
-                                selectedFgColor={this.state.selectedFgColor}
-                                selectedKey={this.state.selectedColorKey}
-                                onSelected={this.onSelectBtn}
-                                onTitleChanged={this.onTitleChanged}
-                                cellKey={i}
-                                key={i}
-                                col={c}
-                                >
-                            </SelectCellForm>
-                            :
+                        return (
                             (c.disabled ?
                                 null
                                 :
@@ -129,46 +75,18 @@ class SelectCell extends React.Component {
                                     key={i}
                                     color={c}
                                     column={col}
-                                    rowId={rowId}>
-                                </SelectCellBtn>)
+                                    rowId={rowId}
+                                />
+                            )
                         )
                     })}
                 </div>
-                {this.state.editing ?
-                    <div>
-                        <Button className="select__newbtn" onClick={this.onAddNewLabel} type="dashed" size="small">
-                            <Icon type="plus" />New Label
-                        </Button>
-                        <Switch
-                            className="select__switch"
-                            checkedChildren="enabled"
-                            unCheckedChildren="disabled"
-                            defaultChecked
-                            checked={this.state.selectedValue && !this.state.selectedValue.disabled}
-                            onClick={this.onColorStatusChange}
-                        />
-                        <div className="select-swatches">
-                            <SelectColorSwatch
-                                selectedColor={this.state.selectedFgColor}
-                                onColorSelected={this.onFgColorSelected}
-                                title="Color"
-                                colors={this.fgColors}
-                            >
-                            </SelectColorSwatch>
-                            <SelectColorSwatch
-                                selectedColor={this.state.selectedColor}
-                                onColorSelected={this.onColorSelected}
-                                title="Background">
-                            </SelectColorSwatch>
-                        </div>
-                    </div>
-                    :
-                    null
-                }
-                <SelectDrawer column={col} rowValue={this.props.rowValue} onToggleEdit={this.onToggleEdit.bind(this)}></SelectDrawer>
-                {/* <Button onClick={this.onToggleEdit} type="dashed" size="small">
-                    <Icon type="edit" theme={this.state.editing ? "filled" : "outlined"} /> Edit Labels
-                </Button> */}
+                <SelectDrawer 
+                    column={col}
+                    rowValue={this.props.rowValue}
+                    onToggleEdit={this.onToggleEdit.bind(this)}
+                    onUpdateColumn={this.props.updateColumn}
+                />
             </div>
         </div>
     }
@@ -177,6 +95,7 @@ class SelectCell extends React.Component {
 const mapDispatchToProps = (dispatch) => {
     return {
         selectCellValue: (key, model, rowId) => dispatch(selectCellValue(key, model, rowId)),
+        updateColumn: (updatedColumn) => dispatch(updateColumn(updateColumn)),
         updateColumnValue: (valueKey, newTitle, columnModel) => dispatch(updateColumnValue(valueKey, newTitle, columnModel)),
         updateColumnValueColor: (valueKey, newTitle, columnModel, isFgColor) => dispatch(updateColumnValueColor(valueKey, newTitle, columnModel, isFgColor)),
         updateColumnValueStatus: (valueKey, isDisabled, columnModel) => dispatch(updateColumnValueStatus(valueKey, isDisabled, columnModel)),

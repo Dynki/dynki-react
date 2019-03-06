@@ -18,15 +18,16 @@ class SelectCellModal extends React.Component {
     }
 
     overlay = () => {
-        return (<SelectCell
-            rowValue={this.props.rowValue}
-            rowIdx={this.props.rowIdx}
-            rowId={this.props.rowId}
-            col={this.props.col}
-            setVisible={this.setVisible.bind(this)}
-            parentVisible={this.state.visible}
-        >
-        </SelectCell>)
+        return (
+            <SelectCell
+                rowValue={this.props.rowValue}
+                rowIdx={this.props.rowIdx}
+                rowId={this.props.rowId}
+                col={this.props.col}
+                setVisible={this.setVisible.bind(this)}
+                parentVisible={this.state.visible}
+            />
+        )
     };
 
     saveTooltip = (node) => {

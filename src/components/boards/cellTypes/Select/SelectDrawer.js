@@ -28,18 +28,19 @@ const SelectDrawer = (props) => {
     const onFgColorSelected = color => {
         selectedValue.fgColor = color;
         const column = {...props.column};
-        column.values.map(v => v.key === selectedValue.key ? (v = selectedValue) : v);
+        column.values = column.values.map(v => v.key === selectedValue.key ? selectedValue : v);
+        props.onUpdateColumn(column);
+
+        console.log('Update selectedValue::', selectedValue);
+        console.log('Update column::', column);
     }
 
     const onColorSelected = color => {
         selectedValue.color = color;
         const column = {...props.column};
-        column.values.map(v => v.key === selectedValue.key ? (v = selectedValue) : v);
+        column.values = column.values.map(v => v.key === selectedValue.key ? selectedValue : v);
+        props.onUpdateColumn(column);
     }
-
-    const updateColumn = () => {
-    }
-
 
     return (
         <React.Fragment>
@@ -88,14 +89,14 @@ const SelectDrawer = (props) => {
                 <div className="select-swatches">
                     <SelectColorSwatch
                         selectedColor={selectedValue ? selectedValue.fgColor : undefined}
-                        onColorSelected={this.onFgColorSelected}
+                        onColorSelected={onFgColorSelected}
                         title="Color"
                         colors={fgColors}
                     >
                     </SelectColorSwatch>
                     <SelectColorSwatch
                         selectedColor={selectedValue ? selectedValue.color : undefined}
-                        // onColorSelected={this.onColorSelected}
+                        onColorSelected={onColorSelected}
                         title="Background">
                     </SelectColorSwatch>
                 </div>
