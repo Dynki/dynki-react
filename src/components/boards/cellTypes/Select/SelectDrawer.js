@@ -30,9 +30,6 @@ const SelectDrawer = (props) => {
         const column = {...props.column};
         column.values = column.values.map(v => v.key === selectedValue.key ? selectedValue : v);
         props.onUpdateColumn(column);
-
-        console.log('Update selectedValue::', selectedValue);
-        console.log('Update column::', column);
     }
 
     const onColorSelected = color => {
@@ -41,6 +38,22 @@ const SelectDrawer = (props) => {
         column.values = column.values.map(v => v.key === selectedValue.key ? selectedValue : v);
         props.onUpdateColumn(column);
     }
+
+    const onToggleOptionDisabled = () => {
+        selectedValue.disabled = !selectedValue.disabled;
+        const column = {...props.column};
+        column.values = column.values.map(v => v.key === selectedValue.key ? selectedValue : v);
+        props.onUpdateColumn(column);
+    }
+
+    const onTitleChanged = title => {
+        selectedValue.title = title;
+        const column = {...props.column};
+        column.values = column.values.map(v => v.key === selectedValue.key ? selectedValue : v);
+        props.onUpdateColumn(column);
+    }
+
+
 
     return (
         <React.Fragment>
@@ -66,7 +79,7 @@ const SelectDrawer = (props) => {
                             // selectedFgColor={this.state.selectedFgColor}
                             // selectedKey={this.state.selectedColorKey}
                             onSelected={onSelectOption}
-                            // onTitleChanged={this.onTitleChanged}
+                            onTitleChanged={onTitleChanged}
                             // cellKey={i}
                             key={i}
                             // col={c}
@@ -84,7 +97,7 @@ const SelectDrawer = (props) => {
                     unCheckedChildren="disabled"
                     defaultChecked
                     checked={selectedValue && !selectedValue.disabled}
-                    // onClick={this.onToggleOptionDisabled}
+                    onClick={onToggleOptionDisabled}
                 />
                 <div className="select-swatches">
                     <SelectColorSwatch

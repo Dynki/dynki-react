@@ -95,7 +95,7 @@ class SelectCell extends React.Component {
 const mapDispatchToProps = (dispatch) => {
     return {
         selectCellValue: (key, model, rowId) => dispatch(selectCellValue(key, model, rowId)),
-        updateColumn: (updatedColumn) => dispatch(updateColumn(updateColumn)),
+        updateColumn: (updatedColumn) => dispatch(updateColumn(updatedColumn)),
         updateColumnValue: (valueKey, newTitle, columnModel) => dispatch(updateColumnValue(valueKey, newTitle, columnModel)),
         updateColumnValueColor: (valueKey, newTitle, columnModel, isFgColor) => dispatch(updateColumnValueColor(valueKey, newTitle, columnModel, isFgColor)),
         updateColumnValueStatus: (valueKey, isDisabled, columnModel) => dispatch(updateColumnValueStatus(valueKey, isDisabled, columnModel)),

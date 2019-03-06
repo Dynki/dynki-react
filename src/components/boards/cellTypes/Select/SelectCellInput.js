@@ -66,7 +66,7 @@ class SelectCellForm extends React.Component {
     handleFormChange = (changedFields) => {
         console.log('ChangedFields::', changedFields);
 
-        this.props.onTitleChanged(this.props.col, changedFields.title);
+        this.props.onTitleChanged(changedFields.title);
     }
 
     componentWillReceiveProps() {

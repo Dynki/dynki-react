@@ -428,7 +428,7 @@ export const updateColumn = (updatedColumn) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
 
-        console.log('Action::UpdateColumn::', updateColumn);
+        console.log('Action::UpdateColumn::', updatedColumn.model);
 
         const firebase = getFirebase();
         const domainId = getState().domain.domainId;
