@@ -41,7 +41,7 @@
     }
 
     &__btnwrapper {
-        display: grid;
+        display: grid!important;
         grid-auto-flow: row;
         grid-template-columns: 150px 150px;
         grid-template-rows: auto;

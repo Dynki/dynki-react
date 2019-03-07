@@ -1,5 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux';
+import { chunk } from 'lodash';
+import { Carousel } from 'antd';
 
 import {
     selectCellValue,
@@ -47,24 +49,33 @@ class SelectCell extends React.Component {
     render() {
         const { col, rowId } = this.props;
 
-        return <div>
+        return (
+        <div>
             <div className={`select__inner-content`}>
-                <div className={`ant-popover-message select select__btnwrapper`}>
-                    {col.values.map((c, i) => {
-                        return (
-                            (c.disabled ?
-                                null
-                                :
-                                <SelectCellBtn
-                                    onSelectOption={this.onSelectOption}
-                                    key={i}
-                                    color={c}
-                                    column={col}
-                                    rowId={rowId}
-                                />
+                <div className={`ant-popover-message select`}>
+                    <Carousel>
+                        {chunk(col.values, 4).map((valChunk, idx) => {
+                            return (
+                                <div className="select__btnwrapper">
+                                    {valChunk.map((c, i) => {
+                                        return (
+                                            (c.disabled ?
+                                                null
+                                                :
+                                                <SelectCellBtn
+                                                    onSelectOption={this.onSelectOption}
+                                                    key={i}
+                                                    color={c}
+                                                    column={col}
+                                                    rowId={rowId}
+                                                />
+                                            )
+                                        )
+                                    })}
+                                </div>
                             )
-                        )
-                    })}
+                        })}
+                    </Carousel>
                 </div>
                 <SelectDrawer 
                     column={col}
@@ -74,7 +85,7 @@ class SelectCell extends React.Component {
                     onAddNewColumnValue={this.props.addNewColumnValue}
                 />
             </div>
-        </div>
+        </div>)
     }
 }
 
