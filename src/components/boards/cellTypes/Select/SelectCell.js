@@ -1,13 +1,9 @@
 import React from "react";
 import { connect } from 'react-redux';
-import { debounce } from 'lodash';
 
 import {
     selectCellValue,
     updateColumn,
-    updateColumnValue,
-    updateColumnValueColor,
-    updateColumnValueStatus,
     addNewColumnValue
 } from '../../../../store/actions/boardActions';
 
@@ -16,7 +12,9 @@ import SelectCellBtn from "./SelectCellBtn";
 
 class SelectCell extends React.Component {
 
-    defaultState = { editing: false, selectedColorKey: 0, selectedValueKey: undefined, selectedValue: null, selectedColor: null, selectedFgColor: null };
+    defaultState = { 
+        editing: false
+    };
 
     constructor() {
         super();
@@ -35,17 +33,6 @@ class SelectCell extends React.Component {
 
     resetStateModel() {
         this.setState(this.defaultState);
-        this.selectDefaultColorKey();
-    }
-
-    selectDefaultColorKey = () => {
-        const colKey = this.props.board.entities[this.props.rowIdx][this.props.col.model];
-
-        this.props.col.values.forEach((v, i) => {
-            if (colKey === v.key) {
-                this.setState({ selectedColorKey: i, selectedValueKey: v.key, selectedColor: v.color, selectedValue: v, selectedFgColor: (v.fgColor || 'ffffff') });
-            }
-        });
     }
 
     onToggleEdit = () => {
@@ -54,8 +41,6 @@ class SelectCell extends React.Component {
 
     onSelectOption = (key, model, rowId) => {
         this.props.setVisible(false);
-
-        console.log('OnSelectOption::col', key, model, rowId);
         this.props.selectCellValue(key, model, rowId);
     }
 
@@ -86,6 +71,7 @@ class SelectCell extends React.Component {
                     rowValue={this.props.rowValue}
                     onToggleEdit={this.onToggleEdit.bind(this)}
                     onUpdateColumn={this.props.updateColumn}
+                    onAddNewColumnValue={this.props.addNewColumnValue}
                 />
             </div>
         </div>
@@ -96,9 +82,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         selectCellValue: (key, model, rowId) => dispatch(selectCellValue(key, model, rowId)),
         updateColumn: (updatedColumn) => dispatch(updateColumn(updatedColumn)),
-        updateColumnValue: (valueKey, newTitle, columnModel) => dispatch(updateColumnValue(valueKey, newTitle, columnModel)),
-        updateColumnValueColor: (valueKey, newTitle, columnModel, isFgColor) => dispatch(updateColumnValueColor(valueKey, newTitle, columnModel, isFgColor)),
-        updateColumnValueStatus: (valueKey, isDisabled, columnModel) => dispatch(updateColumnValueStatus(valueKey, isDisabled, columnModel)),
         addNewColumnValue: (columnModel) => dispatch(addNewColumnValue(columnModel))
     }
 }
@@ -108,6 +91,5 @@ const mapStateToProps = (state) => {
         board: state.boards.currentBoard
     }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectCell);

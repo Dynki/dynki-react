@@ -53,7 +53,9 @@ const SelectDrawer = (props) => {
         props.onUpdateColumn(column);
     }
 
-
+    const addNewValue = () => {
+        props.onAddNewColumnValue(props.column.model);
+    }
 
     return (
         <React.Fragment>
@@ -75,20 +77,15 @@ const SelectDrawer = (props) => {
                 <div className="select__drawer-colors">
                     {props.column.values.map((c, i) => {
                         return <SelectCellForm
-                            // selectedColor={this.state.selectedColor}
-                            // selectedFgColor={this.state.selectedFgColor}
-                            // selectedKey={this.state.selectedColorKey}
                             onSelected={onSelectOption}
                             onTitleChanged={onTitleChanged}
-                            // cellKey={i}
                             key={i}
-                            // col={c}
                             option={c}
                             selectedOption={selectedValue}>
                         </SelectCellForm>
                     })}
                 </div>
-                <Button className="select__newbtn"  type="dashed" size="small">
+                <Button onClick={addNewValue} className="select__newbtn"  type="dashed" size="small">
                     <Icon type="plus" />New Label
                 </Button>
                 <Switch
