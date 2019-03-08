@@ -90,6 +90,8 @@ export const setDomain = () => {
     try {
       await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
 
+      console.log('Firebase::CurrentUser::', firebase.auth().currentUser);
+
       firebase.auth().currentUser.getIdTokenResult()
         .then((idTokenResult) => {
           // Confirm the user is an Admin.

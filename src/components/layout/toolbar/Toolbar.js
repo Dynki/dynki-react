@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'
 import { Menu, Dropdown, Icon } from 'antd';
 
 import { signOut } from '../../../store/actions/authActions';
+import UserProfileDrawer from '../../auth/UserProfileDrawer';
 
 class Toolbar extends React.Component {
     
@@ -12,7 +12,7 @@ class Toolbar extends React.Component {
         const menu = (
             <Menu>
               <Menu.Item>
-                <Link to='/'><Icon type="robot" /> User Profile</Link>
+                  <UserProfileDrawer/>
               </Menu.Item>
               <Menu.Divider />
               <Menu.Item>
@@ -21,13 +21,15 @@ class Toolbar extends React.Component {
             </Menu>
         );
         
-        return <div className="toolbar">
-            <div className={this.props.progress ? "toolbar__img--progress" : "toolbar__img"}></div>
-            <div className="toolbar__brand">Dynki</div>
-            <Dropdown overlay={menu}>
-                <label id="userprofile-icon" className="toolbar__user-profile">D</label>            
-            </Dropdown>,
-        </div>
+        return (
+            <div className="toolbar">
+                <div className={this.props.progress ? "toolbar__img--progress" : "toolbar__img"}></div>
+                <div className="toolbar__brand">Dynki</div>
+                <Dropdown overlay={menu}>
+                    <label id="userprofile-icon" className="toolbar__user-profile">D</label>            
+                </Dropdown>
+            </div>
+        )
     }
 }
 
