@@ -4,6 +4,8 @@ import {
     Form, Input, Button, Icon
 } from 'antd';
 
+import { updateUserProfile } from '../../store/actions/authActions';
+
 class UserProfileForm extends React.Component {
     state = {
         confirmDirty: false,
@@ -13,9 +15,9 @@ class UserProfileForm extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
-            console.log('Values of form: ', values);
             if (!err) {
                 console.log('Received values of form: ', values);
+                this.props.updateUserProfile(values);
             }
         });
     }
@@ -89,7 +91,7 @@ export const mapStateToProps = (state) => {
   
 export const mapDispatchToProps = (dispatch) => {
     return {
-        // signIn: (creds) => dispatch(signIn(creds))
+        updateUserProfile: (updatedValues) => dispatch(updateUserProfile(updatedValues))
     }
 }
 

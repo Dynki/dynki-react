@@ -119,3 +119,25 @@ export const setDomain = () => {
     }
   }
 }
+
+export const updateUserProfile = (updatedValues) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firebase = getFirebase();
+    const currentUser = firebase.auth().currentUser;
+
+    if (currentUser.email !== updatedValues.email) {
+      firebase.auth().currentUser.updateEmail(updatedValues.email)
+      .then(() =>  notifiy({ type: 'warning', message: 'Success', description: 'Email Updated :)' })
+      )
+      .catch(err => notifiy({ type: 'warning', message: 'Failure', description: err.message }));
+    }
+
+    if (currentUser.displayName !== updatedValues.displayName) {
+      firebase.auth().currentUser.updateProfile({ displayName: updatedValues.displayName })
+      .then(() =>  notifiy({ type: 'warning', message: 'Success', description: 'Display Name Updated :)' })
+      )
+      .catch(err => notifiy({ type: 'warning', message: 'Failure', description: err.message }));
+    }
+
+  }
+}
