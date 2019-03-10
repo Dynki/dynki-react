@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-    Form, Input, Button, Icon
+    Form, Input, Button, Icon, Popconfirm
 } from 'antd';
 
 import { updateUserProfile } from '../../store/actions/authActions';
+
 
 class UserProfileForm extends React.Component {
     state = {
@@ -31,38 +32,52 @@ class UserProfileForm extends React.Component {
         const { getFieldDecorator } = this.props.form;
 
         return (
-            <Form onSubmit={this.handleSubmit}>
-                <Form.Item
-                    label="Email"
+            <div className="userprofile">
+
+                <Form onSubmit={this.handleSubmit}>
+                    <Form.Item
+                        label="Email"
+                    >
+                        {getFieldDecorator('email', {
+                            rules: [{
+                                type: 'email', message: 'The input is not valid E-mail!',
+                            }, {
+                                required: true, message: 'Please input your E-mail!',
+                            }],
+                        })(
+                            <Input 
+                                disabled
+                                placeholder="Enter your email"
+                                prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            />
+                        )}
+                    </Form.Item>
+                    <Form.Item
+                        label="Display Name"
+                    >
+                        {getFieldDecorator('displayName', {
+                        })(
+                            <Input 
+                                placeholder="Give yourself a name to be proud of"
+                                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            />
+                        )}
+                    </Form.Item>
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit">Save Changes</Button>
+                    </Form.Item>
+                </Form>
+                <Popconfirm 
+                    className="userprofile__removeac-btn"
+                    title="Are you sure？There is no going back once you confirm" 
+                    okText="Yes Remove My Account"
+                    okType="danger"
+                    cancelText="No way, I want to stay!!"
+                    icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
                 >
-                    {getFieldDecorator('email', {
-                        rules: [{
-                            type: 'email', message: 'The input is not valid E-mail!',
-                        }, {
-                            required: true, message: 'Please input your E-mail!',
-                        }],
-                    })(
-                        <Input 
-                            placeholder="Enter your email"
-                            prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        />
-                    )}
-                </Form.Item>
-                <Form.Item
-                    label="Display Name"
-                >
-                    {getFieldDecorator('displayName', {
-                    })(
-                        <Input 
-                            placeholder="Give yourself a name to be proud of"
-                            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        />
-                    )}
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">Save Changes</Button>
-                </Form.Item>
-            </Form>
+                    <Button className="userprofile__deleteac-btn" type="danger" htmlType="submit">Remove My Account</Button>
+                </Popconfirm>
+            </div>
         );
     }
 }

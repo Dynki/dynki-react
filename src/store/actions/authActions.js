@@ -134,10 +134,49 @@ export const updateUserProfile = (updatedValues) => {
 
     if (currentUser.displayName !== updatedValues.displayName) {
       firebase.auth().currentUser.updateProfile({ displayName: updatedValues.displayName })
-      .then(() =>  notifiy({ type: 'warning', message: 'Success', description: 'Display Name Updated :)' })
-      )
+      .then(() =>  notifiy({ type: 'success', message: 'Success', description: 'Display Name Updated :)' }))
       .catch(err => notifiy({ type: 'warning', message: 'Failure', description: err.message }));
     }
 
   }
 }
+
+export const changePassword = (password, newPassword) => {
+  return async (dispatch, getState, { getFirebase }) => {
+
+    try {
+      const firebase = getFirebase();
+
+      const user = firebase.auth().currentUser;
+      const email = user.email;
+      const credential = firebase.auth.EmailAuthProvider.credential(
+        email,
+        password
+      );    
+      
+      await user.reauthenticateAndRetrieveDataWithCredential(credential);
+      // User re-authenticated.
+
+      await user.updatePassword(newPassword);
+
+      notifiy({ type: 'success', message: 'Success', description: 'Password Changed!' })
+        
+    } catch (error) {
+      console.log('AuthError::PasswordError::', error);
+
+      switch (error.code) {
+        case "auth/wrong-password":
+          notifiy({ type: 'warning', message: 'Password Failure', description: 'Current password was incorrect' });
+          break;
+        case "auth/argument-error":
+          notifiy({ type: 'warning', message: 'Password Change Failure', description: 'Password was not strong enough' });
+          break;
+      
+        default:
+          notifiy({ type: 'warning', message: 'Password Failure', description: error.message });
+          break;
+      }
+    }
+  }
+}
+

@@ -25,6 +25,26 @@
     }
 }
 
+.userprofile {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    &__deleteac-btn {
+        width: 100%;
+    }
+
+    &__remoteac-btn {
+        margin-top: auto;
+    }
+
+}
+
+.ant-alert-info {
+    margin-bottom: 10px;
+}
+
+
 .post-auth {
 
     &__loader {
