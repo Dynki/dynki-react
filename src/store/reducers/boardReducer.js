@@ -13,11 +13,15 @@ const boardReducer = (state = initialState, action) => {
                 boards: action.payload
             }
         case 'SET_CURRENT_BOARD':
-            console.log('Set Current Board::', action.payload);
             return {
                 ...state,
                 currentBoard: action.payload,
                 firstLoad: false
+            }
+        case 'RESET_FIRSTLOAD':
+            return {
+                ...state,
+                firstLoad: true
             }
         default:
             return state;

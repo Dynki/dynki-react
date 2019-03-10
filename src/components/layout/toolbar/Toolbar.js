@@ -16,7 +16,7 @@ class Toolbar extends React.Component {
               </Menu.Item>
               <Menu.Divider />
               <Menu.Item>
-                <a onClick={this.props.signOut}><Icon type="logout" /> Log Out</a>
+                <a className="usermenu__item" onClick={this.props.signOut}><Icon type="logout" /> Log Out</a>
               </Menu.Item>
             </Menu>
         );
@@ -25,7 +25,7 @@ class Toolbar extends React.Component {
             <div className="toolbar">
                 <div className={this.props.progress ? "toolbar__img--progress" : "toolbar__img"}></div>
                 <div className="toolbar__brand">Dynki</div>
-                <Dropdown overlay={menu}>
+                <Dropdown overlay={menu} trigger={['click']}>
                     <label id="userprofile-icon" className="toolbar__user-profile">D</label>            
                 </Dropdown>
             </div>

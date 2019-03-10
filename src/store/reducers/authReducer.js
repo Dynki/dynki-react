@@ -1,6 +1,10 @@
 const initialState = {
     authError: null,
-    pending: false
+    pending: false,
+    currentUser: {
+        email: '',
+        displayName: ''
+    }
 }
 
 const authReducer = (state = initialState, action) => {
@@ -55,6 +59,13 @@ const authReducer = (state = initialState, action) => {
         case 'SIGNOUT_SUCCESS':
             console.log('Signout Success')
             return state;
+        case 'SET_CURRENT_USER':
+            console.log('Signout Success')
+            return {
+                ...state,
+                currentUser: action.payload
+            }
+
         default:
             return state;
     }

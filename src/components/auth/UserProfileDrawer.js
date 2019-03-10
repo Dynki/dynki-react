@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Drawer, Icon } from 'antd';
+import WrappedUserProfileForm from './UserProfileForm';
 
 const UserProfileDrawer = (props) => {
 
@@ -15,7 +16,7 @@ const UserProfileDrawer = (props) => {
 
     return (
         <React.Fragment>
-            <a href="#" onClick={showDrawer}><Icon type="robot" /> User Profile</a>
+            <a className="usermenu__item" href="#" onClick={showDrawer}><Icon type="robot" /> User Profile</a>
 
             <Drawer
                 title="User Profile"
@@ -29,6 +30,7 @@ const UserProfileDrawer = (props) => {
                 }}
             >
                 <div>
+                    <WrappedUserProfileForm/>
                 </div>
             </Drawer>
         </React.Fragment>

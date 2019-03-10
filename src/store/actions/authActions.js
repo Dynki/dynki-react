@@ -13,6 +13,8 @@ export const signIn = (credentials) => {
     ).then(() => {
       console.log('Login Success');
 
+      dispatch({ type: 'SET_CURRENT_USER', payload: firebase.auth().currentUser });
+
       firebase.auth().currentUser.getIdTokenResult()
         .then((idTokenResult) => {
           // Confirm the user is an Admin.
@@ -79,6 +81,7 @@ export const signOut = () => {
     const firebase = getFirebase();
     firebase.auth().signOut().then(() => {
       dispatch({ type: 'SIGNOUT_SUCCESS' });
+      dispatch({ type: 'RESET_FIRSTLOAD' });
     })
   }
 }
@@ -91,6 +94,7 @@ export const setDomain = () => {
       await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
 
       console.log('Firebase::CurrentUser::', firebase.auth().currentUser);
+      dispatch({ type: 'SET_CURRENT_USER', payload: firebase.auth().currentUser });
 
       firebase.auth().currentUser.getIdTokenResult()
         .then((idTokenResult) => {
