@@ -6,7 +6,16 @@ import { signUp } from '../../store/actions/authActions';
 
 const FormItem = Form.Item;
 
+function hasErrors(fieldsError) {
+    return Object.keys(fieldsError).some(field => fieldsError[field]);
+}
+
 class SignUpForm extends React.Component {
+
+    numberSuccess = 'red';
+    mixedSuccess = 'red';
+    specialSuccess = 'red';
+    
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -17,8 +26,40 @@ class SignUpForm extends React.Component {
         });
     }
 
+    validatePassword = (rule, value, callback) => {
+        const password = value ? value : '';
+
+        const hasNumber = value => {
+            return new RegExp(/[0-9]/).test(value);
+        }
+        const hasMixed = value => {
+            return new RegExp(/[a-z]/).test(value) && new RegExp(/[A-Z]/).test(value);
+        }
+        const hasSpecial = value => {
+            return new RegExp(/[!#@$%^&*)(+=._-]/).test(value);
+        }
+
+        this.specialSuccess = hasSpecial(password) ? '#52C41A' : 'red';
+        this.mixedSuccess = hasMixed(password) ? '#52C41A' : 'red';
+        this.numberSuccess = hasNumber(password) ? '#52C41A' : 'red';
+
+        if (password.length > 0 && password.length < 8) {
+            callback('Must be longer than 8 characters');
+        } else if (hasNumber(password) && hasMixed(password) && hasSpecial(password)) {
+            callback();
+        } else if (!hasNumber(password)) {
+            callback('Must contain a number');
+
+        } else if (!hasMixed(password)) {
+            callback('Must contain upper and lower case letters');
+
+        } else if (!hasSpecial(password)) {
+            callback('Must contain at least one special character');
+        }
+    } 
+
     render() {
-        const { getFieldDecorator } = this.props.form;
+        const { getFieldDecorator, getFieldsError } = this.props.form;
         return (
             <div className="login">
                 <h1 className="login__heading">Free Sign Up</h1>
@@ -36,11 +77,17 @@ class SignUpForm extends React.Component {
                     </FormItem>
                     <FormItem>
                         {getFieldDecorator('password', {
-                            rules: [{ required: true, message: 'Please input a Password!' }],
+                            rules: [
+                                { required: true, message: 'Please input a Password!' },
+                                { validator: this.validatePassword }
+                            ],
                         })(
                             <Input size="large" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
                         )}
                     </FormItem>
+                    <div><Icon type="check" style={{ color: this.numberSuccess }}/> Contains a number</div>
+                    <div><Icon type="check" style={{ color: this.mixedSuccess }}/> Contains upper case and lower case</div>
+                    <div><Icon type="check" style={{ color: this.specialSuccess }}/> Contains a special character</div>
                     <FormItem>
                         {getFieldDecorator('agree', {
                             valuePropName: 'checked',
@@ -48,7 +95,7 @@ class SignUpForm extends React.Component {
                         })(
                             <Checkbox>Agree Terms</Checkbox>
                         )}
-                        <Button type="dashed" htmlType="submit" className="domain__btn" loading={this.props.pending}>
+                        <Button disabled={hasErrors(getFieldsError())} type="dashed" htmlType="submit" className="domain__btn" loading={this.props.pending}>
                             Go
                             <Icon type="check" />
                         </Button>

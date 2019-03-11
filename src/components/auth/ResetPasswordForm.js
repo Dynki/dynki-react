@@ -14,6 +14,10 @@ class ResetPasswordForm extends React.Component {
         passwordValidityError: ''
     };
 
+    specialSuccess = 'info';
+    numberSuccess = 'info';
+    mixedSuccess = 'info';
+
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
@@ -24,8 +28,8 @@ class ResetPasswordForm extends React.Component {
         });
     }
 
-    onChange = (props, values) => {
-        const password = values.password;
+    validatePassword = (rule, value, callback) => {
+        const password = value;
 
         const hasNumber = value => {
             return new RegExp(/[0-9]/).test(value);
@@ -37,16 +41,24 @@ class ResetPasswordForm extends React.Component {
             return new RegExp(/[!#@$%^&*)(+=._-]/).test(value);
         }
 
-        if (hasNumber(password) && hasMixed(password) && hasSpecial(password)) {
-            this.setState({ passwordValidity: 'success', passwordValidityError: '' });
+        this.specialSuccess = hasSpecial(password) ? 'success' : 'info';
+        this.mixedSuccess = hasMixed(password) ? 'success' : 'info';
+        this.numberSuccess = hasNumber(password) ? 'success' : 'info';
+
+        if (password.length === 0) {
+            callback();
+        }if (password.length > 0 && password.length < 8) {
+            callback('Must be longer than 8 characters');
+        } else if (hasNumber(password) && hasMixed(password) && hasSpecial(password)) {
+            callback();
         } else if (!hasNumber(password)) {
-            this.setState({ passwordValidity: 'fail', passwordValidityError: 'Must contain a number' });
+            callback('Must contain a number');
 
         } else if (!hasMixed(password)) {
-            this.setState({ passwordValidity: 'fail', passwordValidityError: 'Must contain upper and lower case letters' });
+            callback('Must contain upper and lower case letters');
 
         } else if (!hasSpecial(password)) {
-            this.setState({ passwordValidity: 'fail', passwordValidityError: 'Must contain at least one special character' });
+            callback('Must contain at least one special character');
         }
     } 
 
@@ -100,21 +112,18 @@ class ResetPasswordForm extends React.Component {
                         type="info"
                         showIcon
                     />
-                    <Alert message="At least one number" type="info" showIcon />
-                    <Alert message="One upper and lower case letter" type="info" showIcon />
-                    <Alert message="One special character" type="info" showIcon />
+                    <Alert message="At least one number" type={this.numberSuccess} showIcon />
+                    <Alert message="One upper and lower case letter" type={this.mixedSuccess} showIcon />
+                    <Alert message="One special character" type={this.specialSuccess} showIcon />
                 </React.Fragment>
                 <Form.Item
                 label="New password"
                 >
                 {getFieldDecorator('newpassword', {
                     rules: [
-                        { pattern: /[0-9]/, message: 'Must contain a number' },
-                        { pattern: /[a-z]/, message: 'Must contain a lower case letter' },
-                        { pattern: /[A-Z]/, message: 'Must contain an upper case letter' },
-                        { pattern: /[!#@$%^&*)(+=._-]/, message: 'Must contain a special character' },
                         { required: true, message: 'Please input your new password!' },
-                        { validator: this.validateToNextPassword }
+                        { validator: this.validateToNextPassword },
+                        { validator: this.validatePassword }
                     ],
                 })(
                     <Input 
