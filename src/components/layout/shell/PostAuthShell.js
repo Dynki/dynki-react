@@ -17,7 +17,7 @@ class PostAuthShell extends React.Component {
             console.log('PostAuth::DomainIsSet!!!!', this.props);
             return <div className="post-auth__content">
                 <Toolbar progress={this.props.progress}></Toolbar>
-                <SideNav domainName="Dynki Team"></SideNav>
+                <SideNav domainName={this.props.domain.displayName}></SideNav>
                 <main>
                     <Switch>
                         {(this.props.firstLoad && this.props.boards && this.props.boards.length > 0) ?

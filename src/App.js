@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom';
 import { setDomain } from './store/actions/authActions'
 
 import './App.scss';
@@ -26,7 +27,7 @@ export class App extends Component {
   }
 
   render() {
-    const { auth, domain } = this.props;
+    const { auth, domain, location } = this.props;
     console.log('App.js::Render::', domain);
 
       return (this.props.domainChecked ? 
@@ -34,6 +35,7 @@ export class App extends Component {
           <div className="App">
             <SecuredRoute
                 path="/"
+                location={location}
                 component={PostAuthShell}
                 authenticated={auth}
                 domain={domain}
@@ -59,4 +61,4 @@ export const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

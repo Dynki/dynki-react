@@ -13,7 +13,16 @@ const DynMenu = (props) => {
         mode="inline"
         selectedKeys={props.selectedKeys}
       >
-      { props.menu.map((c, i) => <DynSubMenu key={c.key} target={c.target} items={c.items} title={c.title} icon={c.icon} act={c.action}></DynSubMenu>) }
+      { props.menu.map((c, i) => (
+        <DynSubMenu 
+          key={c.key}
+          target={c.target}
+          items={c.items}
+          title={c.title}
+          icon={c.icon}
+          act={c.action}
+        />
+      ))}
       </Menu>
     );
 }

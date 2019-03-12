@@ -5,16 +5,21 @@ export default function SecuredRoute ({
   component: Component,
   authenticated,
   domain,
+  location,
   ...rest
 }) {
   console.log('Authenticated::', authenticated);
   console.log('Domain::', domain);
+  console.log('Location::', location);
   return (
     <Route
       {...rest}
       render={props =>
         authenticated.uid ? (
-          (domain ? <Component {...props} {...rest} /> : <Redirect to="/auth/domain"/>)
+          (domain 
+            ? location.pathname === '/auth/domain' ? <Redirect to="/"/> : <Component {...props} {...rest} /> 
+            : <Redirect to="/auth/domain"/>
+          )
         ) : (
           <Redirect to="/auth/login" />
         )

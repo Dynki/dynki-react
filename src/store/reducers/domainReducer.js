@@ -5,7 +5,8 @@ const initialState = {
     domainChecked: false,
     noDomain: false,
     domainId: null,
-    pending: false
+    pending: false,
+    name: ''
 }
 
 const domainReducer = (state = initialState, action) => {
@@ -66,6 +67,12 @@ const domainReducer = (state = initialState, action) => {
                 domainValid: true,
                 pending: false,
                 domainChecked: true
+            }
+        case 'SET_DOMAIN_NAME':
+            console.log('Set Domain Name::', action.payload);
+            return {
+                ...state,
+                name: action.payload
             }
         case 'NO_DOMAIN':
             console.log('No Domain')

@@ -36,6 +36,7 @@ const mapStateToProps = (state) => {
     return {
 
       selectedKeys: state.boards.currentBoard ? [state.boards.currentBoard.id] : [],
+      domainName: state.domain.name,
 
       // Declare the menu items in this application.
       menuItems: () => {
