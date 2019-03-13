@@ -103,6 +103,19 @@
 
 .board {
 
+    &__empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+
+        .explain {
+            margin: 20px;
+            font-size: 20px;
+        }
+    }
+
     &__load-indicator {
         width: 18px;
         height: 18px;
