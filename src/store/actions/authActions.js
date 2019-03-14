@@ -16,10 +16,22 @@ export const signIn = (credentials) => {
       dispatch({ type: 'SET_CURRENT_USER', payload: firebase.auth().currentUser });
 
       firebase.auth().currentUser.getIdTokenResult()
-        .then((idTokenResult) => {
+        .then(async (idTokenResult) => {
           // Confirm the user is an Admin.
           if (idTokenResult.claims.domainId) {
             console.log('SignIn::Set domain::', idTokenResult.claims);
+
+            await firebase.firestore()
+            .collection('domains')
+            .doc(idTokenResult.claims.domainId)
+            .onSnapshot({}, function (doc) {
+              const data = doc.data();
+
+              if (data) {
+                  dispatch({ type: 'SET_DOMAIN_NAME', payload: data.display_name });
+              }
+            });
+
             dispatch({ type: 'SET_DOMAIN', payload: idTokenResult.claims.domainId });
             dispatch({ type: 'LOGIN_SUCCESS' });
           } else {

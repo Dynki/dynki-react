@@ -14,6 +14,8 @@ class PostAuthShell extends React.Component {
     }
 
     render() {
+        const { firstLoad, boards } = this.props;
+
         if (this.props.domain.domainId) {
             console.log('PostAuth::DomainIsSet!!!!', this.props);
             return <div className="post-auth__content">
@@ -21,10 +23,14 @@ class PostAuthShell extends React.Component {
                 <SideNav domainName={this.props.domain.displayName}></SideNav>
                 <main>
                     <Switch>
-                        {(this.props.firstLoad && this.props.boards && this.props.boards.length > 0) ?
+                        {(firstLoad && boards && boards.length > 0) ?
+                            (boards.length > 0 ? 
                                 <Redirect exact from='/' to={`/board/${this.props.boards[0].id}`}/>
-                                : <Redirect exact from='/' to={`/empty-boards`}/>
-                            }
+                                :
+                                <Redirect exact from='/' to={`/empty-boards`}/>
+                            )
+                            : null
+                        }
                         <Route path={'/board/:id'} component={Board}></Route>
                         <Route path={'/empty-boards'} component={EmptyBoards}></Route>
                     </Switch>

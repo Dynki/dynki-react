@@ -58,7 +58,7 @@ export const newBoard = () => {
         // Get from firestore the list of boards in this domain. 
         // Then create a reference with the new boards added.
         const boardsRef = await firebase.firestore().collection('domains').doc(domainId).collection('boardsInDomain').doc('appBoards').get()
-        let existingBoards = boardsRef.data().boards ? boardsRef.data().boards : [];
+        let existingBoards = boardsRef.data() && boardsRef.data().boards ? boardsRef.data().boards : [];
         existingBoards.push({ id: newDoc.id, title: 'Scratch' });
 
         // Update the boards in this domain with data from above.
@@ -70,21 +70,6 @@ export const newBoard = () => {
             .set({
                 boards: existingBoards
             });
-
-        // Get a refreshed list of boards in this domain and dispatch the REFRESH_BOARDS action to refresh the side menu.
-        // await firebase.firestore()
-        //     .collection('domains')
-        //     .doc(domainId)
-        //     .collection('boardsInDomain')
-        //     .doc('appBoards')
-        //     .onSnapshot({}, function (doc) {
-        //         const data = doc.data();
-
-        //         if (data) {
-        //             const boards = data.boards;
-        //             console.log('Setting Current Board From:: newBoard');
-        //         }
-        //     });
 
         dispatch({ type: 'REFRESH_BOARDS', payload: existingBoards });
         dispatch({ type: 'SET_CURRENT_BOARD', payload: newDoc.data() });

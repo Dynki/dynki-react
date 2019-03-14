@@ -11,6 +11,13 @@ const initialState = {
 
 const domainReducer = (state = initialState, action) => {
     switch (action.type) {
+        case 'SIGNOUT_SUCCESS':
+            console.log('Signout Success')
+            return {
+                ...state,
+                domainId: null
+            };
+
         case 'VALIDATING_DOMAIN':
             console.log('Validate Domain')
             return {
