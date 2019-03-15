@@ -20,6 +20,20 @@ export const DForm = Form.create({
         });
     }
 
+    const validateTeamName = (rule, value, callback) => {
+
+        const isValid = value => {
+            return new RegExp(/^(\d|\w)+$/).test(value);
+        }
+ 
+        if (isValid(value)) {
+            callback();
+        } else {
+            callback('No spaces or special characters');
+        }
+
+    } 
+
     return (
         <Form className="new_domain__form" onSubmit={handleSubmit}>
             <FormItem 
@@ -30,12 +44,21 @@ export const DForm = Form.create({
                 {getFieldDecorator('name', {
                     rules: [
                         { required: true, message: "We're gonna need a team name" },
+                        { validator: validateTeamName },
+                        { max: 50, message: 'Toooo loooonnnnggg!!' },
+                        { min: 3, message: 'Not long enough, try a longer name!' }
                     ],
                 })(
-                    <Input size="large" prefix={<Icon type="team" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Enter your team name" autoComplete="off" />
+                    <Input 
+                        size="large"
+                        prefix={<Icon type="team"
+                        style={{ color: 'rgba(0,0,0,.25)' }} />}
+                        placeholder="Enter your team name"
+                        autoComplete="off" 
+                    />
                 )}
             </FormItem>
-            <Button type="dashed" htmlType="submit" className="domain__btn" loading={props.pending} disabled={!props.domainValid}>
+            <Button type="dashed" htmlType="submit" className="domain__btn" loading={props.pending} disabled={props.pending}>
                 Create Team
                 <Icon type="arrow-right" />
             </Button>
@@ -46,7 +69,7 @@ export const DForm = Form.create({
 const DomainForm = (props) => {
 
     const handleFormChange = (name) => {
-        props.onCheckDomain(name);
+        // props.onCheckDomain(name);
     }
 
     return (

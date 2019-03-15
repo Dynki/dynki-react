@@ -1,54 +1,50 @@
 import notifiy from '../../components/notifications/Notification';
 
 export const signIn = (credentials) => {
-  return (dispatch, getState, { getFirebase }) => {
-    console.log('Logging in');
-    const firebase = getFirebase();
+  return async (dispatch, getState, { getFirebase }) => {
 
-    dispatch({ type: 'ATTEMPT_LOGIN' })
-
-    firebase.auth().signInWithEmailAndPassword(
-      credentials.email,
-      credentials.password
-    ).then(() => {
+    try {
+      console.log('Logging in');
+      const firebase = getFirebase();
+  
+      dispatch({ type: 'ATTEMPT_LOGIN' })
+  
+      await firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password);
       console.log('Login Success');
-
+  
       dispatch({ type: 'SET_CURRENT_USER', payload: firebase.auth().currentUser });
+  
+      const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
+  
+      // Confirm the user is an Admin.
+      if (idTokenResult.claims.domainId) {
+        console.log('SignIn::Set domain::', idTokenResult.claims);
 
-      firebase.auth().currentUser.getIdTokenResult()
-        .then(async (idTokenResult) => {
-          // Confirm the user is an Admin.
-          if (idTokenResult.claims.domainId) {
-            console.log('SignIn::Set domain::', idTokenResult.claims);
+        await firebase.firestore()
+          .collection('domains')
+          .doc(idTokenResult.claims.domainId)
+          .onSnapshot({}, function (doc) {
+            const data = doc.data();
 
-            await firebase.firestore()
-            .collection('domains')
-            .doc(idTokenResult.claims.domainId)
-            .onSnapshot({}, function (doc) {
-              const data = doc.data();
+            if (data) {
+              dispatch({ type: 'SET_DOMAIN_NAME', payload: data.display_name });
+            }
+          });
 
-              if (data) {
-                  dispatch({ type: 'SET_DOMAIN_NAME', payload: data.display_name });
-              }
-            });
-
-            dispatch({ type: 'SET_DOMAIN', payload: idTokenResult.claims.domainId });
-            dispatch({ type: 'LOGIN_SUCCESS' });
-          } else {
-            console.log('SignIn::No domain::', idTokenResult.claims);
-            dispatch({ type: 'NO_DOMAIN' });
-            dispatch({ type: 'LOGIN_SUCCESS' });
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-
-    }).catch((err) => {
+        dispatch({ type: 'SET_DOMAIN', payload: idTokenResult.claims.domainId });
+        dispatch({ type: 'LOGIN_SUCCESS' });
+      } else {
+        console.log('SignIn::No domain::', idTokenResult.claims);
+        dispatch({ type: 'NO_DOMAIN' });
+        dispatch({ type: 'LOGIN_SUCCESS' });
+      }
+  
+    } catch (error) {
       console.log('Login Error');
-      dispatch({ type: 'LOGIN_ERROR', err });
-      notifiy({ type: 'warning', message: 'Login Failure', description: err.message })
-    });
+      dispatch({ type: 'LOGIN_ERROR', error });
+      notifiy({ type: 'warning', message: 'Login Failure', description: error.message })
+    }
+
 
   }
 }
@@ -68,15 +64,15 @@ export const signUp = (credentials) => {
 
       firebase.auth().currentUser.reload();
       firebase.auth().currentUser.sendEmailVerification()
-      .then(() => {
-        dispatch({ type: 'SIGNUP_SUCCESS' });
-        notifiy({ type: 'success', message: 'Please Verify Account', description: 'Please check your email to verify your account' })
+        .then(() => {
+          dispatch({ type: 'SIGNUP_SUCCESS' });
+          notifiy({ type: 'success', message: 'Please Verify Account', description: 'Please check your email to verify your account' })
         })
-      .catch((err) => {
-        console.log('Verification Error');
-        dispatch({ type: 'VERIFICATION_ERROR', err });
-        notifiy({ type: 'warning', message: 'Verification Failure', description: err.message })
-      })
+        .catch((err) => {
+          console.log('Verification Error');
+          dispatch({ type: 'VERIFICATION_ERROR', err });
+          notifiy({ type: 'warning', message: 'Verification Failure', description: err.message })
+        })
 
     }).catch((err) => {
       console.log('Sign up Error');
@@ -113,21 +109,21 @@ export const setDomain = () => {
           // Confirm the user is an Admin.
           if (idTokenResult.claims.domainId) {
             console.log('setDomain::set domain::', idTokenResult.claims);
-            
-            await firebase.firestore()
-            .collection('domains')
-            .doc(idTokenResult.claims.domainId)
-            .onSnapshot({}, function (doc) {
-              const data = doc.data();
 
-              if (data) {
+            await firebase.firestore()
+              .collection('domains')
+              .doc(idTokenResult.claims.domainId)
+              .onSnapshot({}, function (doc) {
+                const data = doc.data();
+
+                if (data) {
                   dispatch({ type: 'SET_DOMAIN_NAME', payload: data.display_name });
-              }
-            });
-    
+                }
+              });
+
             dispatch({ type: 'SET_DOMAIN', payload: idTokenResult.claims.domainId });
           } else {
-            console.log('SetDomain::NO_DOMAIN',idTokenResult.claims);
+            console.log('SetDomain::NO_DOMAIN', idTokenResult.claims);
             dispatch({ type: 'NO_DOMAIN' });
           }
         })
@@ -139,7 +135,7 @@ export const setDomain = () => {
         dispatch({ type: 'NO_DOMAIN' });
         dispatch({ type: 'SIGNOUT_SUCCESS' });
       })
-        
+
     }
   }
 }
@@ -151,15 +147,15 @@ export const updateUserProfile = (updatedValues) => {
 
     if (currentUser.email !== updatedValues.email) {
       firebase.auth().currentUser.updateEmail(updatedValues.email)
-      .then(() =>  notifiy({ type: 'warning', message: 'Success', description: 'Email Updated :)' })
-      )
-      .catch(err => notifiy({ type: 'warning', message: 'Failure', description: err.message }));
+        .then(() => notifiy({ type: 'warning', message: 'Success', description: 'Email Updated :)' })
+        )
+        .catch(err => notifiy({ type: 'warning', message: 'Failure', description: err.message }));
     }
 
     if (currentUser.displayName !== updatedValues.displayName) {
       firebase.auth().currentUser.updateProfile({ displayName: updatedValues.displayName })
-      .then(() =>  notifiy({ type: 'success', message: 'Success', description: 'Display Name Updated :)' }))
-      .catch(err => notifiy({ type: 'warning', message: 'Failure', description: err.message }));
+        .then(() => notifiy({ type: 'success', message: 'Success', description: 'Display Name Updated :)' }))
+        .catch(err => notifiy({ type: 'warning', message: 'Failure', description: err.message }));
     }
 
   }
@@ -176,15 +172,15 @@ export const changePassword = (password, newPassword) => {
       const credential = firebase.auth.EmailAuthProvider.credential(
         email,
         password
-      );    
-      
+      );
+
       await user.reauthenticateAndRetrieveDataWithCredential(credential);
       // User re-authenticated.
 
       await user.updatePassword(newPassword);
 
       notifiy({ type: 'success', message: 'Success', description: 'Password Changed!' })
-        
+
     } catch (error) {
       console.log('AuthError::PasswordError::', error);
 
@@ -195,7 +191,7 @@ export const changePassword = (password, newPassword) => {
         case "auth/argument-error":
           notifiy({ type: 'warning', message: 'Password Change Failure', description: 'Password was not strong enough' });
           break;
-      
+
         default:
           notifiy({ type: 'warning', message: 'Password Failure', description: error.message });
           break;

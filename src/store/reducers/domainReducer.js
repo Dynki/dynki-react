@@ -15,7 +15,7 @@ const domainReducer = (state = initialState, action) => {
             console.log('Signout Success')
             return {
                 ...state,
-                domainId: null
+                ...initialState
             };
 
         case 'VALIDATING_DOMAIN':
@@ -86,15 +86,22 @@ const domainReducer = (state = initialState, action) => {
             return {
                 ...state,
                 noDomain: true,
+                pending: false,
                 domainId: null,
                 domainValid: false,
                 domainChecked: true
             }
-        case 'CREATE_DOMAIN':
+        case 'CREATING_DOMAIN':
             console.log('Create Domain')
             return {
                 ...state,
                 pending: true
+            }
+        case 'DOMAIN_CREATION_ERROR':
+            console.log('Error Creating Domain')
+            return {
+                ...state,
+                pending: false
             }
         default:
             return state;

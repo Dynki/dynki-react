@@ -30,7 +30,7 @@ export class App extends Component {
     const { auth, domain, location } = this.props;
     console.log('App.js::Render::', domain);
 
-      return (this.props.domainChecked ? 
+      return (
         <MainErrorBoundary>
           <div className="App">
             <SecuredRoute
@@ -42,7 +42,6 @@ export class App extends Component {
             />
           </div>
         </MainErrorBoundary> 
-        : null
       );
   }
 }

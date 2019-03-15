@@ -58,7 +58,10 @@ const authReducer = (state = initialState, action) => {
             }
         case 'SIGNOUT_SUCCESS':
             console.log('Signout Success')
-            return state;
+            return {
+                ...state,
+                ...initialState
+            }
         case 'SET_CURRENT_USER':
             console.log('Signout Success')
             return {

@@ -37,7 +37,7 @@ export class Domain extends Component {
 export const mapStateToProps = (state) => {
     return {
       authError: state.auth.authError,
-      pending: state.auth.pending,
+      pending: state.domain.pending,
       auth: state.firebase.auth,
       domain: state.domain
     }
