@@ -1,7 +1,9 @@
 const initialState = {
-    boards: null,
+    boards: [],
     currentBoard: null,
-    firstLoad: true
+    firstLoad: true,
+    noBoards: true,
+    boardsChecked: false
 }
 
 const boardReducer = (state = initialState, action) => {
@@ -10,18 +12,36 @@ const boardReducer = (state = initialState, action) => {
             console.log('Refresh boards')
             return {
                 ...state,
+                noBoards: false,
+                boardsChecked: true,
                 boards: action.payload
             }
         case 'SET_CURRENT_BOARD':
             return {
                 ...state,
                 currentBoard: action.payload,
+                boardsChecked: true,
+                noBoards: false,
                 firstLoad: false
             }
         case 'RESET_FIRSTLOAD':
             return {
                 ...state,
+                boardsChecked: false,
                 firstLoad: true
+            }
+        case 'NO_BOARDS':
+            return {
+                ...state,
+                noBoards: true,
+                currentBoard: undefined,
+                boardsChecked: true,
+                boards: []
+            }
+        case 'SIGNOUT_SUCCESS':
+            return {
+                ...state,
+                ...initialState
             }
         default:
             return state;

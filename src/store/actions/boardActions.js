@@ -21,7 +21,14 @@ export const getBoards = () => {
 
                 if (data) {
                     const boards = data.boards;
-                    dispatch({ type: 'REFRESH_BOARDS', payload: boards });
+
+                    if (!data.boards || data.boards.length < 1) {
+                        dispatch({ type: 'NO_BOARDS' });
+                    } else {
+                        dispatch({ type: 'REFRESH_BOARDS', payload: boards });
+                    }
+                } else {
+                    dispatch({ type: 'NO_BOARDS' });
                 }
             });
     }

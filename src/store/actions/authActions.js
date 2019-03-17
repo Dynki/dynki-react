@@ -63,16 +63,18 @@ export const signUp = (credentials) => {
       console.log('SIGNUP Success');
 
       firebase.auth().currentUser.reload();
-      firebase.auth().currentUser.sendEmailVerification()
-        .then(() => {
-          dispatch({ type: 'SIGNUP_SUCCESS' });
-          notifiy({ type: 'success', message: 'Please Verify Account', description: 'Please check your email to verify your account' })
-        })
-        .catch((err) => {
-          console.log('Verification Error');
-          dispatch({ type: 'VERIFICATION_ERROR', err });
-          notifiy({ type: 'warning', message: 'Verification Failure', description: err.message })
-        })
+      dispatch({ type: 'SIGNUP_SUCCESS', payload: firebase.auth().currentUser });
+
+      // firebase.auth().currentUser.sendEmailVerification()
+      //   .then(() => {
+      //     dispatch({ type: 'SIGNUP_SUCCESS' });
+      //     notifiy({ type: 'success', message: 'Please Verify Account', description: 'Please check your email to verify your account' })
+      //   })
+      //   .catch((err) => {
+      //     console.log('Verification Error');
+      //     dispatch({ type: 'VERIFICATION_ERROR', err });
+      //     notifiy({ type: 'warning', message: 'Verification Failure', description: err.message })
+      //   })
 
     }).catch((err) => {
       console.log('Sign up Error');

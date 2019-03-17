@@ -9,6 +9,8 @@ class Toolbar extends React.Component {
     
     render() {
 
+        const { currentUser } = this.props;
+
         const menu = (
             <Menu>
               <Menu.Item>
@@ -26,10 +28,20 @@ class Toolbar extends React.Component {
                 <div className={this.props.progress ? "toolbar__img--progress" : "toolbar__img"}></div>
                 <div className="toolbar__brand">Dynki</div>
                 <Dropdown overlay={menu} trigger={['click']}>
-                    <label id="userprofile-icon" className="toolbar__user-profile">D</label>            
+                    <label id="userprofile-icon" className="toolbar__user-profile">
+                    {currentUser.displayName && currentUser.displayName.length > 0 ?
+                        currentUser.displayName[0] : currentUser.email[0]
+                    }
+                    </label>            
                 </Dropdown>
             </div>
         )
+    }
+}
+
+const mapStateToProps = (state) => {
+    return {
+        currentUser: state.auth.currentUser
     }
 }
 
@@ -39,4 +51,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Toolbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);

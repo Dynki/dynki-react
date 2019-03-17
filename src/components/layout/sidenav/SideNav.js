@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { Breadcrumb, Button, Icon } from 'antd';
+import { Breadcrumb, Button, Icon, Tooltip } from 'antd';
 
 import DynMenu from '../menu/Menu';
 import { getBoards, getBoard, newBoard } from '../../../store/actions/boardActions'; 
@@ -23,7 +23,9 @@ class SideNav extends React.Component {
                         <Icon type="home" />
                     </Breadcrumb.Item>
                     <Breadcrumb.Item>
-                        <Button type="dashed">{this.props.domainName}</Button>
+                        <Tooltip placement="right" title="Coming Soon">
+                            <Button type="dashed">{this.props.domainName}</Button>
+                        </Tooltip>
                     </Breadcrumb.Item>
                 </Breadcrumb>
                 <DynMenu menu={this.props.menuItems()} selectedKeys={this.props.selectedKeys}></DynMenu>        
@@ -51,11 +53,11 @@ const mapStateToProps = (state) => {
         }
 
         const menuItems = [
-            { key: 1, title: 'Inbox', icon: 'mail', },
-            { key: 2, title: 'Boards', icon: 'schedule', action: newBoard(),
+            { key: 1, title: 'Inbox', icon: 'mail', live: false },
+            { key: 2, title: 'Boards', icon: 'schedule', action: newBoard(), live:true,
                 items: items },
-            { key: 3, title: 'Projects', icon: 'rocket' },
-            { key: 4, title: 'Tags', icon: 'tags' }
+            { key: 3, title: 'Projects', icon: 'rocket', live: false },
+            { key: 4, title: 'Tags', icon: 'tags', live: false }
         ]
 
         return menuItems;

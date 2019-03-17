@@ -27,7 +27,7 @@ export class App extends Component {
   }
 
   render() {
-    const { auth, domain, location } = this.props;
+    const { auth, domain, domainChecked, location } = this.props;
     console.log('App.js::Render::', domain);
 
       return (
@@ -39,6 +39,7 @@ export class App extends Component {
                 component={PostAuthShell}
                 authenticated={auth}
                 domain={domain}
+                domainChecked={domainChecked}
             />
           </div>
         </MainErrorBoundary> 

@@ -91,6 +91,15 @@ const domainReducer = (state = initialState, action) => {
                 domainValid: false,
                 domainChecked: true
             }
+        case 'SIGNUP_SUCCESS':
+            return {
+                ...state,
+                noDomain: true,
+                pending: false,
+                domainId: null,
+                domainValid: false,
+                domainChecked: true
+            }
         case 'CREATING_DOMAIN':
             console.log('Create Domain')
             return {

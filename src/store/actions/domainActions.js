@@ -74,6 +74,7 @@ export const createDomain = (name) => {
                 },
                 { headers: { token, uid } })
 
+            await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
             const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
 
             // Confirm the user is an Admin.

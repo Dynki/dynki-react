@@ -14,7 +14,7 @@ class PostAuthShell extends React.Component {
     }
 
     render() {
-        const { firstLoad, boards } = this.props;
+        const { firstLoad, boards, noBoards, boardsChecked, location } = this.props;
 
         if (this.props.domain.domainId) {
             console.log('PostAuth::DomainIsSet!!!!', this.props);
@@ -23,19 +23,25 @@ class PostAuthShell extends React.Component {
                 <SideNav domainName={this.props.domain.displayName}></SideNav>
                 <main>
                     <Switch>
-                        {(firstLoad && boards && boards.length > 0) ?
-                            (boards.length > 0 ? 
-                                <Redirect exact from='/' to={`/board/${this.props.boards[0].id}`}/>
-                                :
+                        {firstLoad && noBoards ?
+                            (boardsChecked ? 
                                 <Redirect exact from='/' to={`/empty-boards`}/>
+                                :
+                                null
                             )
-                            : null
+                            :
+                            <Redirect exact from='/' to={`/board/${boards[0].id}`}/>
+                        }
+                        {!firstLoad && location.pathname === '/empty-boards' && !noBoards ? 
+                            <Redirect exact from='/empty-boards' to={`/board/${boards[0].id}`}/>
+                            :
+                            null
                         }
                         <Route path={'/board/:id'} component={Board}></Route>
                         <Route path={'/empty-boards'} component={EmptyBoards}></Route>
                     </Switch>
-                    {this.props.firstLoad && this.props.boards && this.props.boards.length > 0 ?
-                        this.onDispatchBoardAction(this.props.boards[0].id)
+                    {firstLoad && boards && boards.length > 0 ?
+                        this.onDispatchBoardAction(boards[0].id)
                         : null
                     }
 
@@ -52,7 +58,9 @@ const mapStateToProps = (state) => {
         domain: state.domain,
         progress: state.base.progress,
         boards: state.boards.boards,
-        firstLoad: state.boards.firstLoad
+        noBoards: state.boards.noBoards,
+        firstLoad: state.boards.firstLoad,
+        boardsChecked: state.boards.boardsChecked
     }
 }
 

@@ -40,7 +40,9 @@ class DynSubMenu extends React.Component {
                     </Tooltip>
                 </div>
             ): (
-                <Menu.Item {...other} key={this.props.title}><Icon type={icon}/>{title}</Menu.Item>
+                <Tooltip placement="right" title="Coming Soon">
+                    <Menu.Item {...other} key={this.props.title}><Icon type={icon}/>{title}</Menu.Item>
+                </Tooltip>
             )}
             </div>
         );

@@ -54,6 +54,7 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 authError: null,
+                currentUser: action.payload,
                 pending: false
             }
         case 'SIGNOUT_SUCCESS':
