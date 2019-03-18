@@ -46,7 +46,7 @@ class LoginForm extends Component {
                                 { required: true, message: 'Please input your Password!' }
                             ],
                         })(
-                            <Input size="large" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+                            <Input id="password" size="large" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
                         )}
                     </FormItem>
                     <FormItem>
@@ -57,7 +57,7 @@ class LoginForm extends Component {
                             <Checkbox>Remember me</Checkbox>
                         )}
                         <a className="login-form-forgot" href="">Forgot password</a>
-                        <Button type="dashed" htmlType="submit" className="domain__btn" loading={this.props.pending}>
+                        <Button id="loginbtn" type="dashed" htmlType="submit" className="domain__btn" loading={this.props.pending}>
                             Sign In
                             <Icon type="enter" />
                         </Button>

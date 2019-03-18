@@ -1,3 +1,5 @@
+
+
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -23,3 +25,17 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+Cypress.Commands.add('login', () => {
+    cy.get('#email')
+        .type('testacc@test.com').should('have.value', 'testacc@test.com')
+
+    cy.get('#password')
+        .type('Test!234').should('have.value', 'Test!234')
+
+    cy.get('#loginbtn').click();
+})
+
+Cypress.Commands.add('logout', () => {
+    cy.get('#userprofile-icon').click();
+    cy.get('#logout').click();
+})

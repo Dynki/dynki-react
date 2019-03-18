@@ -18,7 +18,7 @@ class Toolbar extends React.Component {
               </Menu.Item>
               <Menu.Divider />
               <Menu.Item>
-                <a className="usermenu__item" onClick={this.props.signOut}><Icon type="logout" /> Log Out</a>
+                <a id="logout" className="usermenu__item" onClick={this.props.signOut}><Icon type="logout" /> Log Out</a>
               </Menu.Item>
             </Menu>
         );
