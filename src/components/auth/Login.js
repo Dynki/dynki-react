@@ -61,7 +61,7 @@ class LoginForm extends Component {
                             Sign In
                             <Icon type="enter" />
                         </Button>
-                        Or <Link to="/auth/signup">register now!</Link>
+                        Or <Link id="register" to="/auth/signup">register now!</Link>
                     </FormItem>
                 </Form>
 

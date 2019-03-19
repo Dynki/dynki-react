@@ -43,7 +43,9 @@ class SignUpForm extends React.Component {
         this.mixedSuccess = hasMixed(password) ? '#52C41A' : 'red';
         this.numberSuccess = hasNumber(password) ? '#52C41A' : 'red';
 
-        if (password.length > 0 && password.length < 8) {
+        if (!password) {
+            callback();
+        } else if (password.length > 0 && password.length < 8) {
             callback('Must be longer than 8 characters');
         } else if (hasNumber(password) && hasMixed(password) && hasSpecial(password)) {
             callback();
@@ -91,11 +93,14 @@ class SignUpForm extends React.Component {
                     <FormItem>
                         {getFieldDecorator('agree', {
                             valuePropName: 'checked',
-                            initialValue: true,
+                            initialValue: false,
+                            rules: [
+                                { required: true, message: 'Please agree terms!' },
+                            ],
                         })(
                             <Checkbox>Agree Terms</Checkbox>
                         )}
-                        <Button disabled={hasErrors(getFieldsError())} type="dashed" htmlType="submit" className="domain__btn" loading={this.props.pending}>
+                        <Button id="btnRegister" disabled={hasErrors(getFieldsError())} type="dashed" htmlType="submit" className="domain__btn" loading={this.props.pending}>
                             Go
                             <Icon type="check" />
                         </Button>
