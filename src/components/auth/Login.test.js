@@ -48,6 +48,8 @@ it('should handle form submission when fields are valid', () => {
         target: {}
     };
 
+    const test = jest.spyOn()
+
     const usernameInput = wrapper.find('input').at(0);
     usernameInput.instance().value = 'someone@somewhere.com';
     usernameInput.simulate('change');

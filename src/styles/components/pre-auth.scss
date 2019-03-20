@@ -1,3 +1,11 @@
+.signup-agree {
+    &--failed {
+        span {
+            color: red;
+        }
+    }
+}
+
 .domain__choice {
     display: grid;
     grid-template-rows: 1fr 5fr 0.5fr;

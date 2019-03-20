@@ -202,3 +202,21 @@ export const changePassword = (password, newPassword) => {
   }
 }
 
+export const forgotPassword = (email) => {
+  return async (dispatch, getState, { getFirebase }) => {
+
+    try {
+      const firebase = getFirebase();
+
+      await firebase.auth().sendPasswordResetEmail(email);
+
+      notifiy({ type: 'success', message: 'Success', description: 'Reset email sent, please check your email!' })
+
+    } catch (error) {
+      console.log('AuthError::PasswordResetError::', error);
+
+      notifiy({ type: 'warning', message: 'Password Failure', description: error.message });
+    }
+  }
+}
+

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Login, SignUp } from '../../auth';
-import { Domain } from '../../auth';
+import { Login, SignUp, Domain, Forgot } from '../../auth';
 import { Spin } from 'antd';
 
 class PreAuthShell extends React.Component {
@@ -19,6 +18,7 @@ class PreAuthShell extends React.Component {
                             <Route exact path={'/auth/login'} component={Login}></Route>
                             <Route exact path={'/auth/signup'} component={SignUp}></Route>
                             <Route exact path={'/auth/domain'} component={Domain}></Route>
+                            <Route exact path={'/auth/forgot'} component={Forgot}></Route>
                         </Switch>
                     </div>
                     <div className="main__pic"></div>

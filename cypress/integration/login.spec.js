@@ -1,3 +1,6 @@
+import Chance from 'chance';
+const chance = new Chance();
+
 /// <reference types="Cypress" />
 
 context('Login', () => {
@@ -35,7 +38,10 @@ context('Login', () => {
     })
 
     it('Should login', () => {
-      cy.login();
+      const email = chance.email();
+      cy.signup(email)
+      cy.logout()
+      cy.login(email, 'F@kelonger1');
       cy.contains('Inbox');
       cy.logout();
     })

@@ -15,14 +15,21 @@ class SignUpForm extends React.Component {
     numberSuccess = 'red';
     mixedSuccess = 'red';
     specialSuccess = 'red';
+    agreeFailed = false;
     
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-                this.props.signUp(values);
+            console.log(values);
+            if (!values.agree) {
+                this.agreeFailed = true;
+            } else {
+                if (!err) {
+                    console.log('Received values of form: ', values);
+                    this.props.signUp(values);
+                }
             }
+
         });
     }
 
@@ -98,7 +105,7 @@ class SignUpForm extends React.Component {
                                 { required: true, message: 'Please agree terms!' },
                             ],
                         })(
-                            <Checkbox>Agree Terms</Checkbox>
+                            <Checkbox className={this.agreeFailed ? 'signup-agree--failed': ''}>{this.agreeFailed ? 'Please agree terms first' : 'Agree Terms'}</Checkbox>
                         )}
                         <Button id="btnRegister" disabled={hasErrors(getFieldsError())} type="dashed" htmlType="submit" className="domain__btn" loading={this.props.pending}>
                             Go

@@ -1,3 +1,5 @@
+import Chance from 'chance';
+const chance = new Chance();
 
 
 // ***********************************************
@@ -25,17 +27,39 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
-Cypress.Commands.add('login', () => {
+Cypress.Commands.add('login', (email, password) => {
     cy.get('#email')
-        .type('testacc@test.com').should('have.value', 'testacc@test.com')
+        .type(email).should('have.value', email)
 
     cy.get('#password')
-        .type('Test!234').should('have.value', 'Test!234')
+        .type(password).should('have.value', password)
 
     cy.get('#loginbtn').click();
 })
 
 Cypress.Commands.add('logout', () => {
     cy.get('#userprofile-icon').click();
+    cy.wait(500)
     cy.get('#logout').click();
+    cy.wait(500)
+})
+
+Cypress.Commands.add('signup', (email) => {
+    email = email ? email : chance.email();
+
+    cy.get('#register').click();
+
+    cy.get('#userName')
+    .type(email).should('have.value', email)
+
+    cy.get('#password')
+        .type('F@kelonger1').should('have.value', 'F@kelonger1')
+
+    cy.get('#agree').click();
+
+    cy.get('#btnRegister').click();
+    cy.contains('Name your team')
+
+    cy.get('#name').type('Team1').should('have.value', 'Team1')
+    cy.get('#btnCreateTeam').click();
 })

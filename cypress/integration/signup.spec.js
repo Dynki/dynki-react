@@ -55,7 +55,7 @@ context('Sign Up', () => {
         cy.contains('Must contain at least one special character');
     })
 
-    it('Sign Up', () => {
+    it('Must agree terms before sign up', () => {
         const email = chance.email();
 
         cy.get('#register').click();
@@ -67,7 +67,47 @@ context('Sign Up', () => {
             .type('F@kelonger1').should('have.value', 'F@kelonger1')
 
         cy.get('#btnRegister').click();
+        cy.contains('Please agree terms first')
+    })
+
+    it('Duplicate sign up should fail', () => {
+        const email = chance.email();
+        cy.signup(email)
+        cy.logout();
+
+        cy.get('#register').click();
+
+        cy.get('#userName')
+        .type(email).should('have.value', email)
+    
+        cy.get('#password')
+            .type('F@kelonger1').should('have.value', 'F@kelonger1')
+    
+        cy.get('#agree').click();
+        cy.get('#btnRegister').click();
+
+        cy.contains('The email address is already in use by another account')
+    })
+
+    it('Sign Up', () => {
+        const email = chance.email();
+
+        cy.get('#register').click();
+
+        cy.get('#userName')
+        .type(email).should('have.value', email)
+
+        cy.get('#password')
+            .type('F@kelonger1').should('have.value', 'F@kelonger1')
+
+        cy.get('#agree').click();
+
+        cy.get('#btnRegister').click();
         cy.contains('Name your team')
+
+        cy.get('#name').type('Team1').should('have.value', 'Team1')
+        cy.get('#btnCreateTeam').click();
+        cy.logout();
     })
 })
   

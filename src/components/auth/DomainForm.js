@@ -58,7 +58,7 @@ export const DForm = Form.create({
                     />
                 )}
             </FormItem>
-            <Button type="dashed" htmlType="submit" className="domain__btn" loading={props.pending} disabled={props.pending}>
+            <Button id="btnCreateTeam" type="dashed" htmlType="submit" className="domain__btn" loading={props.pending} disabled={props.pending}>
                 Create Team
                 <Icon type="arrow-right" />
             </Button>
