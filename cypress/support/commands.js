@@ -58,8 +58,11 @@ Cypress.Commands.add('signup', (email) => {
     cy.get('#agree').click();
 
     cy.get('#btnRegister').click();
-    cy.contains('Name your team')
+})
 
+Cypress.Commands.add('newTeam', () => {
+    cy.contains('Name your team')
     cy.get('#name').type('Team1').should('have.value', 'Team1')
     cy.get('#btnCreateTeam').click();
+    cy.wait(500)
 })

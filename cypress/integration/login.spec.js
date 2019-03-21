@@ -9,30 +9,20 @@ context('Login', () => {
     })
 
     it('Login Failure', () => {
-        cy.get('#email')
-            .type('fake@email.com').should('have.value', 'fake@email.com')
-  
-        cy.get('#password')
-            .type('SomeFakePassword').should('have.value', 'SomeFakePassword')
-  
+        cy.get('#email').type('fake@email.com').should('have.value', 'fake@email.com')
+        cy.get('#password').type('SomeFakePassword').should('have.value', 'SomeFakePassword')
         cy.get('#loginbtn').click();
-
         cy.contains('Login Failure');
-
     })
 
     it('Check if valid email', () => {
-      cy.get('#email')
-          .type('fake').should('have.value', 'fake')
-
+      cy.get('#email').type('fake').should('have.value', 'fake')
       cy.get('#password').click();
-
       cy.contains('Not a valid email address!');
     })
 
     it('Check for required values', () => {
       cy.get('#loginbtn').click();
-
       cy.contains('Please input an email!')
       cy.contains('Please input your Password!')
     })
@@ -40,6 +30,7 @@ context('Login', () => {
     it('Should login', () => {
       const email = chance.email();
       cy.signup(email)
+      cy.newTeam()
       cy.logout()
       cy.login(email, 'F@kelonger1');
       cy.contains('Inbox');
