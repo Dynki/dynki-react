@@ -71,13 +71,21 @@ context('Sign Up', () => {
         cy.logout();
         cy.signup(email);
         cy.contains('The email address is already in use by another account')
+
+        // Clean up
+        cy.wait(1000)
+        cy.contains('back to login').click();
+        cy.login(email, 'F@kelonger1');
+        cy.deleteAccount();
     })
 
     it('Sign Up', () => {
         const email = chance.email();
         cy.signup(email)
         cy.newTeam()
-        cy.logout();
+
+        // Clean up
+        cy.deleteAccount();
     })
 })
   

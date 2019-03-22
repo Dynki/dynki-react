@@ -220,3 +220,20 @@ export const forgotPassword = (email) => {
   }
 }
 
+export const deleteAccount = () => {
+  return async (dispatch, getState, { getFirebase }) => {
+
+    try {
+      const firebase = getFirebase();
+
+      const user = firebase.auth().currentUser;
+
+      await user.delete();
+      dispatch({ type: 'SIGNOUT_SUCCESS' });
+
+    } catch (error) {
+      notifiy({ type: 'warning', message: 'Delete Failure', description: error.message });
+    }
+  }
+}
+

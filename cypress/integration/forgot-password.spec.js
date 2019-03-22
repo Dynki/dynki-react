@@ -22,7 +22,7 @@ context('Forgot Password', () => {
         cy.contains('There is no user record corresponding to this identifier. The user may have been deleted')
     })
 
-    it('Should sent email to known account', () => {
+    it('Should send email to known account', () => {
         const email = chance.email();
         cy.signup(email)
         cy.newTeam()
@@ -31,6 +31,9 @@ context('Forgot Password', () => {
         cy.get('#email').type(email).should('have.value', email)
         cy.get('#submitbtn').click()
         cy.contains('Reset email sent, please check your email!')
+        cy.get('#backToLogin').click()
+        cy.login(email, 'F@kelonger1');
+        cy.deleteAccount();
     })
 
 })

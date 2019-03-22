@@ -28,9 +28,8 @@ const chance = new Chance();
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 Cypress.Commands.add('login', (email, password) => {
-    cy.get('#email')
-        .type(email).should('have.value', email)
-
+    cy.get('#email').clear();
+    cy.get('#email').type(email).should('have.value', email)
     cy.get('#password')
         .type(password).should('have.value', password)
 
@@ -41,6 +40,17 @@ Cypress.Commands.add('logout', () => {
     cy.get('#userprofile-icon').click();
     cy.wait(500)
     cy.get('#logout').click();
+    cy.wait(500)
+})
+
+Cypress.Commands.add('deleteAccount', () => {
+    cy.get('#userprofile-icon').click();
+    cy.wait(500)
+    cy.get('#userProfile').click();
+    cy.wait(500)
+    cy.get('#btnRemoveAccount').click();
+    cy.wait(500)
+    cy.contains('Yes Remove My Account').click();
     cy.wait(500)
 })
 

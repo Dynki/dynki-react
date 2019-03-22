@@ -14,7 +14,9 @@ context('Create Team', () => {
         cy.contains('Toooo loooonnnnggg!!');
         cy.get('#name').clear()
         cy.newTeam()
-        cy.logout()
+
+        // Clean up
+        cy.deleteAccount();
     })
 
     it('Validate too short team name', () => {
@@ -26,7 +28,9 @@ context('Create Team', () => {
         cy.contains('Not long enough, try a longer name!');
         cy.get('#name').clear()
         cy.newTeam()
-        cy.logout()
+
+        // Clean up
+        cy.deleteAccount();
     })
 
     it('Validate team name is mandatory', () => {
@@ -34,14 +38,18 @@ context('Create Team', () => {
         cy.get('#btnCreateTeam').click()
         cy.contains("We're gonna need a team name");
         cy.newTeam()
-        cy.logout()
+
+        // Clean up
+        cy.deleteAccount();
     })
 
     it('Should create a new team', () => {
         cy.signup()
         cy.newTeam()
         cy.contains('Team1');
-        cy.logout()
+
+        // Clean up
+        cy.deleteAccount();
     })
 })
   

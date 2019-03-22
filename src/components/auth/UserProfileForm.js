@@ -4,7 +4,7 @@ import {
     Form, Input, Button, Icon, Popconfirm
 } from 'antd';
 
-import { updateUserProfile } from '../../store/actions/authActions';
+import { updateUserProfile, deleteAccount } from '../../store/actions/authActions';
 
 
 class UserProfileForm extends React.Component {
@@ -73,9 +73,10 @@ class UserProfileForm extends React.Component {
                     okText="Yes Remove My Account"
                     okType="danger"
                     cancelText="No way, I want to stay!!"
+                    onConfirm={this.props.deleteAccount}
                     icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
                 >
-                    <Button className="userprofile__deleteac-btn" type="danger" htmlType="submit">Remove My Account</Button>
+                    <Button id="btnRemoveAccount" className="userprofile__deleteac-btn" type="danger" htmlType="submit">Remove My Account</Button>
                 </Popconfirm>
             </div>
         );
@@ -106,7 +107,8 @@ export const mapStateToProps = (state) => {
   
 export const mapDispatchToProps = (dispatch) => {
     return {
-        updateUserProfile: (updatedValues) => dispatch(updateUserProfile(updatedValues))
+        updateUserProfile: (updatedValues) => dispatch(updateUserProfile(updatedValues)),
+        deleteAccount: () => dispatch(deleteAccount())
     }
 }
 

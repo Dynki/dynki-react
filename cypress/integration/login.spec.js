@@ -34,7 +34,8 @@ context('Login', () => {
       cy.logout()
       cy.login(email, 'F@kelonger1');
       cy.contains('Inbox');
-      cy.logout();
+      //cy.logout();
+      cy.deleteAccount();
     })
 
   })

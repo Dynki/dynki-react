@@ -19,7 +19,7 @@ const UserProfileDrawer = (props) => {
 
     return (
         <React.Fragment>
-            <a className="usermenu__item" href="#" onClick={showDrawer}><Icon type="robot" /> User Profile</a>
+            <a id="userProfile" className="usermenu__item" href="#" onClick={showDrawer}><Icon type="robot" /> User Profile</a>
 
             <Drawer
                 title="User Profile"
