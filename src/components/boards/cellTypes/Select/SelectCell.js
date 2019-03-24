@@ -49,9 +49,11 @@ class SelectCell extends React.Component {
     render() {
         const { col, rowId } = this.props;
 
+        const contentClass = col.values && col.values.length === 2 ? 'select__inner-content--two' : 'select__inner-content'; 
+ 
         return (
         <div>
-            <div className={`select__inner-content`}>
+            <div className={contentClass}>
                 <div className={`ant-popover-message select`}>
                     <Carousel>
                         {chunk(col.values, 4).map((valChunk, idx) => {

@@ -54,6 +54,21 @@
         flex-direction: column;
         padding: 12px 12px;
         color: rgba(0, 0, 0, 0.65);
+
+    }
+
+    &__inner-content--two {
+        display:flex;
+        flex-direction: column;
+        padding: 12px 12px;
+        color: rgba(0, 0, 0, 0.65);
+
+        .ant-popover-message {
+            .ant-carousel {
+                width: 317px;
+                height: 10px!important;
+            }
+        }
     }
 
     &__option {

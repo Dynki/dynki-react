@@ -92,12 +92,14 @@ class SelectCellForm extends React.Component {
     }
 
     render() {
+        const { selectedOption, option } = this.props;
+
         return (
             <div>
                 <SelectCForm 
                     {...this.fields}
-                    option={this.props.option}
-                    selected={this.props.option.key === this.props.selectedOption.key ? true : false}
+                    option={option}
+                    selected={selectedOption && option.key === selectedOption.key ? true : false}
                     onSelected={this.onSelected}
                     onSubmit={this.handleFormSubmit} 
                     onChange={this.handleFormChange} 
