@@ -30,9 +30,7 @@ const chance = new Chance();
 Cypress.Commands.add('login', (email, password) => {
     cy.get('#email').clear();
     cy.get('#email').type(email).should('have.value', email)
-    cy.get('#password')
-        .type(password).should('have.value', password)
-
+    cy.get('#password').type(password).should('have.value', password)
     cy.get('#loginbtn').click();
 })
 
@@ -54,25 +52,19 @@ Cypress.Commands.add('deleteAccount', () => {
     cy.wait(500)
 })
 
-Cypress.Commands.add('signup', (email) => {
-    email = email ? email : chance.email();
+Cypress.Commands.add('signup', (email = chance.email(), password = 'F@kelonger1') => {
+    // email = email ? email : chance.email();
 
     cy.get('#register').click();
-
-    cy.get('#userName')
-    .type(email).should('have.value', email)
-
-    cy.get('#password')
-        .type('F@kelonger1').should('have.value', 'F@kelonger1')
-
+    cy.get('#userName').type(email).should('have.value', email)
+    cy.get('#password').type(password).should('have.value', password)
     cy.get('#agree').click();
-
     cy.get('#btnRegister').click();
 })
 
-Cypress.Commands.add('newTeam', () => {
+Cypress.Commands.add('newTeam', (name = 'Team1') => {
     cy.contains('Name your team')
-    cy.get('#name').type('Team1').should('have.value', 'Team1')
+    cy.get('#name').type(name).should('have.value', name)
     cy.get('#btnCreateTeam').click();
     cy.wait(500)
 })

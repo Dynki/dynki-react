@@ -36,7 +36,7 @@ class DynSubMenu extends React.Component {
                     }
                     </SubMenu>
                     <Tooltip placement="right" title="New Board">
-                        <Button className="btn-add-board" onClick={(e) => this.handleBtnClick(e, act)}  type="dashed" shape="circle" icon="plus"></Button>
+                        <Button id={'btn' + this.props.title} className="btn-add-board" onClick={(e) => this.handleBtnClick(e, act)}  type="dashed" shape="circle" icon="plus"></Button>
                     </Tooltip>
                 </div>
             ): (
