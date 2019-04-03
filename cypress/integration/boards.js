@@ -3,41 +3,40 @@ const chance = new Chance();
 
 /// <reference types="Cypress" />
 
-context('Login', () => {
+context('Boards', () => {
     beforeEach(() => {
       cy.visit('http://localhost:3000')
     })
 
-    it('Create Board', () => {
+    after(() => {
+        // Clean up
+        cy.deleteAccount();
+    })
+
+    it('Add board to menu', () => {
         const email = chance.email();
         cy.signup(email);
         cy.newTeam();
-        
-        
+        cy.get('#btnBoards').click();
+        cy.wait(1000);
+        cy.contains('Boards').click();
+        cy.contains('Scratch');
     })
 
-    it('Check if valid email', () => {
-      cy.get('#email').type('fake').should('have.value', 'fake')
-      cy.get('#password').click();
-      cy.contains('Not a valid email address!');
+    it('Change board title', () => {
+        cy.get('#title').clear();
+        cy.get('#title').type('Test Title');
+        cy.get('#description').click();
+        cy.wait(1000);
+        cy.get('#title').should('have.value', 'Test Title');
     })
 
-    it('Check for required values', () => {
-      cy.get('#loginbtn').click();
-      cy.contains('Please input an email!')
-      cy.contains('Please input your Password!')
+    it('Change board description', () => {
+        cy.get('#description').clear();
+        cy.get('#description').type('Test Desc');
+        cy.get('#title').click();
+        cy.wait(1000);
+        cy.get('#description').should('have.value','Test Desc');
     })
-
-    it('Should login', () => {
-      const email = chance.email();
-      cy.signup(email)
-      cy.newTeam()
-      cy.logout()
-      cy.login(email, 'F@kelonger1');
-      cy.contains('Inbox');
-      //cy.logout();
-      cy.deleteAccount();
-    })
-
-  })
+})
   

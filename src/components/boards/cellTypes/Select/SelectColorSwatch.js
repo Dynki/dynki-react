@@ -8,8 +8,9 @@ const SelectColorSwatch = props => {
     const [selectedColor, setSelectedColor] = useState(undefined);
 
     useEffect(() => {
+        console.log('UseEffect::selectedColor::', props.selectedColor);
         setSelectedColor(props.selectedColor);
-    }, props.selectedColor)
+    }, [props.selectedColor])
 
     return <div className="select-color">
         <div>{props.title}</div>

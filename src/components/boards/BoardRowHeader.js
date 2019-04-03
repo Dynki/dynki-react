@@ -17,6 +17,7 @@ class BoardRowHeader extends React.Component {
         {this.props.board.columns.map((c, idx) => {
             return <th 
                     key={idx} 
+                    id={'column'+idx}
                     className={idx === 0 ? "table__header__columns table__header__columns--first" : "table__header__columns"}
                 >
                 <div key={idx} className="table__header__columns__container">
