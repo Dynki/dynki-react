@@ -58,7 +58,7 @@ class SelectCell extends React.Component {
                     <Carousel>
                         {chunk(col.values, 4).map((valChunk, idx) => {
                             return (
-                                <div className="select__btnwrapper">
+                                <div className="select__btnwrapper" key={idx}>
                                     {valChunk.map((c, i) => {
                                         return (
                                             (c.disabled ?
