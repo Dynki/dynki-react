@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import { signUp } from '../../store/actions/authActions';
+import Terms from './Terms';
+import Privacy from './Privacy';
 
 const FormItem = Form.Item;
 
@@ -106,9 +108,9 @@ class SignUpForm extends React.Component {
                             ],
                         })(
                             <Checkbox className={this.agreeFailed ? 'signup-agree--failed': ''}>{this.agreeFailed ? 'Please agree to ' : 'I agree to the '}
-                                <a href="#">terms of service</a>
+                                <Terms/>
                                 <span> and </span>
-                                <a href="#">privacy policy</a>
+                                <Privacy/>
                             </Checkbox>
                         )}
                         <Button id="btnRegister" disabled={hasErrors(getFieldsError())} type="dashed" htmlType="submit" className="domain__btn" loading={this.props.pending}>
