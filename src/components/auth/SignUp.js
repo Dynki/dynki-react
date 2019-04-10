@@ -105,12 +105,11 @@ class SignUpForm extends React.Component {
                                 { required: true, message: 'Please agree terms!' },
                             ],
                         })(
-                            <React.Fragment>
-                                <Checkbox className={this.agreeFailed ? 'signup-agree--failed': ''}>{this.agreeFailed ? 'Please agree to' : 'I agree to the'}</Checkbox>
+                            <Checkbox className={this.agreeFailed ? 'signup-agree--failed': ''}>{this.agreeFailed ? 'Please agree to ' : 'I agree to the '}
                                 <a href="#">terms of service</a>
                                 <span> and </span>
                                 <a href="#">privacy policy</a>
-                            </React.Fragment>
+                            </Checkbox>
                         )}
                         <Button id="btnRegister" disabled={hasErrors(getFieldsError())} type="dashed" htmlType="submit" className="domain__btn" loading={this.props.pending}>
                             Go

@@ -28,8 +28,8 @@ class SelectCell extends BaseCell {
         this.title = 'select';
 
         this.values = [
-            { key: newGuid(), title: 'Yes', color: '039BE5' },
-            { key: newGuid(), title: 'No', color: 'D73026' }];
+            { key: newGuid(), title: 'Yes', color: '039BE5', fgColor: 'ffffff' },
+            { key: newGuid(), title: 'No', color: 'EB144C', fgColor: 'ffffff' }];
     }
 }
 
