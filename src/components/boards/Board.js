@@ -62,7 +62,6 @@ export class Board extends React.Component {
     }
 
     render() {
-        console.log('Board::Render', this.props.board);
         return (
             (this.props.board ? 
                 <section className="board">

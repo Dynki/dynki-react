@@ -38,7 +38,6 @@ export const getBoards = () => {
 export const newBoard = () => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
-        console.log('New Board Called');
 
         const firebase = getFirebase();
         const domainId = getState().domain.domainId;
@@ -113,7 +112,6 @@ export const getBoard = (id) => {
                 // Add the subscription to the current board so we can kill it later.
                 if (board) {
                     board.unsubscribe = sub;
-                    console.log('Setting Current Board From:: getBoard');
                     dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
                 }
             });
@@ -123,7 +121,6 @@ export const getBoard = (id) => {
 
 export const updateBoard = (board) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
-        console.log('UPDATE BOARD::', board);
         const firebase = getFirebase();
         const boards = getState().boards.boards;
         const domainId = getState().domain.domainId;
@@ -144,7 +141,6 @@ export const updateBoard = (board) => {
         }
 
         dispatch({ type: 'ATTEMPT_UPDATE_BOARD', payload: board })
-        console.log('Setting Current Board From:: updateBoard');
         dispatch({ type: 'SET_CURRENT_BOARD', payload: board })
 
         delete board['unsubscribe'];
@@ -163,7 +159,6 @@ export const newRow = (row) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
 
-        console.log('ADD BOARD ROW::');
         const firebase = getFirebase();
         const currentBoard = getState().boards.currentBoard;
         const domainId = getState().domain.domainId;
@@ -191,7 +186,6 @@ export const newRow = (row) => {
 export const removeRow = (rowIdxToRemove) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
-        console.log('REMOVE BOARD ROW::');
         const firebase = getFirebase();
         const currentBoard = getState().boards.currentBoard;
         const domainId = getState().domain.domainId;
@@ -281,8 +275,6 @@ export const removeBoard = (boardId) => {
                     // Add the subscription to the current board so we can kill it later.
                     if (board) {
                         board.unsubscribe = sub;
-                        console.log('RemoveBoard::SettingCurrentBoard::', board);
-                        console.log('Setting Current Board From:: removeBoard');
                         dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
                         dispatch({ type: 'SET_PROGRESS', payload: false });
                     }
@@ -296,8 +288,6 @@ export const removeBoard = (boardId) => {
 export const addColumn = (columnType) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
-
-        console.log('BoardActions::AddColumn::type', columnType);
 
         const firebase = getFirebase();
         const currentBoard = getState().boards.currentBoard;
@@ -420,8 +410,6 @@ export const updateColumn = (updatedColumn) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
 
-        console.log('Action::UpdateColumn::', updatedColumn.model);
-
         const firebase = getFirebase();
         const domainId = getState().domain.domainId;
         const currentBoard = getState().boards.currentBoard;
@@ -429,7 +417,6 @@ export const updateColumn = (updatedColumn) => {
         currentBoard.columns = currentBoard.columns.map(c => {
             if (c.model === updatedColumn.model) {
                 c = updatedColumn;
-                console.log('Column Updated in Action::', c);
             }
             return c;
         });

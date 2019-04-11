@@ -4,13 +4,11 @@ export const signIn = (credentials) => {
   return async (dispatch, getState, { getFirebase }) => {
 
     try {
-      console.log('Logging in');
       const firebase = getFirebase();
   
       dispatch({ type: 'ATTEMPT_LOGIN' })
   
       await firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password);
-      console.log('Login Success');
   
       dispatch({ type: 'SET_CURRENT_USER', payload: firebase.auth().currentUser });
   
@@ -18,8 +16,7 @@ export const signIn = (credentials) => {
   
       // Confirm the user is an Admin.
       if (idTokenResult.claims.domainId) {
-        console.log('SignIn::Set domain::', idTokenResult.claims);
-
+  
         await firebase.firestore()
           .collection('domains')
           .doc(idTokenResult.claims.domainId)
@@ -34,13 +31,11 @@ export const signIn = (credentials) => {
         dispatch({ type: 'SET_DOMAIN', payload: idTokenResult.claims.domainId });
         dispatch({ type: 'LOGIN_SUCCESS' });
       } else {
-        console.log('SignIn::No domain::', idTokenResult.claims);
         dispatch({ type: 'NO_DOMAIN' });
         dispatch({ type: 'LOGIN_SUCCESS' });
       }
   
     } catch (error) {
-      console.log('Login Error');
       dispatch({ type: 'LOGIN_ERROR', error });
       notifiy({ type: 'warning', message: 'Login Failure', description: error.message })
     }
@@ -54,30 +49,16 @@ export const signUp = (credentials) => {
     const firebase = getFirebase();
 
     dispatch({ type: 'ATTEMPT_SIGNUP' })
-    console.log('Signing Up', credentials);
-
+  
     firebase.auth().createUserWithEmailAndPassword(
       credentials.userName,
       credentials.password
     ).then(() => {
-      console.log('SIGNUP Success');
-
+  
       firebase.auth().currentUser.reload();
       dispatch({ type: 'SIGNUP_SUCCESS', payload: firebase.auth().currentUser });
 
-      // firebase.auth().currentUser.sendEmailVerification()
-      //   .then(() => {
-      //     dispatch({ type: 'SIGNUP_SUCCESS' });
-      //     notifiy({ type: 'success', message: 'Please Verify Account', description: 'Please check your email to verify your account' })
-      //   })
-      //   .catch((err) => {
-      //     console.log('Verification Error');
-      //     dispatch({ type: 'VERIFICATION_ERROR', err });
-      //     notifiy({ type: 'warning', message: 'Verification Failure', description: err.message })
-      //   })
-
     }).catch((err) => {
-      console.log('Sign up Error');
       dispatch({ type: 'SIGNUP_ERROR', err });
       notifiy({ type: 'warning', message: 'Sign up Failure', description: err.message })
     });
@@ -103,14 +84,12 @@ export const setDomain = () => {
     try {
       await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
 
-      console.log('Firebase::CurrentUser::', firebase.auth().currentUser);
       dispatch({ type: 'SET_CURRENT_USER', payload: firebase.auth().currentUser });
 
       firebase.auth().currentUser.getIdTokenResult()
         .then(async (idTokenResult) => {
           // Confirm the user is an Admin.
           if (idTokenResult.claims.domainId) {
-            console.log('setDomain::set domain::', idTokenResult.claims);
 
             await firebase.firestore()
               .collection('domains')
@@ -125,7 +104,6 @@ export const setDomain = () => {
 
             dispatch({ type: 'SET_DOMAIN', payload: idTokenResult.claims.domainId });
           } else {
-            console.log('SetDomain::NO_DOMAIN', idTokenResult.claims);
             dispatch({ type: 'NO_DOMAIN' });
           }
         })
@@ -184,8 +162,6 @@ export const changePassword = (password, newPassword) => {
       notifiy({ type: 'success', message: 'Success', description: 'Password Changed!' })
 
     } catch (error) {
-      console.log('AuthError::PasswordError::', error);
-
       switch (error.code) {
         case "auth/wrong-password":
           notifiy({ type: 'warning', message: 'Password Failure', description: 'Current password was incorrect' });
@@ -213,8 +189,6 @@ export const forgotPassword = (email) => {
       notifiy({ type: 'success', message: 'Success', description: 'Reset email sent, please check your email!' })
 
     } catch (error) {
-      console.log('AuthError::PasswordResetError::', error);
-
       notifiy({ type: 'warning', message: 'Password Failure', description: error.message });
     }
   }

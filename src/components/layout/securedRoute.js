@@ -9,9 +9,6 @@ export default function SecuredRoute ({
   location,
   ...rest
 }) {
-  console.log('Authenticated::', authenticated);
-  console.log('Domain::', domain);
-  console.log('Location::', location);
   return (
     <Route
       {...rest}

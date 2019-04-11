@@ -92,7 +92,6 @@ export const createDomain = (name) => {
                 
                     dispatch({ type: 'SET_DOMAIN', payload: idTokenResult.claims.domainId });
             } else {
-                console.log('CreateDomain::NO_DOMAIN');
                 dispatch({ type: 'NO_DOMAIN' });
             }
 

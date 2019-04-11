@@ -9,7 +9,6 @@ const initialState = {
 const boardReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'REFRESH_BOARDS':
-            console.log('Refresh boards')
             return {
                 ...state,
                 noBoards: false,

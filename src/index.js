@@ -1,5 +1,7 @@
 import React from 'react';
-import firebase from 'firebase'
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
 import { render } from 'react-dom';
 import { compose, createStore, applyMiddleware } from 'redux'
 import { reactReduxFirebase, getFirebase } from 'react-redux-firebase'
@@ -14,6 +16,7 @@ import rootReducer from './store/reducers/rootReducers';
 
 firebase.initializeApp(fbConfig)
 firebase.firestore();
+firebase.firestore().settings({timestampsInSnapshots: true});
 
 // react-redux-firebase options
 const config = {

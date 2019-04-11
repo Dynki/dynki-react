@@ -6,7 +6,6 @@ import { removeRow } from '../../store/actions/boardActions';
 class BoardRowMenu extends React.Component {
 
     handleConfirm = (e) => {
-        console.log('confirmed::', this.props.rowIdx);
         this.props.removeRow(this.props.rowIdx)
     }
 

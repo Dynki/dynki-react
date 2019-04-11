@@ -28,8 +28,6 @@ export class App extends Component {
 
   render() {
     const { auth, domain, domainChecked, location } = this.props;
-    console.log('App.js::Render::', domain);
-
       return (
         <MainErrorBoundary>
           <div className="App">

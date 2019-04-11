@@ -10,7 +10,6 @@ const BNRForm = Form.create({})((props) => {
         e.preventDefault();
         props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
             }
             props.onChange(values);
         });

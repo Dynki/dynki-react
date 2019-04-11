@@ -9,7 +9,6 @@ import { getBoard } from '../../../store/actions/boardActions';
 class PostAuthShell extends React.Component {
 
     onDispatchBoardAction(id) {
-        console.log('PostAuthShell::OnDispatch::id', id);
         this.props.getBoard(id);
     }
 
@@ -17,7 +16,6 @@ class PostAuthShell extends React.Component {
         const { firstLoad, boards, noBoards, boardsChecked, location } = this.props;
 
         if (this.props.domain.domainId) {
-            console.log('PostAuth::DomainIsSet!!!!', this.props);
             return <div className="post-auth__content">
                 <Toolbar progress={this.props.progress}></Toolbar>
                 <SideNav domainName={this.props.domain.displayName}></SideNav>

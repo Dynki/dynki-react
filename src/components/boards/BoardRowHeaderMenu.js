@@ -6,7 +6,6 @@ import { addColumn } from '../../store/actions/boardActions';
 class BoardRowHeaderMenu extends React.Component {
 
     onClick = ({ key }) => {
-        console.log('Menuitem::Clicked::key', key);
         this.props.addColumn(key);
     };
 

@@ -1,18 +1,10 @@
 import React from 'react';
-import { Modal } from 'antd';
 
 const Privacy = (props) => {
 
-    const showModal = () => {
-        Modal.info({
-            title: 'Privacy policy',
-            content: 'Privacy policy'
-        });
-    }
-
     return (
         <React.Fragment>
-            <a href="#" onClick={showModal}>privacy policy</a>
+            <a href="/privacy-policy.pdf" target="_blank">terms of service</a>
         </React.Fragment>
     )
 }

@@ -13,6 +13,8 @@ config.test.js
 # production
 /build
 
+/public/*.pdf
+
 # misc
 .DS_Store
 .env.local

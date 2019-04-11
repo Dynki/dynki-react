@@ -14,7 +14,6 @@ export const DForm = Form.create({
         e.preventDefault();
         props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
                 props.onCreateDomain(values.name)
             }
         });

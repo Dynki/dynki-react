@@ -13,7 +13,6 @@ class BoardHeaderMenu extends React.Component {
 
     handleConfirm = (e) => {
         this.setState({ deleted: true });
-        console.log('confirmed::', this.props.boardId);
         this.props.removeBoard(this.props.boardId)
     }
 

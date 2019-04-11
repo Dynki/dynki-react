@@ -22,12 +22,10 @@ class SignUpForm extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-            console.log(values);
             if (!values.agree) {
                 this.agreeFailed = true;
             } else {
                 if (!err) {
-                    console.log('Received values of form: ', values);
                     this.props.signUp(values);
                 }
             }
