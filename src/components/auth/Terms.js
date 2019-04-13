@@ -4,7 +4,7 @@ const Terms = (props) => {
 
     return (
         <React.Fragment>
-            <a href="/saas-terms-and-conditions.pdf" target="_blank">terms of service</a>
+            <a href="/terms-of-service.pdf" target="_blank">terms of service</a>
         </React.Fragment>
     )
 }
