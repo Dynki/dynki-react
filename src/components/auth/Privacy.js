@@ -4,7 +4,7 @@ const Privacy = (props) => {
 
     return (
         <React.Fragment>
-            <a href="/privacy-policy.pdf" target="_blank">terms of service</a>
+            <a href="/privacy-policy.pdf" target="_blank">privacy policy</a>
         </React.Fragment>
     )
 }
