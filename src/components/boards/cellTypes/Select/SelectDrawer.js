@@ -26,31 +26,39 @@ const SelectDrawer = (props) => {
     }
 
     const onFgColorSelected = color => {
-        selectedValue.fgColor = color;
-        const column = {...props.column};
-        column.values = column.values.map(v => v.key === selectedValue.key ? selectedValue : v);
-        props.onUpdateColumn(column);
+        if (selectedValue) {
+            selectedValue.fgColor = color;
+            const column = {...props.column};
+            column.values = column.values.map(v => v.key === selectedValue.key ? selectedValue : v);
+            props.onUpdateColumn(column);
+        }
     }
 
     const onColorSelected = color => {
-        selectedValue.color = color;
-        const column = {...props.column};
-        column.values = column.values.map(v => v.key === selectedValue.key ? selectedValue : v);
-        props.onUpdateColumn(column);
+        if (selectedValue) {
+            selectedValue.color = color;
+            const column = {...props.column};
+            column.values = column.values.map(v => v.key === selectedValue.key ? selectedValue : v);
+            props.onUpdateColumn(column);
+        }
     }
 
     const onToggleOptionDisabled = () => {
-        selectedValue.disabled = !selectedValue.disabled;
-        const column = {...props.column};
-        column.values = column.values.map(v => v.key === selectedValue.key ? selectedValue : v);
-        props.onUpdateColumn(column);
+        if (selectedValue) {
+            selectedValue.disabled = !selectedValue.disabled;
+            const column = {...props.column};
+            column.values = column.values.map(v => v.key === selectedValue.key ? selectedValue : v);
+            props.onUpdateColumn(column);
+        }
     }
 
     const onTitleChanged = title => {
-        selectedValue.title = title;
-        const column = {...props.column};
-        column.values = column.values.map(v => v.key === selectedValue.key ? selectedValue : v);
-        props.onUpdateColumn(column);
+        if (selectedValue) {
+            selectedValue.title = title;
+            const column = {...props.column};
+            column.values = column.values.map(v => v.key === selectedValue.key ? selectedValue : v);
+            props.onUpdateColumn(column);
+        }
     }
 
     const addNewValue = () => {

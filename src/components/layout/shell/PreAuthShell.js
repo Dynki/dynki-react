@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Link } from 'react-router-dom';
 import { Login, SignUp, Domain, Forgot } from '../../auth';
 import { Spin } from 'antd';
 
@@ -8,7 +8,9 @@ class PreAuthShell extends React.Component {
         return <div>
             <div className="domain__choice">
                 <div className="brand">
-                    <Spin indicator={<div className="section__img"></div>}></Spin>
+                    <Link to="/home">
+                        <Spin indicator={<div className="section__img"></div>}></Spin>
+                    </Link>
                     <h1>Dynki</h1>
                 </div>
 

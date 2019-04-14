@@ -22,7 +22,7 @@ export default function SecuredRoute ({
             : null
           )
         ) : (
-          <Redirect to="/auth/login" />
+          <Redirect to="/home" />
         )
       }
     />
