@@ -1,0 +1,93 @@
+.pricing {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+
+    &__header {
+        display: flex;
+        flex-direction: row;
+        width: 80%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffffff;
+    }
+
+    &__section {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+
+        border: solid 1px #e0e0e0;
+        background-color: #FAFAFA;
+
+        height: 80%;
+        width: 30%;
+        padding: 30px;
+
+        &--main {
+            box-shadow: 0 1px 15px #ccc;
+            z-index: 1;
+        }
+
+        &__title {
+            font-size: 25px;
+            color: #414141;
+            margin-bottom: 15px;
+        }
+
+        &__description {
+            margin-bottom: 55px;
+        }
+
+        &__cost {
+            font-size: 30px;
+            color: #3095de;
+            margin-bottom: 10px;
+        }
+
+        &__cost-basis {
+
+        }
+
+        &__button {
+            border: solid 2px #3095de;
+            color: #3095de;
+            position: absolute;
+            bottom:  50px;
+            padding: 20px;
+            width: 80%;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        &__button--main {
+            border: solid 2px #3095de;
+            background-color: #3095de;
+            color: #ffffff;
+            position: absolute;
+            bottom:  50px;
+            padding: 20px;
+            width: 80%;
+            text-align: center;
+            font-size: 20px;
+        }
+    }
+
+    // &__section--main {
+    //     display: flex;
+    //     flex-direction: column;
+    //     align-items: flex-start;
+    //     justify-content: flex-start;
+    //     border: solid 1px #e0e0e0;
+    //     background-color: #FAFAFA;
+
+    //     height: 80%;
+    //     width: 30%;
+
+    // }
+}
