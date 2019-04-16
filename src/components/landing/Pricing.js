@@ -31,7 +31,9 @@ const Pricing = (props) => {
                             <div className="pricing__section__blurb">1 user</div>
                             <div className="pricing__section__cost">£Free</div>
                             <div className="pricing__section__cost-basis">GBP / User / Month</div>
-                            <div className="pricing__section__button">Get Started Now</div>
+                            <Link to="/auth/signup">
+                                <div className="pricing__section__button">Get Started Now</div>
+                            </Link>
                         </div>
                         <div className="pricing__section pricing__section--main">
                             <div className="pricing__section__title">Business</div>
