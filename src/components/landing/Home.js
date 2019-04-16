@@ -9,23 +9,26 @@ const Home = (props) => {
             <div className="domain__choice">
                 <div className="home__header">
                     <div className="brand">
-                        <div className="section__img"></div>
+                        <Link to="/home">
+                            <div className="section__img"></div>
+                        </Link>
                         <h1>Dynki</h1>
                     </div>
                     <div className="home__links">
-                        <Link to="/features">Features</Link>
+                        {/* <Link to="/features">Features</Link> */}
                         <Link to="/Pricing">Pricing</Link>
                         <Link to="/auth/login">Log In</Link>
                         <Link to="/auth/signup">Sign Up</Link>
                     </div>
                 </div>
 
-                <section className="home__sample">
-                    <div className="home__sample__h1">
-                    
-                    </div>
-                    <img alt="sample" src="./assets/img/sample.png"></img>
-                </section>
+                <div className="home">
+                    <section className="home__sample">
+                        <div className="home__h1">An elegant way to manage your work load</div>
+                        <div className="home__h2">Whether its planning work or tracking orders</div>
+                        <img alt="sample" src="./assets/img/sample.png"></img>
+                    </section>
+                </div>
             </div>
         </React.Fragment>
     )

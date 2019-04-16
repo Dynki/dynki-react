@@ -57,7 +57,7 @@ class LoginForm extends Component {
                         )}
                         <Link className="login-form-forgot" to='/auth/forgot'>Forgot password</Link>
                         <Button id="loginbtn" type="dashed" htmlType="submit" className="domain__btn" loading={this.props.pending}>
-                            Sign In
+                            Log In
                             <Icon type="enter" />
                         </Button>
                         Or <Link id="register" to="/auth/signup">register now!</Link>
