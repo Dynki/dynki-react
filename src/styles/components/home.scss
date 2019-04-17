@@ -64,3 +64,44 @@
         }
     }
 }
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
+    .home__links {
+        position: absolute;
+        right: 27px;
+        top: 35px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+
+        a {
+            margin-left: 18px;
+            margin-right: 9px;
+            color: #414141;
+            font-family: 'Raleway';
+            font-size: 14px;
+            font-weight: 600;
+        }
+    }
+
+    .home {
+        &__sample {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            width: 87%;
+            padding: 15px;
+            padding-top: 25px;
+
+            img {
+                width: 105%;
+            }
+        }
+    }
+
+}

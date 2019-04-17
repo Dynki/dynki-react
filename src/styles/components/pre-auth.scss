@@ -262,18 +262,38 @@
 @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
     .domain__choice {
         .brand {
-            visibility: hidden;
+            position: inherit;
+            padding: 10px;
+            display: block;
+
+            h1 {
+                margin-bottom: 0px;
+            }
         }
 
         .section {
+            grid-template-columns: 1fr 11fr 1fr;
+
             &__img {
-                visibility: hidden;
+                // visibility: hidden;
             }
             .main {
+                &__form {
+                    width: 100%;
+                    overflow: scroll;
+                }
+
+
                 &__pic {
                     visibility: hidden;
                 }
             }
+        }
+    }
+
+    .login {
+        &__heading {
+            font-size: 31px;
         }
     }
 }

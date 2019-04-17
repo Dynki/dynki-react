@@ -102,3 +102,32 @@
 
     // }
 }
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
+    .pricing {
+        display: flex;
+        flex-direction: column;
+
+        &__header {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            width: 87%;
+            height: 80vh;
+            overflow: scroll;
+        }
+
+        &__section {
+            width: 100%;
+            padding: 30px;
+
+            &__button {
+                position: inherit;
+                width: 100%;
+                bottom: 0px;
+            }
+        }    
+    }
+}
+    

@@ -36,7 +36,7 @@ export const checkDomain = (name) => {
 
         dispatch({ type: 'VALIDATING_DOMAIN' })
 
-        const url = `https://us-central1-dynki-c5141.cloudfunctions.net/checkdomain/${name}`;
+        const url = `https://us-central1-dynki-prod.cloudfunctions.net/checkdomain/${name}`;
         const firebase = getFirebase();
 
         try {
@@ -58,7 +58,7 @@ export const createDomain = (name) => {
 
         dispatch({ type: 'CREATING_DOMAIN' })
 
-        const url = `https://us-central1-dynki-c5141.cloudfunctions.net/domains`;
+        const url = `https://us-central1-dynki-prod.cloudfunctions.net/domains`;
         const firebase = getFirebase();
 
         try {
