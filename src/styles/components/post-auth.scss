@@ -246,3 +246,50 @@
         padding-bottom: 20px;
     }
 }
+
+.sidenav-drawer {
+    &__burger {
+        display: none;
+    }
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
+    .post-auth {
+        &__content {
+
+            .toolbar {
+                padding-left: 12px;
+
+                .anticon {
+                    font-size: 26px;
+                    margin-right: 10px;
+                }
+            }
+
+            grid-template-columns: 1fr;
+            main {
+                grid-column-start: 1;
+            }
+        }
+    }
+
+    .ant-drawer-body {
+        .side-menu {
+            display: block;
+            border: none;
+            margin: 0px;
+        }
+    }
+
+    .sidenav-drawer {
+        &__burger {
+            display: block;
+        }
+
+        .ant-drawer-body {
+            padding-top: 0px;
+            padding-left: 10px;
+        }
+    }
+}

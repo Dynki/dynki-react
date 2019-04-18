@@ -4,6 +4,7 @@ import { Menu, Dropdown, Icon } from 'antd';
 
 import { signOut } from '../../../store/actions/authActions';
 import UserProfileDrawer from '../../auth/UserProfileDrawer';
+import SidenavDrawer from '../sidenav/SidenavDrawer';
 
 class Toolbar extends React.Component {
     
@@ -25,6 +26,7 @@ class Toolbar extends React.Component {
         
         return (
             <div className="toolbar">
+                <SidenavDrawer domain={this.props.domain}/>
                 <div className={this.props.progress ? "toolbar__img--progress" : "toolbar__img"}></div>
                 <div className="toolbar__brand">Dynki</div>
                 <Dropdown overlay={menu} trigger={['click']}>
@@ -41,6 +43,7 @@ class Toolbar extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+        domain: state.domain,
         currentUser: state.auth.currentUser
     }
 }

@@ -203,3 +203,10 @@ ng-sidebar {
     }
 
 }
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
+    .side-menu {
+        display: none;
+    }
+}
