@@ -29,9 +29,9 @@
 }
 
 .side-menu {
-    height: 100vh;
+    height: 100%;
     border-right: 1px solid #e8e8e8;
-    margin-top: 65px;
+    grid-area: sidenav;
 
     &__brand {
         background-color: #e1e4e5;

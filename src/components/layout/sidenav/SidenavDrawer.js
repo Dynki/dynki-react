@@ -29,7 +29,8 @@ const SidenavDrawer = (props) => {
                     overflow: 'auto',
                     height: 'calc(100% - 108px)',
                     paddingBottom: '108px',
-                    'padding-top': '0px'
+                    'padding-top': '0px',
+                    'z-index': '20000'
                 }}
             >
                 <div>
