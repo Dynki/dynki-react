@@ -20,7 +20,7 @@ const SidenavDrawer = (props) => {
 
             <Drawer
                 title="Main menu"
-                width={370}
+                width={250}
                 onClose={onClose}
                 className="sidenav-drawer"
                 visible={visible}
@@ -29,8 +29,8 @@ const SidenavDrawer = (props) => {
                     overflow: 'auto',
                     height: 'calc(100% - 108px)',
                     paddingBottom: '108px',
-                    'padding-top': '0px',
-                    'z-index': '20000'
+                    'paddingTop': '0px',
+                    'zIndex': '20000'
                 }}
             >
                 <div>

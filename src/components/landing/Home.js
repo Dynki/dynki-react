@@ -6,7 +6,7 @@ const Home = (props) => {
 
     return (
         <React.Fragment>
-            <div className="domain__choice">
+            <div className="home__choice">
                 <div className="home__header">
                     <div className="brand">
                         <Link to="/home">
@@ -26,8 +26,14 @@ const Home = (props) => {
                     <section className="home__sample">
                         <div className="home__h1">An elegant way to manage your work load</div>
                         <div className="home__h2">Whether its planning work or tracking orders</div>
+                        <div className="home__button">Get Started For Free</div>
                         <img alt="sample" src="./assets/img/sample.png"></img>
                     </section>
+                </div>
+                <div className="home__section2">
+                    <div className="home__section2__h1">Free Project Tracking Software</div>
+                    <p className="home__section2__h2">Track everything, use for work or for personal life. Dynki tracking software is effortless and beautiful to use.</p>
+                    <p className="home__section2__h2">Create custom boards that allow you to track things your way. With numerous column types you can easily at a glance keep track of everything of importance.</p>
                 </div>
             </div>
         </React.Fragment>

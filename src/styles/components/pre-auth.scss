@@ -10,16 +10,20 @@
     display: grid;
     grid-template-rows: 1fr 5fr 0.5fr;
     grid-template-columns: 1fr;
-    grid-template-areas: "header" "section" "footer";
+    grid-template-areas: "header" "section" "section2" "footer";
     height: 100vh;
     width: 100vw;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    min-height: 740px;
 
     &::after {
+        min-height: 740px;
         height: 100vh;
         width: 100vw;
         content: "";
-        background-image: url(/assets/img/chilling-min.jpg), none;
-        opacity: 0.8;
+        background-image: url(/assets/img/snippy.jpg), none;
+        //opacity: 0.8;
         background-size:     cover;
         background-repeat:   no-repeat;
         background-position: center center;  
@@ -41,7 +45,7 @@
     .brand {
         position: absolute;
         left: 15px;
-        top: 15px;
+        top: 9px;
         grid-area: header;
         display: flex;
         flex-direction: row;
@@ -51,7 +55,7 @@
         h1 {
             font-size: 34px;
             font-weight: 300;
-            color: #fff;
+            color: #414141c2;
         }
     }
 
@@ -60,7 +64,7 @@
 
         display: grid;
         grid-template-rows: 1fr;
-        grid-template-columns: 2fr 3fr 3fr;
+        grid-template-columns: 1fr 3fr 3fr 1fr;
         grid-template-areas: "blank cont pic";
         
         .main {
@@ -129,9 +133,9 @@
                     color: rgba(0,0,0,.65);
                 }
 
-                -webkit-box-shadow: 10px 10px 197px -20px rgba(0,0,0,0.93);
-                -moz-box-shadow: 10px 10px 197px -20px rgba(0,0,0,0.93);
-                box-shadow: 10px 10px 197px -20px rgba(0,0,0,0.93);
+                // -webkit-box-shadow: 10px 10px 197px -20px rgba(0,0,0,0.93);
+                // -moz-box-shadow: 10px 10px 197px -20px rgba(0,0,0,0.93);
+                // box-shadow: 10px 10px 197px -20px rgba(0,0,0,0.93);
 
                 grid-area: cont;
                 background-color: #fff;
@@ -263,11 +267,19 @@
     .domain__choice {
         .brand {
             position: inherit;
-            padding: 10px;
-            display: block;
+            left: 15px;
+            top: 15px;
+            grid-area: header;
+            display: flex;
+            flex-direction: row;
+            padding: 0px;
+            padding-top: 9px;
 
             h1 {
                 margin-bottom: 0px;
+                font-size: 23px;
+                font-weight: 300;
+                color: #414141c2;
             }
         }
 
@@ -275,8 +287,13 @@
             grid-template-columns: 1fr 11fr 1fr;
 
             &__img {
-                // visibility: hidden;
+                width: 38px;
+                height: 31px;
+                margin-left: 0px;
+                background-image: url(/assets/img/logo-blue.png), none;
+                background-size: 37px 29px;
             }
+
             .main {
                 &__form {
                     width: 100%;
