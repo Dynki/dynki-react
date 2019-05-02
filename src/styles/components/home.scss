@@ -1,8 +1,8 @@
 .home__choice {
     display: grid;
-    grid-template-rows: minmax(1fr, 80px) 5fr 5fr 0.5fr;
+    grid-template-rows: minmax(1fr, 80px) 5fr 5fr 5fr 0.5fr;
     grid-template-columns: 1fr;
-    grid-template-areas: "header" "section" "section2" "footer";
+    grid-template-areas: "header" "section" "section2" "section3" "footer";
     height: 100%;
     width: 100vw;
     overflow-x: hidden;
@@ -309,6 +309,50 @@
         }
     }
 
+    &__section3 {
+        padding: 50px;
+        background-color: #EFF1F3;
+        grid-area: section3;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        &__container {
+            padding: 20px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+
+            .home-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+            }            
+
+            .anticon {
+                font-size: 80px;
+            }
+
+            .h1 {
+                font-size: 30px;
+                margin: 15px;
+                text-align: center;
+            }
+    
+            .h2 {
+                font-size: 20px;
+                margin: 5px;
+                text-align: center;
+            }
+        }
+
+    }
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -318,8 +362,13 @@
         background-color: #2E84C2;
         padding: 15px;
         color: #fff;
+        font-size: 20px;
         margin-bottom: 24px;
         cursor: pointer;
+
+        &:hover {
+            background-color: lighten(#2E84C2, 10%);
+        }
     }
 
     &__h1 {
@@ -410,7 +459,10 @@
         position: relative;
         // min-height: calc(100vh - 80px);
 
+
         &__choice {
+            grid-template-columns: minmax(1fr, 100vw);
+
             .brand {
                 position: absolute;
                 left: 10px;
@@ -457,6 +509,18 @@
             }
     
         }
+
+        &__section3 {
+    
+            &__container {
+                flex-direction: column;
+                justify-content: center;
+
+                .home-container {
+                    margin-bottom: 40px;
+                }
+            }
+        }
     
         &__sample {
             display: flex;
@@ -480,10 +544,5 @@
         &__h2 {
             text-align: center;
         }
-
-
     }
-
-
-
 }
