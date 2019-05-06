@@ -175,7 +175,7 @@
             overflow: hidden;
             overflow-y: auto;
             //height: 100%;
-            height: calc(100vh - 65px);
+            // height: calc(100vh - 65px);
 
             @supports (-ms-accelerator:true) {
                 /* IE Edge 12+ CSS styles go here */ 

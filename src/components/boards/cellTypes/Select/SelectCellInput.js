@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input } from 'antd';
+import { Form, Input, Icon } from 'antd';
 
 const FormItem = Form.Item;
 
@@ -27,23 +27,46 @@ const SelectCForm = Form.create({
         });
     }
 
+    let styling = 'select__input';
+    let fieldStyling = 'select__field';
+
+    if (props.selected) {
+        fieldStyling += ' select__field--selected';
+    }
+
+    if (props.option.default) {
+        fieldStyling += ' select__field--suffix';
+        styling += ' select__input--suffix';
+    }
+
+
     return (
         <div className="select__form">
-            <Form autoComplete="off" onSubmit={handleSubmit}>
+            <Form autoComplete="nope" onSubmit={handleSubmit}>
                 <FormItem>
-                    {getFieldDecorator('title', {
-                        rules: [],
-                    })(
-                        <Input 
-                        className={"select__input " + (props.selected ? "select__input--selected" : "")} 
-                        readOnly={(props.option && props.option.disabled) ? true : false}
-                        placeholder="Label goes here" 
-                        autoComplete="no way" 
-                        style={{backgroundColor: `#${props.option.color}`, color: `#${props.option.fgColor}`}}
-                        onClick={() => props.onSelected()}
-                        onBlur={() => handleSubmit()}
-                        />
-                    )}
+                    <div className={fieldStyling}>
+                        {getFieldDecorator('title', {
+                            rules: [],
+                        })(
+                            <Input 
+                            className={styling} 
+                            readOnly={(props.option && props.option.disabled) ? true : false}
+                            placeholder="Label goes here" 
+                            autoComplete="nope" 
+                            style={{backgroundColor: `#${props.option.color}`, color: `#${props.option.fgColor}`}}
+                            onClick={() => props.onSelected()}
+                            onBlur={() => handleSubmit()}
+                            />
+                        )}
+                            <div 
+                            className="select__suffix"
+                            style={{backgroundColor: `#${props.option.color}`, color: `#${props.option.fgColor}`}}
+                            >
+                                <Icon type="pushpin" style={{
+                                    color: props.option.default ? `#${props.option.fgColor}` : `#${props.option.color}`
+                                }}/>
+                            </div>
+                    </div>
                 </FormItem>
             </Form>
         </div>

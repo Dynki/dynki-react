@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Drawer, Button, Icon, Switch } from 'antd';
+import { Drawer, Button, Card, Checkbox, Icon, Switch } from 'antd';
 import SelectCellForm from './SelectCellInput';
 import SelectColorSwatch from './SelectColorSwatch';
 
@@ -23,6 +23,20 @@ const SelectDrawer = (props) => {
 
     const onSelectOption = option => {
         setSelectedValue(option);
+    }
+
+    const onDefaultSelected = e => {
+        if (selectedValue) {
+            selectedValue.default = e.target.checked;
+            const column = {...props.column};
+            column.values = column.values.map(v => {
+                if (v.key !== selectedValue.key) {
+                    v.default = false;
+                } 
+                return v;
+            });
+            props.onUpdateColumn(column);
+        }
     }
 
     const onFgColorSelected = color => {
@@ -72,7 +86,7 @@ const SelectDrawer = (props) => {
             </Button>
 
             <Drawer
-                title="Edit Labels"
+                title={props.column.title + " - Labels"}
                 width={370}
                 onClose={onClose}
                 visible={visible}
@@ -82,6 +96,9 @@ const SelectDrawer = (props) => {
                     paddingBottom: '108px',
                 }}
             >
+                <Button onClick={addNewValue} className="select__newbtn"  type="dashed" size="small">
+                    <Icon type="plus" />New Label
+                </Button>
                 <div className="select__drawer-colors">
                     {props.column.values.map((c, i) => {
                         return <SelectCellForm
@@ -93,31 +110,39 @@ const SelectDrawer = (props) => {
                         </SelectCellForm>
                     })}
                 </div>
-                <Button onClick={addNewValue} className="select__newbtn"  type="dashed" size="small">
-                    <Icon type="plus" />New Label
-                </Button>
-                <Switch
-                    className="select__switch"
-                    checkedChildren="enabled"
-                    unCheckedChildren="disabled"
-                    defaultChecked
-                    checked={selectedValue && !selectedValue.disabled}
-                    onClick={onToggleOptionDisabled}
-                />
-                <div className="select-swatches">
-                    <SelectColorSwatch
-                        selectedColor={selectedValue ? selectedValue.fgColor : undefined}
-                        onColorSelected={onFgColorSelected}
-                        title="Color"
-                        colors={fgColors}
+                <Card
+                    title="Label Properties"
+                >
+                    <Switch
+                        className="select__switch"
+                        checkedChildren="Enabled"
+                        unCheckedChildren="Disabled"
+                        defaultChecked
+                        checked={selectedValue && !selectedValue.disabled}
+                        onClick={onToggleOptionDisabled}
+                    />
+                    <Checkbox 
+                        className="select__default" 
+                        checked={selectedValue && selectedValue.default}
+                        onChange={onDefaultSelected}
                     >
-                    </SelectColorSwatch>
-                    <SelectColorSwatch
-                        selectedColor={selectedValue ? selectedValue.color : undefined}
-                        onColorSelected={onColorSelected}
-                        title="Background">
-                    </SelectColorSwatch>
-                </div>
+                        Is default label
+                    </Checkbox>
+                    <div className="select-swatches">
+                        <SelectColorSwatch
+                            selectedColor={selectedValue ? selectedValue.fgColor : undefined}
+                            onColorSelected={onFgColorSelected}
+                            title="Color"
+                            colors={fgColors}
+                        >
+                        </SelectColorSwatch>
+                        <SelectColorSwatch
+                            selectedColor={selectedValue ? selectedValue.color : undefined}
+                            onColorSelected={onColorSelected}
+                            title="Background">
+                        </SelectColorSwatch>
+                    </div>
+                </Card>
             </Drawer>
         </React.Fragment>
     );
