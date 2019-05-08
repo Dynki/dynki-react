@@ -1,3 +1,36 @@
 .ant-input, .ant-menu, .ant-dropdown {
     font-family: 'Raleway', sans-serif!important;
 }
+
+.ant-drawer-title {
+    margin: 0;
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 500;
+    color: #3095de;
+}
+
+.ant-carousel {
+    width: 317px;
+    height: 91px;
+    margin-bottom: 32px!important;
+
+    .slick-dots {
+        bottom: -19px!important;
+
+        li {
+            &.slick-active {
+                button {
+                    background-color: #595959!important;
+                    height: 8px!important;
+                }
+            }
+    
+            button {
+                background-color: darken(#EFF1F3, 40%)!important;
+                height: 8px!important;
+                border-radius: 10px;
+            }
+        }
+    }
+}

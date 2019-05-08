@@ -163,8 +163,26 @@ export const newRow = (row) => {
         const currentBoard = getState().boards.currentBoard;
         const domainId = getState().domain.domainId;
 
+        let newData = { id: newGuid(), description: row.description };
+
+        if (currentBoard.columns) {
+            // Add any default values
+            currentBoard.columns.forEach(col => {
+                // Check if column is of type select.
+                if (col.class === 'select' && col.values) {
+                    
+                    // Check if any values for the select column are marked as the default value.
+                    col.values.forEach(val => {
+                        if (val['default'] === true) {
+                            newData = {...newData, [col.model]: val.key }
+                        }
+                    });
+                }
+            });
+        }
+
         // Add the new row to the current board, this MUST include the columns too.
-        currentBoard.entities.push({ id: newGuid(), description: row.description });
+        currentBoard.entities.push(newData);
 
         // Need to remove subscription function before saving.
         const updatedBoard = _.cloneDeep(currentBoard);
