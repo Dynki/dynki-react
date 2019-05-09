@@ -39,9 +39,33 @@ const SelectCForm = Form.create({
         styling += ' select__input--suffix';
     }
 
+    const shadeColor = (color, percent) => {
+
+        var R = parseInt(color.substring(1,3),16);
+        var G = parseInt(color.substring(3,5),16);
+        var B = parseInt(color.substring(5,7),16);
+    
+        R = parseInt(R * (100 + percent) / 100);
+        G = parseInt(G * (100 + percent) / 100);
+        B = parseInt(B * (100 + percent) / 100);
+    
+        R = (R<255)?R:255;  
+        G = (G<255)?G:255;  
+        B = (B<255)?B:255;  
+    
+        var RR = ((R.toString(16).length==1)?"0"+R.toString(16):R.toString(16));
+        var GG = ((G.toString(16).length==1)?"0"+G.toString(16):G.toString(16));
+        var BB = ((B.toString(16).length==1)?"0"+B.toString(16):B.toString(16));
+    
+        return "#"+RR+GG+BB;
+    }
+
 
     return (
-        <div className="select__form">
+        <div 
+            ref={props.provided.innerRef} {...props.provided.draggableProps}
+            className="select__form"
+        >
             <Form autoComplete="nope" onSubmit={handleSubmit}>
                 <FormItem>
                     <div className={fieldStyling}>
@@ -59,11 +83,12 @@ const SelectCForm = Form.create({
                             />
                         )}
                             <div 
-                            className="select__suffix"
-                            style={{backgroundColor: `#${props.option.color}`, color: `#${props.option.fgColor}`}}
+                            className="select__suffix draghandle"
+                            {...props.provided.dragHandleProps}
+                            style={{backgroundColor: shadeColor('#'+props.option.color, -40), color: `#${props.option.fgColor}`}}
                             >
-                                <Icon type="pushpin" style={{
-                                    color: props.option.default ? `#${props.option.fgColor}` : `#${props.option.color}`
+                                <Icon type="crown" style={{
+                                    color: props.option.default ? `#${props.option.fgColor}` : shadeColor('#'+props.option.color, -40)
                                 }}/>
                             </div>
                     </div>
@@ -122,6 +147,7 @@ class SelectCellForm extends React.Component {
                 <SelectCForm 
                     {...this.fields}
                     option={option}
+                    provided={this.props.provided}
                     selected={selectedOption && option.key === selectedOption.key ? true : false}
                     onSelected={this.onSelected}
                     onSubmit={this.handleFormSubmit} 

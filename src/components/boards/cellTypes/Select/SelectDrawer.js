@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Drawer, Button, Card, Checkbox, Icon, Switch } from 'antd';
 import SelectCellForm from './SelectCellInput';
 import SelectColorSwatch from './SelectColorSwatch';
+import { Droppable, Draggable, DragDropContext } from 'react-beautiful-dnd';
 
 const SelectDrawer = (props) => {
 
@@ -79,6 +80,35 @@ const SelectDrawer = (props) => {
         props.onAddNewColumnValue(props.column.model);
     }
 
+    // Helper function for drag drop reordering or board rows.
+    const reorder = (list, startIndex, endIndex) => {
+        const result = Array.from(list);
+        const [removed] = result.splice(startIndex, 1);
+        result.splice(endIndex, 0, removed);
+    
+        return result;
+    };
+    
+    // Triggered when drag of board row have ended.
+    // Reorders the entities (rows) within the board and calls logic to persist result.
+    const onDragEnd = useCallback(() => {
+        // // dropped outside the list
+        // if (!result.destination) {
+        //     return;
+        // }
+
+        // const newColumn = props.column;
+        // newColumn.values = reorder(
+        //     newColumn.values,
+        //     result.source.index,
+        //     result.destination.index
+        // );
+
+        // console.log('New column values::', newColumn.values);
+        console.log('Drag End Fired');
+    }, []);
+
+
     return (
         <React.Fragment>
             <Button onClick={showDrawer} type="dashed" size="small">
@@ -96,53 +126,66 @@ const SelectDrawer = (props) => {
                     paddingBottom: '108px',
                 }}
             >
-                <Button onClick={addNewValue} className="select__newbtn"  type="dashed" size="small">
-                    <Icon type="plus" />New Label
-                </Button>
-                <div className="select__drawer-colors">
-                    {props.column.values.map((c, i) => {
-                        return <SelectCellForm
-                            onSelected={onSelectOption}
-                            onTitleChanged={onTitleChanged}
-                            key={i}
-                            option={c}
-                            selectedOption={selectedValue}>
-                        </SelectCellForm>
-                    })}
-                </div>
-                <Card
-                    title="Label Properties"
-                >
-                    <Switch
-                        className="select__switch"
-                        checkedChildren="Enabled"
-                        unCheckedChildren="Disabled"
-                        defaultChecked
-                        checked={selectedValue && !selectedValue.disabled}
-                        onClick={onToggleOptionDisabled}
-                    />
-                    <Checkbox 
-                        className="select__default" 
-                        checked={selectedValue && selectedValue.default}
-                        onChange={onDefaultSelected}
+                    <Button onClick={addNewValue} className="select__newbtn"  type="dashed" size="small">
+                        <Icon type="plus" />New Label
+                    </Button>
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Droppable droppableId="select-droppable">
+                            {provided =>(
+                                <div ref={provided.innerRef} {...provided.droppableProps} className="select__drawer-colors">
+                                    {props.column.values.map((c, i) => {
+                                        return (
+                                            <Draggable key={i} draggableId={'value-' + i.toString()} index={i}>
+                                                {provided => (
+                                                    <SelectCellForm
+                                                        onSelected={onSelectOption}
+                                                        onTitleChanged={onTitleChanged}
+                                                        key={i}
+                                                        option={c}
+                                                        provided={provided}
+                                                        selectedOption={selectedValue}>
+                                                    </SelectCellForm>
+                                                )}
+                                            </Draggable>
+                                        )
+                                    })}
+                                </div>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
+                    <Card
+                        title="Label Properties"
                     >
-                        Is default label
-                    </Checkbox>
-                    <div className="select-swatches">
-                        <SelectColorSwatch
-                            selectedColor={selectedValue ? selectedValue.fgColor : undefined}
-                            onColorSelected={onFgColorSelected}
-                            title="Color"
-                            colors={fgColors}
+                        <Switch
+                            className="select__switch"
+                            checkedChildren="Enabled"
+                            unCheckedChildren="Disabled"
+                            defaultChecked
+                            checked={selectedValue && !selectedValue.disabled}
+                            onClick={onToggleOptionDisabled}
+                        />
+                        <Checkbox 
+                            className="select__default" 
+                            checked={selectedValue && selectedValue.default}
+                            onChange={onDefaultSelected}
                         >
-                        </SelectColorSwatch>
-                        <SelectColorSwatch
-                            selectedColor={selectedValue ? selectedValue.color : undefined}
-                            onColorSelected={onColorSelected}
-                            title="Background">
-                        </SelectColorSwatch>
-                    </div>
-                </Card>
+                            Is default label
+                        </Checkbox>
+                        <div className="select-swatches">
+                            <SelectColorSwatch
+                                selectedColor={selectedValue ? selectedValue.fgColor : undefined}
+                                onColorSelected={onFgColorSelected}
+                                title="Color"
+                                colors={fgColors}
+                            >
+                            </SelectColorSwatch>
+                            <SelectColorSwatch
+                                selectedColor={selectedValue ? selectedValue.color : undefined}
+                                onColorSelected={onColorSelected}
+                                title="Background">
+                            </SelectColorSwatch>
+                        </div>
+                    </Card>
             </Drawer>
         </React.Fragment>
     );
