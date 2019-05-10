@@ -46,6 +46,8 @@ export class Board extends React.Component {
     // Triggered when drag of board row have ended.
     // Reorders the entities (rows) within the board and calls logic to persist result.
     onDragEnd = (result) => {
+        console.log('Drag Finished', result);
+
         // dropped outside the list
         if (!result.destination) {
             return;

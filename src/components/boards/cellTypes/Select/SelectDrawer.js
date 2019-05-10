@@ -129,30 +129,28 @@ const SelectDrawer = (props) => {
                     <Button onClick={addNewValue} className="select__newbtn"  type="dashed" size="small">
                         <Icon type="plus" />New Label
                     </Button>
-                    <DragDropContext onDragEnd={onDragEnd}>
-                        <Droppable droppableId="select-droppable">
-                            {provided =>(
-                                <div ref={provided.innerRef} {...provided.droppableProps} className="select__drawer-colors">
-                                    {props.column.values.map((c, i) => {
-                                        return (
-                                            <Draggable key={i} draggableId={'value-' + i.toString()} index={i}>
-                                                {provided => (
-                                                    <SelectCellForm
-                                                        onSelected={onSelectOption}
-                                                        onTitleChanged={onTitleChanged}
-                                                        key={i}
-                                                        option={c}
-                                                        provided={provided}
-                                                        selectedOption={selectedValue}>
-                                                    </SelectCellForm>
-                                                )}
-                                            </Draggable>
-                                        )
-                                    })}
-                                </div>
-                            )}
-                        </Droppable>
-                    </DragDropContext>
+                    <Droppable droppableId="select-droppable">
+                        {outerProvided =>(
+                            <div ref={outerProvided.innerRef} {...outerProvided.droppableProps} className="select__drawer-colors">
+                                {props.column.values.map((c, i) => {
+                                    return (
+                                        <Draggable key={i} draggableId={'value-' + i.toString()} index={i}>
+                                            {provided => (
+                                                <SelectCellForm
+                                                    onSelected={onSelectOption}
+                                                    onTitleChanged={onTitleChanged}
+                                                    key={i}
+                                                    option={c}
+                                                    provided={provided}
+                                                    selectedOption={selectedValue}>
+                                                </SelectCellForm>
+                                            )}
+                                        </Draggable>
+                                    )
+                                })}
+                            </div>
+                        )}  
+                    </Droppable>
                     <Card
                         title="Label Properties"
                     >
