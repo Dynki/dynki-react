@@ -1,8 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { Drawer, Button, Card, Checkbox, Icon, Switch } from 'antd';
 import SelectCellForm from './SelectCellInput';
 import SelectColorSwatch from './SelectColorSwatch';
-import { Droppable, Draggable, DragDropContext } from 'react-beautiful-dnd';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 const SelectDrawer = (props) => {
 
@@ -80,35 +80,6 @@ const SelectDrawer = (props) => {
         props.onAddNewColumnValue(props.column.model);
     }
 
-    // Helper function for drag drop reordering or board rows.
-    const reorder = (list, startIndex, endIndex) => {
-        const result = Array.from(list);
-        const [removed] = result.splice(startIndex, 1);
-        result.splice(endIndex, 0, removed);
-    
-        return result;
-    };
-    
-    // Triggered when drag of board row have ended.
-    // Reorders the entities (rows) within the board and calls logic to persist result.
-    const onDragEnd = useCallback(() => {
-        // // dropped outside the list
-        // if (!result.destination) {
-        //     return;
-        // }
-
-        // const newColumn = props.column;
-        // newColumn.values = reorder(
-        //     newColumn.values,
-        //     result.source.index,
-        //     result.destination.index
-        // );
-
-        // console.log('New column values::', newColumn.values);
-        console.log('Drag End Fired');
-    }, []);
-
-
     return (
         <React.Fragment>
             <Button onClick={showDrawer} type="dashed" size="small">
@@ -129,7 +100,7 @@ const SelectDrawer = (props) => {
                     <Button onClick={addNewValue} className="select__newbtn"  type="dashed" size="small">
                         <Icon type="plus" />New Label
                     </Button>
-                    <Droppable droppableId="select-droppable">
+                    <Droppable droppableId={props.column.model}>
                         {outerProvided =>(
                             <div ref={outerProvided.innerRef} {...outerProvided.droppableProps} className="select__drawer-colors">
                                 {props.column.values.map((c, i) => {

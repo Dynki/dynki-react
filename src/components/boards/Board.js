@@ -7,7 +7,7 @@ import BoardHeader from './BoardHeader';
 import BoardDetail from './BoardDetail';
 import BoardNewRow from './BoardNewRow';
 
-import { updateBoard, newRow } from '../../store/actions/boardActions';
+import { updateBoard, newRow, updateColumnValueOrder } from '../../store/actions/boardActions';
 
 // Container for board components.
 export class Board extends React.Component {
@@ -52,15 +52,19 @@ export class Board extends React.Component {
         if (!result.destination) {
             return;
         }
-             
-        const newBoard = this.props.board;
-        newBoard.entities = this.reorder(
-            newBoard.entities,
-            result.source.index,
-            result.destination.index
-        );
-
-        this.onUpdateBoard(newBoard);
+    
+        if (result.draggableId.indexOf('value') > -1) {
+            this.props.updateColumnValueOrder(result);
+        } else {
+            const newBoard = this.props.board;
+            newBoard.entities = this.reorder(
+                newBoard.entities,
+                result.source.index,
+                result.destination.index
+            );
+    
+            this.onUpdateBoard(newBoard);
+        }
     }
 
     render() {
@@ -96,6 +100,7 @@ export const mapStateToProps = (state) => {
 export const mapDispatchToProps = (dispatch) => {
     return{
       updateBoard: (board) => dispatch(updateBoard(board)),
+      updateColumnValueOrder: (data) => dispatch(updateColumnValueOrder(data)),
       newRow: (description) => dispatch(newRow(description))
     }
 }
