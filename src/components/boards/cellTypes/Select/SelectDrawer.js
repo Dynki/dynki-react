@@ -102,23 +102,25 @@ const SelectDrawer = (props) => {
                     </Button>
                     <Droppable droppableId={props.column.model}>
                         {outerProvided =>(
-                            <div ref={outerProvided.innerRef} {...outerProvided.droppableProps} className="select__drawer-colors">
-                                {props.column.values.map((c, i) => {
-                                    return (
-                                        <Draggable key={i} draggableId={'value-' + i.toString()} index={i}>
-                                            {provided => (
-                                                <SelectCellForm
-                                                    onSelected={onSelectOption}
-                                                    onTitleChanged={onTitleChanged}
-                                                    key={i}
-                                                    option={c}
-                                                    provided={provided}
-                                                    selectedOption={selectedValue}>
-                                                </SelectCellForm>
-                                            )}
-                                        </Draggable>
-                                    )
-                                })}
+                            <div ref={outerProvided.innerRef} {...outerProvided.droppableProps}>
+                                <div className="select__drawer-colors">
+                                    {props.column.values.map((c, i) => {
+                                        return (
+                                            <Draggable key={'value' + i} draggableId={'value-' + i.toString()} index={i}>
+                                                {provided => (
+                                                    <SelectCellForm
+                                                        onSelected={onSelectOption}
+                                                        onTitleChanged={onTitleChanged}
+                                                        key={i}
+                                                        option={c}
+                                                        provided={provided}
+                                                        selectedOption={selectedValue}>
+                                                    </SelectCellForm>
+                                                )}
+                                            </Draggable>
+                                        )
+                                    })}
+                                </div>
                             </div>
                         )}  
                     </Droppable>

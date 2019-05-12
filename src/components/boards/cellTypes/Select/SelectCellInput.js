@@ -143,7 +143,7 @@ class SelectCellForm extends React.Component {
         const { selectedOption, option } = this.props;
 
         return (
-            <div>
+            <React.Fragment>
                 <SelectCForm 
                     {...this.fields}
                     option={option}
@@ -153,7 +153,7 @@ class SelectCellForm extends React.Component {
                     onSubmit={this.handleFormSubmit} 
                     onChange={this.handleFormChange} 
                 />
-            </div>
+            </React.Fragment>
         );
     }
 }

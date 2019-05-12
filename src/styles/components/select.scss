@@ -5,7 +5,7 @@
     &__field {
         display: flex;
         flex-direction: row;
-        width: 148px;
+        width: 141px;
 
         &--selected {
             outline: 2px solid #9fafc1;
@@ -14,7 +14,7 @@
         }
 
         &--suffix {
-            width: 148px;
+            width: 141px;
             border-top-right-radius: 0px;
             border-bottom-right-radius: 0px;
             margin-right: 0px;
@@ -44,7 +44,7 @@
         grid-auto-flow: row;
         grid-template-columns: 148px 150px;
         grid-template-rows: auto;
-        grid-gap: 15px;
+        grid-gap: 15px 7px;
         margin-bottom: 5px;
         margin-left: 5px;
 
@@ -115,7 +115,7 @@
         }
 
 
-        width: 127px;
+        width: 120px;
         margin-right: 0px!important;
         border: none;
         border-top-right-radius: 0px!important;
