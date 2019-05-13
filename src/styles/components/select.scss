@@ -5,7 +5,7 @@
     &__field {
         display: flex;
         flex-direction: row;
-        width: 141px;
+        width: 100%;
 
         &--selected {
             outline: 2px solid #9fafc1;
@@ -14,7 +14,7 @@
         }
 
         &--suffix {
-            width: 141px;
+            width: 100%;
             border-top-right-radius: 0px;
             border-bottom-right-radius: 0px;
             margin-right: 0px;
@@ -40,13 +40,16 @@
     }
 
     &__drawer-colors {
-        display: grid;
-        grid-auto-flow: row;
-        grid-template-columns: 148px 150px;
-        grid-template-rows: auto;
-        grid-gap: 15px 7px;
-        margin-bottom: 5px;
-        margin-left: 5px;
+        list-style: none;
+        list-style-type: none;
+        width: 95%;
+        margin: 0px;
+        margin-left: 7px;
+        padding: 0px;
+
+        li {
+            margin-bottom: 15px;
+        }
 
         padding-bottom: 20px;
     }
@@ -98,7 +101,6 @@
         // color: white!important;
         height: 32px;
         line-height: 1.499;
-        width: 148px;
         font-size: 14px!important;
         text-align: center;
         margin: 0px!important;
@@ -115,7 +117,7 @@
         }
 
 
-        width: 120px;
+        width: 100%px;
         margin-right: 0px!important;
         border: none;
         border-top-right-radius: 0px!important;
@@ -123,7 +125,7 @@
     }
 
     &__newbtn {
-        margin-left: 5px;
+        margin-left: 7px;
         margin-bottom: 15px;
         min-width: 148px;
         height: 30px;

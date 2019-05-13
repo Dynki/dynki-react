@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Input, Icon } from 'antd';
+import { Draggable } from 'react-beautiful-dnd';
 
 const FormItem = Form.Item;
 
@@ -62,39 +63,43 @@ const SelectCForm = Form.create({
 
 
     return (
-        <div 
-            ref={props.provided.innerRef} {...props.provided.draggableProps}
-            className="select__form"
-        >
-            <Form autoComplete="nope" onSubmit={handleSubmit}>
-                <FormItem>
-                    <div className={fieldStyling}>
-                        {getFieldDecorator('title', {
-                            rules: [],
-                        })(
-                            <Input 
-                            className={styling} 
-                            readOnly={(props.option && props.option.disabled) ? true : false}
-                            placeholder="Label goes here" 
-                            autoComplete="nope" 
-                            style={{backgroundColor: `#${props.option.color}`, color: `#${props.option.fgColor}`}}
-                            onClick={() => props.onSelected()}
-                            onBlur={() => handleSubmit()}
-                            />
-                        )}
-                            <div 
-                            className="select__suffix draghandle"
-                            {...props.provided.dragHandleProps}
-                            style={{backgroundColor: shadeColor('#'+props.option.color, -40), color: `#${props.option.fgColor}`}}
-                            >
-                                <Icon type="crown" style={{
-                                    color: props.option.default ? `#${props.option.fgColor}` : shadeColor('#'+props.option.color, -40)
-                                }}/>
-                            </div>
-                    </div>
-                </FormItem>
-            </Form>
-        </div>
+        <Draggable key={'value' + props.index} draggableId={'value-' + props.index.toString()} index={props.index}>
+        {provided => (
+            <div 
+                ref={provided.innerRef} {...provided.draggableProps}
+                className="select__form"
+            >
+                <Form autoComplete="nope" onSubmit={handleSubmit}>
+                    <FormItem>
+                        <div className={fieldStyling}>
+                            {getFieldDecorator('title', {
+                                rules: [],
+                            })(
+                                <Input 
+                                className={styling} 
+                                readOnly={(props.option && props.option.disabled) ? true : false}
+                                placeholder="Label goes here" 
+                                autoComplete="nope" 
+                                style={{backgroundColor: `#${props.option.color}`, color: `#${props.option.fgColor}`}}
+                                onClick={() => props.onSelected()}
+                                onBlur={() => handleSubmit()}
+                                />
+                            )}
+                                <div 
+                                className="select__suffix draghandle"
+                                {...provided.dragHandleProps}
+                                style={{backgroundColor: shadeColor('#'+props.option.color, -40), color: `#${props.option.fgColor}`}}
+                                >
+                                    <Icon type="crown" style={{
+                                        color: props.option.default ? `#${props.option.fgColor}` : shadeColor('#'+props.option.color, -40)
+                                    }}/>
+                                </div>
+                        </div>
+                    </FormItem>
+                </Form>
+            </div>
+        )}
+    </Draggable>
     )
 });
 
@@ -147,6 +152,7 @@ class SelectCellForm extends React.Component {
                 <SelectCForm 
                     {...this.fields}
                     option={option}
+                    index={this.props.index}
                     provided={this.props.provided}
                     selected={selectedOption && option.key === selectedOption.key ? true : false}
                     onSelected={this.onSelected}
