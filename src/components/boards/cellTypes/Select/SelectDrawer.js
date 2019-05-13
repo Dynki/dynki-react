@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Drawer, Button, Card, Checkbox, Icon, Switch } from 'antd';
 import SelectCellForm from './SelectCellInput';
 import SelectColorSwatch from './SelectColorSwatch';
+import { Droppable } from 'react-beautiful-dnd';
 
 const SelectDrawer = (props) => {
 
@@ -99,17 +100,26 @@ const SelectDrawer = (props) => {
                 <Button onClick={addNewValue} className="select__newbtn"  type="dashed" size="small">
                     <Icon type="plus" />New Label
                 </Button>
-                <div className="select__drawer-colors">
-                    {props.column.values.map((c, i) => {
-                        return <SelectCellForm
-                            onSelected={onSelectOption}
-                            onTitleChanged={onTitleChanged}
-                            key={i}
-                            option={c}
-                            selectedOption={selectedValue}>
-                        </SelectCellForm>
-                    })}
-                </div>
+                <Droppable droppableId={props.column.model}>
+                    {outerProvided =>(
+                        <ul ref={outerProvided.innerRef} {...outerProvided.droppableProps} className="select__drawer-colors">
+                            {props.column.values.map((c, i) => {
+                                return (
+                                    <li>
+                                        <SelectCellForm
+                                            onSelected={onSelectOption}
+                                            onTitleChanged={onTitleChanged}
+                                            key={i}
+                                            index={i}
+                                            option={c}
+                                            selectedOption={selectedValue}>
+                                        </SelectCellForm>
+                                    </li>
+                                )
+                            })}
+                        </ul>
+                    )}  
+                </Droppable>
                 <Card
                     title="Label Properties"
                 >
