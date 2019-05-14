@@ -4,6 +4,7 @@ import BoardRowForm from './BoardRowForm';
 import BoardRowMenu from './BoardRowMenu';
 import { Tooltip } from 'antd';
 import SelectCellModal from './cellTypes/Select/SelectCellModal';
+import * as _ from 'lodash';
 
 class BoardRow extends React.Component {
 
