@@ -5,7 +5,6 @@ import { DragDropContext } from 'react-beautiful-dnd';
 
 import BoardHeader from './BoardHeader';
 import BoardDetail from './BoardDetail';
-import BoardNewRow from './BoardNewRow';
 
 import { updateBoard, newRow, updateColumnValueOrder } from '../../store/actions/boardActions';
 
@@ -77,11 +76,12 @@ export class Board extends React.Component {
                     </BoardHeader>
                     <DragDropContext onDragEnd={this.onDragEnd}>
                         <BoardDetail 
+                            onNewRow={this.onNewRow}
                             onUpdateBoard={this.onUpdateBoard}
+                            progress={this.progress}
                             board={this.props.board}>
                         </BoardDetail>
                     </DragDropContext>
-                    <BoardNewRow onNewRow={this.onNewRow} progress={this.props.progress}></BoardNewRow>
                 </section> 
             : 
                 null 

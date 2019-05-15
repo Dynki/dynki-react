@@ -112,6 +112,9 @@ export const getBoard = (id) => {
                 // Add the subscription to the current board so we can kill it later.
                 if (board) {
                     board.unsubscribe = sub;
+
+                    board.groups = board.groups ? board.groups : { undefined: 'Group 1' };
+
                     dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
                 }
             });

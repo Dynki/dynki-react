@@ -55,6 +55,23 @@ $mariner: #2b82c1;
     overflow-y: hidden;
     display: grid;
 
+    &__group {
+        &__menu {
+            &__icon {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+
+            &__row {
+                margin: 5px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+            }
+        }
+    }
+
     &::-webkit-scrollbar-track
     {
         margin-left: 25px;
@@ -199,9 +216,10 @@ $mariner: #2b82c1;
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
+        align-items: flex-end;
 
         margin-bottom: 3px;
-        padding-left: 19px;
+        // padding-left: 19px;
 
         &__columns--first {
             flex: 1!important;
@@ -211,6 +229,10 @@ $mariner: #2b82c1;
         &__input {
             width: 100%;
             min-width: 163px;
+
+            &__group-title {
+                font-size: 24px;
+            }
         }
 
         &__columns {
@@ -354,7 +376,7 @@ $mariner: #2b82c1;
 
             &__menu {
                 padding-right: 5px;
-                min-width: 19px;
+                min-width: 23px;
             }
 
             &__column {
