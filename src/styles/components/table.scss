@@ -57,17 +57,30 @@ $mariner: #2b82c1;
 
     &__group {
         &__menu {
+            margin-top: 10px;
+
             &__icon {
                 font-size: 20px;
-                margin-bottom: 10px;
+                
+                &--main {
+                    font-size: 20px;
+                    margin-bottom: 10px;
+                }
             }
 
             &__row {
-                margin: 5px;
+
+                i {
+                    margin-right: 10px;
+                }
+
+                margin-top: 5px;
+                margin-bottom: 5px;
+                margin-right: 10px;
                 display: flex;
                 flex-direction: row;
-                align-items: center;
                 justify-content: flex-start;
+
             }
         }
     }
@@ -218,7 +231,6 @@ $mariner: #2b82c1;
         justify-content: flex-end;
         align-items: flex-end;
 
-        margin-bottom: 3px;
         // padding-left: 19px;
 
         &__columns--first {

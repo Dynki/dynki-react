@@ -113,7 +113,7 @@ export const getBoard = (id) => {
                 if (board) {
                     board.unsubscribe = sub;
 
-                    board.groups = board.groups ? board.groups : { undefined: 'Group 1' };
+                    board.groups = board.groups ? board.groups : { undefined: { name: 'Group 1', color: '2B82C1'} };
 
                     dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
                 }

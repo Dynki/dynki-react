@@ -24,7 +24,7 @@ const BRHGroupForm = Form.create({
         <Form autoComplete="off">
             <FormItem>
                 {getFieldDecorator(id, {})(
-                    <Input className="table__header__input__group-title text--no-border"/>
+                    <Input style={{ color: props.groupColor }} className="table__header__input__group-title text--no-border"/>
                 )}
             </FormItem>
         </Form>
@@ -35,18 +35,20 @@ const BoardRowHeaderGroupForm = (props) => {
 
     const handleFormChange = (changedFields) => {
         const updatedBoard = props.board;
-        updatedBoard.groups[props.groupKey] = changedFields['groupTitle'];
+        updatedBoard.groups[props.groupKey].name = changedFields['groupTitle'];
         props.onUpdateBoard(updatedBoard);
     }
 
     const fields = {
         groupTitle: {
-        value: props.board ? props.board.groups[props.groupKey] : '',
+        value: props.board ? props.board.groups[props.groupKey].name : '',
         }
     };
 
+    const groupColor = props.board.groups[props.groupKey].color ? '#' + props.board.groups[props.groupKey].color : '#000000a6';
+
     return (
-        <BRHGroupForm {...fields} onChange={handleFormChange} />
+        <BRHGroupForm {...fields} groupColor={groupColor} onChange={handleFormChange} />
     );
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Popconfirm, Popover } from 'antd';
+import { Icon, Popconfirm, Dropdown, Menu } from 'antd';
 import { connect } from 'react-redux';
 
 import BoardRowHeaderForm from './BoardRowHeaderForm';
@@ -8,50 +8,52 @@ import BoardRowHeaderMenu from './BoardRowHeaderMenu';
 import { removeColumn } from '../../store/actions/boardActions';
 
 class BoardRowHeader extends React.Component {
+    
+    groupColor = '#000000a6';
 
-    menuContent = (
-        <React.Fragment>
-            <div className="table__group__menu__row">
-                <Icon className="table__group__menu__icon" type="plus-circle" />
-                <div>New Group</div>
-            </div>
-            <div className="table__group__menu__row">
-                <Icon className="table__group__menu__icon" type="delete" />
-                <div>Remove Group</div>
-            </div>
-        </React.Fragment>
+    menu = (
+        <Menu>
+            <Menu.Item>
+            <a target="_blank" rel="noopener noreferrer">
+                <div className="table__group__menu__row">
+                    <Icon className="table__group__menu__icon" type="plus-circle" />
+                    <div>New Group</div>
+                </div>
+            </a>
+            </Menu.Item>
+            <Menu.Item>
+            <a target="_blank" rel="noopener noreferrer">
+                <div className="table__group__menu__row">
+                    <Icon className="table__group__menu__icon" type="delete" />
+                    <div>Remove Group</div>
+                </div>
+            </a>
+            </Menu.Item>
+            <Menu.Item>
+            <a target="_blank" rel="noopener noreferrer">
+                <div className="table__group__menu__row">
+                    <Icon className="table__group__menu__icon" type="arrow-up" />
+                    <div>Collapse Group</div>
+                </div>
+            </a>
+            </Menu.Item>
+        </Menu>
     );
-
-    state = {
-        visible: false,
-    };
-
-    hide = () => {
-        this.setState({
-            visible: false,
-        });
-    };
-
-    handleVisibleChange = visible => {
-        this.setState({ visible });
-    };
     
     removeColumn(model) {
         this.props.removeColumn(model);
     }
 
     render() {
+        this.groupColor = '#' + this.props.board.groups[this.props.groupKey].color;
+
         return <tr className="table__header"> 
         <th>
-            <Popover
-                content={this.menuContent}
-                trigger="click"
-                visible={this.state.visible}
-                placement="bottom"
-                onVisibleChange={this.handleVisibleChange}
-            >
-                <Icon className="table__group__menu__icon" type="caret-down" />
-            </Popover>
+            <Dropdown overlay={this.menu}>
+                <a className="ant-dropdown-link" href="#">
+                    <Icon style={{ color: this.groupColor }} className="table__group__menu__icon--main" type="caret-down" />
+                </a>
+            </Dropdown>,
         </th>
         <th
             className="table__header__columns table__header__columns--first"
