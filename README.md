@@ -1,4 +1,4 @@
-Dynki - Elegant board management
+Dynki - Elegant priject tracking
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
