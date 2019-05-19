@@ -10,35 +10,6 @@ import { removeColumn } from '../../store/actions/boardActions';
 class BoardRowHeader extends React.Component {
     
     groupColor = '#000000a6';
-
-    menu = (
-        <Menu>
-            <Menu.Item>
-            <a target="_blank" rel="noopener noreferrer">
-                <div className="table__group__menu__row">
-                    <Icon className="table__group__menu__icon" type="plus-circle" />
-                    <div>New Group</div>
-                </div>
-            </a>
-            </Menu.Item>
-            <Menu.Item>
-            <a target="_blank" rel="noopener noreferrer">
-                <div className="table__group__menu__row">
-                    <Icon className="table__group__menu__icon" type="delete" />
-                    <div>Remove Group</div>
-                </div>
-            </a>
-            </Menu.Item>
-            <Menu.Item>
-            <a target="_blank" rel="noopener noreferrer">
-                <div className="table__group__menu__row">
-                    <Icon className="table__group__menu__icon" type="arrow-up" />
-                    <div>Collapse Group</div>
-                </div>
-            </a>
-            </Menu.Item>
-        </Menu>
-    );
     
     removeColumn(model) {
         this.props.removeColumn(model);
@@ -47,9 +18,38 @@ class BoardRowHeader extends React.Component {
     render() {
         this.groupColor = '#' + this.props.board.groups[this.props.groupKey].color;
 
+        const menu = (
+            <Menu>
+                <Menu.Item>
+                <a target="_blank" rel="noopener noreferrer">
+                    <div className="table__group__menu__row">
+                        <Icon className="table__group__menu__icon" type="plus-circle" />
+                        <div>New Group</div>
+                    </div>
+                </a>
+                </Menu.Item>
+                <Menu.Item disabled={this.props.board.groups && Object.keys(this.props.board.groups).length === 1}>
+                <a target="_blank" rel="noopener noreferrer">
+                    <div className="table__group__menu__row">
+                        <Icon className="table__group__menu__icon" type="delete" />
+                        <div>Remove Group</div>
+                    </div>
+                </a>
+                </Menu.Item>
+                <Menu.Item>
+                <a target="_blank" rel="noopener noreferrer">
+                    <div className="table__group__menu__row">
+                        <Icon className="table__group__menu__icon" type="arrow-up" />
+                        <div>Collapse Group</div>
+                    </div>
+                </a>
+                </Menu.Item>
+            </Menu>
+        );
+    
         return <tr className="table__header"> 
         <th>
-            <Dropdown overlay={this.menu}>
+            <Dropdown overlay={menu}>
                 <a className="ant-dropdown-link" href="#">
                     <Icon style={{ color: this.groupColor }} className="table__group__menu__icon--main" type="caret-down" />
                 </a>
