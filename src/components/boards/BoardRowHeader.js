@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import BoardRowHeaderForm from './BoardRowHeaderForm';
 import BoardRowHeaderGroupForm from './BoardRowHeaderGroupForm';
 import BoardRowHeaderMenu from './BoardRowHeaderMenu';
-import { removeColumn } from '../../store/actions/boardActions';
+import { removeColumn, addGroup } from '../../store/actions/boardActions';
 
 class BoardRowHeader extends React.Component {
     
@@ -15,13 +15,17 @@ class BoardRowHeader extends React.Component {
         this.props.removeColumn(model);
     }
 
+    addGroup() {
+        this.props.addGroup();
+    }
+
     render() {
         this.groupColor = '#' + this.props.board.groups[this.props.groupKey].color;
 
         const menu = (
             <Menu>
                 <Menu.Item>
-                <a target="_blank" rel="noopener noreferrer">
+                <a target="_blank" rel="noopener noreferrer" onClick={() => this.addGroup()}>
                     <div className="table__group__menu__row">
                         <Icon className="table__group__menu__icon" type="plus-circle" />
                         <div>New Group</div>
@@ -95,7 +99,8 @@ class BoardRowHeader extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
     return{
-      removeColumn: (model) => dispatch(removeColumn(model))
+      removeColumn: (model) => dispatch(removeColumn(model)),
+      addGroup: () => dispatch(addGroup())
     }
 }
 

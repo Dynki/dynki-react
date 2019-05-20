@@ -62,6 +62,7 @@ class BoardRow extends React.Component {
                                 <div
                                     {...this.props.provided.dragHandleProps}
                                     className="draghandle"
+                                    style={{ backgroundColor: '#' + this.props.board.groups[this.props.groupKey].color }}
                                     tabIndex="0">
                                 </div>
                             </Tooltip>

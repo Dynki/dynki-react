@@ -36,7 +36,7 @@ const BNRForm = Form.create({})((props) => {
 const BoardNewRow = (props) => {
 
     const handleFormChange = (changedFields) => {
-        const newRow = { description: changedFields['newValue'] };
+        const newRow = { description: changedFields['newValue'], groupKey: props.groupKey };
         props.onNewRow(newRow);
     }
 

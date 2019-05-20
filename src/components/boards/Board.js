@@ -101,7 +101,7 @@ export const mapDispatchToProps = (dispatch) => {
     return{
       updateBoard: (board) => dispatch(updateBoard(board)),
       updateColumnValueOrder: (data) => dispatch(updateColumnValueOrder(data)),
-      newRow: (description) => dispatch(newRow(description))
+      newRow: (rowObj) => dispatch(newRow(rowObj))
     }
 }
 

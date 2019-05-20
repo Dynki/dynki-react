@@ -166,7 +166,7 @@ export const newRow = (row) => {
         const currentBoard = getState().boards.currentBoard;
         const domainId = getState().domain.domainId;
 
-        let newData = { id: newGuid(), description: row.description };
+        let newData = { id: newGuid(), description: row.description, group: row.groupKey };
 
         if (currentBoard.columns) {
             // Add any default values
@@ -601,3 +601,32 @@ export const updateColumnValueOrder = (data) => {
     }
 }
 
+export const addGroup = () => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        const firebase = getFirebase();
+        const currentBoard = getState().boards.currentBoard;
+        const domainId = getState().domain.domainId;
+
+        const groupColors = ['EB144C', 'FF6900', 'FCB900', '00D084', 'EFF1F3', '039BE5', '9900EF'];
+        const groupCount = Object.keys(currentBoard.groups).length;
+        const groupIdx = groupCount <= 7 ? groupCount : Math.floor(groupCount/7);
+
+        const newGroupColor = groupColors[groupIdx];
+
+        const newGroup = { color: newGroupColor, name: 'New Group' };
+        currentBoard.groups = {...currentBoard.groups, [newGuid()]: newGroup }
+
+        delete currentBoard['unsubscribe'];
+
+        await firebase.firestore()
+        .collection('domains')
+        .doc(domainId)
+        .collection('boards')
+        .doc(currentBoard.id)
+        .set(currentBoard);
+
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+    }
+}
