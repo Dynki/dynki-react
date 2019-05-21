@@ -1,36 +1,21 @@
-import moment from 'moment';
 import newGuid from '../utils/guid';
 import * as _ from 'lodash';
 import { CellFactory } from '../model/board-cell.factory';
+import { Boards } from '../model/Boards';
 
 // Get all boards within this user's domain/team.
 export const getBoards = () => {
-    return (dispatch, getState, { getFirebase, getFirestore }) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'ATTEMPT_LOADING_BOARDS' })
+        
+        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
+        const boards = await boardsHelper.list();
 
-        const firebase = getFirebase();
-        const domainId = getState().domain.domainId;
-
-        firebase.firestore()
-            .collection('domains')
-            .doc(domainId)
-            .collection('boardsInDomain')
-            .doc('appBoards')
-            .onSnapshot({}, function (doc) {
-                const data = doc.data();
-
-                if (data) {
-                    const boards = data.boards;
-
-                    if (!data.boards || data.boards.length < 1) {
-                        dispatch({ type: 'NO_BOARDS' });
-                    } else {
-                        dispatch({ type: 'REFRESH_BOARDS', payload: boards });
-                    }
-                } else {
-                    dispatch({ type: 'NO_BOARDS' });
-                }
-            });
+        if (!boards || boards.length < 1) {
+            dispatch({ type: 'NO_BOARDS' });
+        } else {
+            dispatch({ type: 'REFRESH_BOARDS', payload: boards });
+        }
     }
 }
 
@@ -39,50 +24,14 @@ export const newBoard = () => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
 
-        const firebase = getFirebase();
-        const domainId = getState().domain.domainId;
+        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
+        const newBoard = await boardsHelper.add();
+        await getBoards(dispatch, getState, { getFirebase, getFirestore });        
 
-        const newBoard = {
-            id: newGuid(),
-            createdBy: firebase.auth().currentUser.uid,
-            createdDate: moment().toDate(),
-            description: '',
-            title: 'Scratch',
-            isFolder: false,
-            entities: [{ id: 0, description: '' }],
-            columns: [{ title: 'Description', model: 'description', class: 'text' }],
-            type: 'Scratch'
-        }
-
-        // Firebase requires the data to be parsed this way!!.
-        const data = JSON.parse(JSON.stringify(newBoard));
-
-        // Create the new board document, and then get it, to get it's ID.
-        await firebase.firestore().collection('domains').doc(domainId).collection('boards').doc(newBoard.id).set(data);
-        const newDoc = await firebase.firestore().collection('domains').doc(domainId).collection('boards').doc(newBoard.id).get();
-
-        // Get from firestore the list of boards in this domain. 
-        // Then create a reference with the new boards added.
-        const boardsRef = await firebase.firestore().collection('domains').doc(domainId).collection('boardsInDomain').doc('appBoards').get()
-        let existingBoards = boardsRef.data() && boardsRef.data().boards ? boardsRef.data().boards : [];
-        existingBoards.push({ id: newDoc.id, title: 'Scratch' });
-
-        // Update the boards in this domain with data from above.
-        await firebase.firestore()
-            .collection('domains')
-            .doc(domainId)
-            .collection('boardsInDomain')
-            .doc('appBoards')
-            .set({
-                boards: existingBoards
-            });
-
-        dispatch({ type: 'REFRESH_BOARDS', payload: existingBoards });
-        dispatch({ type: 'SET_CURRENT_BOARD', payload: newDoc.data() });
-
+        dispatch({ type: 'SET_CURRENT_BOARD', payload: newBoard });
         dispatch({ type: 'SET_PROGRESS', payload: false });
 
-        return Promise.resolve({ id: newDoc.id, ...newDoc.data() });
+        return Promise.resolve(newBoard);
     }
 }
 
