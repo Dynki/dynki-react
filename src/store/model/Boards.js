@@ -16,7 +16,34 @@ export class Boards {
      * 
      * Returns: A board class instance
      */
-    get(id) {
+    get(id, ?currentBoard) {
+        const domainId = getState().domain.domainId;
+        const currentBoard = getState().boards.currentBoard;
+
+        // This is required to stop firestore creating multiple subscriptions, which then spam the system.
+        if (currentBoard && currentBoard.unsubscribe) {
+            currentBoard.unsubscribe();
+        }
+
+        const sub = firebase.firestore()
+            .collection('domains')
+            .doc(domainId)
+            .collection('boards')
+            .doc(id)
+            .onSnapshot({}, function (doc) {
+                const board = doc.data();
+
+                // Add the subscription to the current board so we can kill it later.
+                if (board) {
+                    board.unsubscribe = sub;
+
+                    board.groups = board.groups ? board.groups : { undefined: { name: 'Group 1', color: '2B82C1'} };
+
+                    dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
+                }
+            });
+
+    }
 
     }
 
