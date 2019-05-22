@@ -16,35 +16,26 @@ export class Boards {
      * 
      * Returns: A board class instance
      */
-    get(id, ?currentBoard) {
-        const domainId = getState().domain.domainId;
-        const currentBoard = getState().boards.currentBoard;
+    get(id) {
+        return new Promise((resolve, reject) => {
 
-        // This is required to stop firestore creating multiple subscriptions, which then spam the system.
-        if (currentBoard && currentBoard.unsubscribe) {
-            currentBoard.unsubscribe();
-        }
-
-        const sub = firebase.firestore()
-            .collection('domains')
-            .doc(domainId)
-            .collection('boards')
-            .doc(id)
-            .onSnapshot({}, function (doc) {
-                const board = doc.data();
-
-                // Add the subscription to the current board so we can kill it later.
-                if (board) {
-                    board.unsubscribe = sub;
-
-                    board.groups = board.groups ? board.groups : { undefined: { name: 'Group 1', color: '2B82C1'} };
-
-                    dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
-                }
-            });
-
-    }
-
+            const sub = this.firebase.firestore()
+                .collection('domains')
+                .doc(this.domainId)
+                .collection('boards')
+                .doc(id)
+                .onSnapshot({}, function (doc) {
+                    const board = doc.data();
+    
+                    // Add the subscription to the current board so we can kill it later.
+                    if (board) {
+                        board.unsubscribe = sub;
+                        board.groups = board.groups ? board.groups : { undefined: { name: 'Group 1', color: '2B82C1'} };
+    
+                        resolve(board);
+                    }
+                });
+        });
     }
 
     /**
@@ -90,6 +81,7 @@ export class Boards {
             title: 'Scratch',
             isFolder: false,
             entities: [{ id: 0, description: '' }],
+            groups: { undefined: { name: 'Group 1', color: '2B82C1'} },
             columns: [{ title: 'Description', model: 'description', class: 'text' }],
             type: 'Scratch'
         }
@@ -126,7 +118,36 @@ export class Boards {
      * Parameter: id {string} - The id (guid) of the board to get.
      * 
     */
-    delete() {
+    delete(id) {
+        return new Promise(async (resolve, reject) => {
 
+            // Delete the board document from the 'boards' collection.
+            await this.firebase.firestore()
+                .collection('domains')
+                .doc(this.domainId)
+                .collection('boards')
+                .doc(id).delete();
+    
+            // Get a reference from firestore to the list of 'boardsInDomain' collection. 
+            const boardsRef = await this.firebase.firestore()
+                                        .collection('domains')
+                                        .doc(this.domainId)
+                                        .collection('boardsInDomain')
+                                        .doc('appBoards').get();
+
+            let existingBoards = boardsRef.data().boards ? boardsRef.data().boards.filter(b => b.id !== id) : [];
+    
+            // Update the boards in this domain with data from above.
+            await this.firebase.firestore()
+                .collection('domains')
+                .doc(this.domainId)
+                .collection('boardsInDomain')
+                .doc('appBoards')
+                .set({
+                    boards: existingBoards
+                });
+    
+            resolve();
+        });
     }
 }

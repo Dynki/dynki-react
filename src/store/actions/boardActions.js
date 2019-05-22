@@ -16,6 +16,7 @@ export const getBoards = () => {
         } else {
             dispatch({ type: 'REFRESH_BOARDS', payload: boards });
         }
+        dispatch({ type: 'SET_PROGRESS', payload: false });
     }
 }
 
@@ -26,10 +27,10 @@ export const newBoard = () => {
 
         const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
         const newBoard = await boardsHelper.add();
-        await getBoards(dispatch, getState, { getFirebase, getFirestore });        
-
         dispatch({ type: 'SET_CURRENT_BOARD', payload: newBoard });
         dispatch({ type: 'SET_PROGRESS', payload: false });
+
+        dispatch(getBoards());        
 
         return Promise.resolve(newBoard);
     }
@@ -37,12 +38,9 @@ export const newBoard = () => {
 
 // Get an individual board by id.
 export const getBoard = (id) => {
-    return (dispatch, getState, { getFirebase, getFirestore }) => {
-        const firebase = getFirebase();
-
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'ATTEMPT_LOADING_BOARD', payload: id })
 
-        const domainId = getState().domain.domainId;
         const currentBoard = getState().boards.currentBoard;
 
         // This is required to stop firestore creating multiple subscriptions, which then spam the system.
@@ -50,24 +48,43 @@ export const getBoard = (id) => {
             currentBoard.unsubscribe();
         }
 
-        const sub = firebase.firestore()
-            .collection('domains')
-            .doc(domainId)
-            .collection('boards')
-            .doc(id)
-            .onSnapshot({}, function (doc) {
-                const board = doc.data();
+        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
+        const board = await boardsHelper.get(id);
 
-                // Add the subscription to the current board so we can kill it later.
-                if (board) {
-                    board.unsubscribe = sub;
+        dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+    }
+}
 
-                    board.groups = board.groups ? board.groups : { undefined: { name: 'Group 1', color: '2B82C1'} };
+// Remove the specified board via the board id supplied
+export const removeBoard = (boardId) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
 
-                    dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
-                }
-            });
+        dispatch({ type: 'SET_PROGRESS', payload: true });
 
+        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
+        await boardsHelper.delete(boardId);
+
+        let nextBoardId;   
+
+        const currentBoards = await boardsHelper.list();
+        const currentBoard = getState().boards.currentBoard;
+
+        if (currentBoards) {
+            nextBoardId = currentBoards[0].id;
+        }
+
+        // This is required to stop firestore creating multiple subscriptions, which then spam the system.
+        if (currentBoard && currentBoard.unsubscribe) {
+            currentBoard.unsubscribe();
+        }
+    
+        if (nextBoardId) {
+            dispatch(getBoards());
+            dispatch(getBoard(nextBoardId));
+        }
+
+        return Promise.resolve();
     }
 }
 
@@ -178,82 +195,6 @@ export const removeRow = (rowIdxToRemove) => {
     }
 }
 
-// Remove the specified board via the board id supplied
-export const removeBoard = (boardId) => {
-    return async (dispatch, getState, { getFirebase, getFirestore }) => {
-
-        dispatch({ type: 'SET_PROGRESS', payload: true });
-
-        const firebase = getFirebase();
-        const domainId = getState().domain.domainId;
-
-        // Delete the board document from the 'boards' collection.
-        await firebase.firestore().collection('domains').doc(domainId).collection('boards').doc(boardId).delete();
-
-        // Get a reference from firestore to the list of 'boardsInDomain' collection. 
-        const boardsRef = await firebase.firestore().collection('domains').doc(domainId).collection('boardsInDomain').doc('appBoards').get()
-        let existingBoards = boardsRef.data().boards ? boardsRef.data().boards.filter(b => b.id !== boardId) : [];
-
-        // Update the boards in this domain with data from above.
-        await firebase.firestore()
-            .collection('domains')
-            .doc(domainId)
-            .collection('boardsInDomain')
-            .doc('appBoards')
-            .set({
-                boards: existingBoards
-            });
-
-        let nextBoardId;   
-            
-        // Get a refreshed list of boards in this domain and dispatch the REFRESH_BOARDS action to refresh the side menu.
-        await firebase.firestore()
-            .collection('domains')
-            .doc(domainId)
-            .collection('boardsInDomain')
-            .doc('appBoards')
-            .onSnapshot({}, function (doc) {
-                const data = doc.data();
-
-                if (data) {
-                    const boards = data.boards;
-                    dispatch({ type: 'REFRESH_BOARDS', payload: boards });
-                }
-            });
-
-        const currentBoard = getState().boards.currentBoard;
-        const currentBoards = getState().boards.boards;
-
-        if (currentBoards) {
-            nextBoardId = currentBoards[0].id;
-        }
-
-        // This is required to stop firestore creating multiple subscriptions, which then spam the system.
-        if (currentBoard && currentBoard.unsubscribe) {
-            currentBoard.unsubscribe();
-        }
-    
-        if (nextBoardId) {
-            const sub = firebase.firestore()
-                .collection('domains')
-                .doc(domainId)
-                .collection('boards')
-                .doc(nextBoardId)
-                .onSnapshot({}, function (doc) {
-                    const board = doc.data();
-    
-                    // Add the subscription to the current board so we can kill it later.
-                    if (board) {
-                        board.unsubscribe = sub;
-                        dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
-                        dispatch({ type: 'SET_PROGRESS', payload: false });
-                    }
-                });
-        }
-
-        return Promise.resolve();
-    }
-}
 
 export const addColumn = (columnType) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
