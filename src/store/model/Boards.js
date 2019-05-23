@@ -150,4 +150,34 @@ export class Boards {
             resolve();
         });
     }
+
+    update(board) {
+        return new Promise(async (resolve, reject) => {
+            const boards = await this.list();
+            const boardIdx = boards.findIndex(b => b.id === board.id);
+    
+            if (boards[boardIdx].title !== board.title) {
+                
+                boards[boardIdx].title = board.title;
+    
+                await this.firebase.firestore()
+                .collection('domains')
+                .doc(this.domainId)
+                .collection('boardsInDomain')
+                .doc('appBoards')
+                .set({ boards });
+            }
+    
+            delete board['unsubscribe'];
+    
+            await this.firebase.firestore()
+                .collection('domains')
+                .doc(this.domainId)
+                .collection('boards')
+                .doc(board.id)
+                .set(board);
+
+            resolve();
+        });
+    }
 }

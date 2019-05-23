@@ -89,40 +89,15 @@ export const removeBoard = (boardId) => {
 }
 
 export const updateBoard = (board) => {
-    return (dispatch, getState, { getFirebase, getFirestore }) => {
-        const firebase = getFirebase();
-        const boards = getState().boards.boards;
-        const domainId = getState().domain.domainId;
-        const boardIdx = boards.findIndex(b => b.id === board.id);
-
-        if (boards[boardIdx].title !== board.title) {
-            
-            boards[boardIdx].title = board.title;
-
-            firebase.firestore()
-            .collection('domains')
-            .doc(domainId)
-            .collection('boardsInDomain')
-            .doc('appBoards')
-            .set({ boards }).then(() => {
-                dispatch({ type: 'REFRESH_BOARDS', payload: boards })
-            })
-        }
-
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'ATTEMPT_UPDATE_BOARD', payload: board })
+
+        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
+        await boardsHelper.update(board);
         dispatch({ type: 'SET_CURRENT_BOARD', payload: board })
-
-        delete board['unsubscribe'];
-
-        firebase.firestore()
-            .collection('domains')
-            .doc(domainId)
-            .collection('boards')
-            .doc(board.id)
-            .set(board);
+        dispatch(getBoards());
     }
 }
-
 
 export const newRow = (row) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
