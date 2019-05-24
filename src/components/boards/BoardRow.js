@@ -36,7 +36,11 @@ class BoardRow extends React.Component {
 
             case 'select':
                 return <div className="table__row__cell__container--nopadding">
-                  <SelectCellModal col={col} rowId={this.props.rowId} rowValue={this.props.board.entities[this.props.rowIdx][col.model]} {...restProps }></SelectCellModal>
+                    <SelectCellModal 
+                        col={col}
+                        rowId={this.props.rowId}
+                        rowValue={this.props.board.group[this.props.groupKey].entities[this.props.rowIdx][col.model]}
+                        {...restProps }/>
                 </div>
         
             default:
@@ -56,7 +60,7 @@ class BoardRow extends React.Component {
                         onMouseEnter={this.mouseEnter.bind(this)}
                         onMouseLeave={this.mouseLeave.bind(this)}
                     >
-                    {isFirst ? <BoardRowMenu hovering={this.state.hovering} rowIdx={this.props.rowIdx}></BoardRowMenu> : null }
+                    {isFirst ? <BoardRowMenu hovering={this.state.hovering} rowIdx={this.props.rowIdx} groupKey={this.props.groupKey}></BoardRowMenu> : null }
                     {isFirst ?
                             <Tooltip title="Drag me">
                                 <div

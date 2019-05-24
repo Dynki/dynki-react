@@ -8,24 +8,23 @@ import BoardRow from './BoardRow';
 
 const BoardDetail = (props) => {
 
-    const groups = groupBy(props.board.entities, 'group');
     const grpKeys = Object.keys(props.board.groups);
 
     return (
         <React.Fragment>
-            {props.board.entities ? grpKeys.map(key => {
+            {grpKeys.map(groupKey => {
                 return <React.Fragment>
-                    <table className="table" key={key}>
-                        <Droppable droppableId={props.board.id + key}>
+                    <table className="table" key={groupKey}>
+                        <Droppable droppableId={groupKey}>
                         {provided => (
                             <React.Fragment>
                                 <thead>
-                                    <BoardRowHeader groupKey={key} onUpdateBoard={props.onUpdateBoard} board={props.board}></BoardRowHeader>
+                                    <BoardRowHeader groupKey={groupKey} onUpdateBoard={props.onUpdateBoard} board={props.board}></BoardRowHeader>
                                 </thead>
                                 <tbody ref={provided.innerRef} {...provided.droppableProps}>
                             
-                                    {groups[key] && groups[key].map((r, idx) => (
-                                        <Draggable key={idx} draggableId={key + ":" + idx.toString()} index={idx}>
+                                    {props.board.groups[groupKey].entities && props.board.groups[groupKey].entities.map((r, idx) => (
+                                        <Draggable key={idx} draggableId={r.id} index={idx}>
                                         {provided => (
                                             <tr ref={provided.innerRef} {...provided.draggableProps} className="table__rc">                    
                                                 <BoardRow 
@@ -35,7 +34,7 @@ const BoardDetail = (props) => {
                                                     rowId={r.id}
                                                     board={props.board}
                                                     provided={provided}
-                                                    groupKey={key}
+                                                    groupKey={groupKey}
                                                     >
                                                 </BoardRow>
                                             </tr>
@@ -48,9 +47,9 @@ const BoardDetail = (props) => {
                         )}
                         </Droppable>
                     </table>                
-                    <BoardNewRow onNewRow={props.onNewRow} progress={props.progress} groupKey={key}></BoardNewRow>
+                    <BoardNewRow onNewRow={props.onNewRow} progress={props.progress} groupKey={groupKey}></BoardNewRow>
                 </React.Fragment>
-            }): null}
+            })}
         </React.Fragment>
     )
 }

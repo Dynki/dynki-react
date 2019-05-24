@@ -37,7 +37,7 @@ const BoardNewRow = (props) => {
 
     const handleFormChange = (changedFields) => {
         const newRow = { description: changedFields['newValue'], groupKey: props.groupKey };
-        props.onNewRow(newRow);
+        props.onNewRow(newRow, props.groupKey);
     }
 
     return (

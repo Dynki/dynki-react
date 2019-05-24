@@ -99,7 +99,7 @@ export const updateBoard = (board) => {
     }
 }
 
-export const newRow = (row) => {
+export const newRow = (row, groupId) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
 
@@ -126,7 +126,7 @@ export const newRow = (row) => {
         }
 
         // Add the new row to the current board, this MUST include the columns too.
-        currentBoard.entities.push(newData);
+        currentBoard.groups[groupId].entities.push(newData);
 
         // Need to remove subscription function before saving.
         const updatedBoard = _.cloneDeep(currentBoard);
@@ -145,7 +145,7 @@ export const newRow = (row) => {
     }
 }
 
-export const removeRow = (rowIdxToRemove) => {
+export const removeRow = (rowIdxToRemove, groupId) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
         const firebase = getFirebase();
@@ -153,7 +153,7 @@ export const removeRow = (rowIdxToRemove) => {
         const domainId = getState().domain.domainId;
 
         // Add the new row to the current board, this MUST include the columns too.
-        currentBoard.entities = currentBoard.entities.filter((e, idx) => idx !== rowIdxToRemove);
+        currentBoard.groups[groupId].entities = currentBoard.groups[groupId].entities.filter((e, idx) => idx !== rowIdxToRemove);
 
         // Need to remove subscription function before saving.
         const updatedBoard = _.cloneDeep(currentBoard);
@@ -197,7 +197,7 @@ export const addColumn = (columnType) => {
     }
 }
 
-export const removeColumn = (modelId) => {
+export const removeColumn = (modelId, groupId) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
 
@@ -209,7 +209,7 @@ export const removeColumn = (modelId) => {
         currentBoard.columns = currentBoard.columns.filter(c => c.model !== modelId);
 
         // Remove the orphaned entity data for this column.
-        currentBoard.entities = currentBoard.entities.map(e => {
+        currentBoard.groups[groupId].entities = currentBoard.groups[groupId].entities.map(e => {
             delete e[modelId];
             return e;
         })
@@ -227,7 +227,7 @@ export const removeColumn = (modelId) => {
     }
 }
 
-export const selectCellValue = (key, model, rowId) => {
+export const selectCellValue = (key, model, rowId, groupId) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
 
@@ -235,7 +235,7 @@ export const selectCellValue = (key, model, rowId) => {
         const domainId = getState().domain.domainId;
         const currentBoard = getState().boards.currentBoard;
 
-        currentBoard.entities = currentBoard.entities.map(e => {
+        currentBoard.groups[groupId].entities = currentBoard.groups[groupId].entities.map(e => {
             // Is this the row we wish to update?
             if (e.id === rowId) {
                 e[model] = key;

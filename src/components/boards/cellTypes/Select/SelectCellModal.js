@@ -58,9 +58,9 @@ class SelectCellModal extends React.Component {
     render() {
         const { ...restProps } = this.props;
 
-        const idx = this.props.board.entities.findIndex(r => this.props.rowId === r.id);
+        const idx = this.props.board.group[this.props.groupKey].entities.findIndex(r => this.props.rowId === r.id);
 
-        const colKey = this.props.board.entities[idx][this.props.col.model];
+        const colKey = this.props.board.group[this.props.groupKey].entities[idx][this.props.col.model];
         const colObj = this.props.col.values.find(c => c.key === colKey);
         const fgColor = (colObj && colObj.fgColor) ? colObj.fgColor : 'ffffff';
 

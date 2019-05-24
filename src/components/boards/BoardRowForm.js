@@ -33,18 +33,18 @@ const BRForm = Form.create({
 
 const BoardRowForm = (props) => {
 
-    const idx = props.board.entities.findIndex(r => props.rowId === r.id);
+    const idx = props.board.group[this.props.groupKey].entities.findIndex(r => props.rowId === r.id);
 
     const handleFormChange = (changedFields) => {
         const updatedBoard = props.board;
         
-        updatedBoard.entities[idx][props.modelName] = changedFields['columnValue'];
+        updatedBoard.group[this.props.groupKey].entities[idx][props.modelName] = changedFields['columnValue'];
         props.onUpdateBoard(updatedBoard);
     }
 
     const fields = {
         columnValue: {
-        value: props.board ? props.board.entities[idx][props.modelName] : '',
+        value: props.board ? props.board.group[this.props.groupKey].entities[idx][props.modelName] : '',
         }
     };
 

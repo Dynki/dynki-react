@@ -29,8 +29,8 @@ export class Board extends React.Component {
     }
 
     // Triggered by child new row component.
-    onNewRow = (description) => {
-        this.props.newRow(description);
+    onNewRow = (description, groupKey) => {
+        this.props.newRow(description, groupKey);
     }
 
     // Helper function for drag drop reordering or board rows.
@@ -55,9 +55,27 @@ export class Board extends React.Component {
         if (result.draggableId.indexOf('value') > -1) {
             this.props.updateColumnValueOrder(result);
         } else {
+            // Row drag end.
+
             const newBoard = this.props.board;
-            newBoard.entities = this.reorder(
-                newBoard.entities,
+
+            // result.desination/source.draggableId = The group id.
+            // If they are different then we need to move the row to the new group.
+
+            if (result.source.droppableId !== result.destination.droppableId) {
+                // Get the existing row from the old group.
+                const existingRow = newBoard.groups[result.source.droppableId].entities.find(e => e.id === result.draggableId);
+
+                // Remove the row from the old group
+                newBoard.groups[result.source.droppableId].entities.filter(e => e.id !== result.draggableId);
+
+                // Push the row onto the destination group.
+                newBoard.groups[result.destination.droppableId].entities.push(existingRow);
+            }
+
+            // Reorder the rows in the destination group.
+            newBoard.groups[result.destination.droppableId].entities = this.reorder(
+                newBoard.groups[result.destination.droppableId].entities,
                 result.source.index,
                 result.destination.index
             );
@@ -101,7 +119,7 @@ export const mapDispatchToProps = (dispatch) => {
     return{
       updateBoard: (board) => dispatch(updateBoard(board)),
       updateColumnValueOrder: (data) => dispatch(updateColumnValueOrder(data)),
-      newRow: (rowObj) => dispatch(newRow(rowObj))
+      newRow: (rowObj, groupKey) => dispatch(newRow(rowObj, groupKey))
     }
 }
 

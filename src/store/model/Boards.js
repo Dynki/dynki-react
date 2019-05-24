@@ -81,7 +81,7 @@ export class Boards {
             title: 'Scratch',
             isFolder: false,
             entities: [{ id: 0, description: '' }],
-            groups: { undefined: { name: 'Group 1', color: '2B82C1'} },
+            groups: { [newGuid()]: { name: 'Group 1', color: '2B82C1', entities: [{ id: 0, description: '' }] }},
             columns: [{ title: 'Description', model: 'description', class: 'text' }],
             type: 'Scratch'
         }
@@ -92,7 +92,7 @@ export class Boards {
         // Create the new board document, and then get it, to get it's ID.
         await this.firebase.firestore().collection('domains').doc(this.domainId).collection('boards').doc(newBoard.id).set(data);
         const newDoc = await this.firebase.firestore().collection('domains').doc(this.domainId).collection('boards').doc(newBoard.id).get();
-
+    
         // Get from firestore the list of boards in this domain. 
         // Then create a reference with the new boards added.
         const boardsRef = await this.firebase.firestore().collection('domains').doc(this.domainId).collection('boardsInDomain').doc('appBoards').get()
