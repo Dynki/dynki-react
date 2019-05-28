@@ -43,7 +43,7 @@ class SelectCell extends React.Component {
 
     onSelectOption = (key, model, rowId) => {
         this.props.setVisible(false);
-        this.props.selectCellValue(key, model, rowId);
+        this.props.selectCellValue(key, model, rowId, this.props.groupKey);
     }
 
     render() {
@@ -93,7 +93,7 @@ class SelectCell extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        selectCellValue: (key, model, rowId) => dispatch(selectCellValue(key, model, rowId)),
+        selectCellValue: (key, model, rowId, groupKey) => dispatch(selectCellValue(key, model, rowId, groupKey)),
         updateColumn: (updatedColumn) => dispatch(updateColumn(updatedColumn)),
         addNewColumnValue: (columnModel) => dispatch(addNewColumnValue(columnModel))
     }

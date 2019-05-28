@@ -90,6 +90,7 @@ export const removeBoard = (boardId) => {
 
 export const updateBoard = (board) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
         dispatch({ type: 'ATTEMPT_UPDATE_BOARD', payload: board })
 
         const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
@@ -123,6 +124,11 @@ export const newRow = (row, groupId) => {
                     });
                 }
             });
+        }
+
+        // Default the entities array to an empty array if it does not exist.
+        if (currentBoard.groups[groupId] && !currentBoard.groups[groupId].entities) {
+            currentBoard.groups[groupId].entities = [];    
         }
 
         // Add the new row to the current board, this MUST include the columns too.
@@ -197,7 +203,7 @@ export const addColumn = (columnType) => {
     }
 }
 
-export const removeColumn = (modelId, groupId) => {
+export const removeColumn = (modelId) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
 
@@ -209,10 +215,19 @@ export const removeColumn = (modelId, groupId) => {
         currentBoard.columns = currentBoard.columns.filter(c => c.model !== modelId);
 
         // Remove the orphaned entity data for this column.
-        currentBoard.groups[groupId].entities = currentBoard.groups[groupId].entities.map(e => {
-            delete e[modelId];
-            return e;
-        })
+        let groups = Object.keys(currentBoard.groups);
+
+        // // Loop through all groups and remove the column from any entities.
+        groups.map(grpKey =>{
+            if (currentBoard.groups[grpKey] && currentBoard.groups[grpKey].entities) {
+                currentBoard.groups[grpKey].entities = currentBoard.groups[grpKey].entities.map(e => {
+                    delete e[modelId];
+                    return e;
+                })
+            }
+        });
+
+        // currentBoard.groups = groups;
 
         delete currentBoard['unsubscribe'];
 
@@ -480,8 +495,8 @@ export const addGroup = () => {
 
         const newGroupColor = groupColors[groupIdx];
 
-        const newGroup = { color: newGroupColor, name: 'New Group' };
-        currentBoard.groups = {...currentBoard.groups, [newGuid()]: newGroup }
+        const newGroup = { id: newGuid(), color: newGroupColor, name: 'New Group' };
+        currentBoard.groups = [...currentBoard.groups, newGroup ];
 
         delete currentBoard['unsubscribe'];
 

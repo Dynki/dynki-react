@@ -23,6 +23,11 @@ class BoardRow extends React.Component {
 
     renderSwitch = (col, idx) => {
         const {...restProps} = this.props;
+
+        const rowValue = this.props.board.groups[this.props.groupKey].entities[this.props.rowIdx] 
+                        ? this.props.board.groups[this.props.groupKey].entities[this.props.rowIdx][col.model] 
+                        : '';
+
         switch(col.class) {
             case 'text': 
              return <BoardRowForm
@@ -31,7 +36,8 @@ class BoardRow extends React.Component {
                     rowIdx={this.props.rowIdx}
                     rowId={this.props.rowId}
                     colIdx={idx}
-                    modelName={col.model}>
+                    modelName={col.model}
+                    groupKey={this.props.groupKey}>
                 </BoardRowForm>;
 
             case 'select':
@@ -39,7 +45,8 @@ class BoardRow extends React.Component {
                     <SelectCellModal 
                         col={col}
                         rowId={this.props.rowId}
-                        rowValue={this.props.board.group[this.props.groupKey].entities[this.props.rowIdx][col.model]}
+                        rowValue={rowValue}
+                        groupKey={this.props.groupKey}
                         {...restProps }/>
                 </div>
         

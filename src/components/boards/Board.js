@@ -58,27 +58,30 @@ export class Board extends React.Component {
             // Row drag end.
 
             const newBoard = this.props.board;
+            const sourceGroupIdx = newBoard.groups.findIndex(grp => grp.id === result.source.droppableId);
+            const destinationGroupIdx = newBoard.groups.findIndex(grp => grp.id === result.destination.droppableId);
 
             // result.desination/source.draggableId = The group id.
             // If they are different then we need to move the row to the new group.
 
-            if (result.source.droppableId !== result.destination.droppableId) {
+            if (sourceGroupIdx !== destinationGroupIdx) {
                 // Get the existing row from the old group.
-                const existingRow = newBoard.groups[result.source.droppableId].entities.find(e => e.id === result.draggableId);
-
+                const existingRow = newBoard.groups[sourceGroupIdx].entities.find(e => e.id === result.draggableId);
+                
                 // Remove the row from the old group
-                newBoard.groups[result.source.droppableId].entities.filter(e => e.id !== result.draggableId);
-
+                newBoard.groups[sourceGroupIdx].entities = newBoard.groups[sourceGroupIdx].entities
+                                                                .filter(e => e.id !== result.draggableId);
                 // Push the row onto the destination group.
-                newBoard.groups[result.destination.droppableId].entities.push(existingRow);
+                newBoard.groups[destinationGroupIdx].entities.splice(result.destination.index, 0 ,existingRow);
+            } else {
+                
+                // Reorder the rows in the destination group.
+                newBoard.groups[destinationGroupIdx].entities = this.reorder(
+                    newBoard.groups[destinationGroupIdx].entities,
+                    result.source.index,
+                    result.destination.index
+                );
             }
-
-            // Reorder the rows in the destination group.
-            newBoard.groups[result.destination.droppableId].entities = this.reorder(
-                newBoard.groups[result.destination.droppableId].entities,
-                result.source.index,
-                result.destination.index
-            );
     
             this.onUpdateBoard(newBoard);
         }
