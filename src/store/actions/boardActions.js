@@ -510,3 +510,26 @@ export const addGroup = () => {
         dispatch({ type: 'SET_PROGRESS', payload: false });
     }
 }
+
+export const collapseGroup = (groupIdx) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        const firebase = getFirebase();
+        const currentBoard = getState().boards.currentBoard;
+        const domainId = getState().domain.domainId;
+
+        currentBoard.groups[groupIdx].collapsed = !currentBoard.groups[groupIdx].collapsed;
+
+        delete currentBoard['unsubscribe'];
+
+        await firebase.firestore()
+        .collection('domains')
+        .doc(domainId)
+        .collection('boards')
+        .doc(currentBoard.id)
+        .set(currentBoard);
+
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+    }
+}

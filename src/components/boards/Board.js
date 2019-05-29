@@ -68,9 +68,8 @@ export class Board extends React.Component {
                 // Get the existing row from the old group.
                 const existingRow = newBoard.groups[sourceGroupIdx].entities.find(e => e.id === result.draggableId);
                 
-                // Remove the row from the old group
-                newBoard.groups[sourceGroupIdx].entities = newBoard.groups[sourceGroupIdx].entities
-                                                                .filter(e => e.id !== result.draggableId);
+                newBoard.groups[sourceGroupIdx].entities.splice(result.source.index, 1);
+
                 // Push the row onto the destination group.
                 newBoard.groups[destinationGroupIdx].entities.splice(result.destination.index, 0 ,existingRow);
             } else {
@@ -83,6 +82,8 @@ export class Board extends React.Component {
                 );
             }
     
+            console.log('Call Update Board!!');
+
             this.onUpdateBoard(newBoard);
         }
     }

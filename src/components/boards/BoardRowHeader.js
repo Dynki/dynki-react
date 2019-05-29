@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import BoardRowHeaderForm from './BoardRowHeaderForm';
 import BoardRowHeaderGroupForm from './BoardRowHeaderGroupForm';
 import BoardRowHeaderMenu from './BoardRowHeaderMenu';
-import { removeColumn, addGroup } from '../../store/actions/boardActions';
+import { removeColumn, addGroup, collapseGroup } from '../../store/actions/boardActions';
 
 class BoardRowHeader extends React.Component {
     
@@ -19,8 +19,13 @@ class BoardRowHeader extends React.Component {
         this.props.addGroup();
     }
 
+    collapseGroup() {
+        this.props.collapseGroup(this.props.groupKey);
+    }
+
     render() {
         this.groupColor = '#' + this.props.board.groups[this.props.groupKey].color;
+        const collapsed = this.props.board.groups[this.props.groupKey].collapsed;
 
         const menu = (
             <Menu>
@@ -41,12 +46,21 @@ class BoardRowHeader extends React.Component {
                 </a>
                 </Menu.Item>
                 <Menu.Item>
-                <a target="_blank" rel="noopener noreferrer">
-                    <div className="table__group__menu__row">
-                        <Icon className="table__group__menu__icon" type="arrow-up" />
-                        <div>Collapse Group</div>
-                    </div>
-                </a>
+                    <a target="_blank" rel="noopener noreferrer" onClick={() => this.collapseGroup()}>
+                        <div className="table__group__menu__row">
+                        {collapsed ? 
+                            <React.Fragment>
+                                <Icon className="table__group__menu__icon" type="arrow-down" />
+                                <div>Expand Group</div>
+                            </React.Fragment>
+                            :
+                            <React.Fragment>
+                                <Icon className="table__group__menu__icon" type="arrow-up" />
+                                <div>Collapse Group</div>
+                            </React.Fragment>
+                        }
+                        </div>
+                    </a>
                 </Menu.Item>
             </Menu>
         );
@@ -100,6 +114,7 @@ class BoardRowHeader extends React.Component {
 const mapDispatchToProps = (dispatch) => {
     return{
       removeColumn: (model) => dispatch(removeColumn(model)),
+      collapseGroup: (groupKey) => dispatch(collapseGroup(groupKey)),
       addGroup: () => dispatch(addGroup())
     }
 }
