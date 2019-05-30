@@ -11,7 +11,7 @@ const BoardDetail = (props) => {
         <React.Fragment>
             {props.board.groups.map((grp, groupKey)  => {
 
-                return <React.Fragment>
+                return <React.Fragment key={groupKey}>
                     <table className="table" key={groupKey}>
                         <Droppable droppableId={grp.id}>
                         {provided => (
@@ -22,7 +22,7 @@ const BoardDetail = (props) => {
                                 <tbody ref={provided.innerRef} {...provided.droppableProps}>
 
                                     {!props.board.groups[groupKey].collapsed ? props.board.groups[groupKey].entities && props.board.groups[groupKey].entities.map((r, idx) => (
-                                        <React.Fragment>
+                                        <React.Fragment key={idx}>
                                             {r && r.id ? 
                                                 <Draggable key={idx} draggableId={r.id} index={idx}>
                                                 {provided => (

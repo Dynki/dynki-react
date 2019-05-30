@@ -82,7 +82,7 @@ export class Board extends React.Component {
                 );
             }
     
-            console.log('Call Update Board!!');
+            console.log('Call Update Board!!', newBoard);
 
             this.onUpdateBoard(newBoard);
         }

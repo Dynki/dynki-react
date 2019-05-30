@@ -177,6 +177,8 @@ export class Boards {
                 .doc(board.id)
                 .set(board);
 
+            console.log('Board Updated');
+
             resolve();
         });
     }
