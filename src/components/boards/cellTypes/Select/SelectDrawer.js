@@ -105,7 +105,7 @@ const SelectDrawer = (props) => {
                         <ul ref={outerProvided.innerRef} {...outerProvided.droppableProps} className="select__drawer-colors">
                             {props.column.values.map((c, i) => {
                                 return (
-                                    <li>
+                                    <li key={i}>
                                         <SelectCellForm
                                             onSelected={onSelectOption}
                                             onTitleChanged={onTitleChanged}

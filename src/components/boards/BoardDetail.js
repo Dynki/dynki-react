@@ -7,6 +7,8 @@ import BoardRow from './BoardRow';
 
 const BoardDetail = (props) => {
 
+    console.log('board detail props::', props);
+
     return (
         <React.Fragment>
             {props.board.groups.map((grp, groupKey)  => {

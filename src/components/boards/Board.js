@@ -83,8 +83,9 @@ export class Board extends React.Component {
             }
     
             console.log('Call Update Board!!', newBoard);
+            console.log('props.board', this.props.board);
 
-            this.onUpdateBoard(newBoard);
+            // this.onUpdateBoard(newBoard);
         }
     }
 
