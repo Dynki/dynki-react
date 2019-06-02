@@ -90,13 +90,15 @@ export const removeBoard = (boardId) => {
 
 export const updateBoard = (board) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
+        dispatch({ type: 'SET_CURRENT_BOARD', payload: board })
+        dispatch({ type: 'SET_PROGRESS', payload: true });
         dispatch({ type: 'ATTEMPT_UPDATE_BOARD', payload: board })
 
         const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
         await boardsHelper.update(board);
         dispatch({ type: 'SET_CURRENT_BOARD', payload: board })
         dispatch(getBoards());
+        dispatch({ type: 'SET_PROGRESS', payload: false });
     }
 }
 

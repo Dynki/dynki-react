@@ -8,8 +8,8 @@ const BoardGroup = (props) => {
 
     return (
     <React.Fragment key={group.id}>
-        <BoardTable group={group} groupKey={groupKey} board={board}></BoardTable>
-        {group.collapsed ?        
+        <BoardTable group={group} groupKey={groupKey} board={board} progress={progress}></BoardTable>
+        {!group.collapsed ?        
             <BoardNewRow onNewRow={onNewRow} progress={progress} groupKey={groupKey}></BoardNewRow>
             : null
         }

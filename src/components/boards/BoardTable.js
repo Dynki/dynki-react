@@ -6,22 +6,25 @@ import BoardRow from './BoardRow';
 
 const BoardTable = (props) => {
 
-    const {group, groupKey} = props;
+    const {group, groupKey, progress} = props;
 
     return (
-        <table className="table" key={groupKey}>
-            <Droppable droppableId={group.id}>
-            {provided => (
+        <Droppable droppableId={group.id}>
+        {(provided, snapshot) => (
+            <table className="table" key={groupKey}>
                 <React.Fragment>
                     <thead>
                         <BoardRowHeader groupKey={groupKey} onUpdateBoard={props.onUpdateBoard} board={props.board}></BoardRowHeader>
                     </thead>
-                    <tbody ref={provided.innerRef} {...provided.droppableProps}>
-
+                    <tbody ref={provided.innerRef} {...provided.droppableProps}
+                        style={{ paddingBottom: snapshot.isDraggingOver ? '35px': '2px' }}
+                    >
+                        
                         {!group.collapsed && group.entities ? group.entities.map((r, idx) => (
                             <Draggable key={idx} draggableId={r.id} index={idx}>
                                 {provided => (
-                                    <tr ref={provided.innerRef} {...provided.draggableProps} className="table__rc">                    
+                                    <tr ref={provided.innerRef} {...provided.draggableProps} className="table__rc"
+                                    >                    
                                         <BoardRow 
                                             key={idx}
                                             onUpdateBoard={props.onUpdateBoard}
@@ -39,9 +42,9 @@ const BoardTable = (props) => {
                         {provided.placeHolder}
                     </tbody>
                 </React.Fragment>
-            )}
-            </Droppable>
         </table>        
+        )}
+    </Droppable>
     )
 }
 

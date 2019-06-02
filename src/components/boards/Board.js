@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { debounce } from 'lodash';
+import { debounce, cloneDeep } from 'lodash';
 import { DragDropContext } from 'react-beautiful-dnd';
 
 import BoardHeader from './BoardHeader';
@@ -21,7 +21,18 @@ export class Board extends React.Component {
         // before it fires the persitence logic. 
         this.onUpdateBoard = debounce(this.onUpdateBoard, 1000);
         this.onNewRow = debounce(this.onNewRow, 1000);
+
+        this.state = {
+            groups: []
+        }
     }
+
+    componentWillReceiveProps = (props) => {
+        this.setState({
+            groups: props.board ? props.board.groups : []
+        });
+    }
+
 
     // Triggered by child board detail component. 
     onUpdateBoard = (board) => {
@@ -45,8 +56,6 @@ export class Board extends React.Component {
     // Triggered when drag of board row have ended.
     // Reorders the entities (rows) within the board and calls logic to persist result.
     onDragEnd = (result) => {
-        console.log('Drag Finished', result);
-
         // dropped outside the list
         if (!result.destination) {
             return;
@@ -70,8 +79,13 @@ export class Board extends React.Component {
                 
                 newBoard.groups[sourceGroupIdx].entities.splice(result.source.index, 1);
 
+
                 // Push the row onto the destination group.
-                newBoard.groups[destinationGroupIdx].entities.splice(result.destination.index, 0 ,existingRow);
+                newBoard.groups[destinationGroupIdx].entities.splice(result.destination.index, 0, existingRow);
+
+                console.log('NewBoard Groups!!', newBoard.groups);
+
+                this.setState({ groups: newBoard.groups });
             } else {
                 
                 // Reorder the rows in the destination group.
@@ -82,10 +96,10 @@ export class Board extends React.Component {
                 );
             }
     
-            console.log('Call Update Board!!', newBoard);
-            console.log('props.board', this.props.board);
+            // console.log('Call Update Board!!', newBoard);
+            // console.log('props.board', this.props.board);
 
-            // this.onUpdateBoard(newBoard);
+            this.onUpdateBoard(newBoard);
         }
     }
 
@@ -101,7 +115,8 @@ export class Board extends React.Component {
                         <BoardDetail 
                             onNewRow={this.onNewRow}
                             onUpdateBoard={this.onUpdateBoard}
-                            progress={this.progress}
+                            progress={this.props.progress}
+                            groups={this.state.groups}
                             board={this.props.board}>
                         </BoardDetail>
                     </DragDropContext>
