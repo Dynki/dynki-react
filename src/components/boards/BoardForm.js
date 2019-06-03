@@ -17,11 +17,25 @@ const BForm = Form.create({
         };
     },
 
-    onValuesChange(props, values) {
-        props.onChange(values);
-    }
+    // onValuesChange(props, values) {
+    //     props.onChange(values);
+    // }
 })((props) => {
     const { getFieldDecorator } = props.form;
+
+    const handleSubmit = (e) => {
+        if (e) e.preventDefault();
+
+        props.form.validateFields((err, values) => {
+            if (!err) {
+            }
+            props.onChange(values);
+        });
+    }
+
+    const handleBlur = () => {
+        handleSubmit();
+    }
 
     return (
         <div className="board__form">
@@ -31,17 +45,24 @@ const BForm = Form.create({
                         rules: [],
                     })(
                         <Input 
-                        className="text__large--no-border board__form__description"
-                        size="large" 
-                        placeholder="Board title goes here" 
-                        autoComplete="no way" />
+                            className="text__large--no-border board__form__description"
+                            size="large" 
+                            placeholder="Board title goes here" 
+                            autoComplete="no way" 
+                            onBlur={() => handleBlur()}
+                        />
                     )}
                 </FormItem>
                 <FormItem>
                     {getFieldDecorator('description', {
                         rules: [],
                     })(
-                        <Input className="text--no-border description" placeholder="Add a board descripton" autoComplete="false"/>
+                        <Input 
+                            className="text--no-border description"
+                            placeholder="Add a board descripton"
+                            autoComplete="false"
+                            onBlur={() => handleBlur()}
+                        />
                     )}
                 </FormItem>
             </Form>
@@ -52,8 +73,10 @@ const BForm = Form.create({
 const BoardForm = (props) => {
 
     const handleFormChange = (changedFields) => {
-        const updatedBoard = { ...props.board, ...changedFields }
-        props.onUpdateBoard(updatedBoard);
+        if (changedFields.title !== props.board.title || changedFields.description !== props.board.description) {
+            const updatedBoard = { ...props.board, ...changedFields }
+            props.onUpdateBoard(updatedBoard);
+        }
     }
 
     const fields = {

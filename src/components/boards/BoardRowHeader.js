@@ -75,7 +75,7 @@ class BoardRowHeader extends React.Component {
                         <Icon style={{ color: this.groupColor }} className="table__group__menu__icon--main" type="caret-down" />
                     }                    
                 </a>
-            </Dropdown>,
+            </Dropdown>
         </th>
         <th
             className="table__header__columns table__header__columns--first"
