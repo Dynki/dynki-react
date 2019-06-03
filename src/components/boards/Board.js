@@ -79,6 +79,10 @@ export class Board extends React.Component {
                 
                 newBoard.groups[sourceGroupIdx].entities.splice(result.source.index, 1);
 
+                // Create a blank array if group has never had any entities.
+                if (!newBoard.groups[destinationGroupIdx].entities) {
+                    newBoard.groups[destinationGroupIdx].entities = [];
+                }
 
                 // Push the row onto the destination group.
                 newBoard.groups[destinationGroupIdx].entities.splice(result.destination.index, 0, existingRow);

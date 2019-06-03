@@ -69,7 +69,11 @@ class BoardRowHeader extends React.Component {
         <th>
             <Dropdown overlay={menu}>
                 <a className="ant-dropdown-link" href="#">
-                    <Icon style={{ color: this.groupColor }} className="table__group__menu__icon--main" type="caret-down" />
+                    {collapsed ? 
+                        <Icon style={{ color: this.groupColor }} className="table__group__menu__icon--main" type="caret-up" />
+                    :
+                        <Icon style={{ color: this.groupColor }} className="table__group__menu__icon--main" type="caret-down" />
+                    }                    
                 </a>
             </Dropdown>,
         </th>

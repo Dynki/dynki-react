@@ -16,15 +16,20 @@ const BRForm = Form.create({
     },
 
     onValuesChange(props, values) {
-        props.onChange(values);
+        // props.onChange(values);
     }
 })((props) => {
     const { getFieldDecorator } = props.form;
+
+    
     return (
         <Form className="table__row__cell__container" autoComplete="off">
             <FormItem >
                 {getFieldDecorator('columnValue', {})(
-                    <Input placeholder={props.colIdx === 0 ? "Enter some text here..." : ""} className="table__header__input text--no-border"/>
+                    <Input 
+                        placeholder={props.colIdx === 0 ? "Enter some text here..." : ""}
+                        className="table__header__input text--no-border"
+                    />
                 )}
             </FormItem>
         </Form>

@@ -4,13 +4,13 @@ import BoardTable from './BoardTable';
 
 const BoardGroup = (props) => {
 
-    const {board, group, groupKey, onNewRow, progress} = props;
+    const {board, group, groupKey, onNewRow, progress, onUpdateBoard} = props;
 
     return (
     <React.Fragment key={group.id}>
-        <BoardTable group={group} groupKey={groupKey} board={board} progress={progress}></BoardTable>
+        <BoardTable onUpdateBoard={onUpdateBoard} group={group} groupKey={groupKey} board={board} progress={progress}></BoardTable>
         {!group.collapsed ?        
-            <BoardNewRow onNewRow={onNewRow} progress={progress} groupKey={groupKey}></BoardNewRow>
+            <BoardNewRow onUpdateBoard={onUpdateBoard} onNewRow={onNewRow} progress={progress} groupKey={groupKey}></BoardNewRow>
             : null
         }
     </React.Fragment>)

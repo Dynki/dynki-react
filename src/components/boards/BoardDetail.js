@@ -3,12 +3,19 @@ import BoardGroup from './BoardGroup';
 
 const BoardDetail = (props) => {
 
-    const {onNewRow, progress, board, groups} = props;
+    const {onNewRow, onUpdateBoard, progress, board, groups} = props;
 
     return (
         <React.Fragment>
             {groups.map((group, groupKey)  => (
-                <BoardGroup group={group} groupKey={groupKey} board={board} onNewRow={onNewRow} progress={progress}></BoardGroup>
+                <BoardGroup 
+                    group={group}
+                    groupKey={groupKey}
+                    board={board}
+                    onNewRow={onNewRow}
+                    progress={progress}
+                    onUpdateBoard={onUpdateBoard}
+                ></BoardGroup>
             ))}
         </React.Fragment>
     )
