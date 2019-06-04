@@ -180,6 +180,16 @@ $mariner: #2b82c1;
             border-bottom: solid;
             border-bottom-color: #fff;
             border-bottom-width: 1px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            -webkit-transition: width 0.3s; /* For Safari 3.1 to 6.0 */
+            transition: width 0.3s;
+
+            &--active {
+                width: 20px;
+            }
 
             &:hover {
                 background-color: lighten($mariner, 30%);
@@ -187,6 +197,11 @@ $mariner: #2b82c1;
 
             &:focus {
                 background-color: lighten($mariner, 30%);
+            }
+
+            i {
+                color: #ffff;
+                font-size:17px;
             }
         }
 

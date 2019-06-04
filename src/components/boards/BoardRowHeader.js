@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import BoardRowHeaderForm from './BoardRowHeaderForm';
 import BoardRowHeaderGroupForm from './BoardRowHeaderGroupForm';
 import BoardRowHeaderMenu from './BoardRowHeaderMenu';
-import { removeColumn, addGroup, collapseGroup } from '../../store/actions/boardActions';
+import { removeColumn, addGroup, removeGroup, collapseGroup } from '../../store/actions/boardActions';
 
 class BoardRowHeader extends React.Component {
     
@@ -23,6 +23,10 @@ class BoardRowHeader extends React.Component {
         this.props.collapseGroup(this.props.groupKey);
     }
 
+    handleConfirm() {
+        this.props.removeGroup(this.props.board.groups[this.props.groupKey].id);
+    }
+
     render() {
         this.groupColor = '#' + this.props.board.groups[this.props.groupKey].color;
         const collapsed = this.props.board.groups[this.props.groupKey].collapsed;
@@ -37,14 +41,26 @@ class BoardRowHeader extends React.Component {
                     </div>
                 </a>
                 </Menu.Item>
-                <Menu.Item disabled={this.props.board.groups && Object.keys(this.props.board.groups).length === 1}>
-                <a target="_blank" rel="noopener noreferrer">
-                    <div className="table__group__menu__row">
-                        <Icon className="table__group__menu__icon" type="delete" />
-                        <div>Remove Group</div>
-                    </div>
-                </a>
-                </Menu.Item>
+                {this.props.board.groups.length > 1 ? 
+                    <Menu.Item>
+                        <Popconfirm title="Delete this group? Are you sure? There's no going back!!"
+                            okText="Yes Delete This Group"
+                            cancelText="No Way"
+                            trigger="click"
+                            placement="bottomLeft"
+                            onConfirm={this.handleConfirm.bind(this)}
+                        >
+                            <a target="_blank" rel="noopener noreferrer">
+                                <div className="table__group__menu__row">
+                                    <Icon className="table__group__menu__icon" type="delete" />
+                                    <div>Remove Group</div>
+                                </div>
+                            </a>
+                        </Popconfirm>
+                    </Menu.Item>
+                    :
+                    null
+                }
                 <Menu.Item>
                     <a target="_blank" rel="noopener noreferrer" onClick={() => this.collapseGroup()}>
                         <div className="table__group__menu__row">
@@ -119,7 +135,8 @@ const mapDispatchToProps = (dispatch) => {
     return{
       removeColumn: (model) => dispatch(removeColumn(model)),
       collapseGroup: (groupKey) => dispatch(collapseGroup(groupKey)),
-      addGroup: () => dispatch(addGroup())
+      addGroup: () => dispatch(addGroup()),
+      removeGroup: (groupId) => dispatch(removeGroup(groupId))
     }
 }
 

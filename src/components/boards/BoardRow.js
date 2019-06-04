@@ -2,7 +2,7 @@
 import React from 'react';
 import BoardRowForm from './BoardRowForm';
 import BoardRowMenu from './BoardRowMenu';
-import { Tooltip } from 'antd';
+import { Tooltip, Icon, Checkbox } from 'antd';
 import SelectCellModal from './cellTypes/Select/SelectCellModal';
 import * as _ from 'lodash';
 
@@ -69,14 +69,21 @@ class BoardRow extends React.Component {
                     >
                     {isFirst ? <BoardRowMenu hovering={this.state.hovering} rowIdx={this.props.rowIdx} groupKey={this.props.groupKey}></BoardRowMenu> : null }
                     {isFirst ?
-                            <Tooltip title="Drag me">
                                 <div
                                     {...this.props.provided.dragHandleProps}
-                                    className="draghandle"
+                                    className={this.state.hovering ? "draghandle draghandle--active" : "draghandle"}
                                     style={{ backgroundColor: '#' + this.props.board.groups[this.props.groupKey].color }}
                                     tabIndex="0">
+                                    {this.state.hovering ? 
+                                        <React.Fragment>
+                                            <Tooltip title="Drag me">
+                                                <Icon type="more" />
+                                            </Tooltip>
+                                        </React.Fragment>
+                                        :
+                                        null
+                                    }
                                 </div>
-                            </Tooltip>
                     : null }
                     {this.renderSwitch(c, idx)}
                 </td>

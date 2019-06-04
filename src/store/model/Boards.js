@@ -30,7 +30,12 @@ export class Boards {
                     // Add the subscription to the current board so we can kill it later.
                     if (board) {
                         board.unsubscribe = sub;
-                        board.groups = board.groups ? board.groups : { undefined: { name: 'Group 1', color: '2B82C1'} };
+
+                        if (!board.groups) {
+                            board.groups = [{ id: newGuid(), name: 'Group 1', color: '2B82C1', entities: board.entities}];
+                        }
+
+                        console.log('Got Board::', board);
     
                         resolve(board);
                     }

@@ -16,7 +16,7 @@ const BRForm = Form.create({
     },
 
     onValuesChange(props, values) {
-        // props.onChange(values);
+        props.onChange(values);
     }
 })((props) => {
     const { getFieldDecorator } = props.form;
@@ -46,8 +46,6 @@ const BoardRowForm = (props) => {
         updatedBoard.groups[props.groupKey].entities[idx][props.modelName] = changedFields['columnValue'];
         props.onUpdateBoard(updatedBoard);
     }
-
-
 
     const fields = {
         columnValue: {
