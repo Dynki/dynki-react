@@ -26,6 +26,7 @@ class SelectCellModal extends React.Component {
                 col={this.props.col}
                 setVisible={this.setVisible.bind(this)}
                 parentVisible={this.state.visible}
+                groupKey={this.props.groupKey}
             />
         )
     };
@@ -58,7 +59,9 @@ class SelectCellModal extends React.Component {
     render() {
         const { ...restProps } = this.props;
 
-        const colKey = this.props.board.entities[this.props.rowIdx][this.props.col.model];
+        const idx = this.props.board.groups[this.props.groupKey].entities.findIndex(r => this.props.rowId === r.id);
+
+        const colKey = this.props.board.groups[this.props.groupKey].entities[idx] ? this.props.board.groups[this.props.groupKey].entities[idx][this.props.col.model] : '';
         const colObj = this.props.col.values.find(c => c.key === colKey);
         const fgColor = (colObj && colObj.fgColor) ? colObj.fgColor : 'ffffff';
 

@@ -6,7 +6,7 @@ import { removeRow } from '../../store/actions/boardActions';
 class BoardRowMenu extends React.Component {
 
     handleConfirm = (e) => {
-        this.props.removeRow(this.props.rowIdx)
+        this.props.removeRow(this.props.rowIdx, this.props.groupKey);
     }
 
     render() {
@@ -33,7 +33,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        removeRow: (rowIdx) => dispatch(removeRow(rowIdx))
+        removeRow: (rowIdx, groupKey) => dispatch(removeRow(rowIdx, groupKey))
     }
 }
 

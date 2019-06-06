@@ -2,8 +2,9 @@
 import React from 'react';
 import BoardRowForm from './BoardRowForm';
 import BoardRowMenu from './BoardRowMenu';
-import { Tooltip } from 'antd';
+import { Tooltip, Icon, Checkbox } from 'antd';
 import SelectCellModal from './cellTypes/Select/SelectCellModal';
+import * as _ from 'lodash';
 
 class BoardRow extends React.Component {
 
@@ -22,6 +23,11 @@ class BoardRow extends React.Component {
 
     renderSwitch = (col, idx) => {
         const {...restProps} = this.props;
+
+        const rowValue = this.props.board.groups[this.props.groupKey].entities[this.props.rowIdx] 
+                        ? this.props.board.groups[this.props.groupKey].entities[this.props.rowIdx][col.model] 
+                        : '';
+
         switch(col.class) {
             case 'text': 
              return <BoardRowForm
@@ -30,12 +36,18 @@ class BoardRow extends React.Component {
                     rowIdx={this.props.rowIdx}
                     rowId={this.props.rowId}
                     colIdx={idx}
-                    modelName={col.model}>
+                    modelName={col.model}
+                    groupKey={this.props.groupKey}>
                 </BoardRowForm>;
 
             case 'select':
                 return <div className="table__row__cell__container--nopadding">
-                  <SelectCellModal col={col} rowId={this.props.rowId} rowValue={this.props.board.entities[this.props.rowIdx][col.model]} {...restProps }></SelectCellModal>
+                    <SelectCellModal 
+                        col={col}
+                        rowId={this.props.rowId}
+                        rowValue={rowValue}
+                        groupKey={this.props.groupKey}
+                        {...restProps }/>
                 </div>
         
             default:
@@ -55,15 +67,23 @@ class BoardRow extends React.Component {
                         onMouseEnter={this.mouseEnter.bind(this)}
                         onMouseLeave={this.mouseLeave.bind(this)}
                     >
-                    {isFirst ? <BoardRowMenu hovering={this.state.hovering} rowIdx={this.props.rowIdx}></BoardRowMenu> : null }
+                    {isFirst ? <BoardRowMenu hovering={this.state.hovering} rowIdx={this.props.rowIdx} groupKey={this.props.groupKey}></BoardRowMenu> : null }
                     {isFirst ?
-                            <Tooltip title="Drag me">
                                 <div
                                     {...this.props.provided.dragHandleProps}
-                                    className="draghandle"
+                                    className={this.state.hovering ? "draghandle draghandle--active" : "draghandle"}
+                                    style={{ backgroundColor: '#' + this.props.board.groups[this.props.groupKey].color }}
                                     tabIndex="0">
+                                    {this.state.hovering ? 
+                                        <React.Fragment>
+                                            <Tooltip title="Drag me">
+                                                <Icon type="more" />
+                                            </Tooltip>
+                                        </React.Fragment>
+                                        :
+                                        null
+                                    }
                                 </div>
-                            </Tooltip>
                     : null }
                     {this.renderSwitch(c, idx)}
                 </td>

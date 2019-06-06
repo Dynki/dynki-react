@@ -33,6 +33,10 @@
     border-right: 1px solid #e8e8e8;
     grid-area: sidenav;
 
+    i {
+        font-size: 18px!important;
+    }
+
     &__brand {
         background-color: #e1e4e5;
         min-height: 57px;

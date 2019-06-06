@@ -11,4 +11,6 @@ export class Board {
         this.columns = [{ title: 'Description', model: 'description', class: 'text' }];
         this.type = type;
     }
+
+    
 }

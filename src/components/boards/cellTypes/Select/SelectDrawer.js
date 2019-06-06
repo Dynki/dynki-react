@@ -100,12 +100,12 @@ const SelectDrawer = (props) => {
                 <Button onClick={addNewValue} className="select__newbtn"  type="dashed" size="small">
                     <Icon type="plus" />New Label
                 </Button>
-                <Droppable droppableId={props.column.model}>
+                <Droppable droppableId={props.column.model} type="select">
                     {outerProvided =>(
                         <ul ref={outerProvided.innerRef} {...outerProvided.droppableProps} className="select__drawer-colors">
                             {props.column.values.map((c, i) => {
                                 return (
-                                    <li>
+                                    <li key={i}>
                                         <SelectCellForm
                                             onSelected={onSelectOption}
                                             onTitleChanged={onTitleChanged}

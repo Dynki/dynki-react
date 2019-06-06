@@ -17,6 +17,7 @@
             width: 100%;
             border-top-right-radius: 0px;
             border-bottom-right-radius: 0px;
+            border-radius: 0px;
             margin-right: 0px;
         }
     }
@@ -28,8 +29,8 @@
         flex-direction: column;
         justify-content: center;
         width: 20px;
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
         border: none;
     }
 
@@ -89,6 +90,7 @@
         min-width: 150px!important;
         margin: 5px;
         // color: #ffffff!important;
+        border-radius: 0px;
     }
 
     &__cell {
@@ -122,6 +124,7 @@
         border: none;
         border-top-right-radius: 0px!important;
         border-bottom-right-radius: 0px!important;
+        border-radius: 0px;
     }
 
     &__newbtn {
@@ -129,6 +132,7 @@
         margin-bottom: 15px;
         min-width: 148px;
         height: 30px;
+        border-radius: 0px;
     }
 
     &__form {

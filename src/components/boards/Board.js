@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { debounce } from 'lodash';
+import { debounce, cloneDeep } from 'lodash';
 import { DragDropContext } from 'react-beautiful-dnd';
 
 import BoardHeader from './BoardHeader';
 import BoardDetail from './BoardDetail';
-import BoardNewRow from './BoardNewRow';
 
 import { updateBoard, newRow, updateColumnValueOrder } from '../../store/actions/boardActions';
 
@@ -22,7 +21,18 @@ export class Board extends React.Component {
         // before it fires the persitence logic. 
         this.onUpdateBoard = debounce(this.onUpdateBoard, 1000);
         this.onNewRow = debounce(this.onNewRow, 1000);
+
+        this.state = {
+            groups: []
+        }
     }
+
+    componentWillReceiveProps = (props) => {
+        this.setState({
+            groups: props.board ? props.board.groups : []
+        });
+    }
+
 
     // Triggered by child board detail component. 
     onUpdateBoard = (board) => {
@@ -30,8 +40,8 @@ export class Board extends React.Component {
     }
 
     // Triggered by child new row component.
-    onNewRow = (description) => {
-        this.props.newRow(description);
+    onNewRow = (description, groupKey) => {
+        this.props.newRow(description, groupKey);
     }
 
     // Helper function for drag drop reordering or board rows.
@@ -46,8 +56,6 @@ export class Board extends React.Component {
     // Triggered when drag of board row have ended.
     // Reorders the entities (rows) within the board and calls logic to persist result.
     onDragEnd = (result) => {
-        console.log('Drag Finished', result);
-
         // dropped outside the list
         if (!result.destination) {
             return;
@@ -56,13 +64,45 @@ export class Board extends React.Component {
         if (result.draggableId.indexOf('value') > -1) {
             this.props.updateColumnValueOrder(result);
         } else {
+            // Row drag end.
+
             const newBoard = this.props.board;
-            newBoard.entities = this.reorder(
-                newBoard.entities,
-                result.source.index,
-                result.destination.index
-            );
+            const sourceGroupIdx = newBoard.groups.findIndex(grp => grp.id === result.source.droppableId);
+            const destinationGroupIdx = newBoard.groups.findIndex(grp => grp.id === result.destination.droppableId);
+
+            // result.desination/source.draggableId = The group id.
+            // If they are different then we need to move the row to the new group.
+
+            if (sourceGroupIdx !== destinationGroupIdx) {
+                // Get the existing row from the old group.
+                const existingRow = newBoard.groups[sourceGroupIdx].entities.find(e => e.id === result.draggableId);
+                
+                newBoard.groups[sourceGroupIdx].entities.splice(result.source.index, 1);
+
+                // Create a blank array if group has never had any entities.
+                if (!newBoard.groups[destinationGroupIdx].entities) {
+                    newBoard.groups[destinationGroupIdx].entities = [];
+                }
+
+                // Push the row onto the destination group.
+                newBoard.groups[destinationGroupIdx].entities.splice(result.destination.index, 0, existingRow);
+
+                console.log('NewBoard Groups!!', newBoard.groups);
+
+                this.setState({ groups: newBoard.groups });
+            } else {
+                
+                // Reorder the rows in the destination group.
+                newBoard.groups[destinationGroupIdx].entities = this.reorder(
+                    newBoard.groups[destinationGroupIdx].entities,
+                    result.source.index,
+                    result.destination.index
+                );
+            }
     
+            // console.log('Call Update Board!!', newBoard);
+            // console.log('props.board', this.props.board);
+
             this.onUpdateBoard(newBoard);
         }
     }
@@ -77,11 +117,13 @@ export class Board extends React.Component {
                     </BoardHeader>
                     <DragDropContext onDragEnd={this.onDragEnd}>
                         <BoardDetail 
+                            onNewRow={this.onNewRow}
                             onUpdateBoard={this.onUpdateBoard}
+                            progress={this.props.progress}
+                            groups={this.state.groups}
                             board={this.props.board}>
                         </BoardDetail>
                     </DragDropContext>
-                    <BoardNewRow onNewRow={this.onNewRow} progress={this.props.progress}></BoardNewRow>
                 </section> 
             : 
                 null 
@@ -101,7 +143,7 @@ export const mapDispatchToProps = (dispatch) => {
     return{
       updateBoard: (board) => dispatch(updateBoard(board)),
       updateColumnValueOrder: (data) => dispatch(updateColumnValueOrder(data)),
-      newRow: (description) => dispatch(newRow(description))
+      newRow: (rowObj, groupKey) => dispatch(newRow(rowObj, groupKey))
     }
 }
 
