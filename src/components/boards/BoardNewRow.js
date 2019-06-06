@@ -23,7 +23,11 @@ const BNRForm = Form.create({})((props) => {
                     {getFieldDecorator('newValue', { })(
                         <Input placeholder="+ Create new row"/>
                     )}
-                    <Button htmlType="submit" className="new-row__btn">
+                    <Button 
+                        htmlType="submit"
+                        className="new-row__btn"
+                        style={{ backgroundColor: '#' + props.group.color }}
+                    >
                         Create
                         {props.progress ? <Icon type="loading" /> : <Icon type="enter"/>}
                     </Button>

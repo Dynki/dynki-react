@@ -491,11 +491,15 @@ export const addGroup = () => {
         const currentBoard = getState().boards.currentBoard;
         const domainId = getState().domain.domainId;
 
-        const groupColors = ['EB144C', 'FF6900', 'FCB900', '00D084', 'EFF1F3', '039BE5', '9900EF'];
-        const groupCount = Object.keys(currentBoard.groups).length;
-        const groupIdx = groupCount <= 7 ? groupCount : Math.floor(groupCount/7);
+        const groupColors = ['FFA300',
+                            '06D6A0', 'EF476F', '26547C',
+                            '2A4DA1', '8E58A4', 'FAA434', 'FF916E', 'AD3F5A',
+                            '134B5E', '6CA88F', '231E1F', 'F8C500', 'E01A4F', '2176FF', 
+                            'F9C22E', 'D5513D', '363537', 'FFD166', 'EE3A33', 'FCDB3E'];
 
-        const newGroupColor = groupColors[groupIdx];
+        const groupCount = currentBoard.groups.length;
+
+        const newGroupColor = groupColors[groupCount-1];
 
         const newGroup = { id: newGuid(), color: newGroupColor, name: 'New Group' };
         currentBoard.groups = [...currentBoard.groups, newGroup ];
