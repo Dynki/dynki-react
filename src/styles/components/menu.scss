@@ -4,16 +4,56 @@
     flex-direction: row;
     align-items: center;
     margin-right: 10px;
+    overflow: hidden;
 
-    .ant-menu-submenu {
+    button {
+        position: absolute;
+        left: 210px;
+    }
+
+
+    li {
         flex-grow: 1;
+        width: 100%;
 
+        #\32 \$Menu {
+            margin-left: 20px!important;
+        }
+    
         .ant-btn {
             margin-top: 7px!important;
-            }
+        }
+
         .ant-menu-item-selected {
             width: calc(100% + 40px)!important;
         }
+
+        .ant-menu-submenu-title {
+            max-width: 240px!important;
+
+            .ant-menu-submenu-arrow {
+                position: absolute;
+                left: 193px;
+            }
+
+        }
+
+        ul {
+            
+            li {
+                width: calc(100% + 40px)!important;
+                // padding-left: 48px!important;
+
+
+                a {
+                    width: 195px;
+                    max-width: 195px!important;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                }
+            }
+        }
+
     }
 
 }
@@ -190,7 +230,7 @@ dyn-sub-menu {
             top: 7px;
             z-index: 1000;
             position: absolute!important;
-
+            
             span {
                 display: contents!important;
             }

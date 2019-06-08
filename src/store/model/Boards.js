@@ -117,6 +117,36 @@ export class Boards {
         return Promise.resolve({ id: newDoc.id, ...newDoc.data() });
     }
 
+    async addFolder() {
+        const newFolder = {
+            id: newGuid(),
+            title: 'New Folder',
+            isFolder: true,
+            items: []
+        }
+
+        // Firebase requires the data to be parsed this way!!.
+        const data = JSON.parse(JSON.stringify(newFolder));
+
+        // Get from firestore the list of boards in this domain. 
+        // Then create a reference with the new boards added.
+        const boardsRef = await this.firebase.firestore().collection('domains').doc(this.domainId).collection('boardsInDomain').doc('appBoards').get()
+        let existingBoards = boardsRef.data() && boardsRef.data().boards ? boardsRef.data().boards : [];
+        existingBoards.push(newFolder);
+
+        // Update the boards in this domain with data from above.
+        await this.firebase.firestore()
+            .collection('domains')
+            .doc(this.domainId)
+            .collection('boardsInDomain')
+            .doc('appBoards')
+            .set({
+                boards: existingBoards
+            });
+
+        return Promise.resolve({ id: newFolder.id });
+    }
+
     /**
      * Delete a individual board.
      * 

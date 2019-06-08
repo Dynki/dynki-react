@@ -36,6 +36,21 @@ export const newBoard = () => {
     }
 }
 
+// Create a new blank board with this user's domain/team.
+export const addNewFolder = () => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
+        const newFolder = await boardsHelper.addFolder();
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+
+        dispatch(getBoards());        
+
+        return Promise.resolve(newFolder);
+    }
+}
+
 // Get an individual board by id.
 export const getBoard = (id) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {

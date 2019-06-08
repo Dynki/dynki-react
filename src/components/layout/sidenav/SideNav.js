@@ -42,14 +42,20 @@ const mapStateToProps = (state) => {
 
       // Declare the menu items in this application.
       menuItems: () => {
+        const constructItems = (itemArr) => {
+            return itemArr.map(i => ({
+                id: i.id,
+                title: i.title,
+                target: `/board/${i.id}`,
+                action: getBoard(i.id),
+                isFolder: i.isFolder,
+                items: i.items ? constructItems(i.items) : null
+            }));
+        }
+   
         let items = [];
         if (state.boards.boards) {
-            items = state.boards.boards.map(b => ({ 
-                id: b.id,
-                title: b.title,
-                target: `/board/${b.id}`,
-                action: getBoard(b.id) 
-            }))
+            items = constructItems(state.boards.boards);
         }
 
         const menuItems = [
