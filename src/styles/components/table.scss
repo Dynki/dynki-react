@@ -122,7 +122,7 @@ $mariner: #2b82c1;
     }
 
     padding: 10px;
-    padding-left: 0px;
+    padding-left: 7px;
     padding-bottom: 0px;
     width: 100%;
     outline: none;
@@ -405,6 +405,10 @@ $mariner: #2b82c1;
             &__menu {
                 padding-right: 5px;
                 min-width: 23px;
+
+                &__delete {
+                    color: #EB144C;
+                }
             }
 
             &__column {
@@ -509,7 +513,7 @@ $mariner: #2b82c1;
             align-items: center;
             text-align: left;
             width: 100%;
-            padding-left: 14px;
+            padding-left: 21px;
             padding-right: 14px;
 
             input {

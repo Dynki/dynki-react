@@ -33,6 +33,12 @@
     border-right: 1px solid #e8e8e8;
     grid-area: sidenav;
 
+    .ant-menu {
+        .ant-menu-item {
+            padding-left: 16px!important;
+        }
+    }
+
     i {
         font-size: 18px!important;
     }

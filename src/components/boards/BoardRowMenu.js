@@ -17,7 +17,7 @@ class BoardRowMenu extends React.Component {
                     cancelText="No Way"
                     trigger="click"
                     onConfirm={this.handleConfirm.bind(this)}>
-                        <Icon type="delete" />
+                        <Icon type="delete" className="row__content__menu__delete"/>
                 </Popconfirm>
             : null
             }

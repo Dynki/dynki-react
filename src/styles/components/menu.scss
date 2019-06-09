@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-right: 10px;
+    // margin-right: 25px;
     overflow: hidden;
 
     button {
@@ -17,7 +17,7 @@
         width: 100%;
 
         #\32 \$Menu {
-            margin-left: 20px!important;
+            margin-left: 15px!important;
         }
     
         .ant-btn {
@@ -282,4 +282,42 @@ dyn-sub-menu {
 
 .ant-breadcrumb-separator {
     margin: 0 12px;
+}
+
+.folder-subfolder {
+    .ant-menu-submenu-title {
+        padding-left: 12px!important;
+
+        .ant-menu-submenu-arrow {
+            left: 188px!important;
+        }
+    }
+}
+
+.foldermenu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-left: 15px!important;
+    width: 240px;
+
+    &:hover{
+        padding-left: 0px!important;
+
+        .ant-menu-submenu {
+            .ant-menu-submenu-arrow {
+                left: 182px!important;
+            }
+        }
+
+        .ant-menu-submenu-title {
+            padding-left: 6px!important;
+        }
+    }
+
+    .delete {
+        color: #EB144C;
+        margin-right: 3px;
+    }
 }
