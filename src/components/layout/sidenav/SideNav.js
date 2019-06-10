@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { Breadcrumb, Button, Icon, Tooltip } from 'antd';
+import { Affix, Breadcrumb, Button, Icon, Tooltip } from 'antd';
 
 import DynMenu from '../menu/Menu';
 import { getBoards, getBoard, newBoard } from '../../../store/actions/boardActions'; 

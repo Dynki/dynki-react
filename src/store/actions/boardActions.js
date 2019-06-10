@@ -578,3 +578,18 @@ export const removeGroup = (groupId) => {
         dispatch({ type: 'SET_PROGRESS', payload: false });
     }
 }
+
+// Create a new blank board with this user's domain/team.
+export const updateBoardTitle = (boardId, updateBoardTitle) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
+        const newFolder = await boardsHelper.updateBoardTitle(boardId, updateBoardTitle);
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+
+        dispatch(getBoards());        
+
+        return Promise.resolve(newFolder);
+    }
+}

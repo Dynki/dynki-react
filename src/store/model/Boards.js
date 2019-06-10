@@ -147,6 +147,31 @@ export class Boards {
         return Promise.resolve({ id: newFolder.id });
     }
 
+    async updateBoardTitle(boardId, updatedTitle) {
+        // Get from firestore the list of boards in this domain. 
+        // Then create a reference with the new boards added.
+        const boardsRef = await this.firebase.firestore().collection('domains').doc(this.domainId).collection('boardsInDomain').doc('appBoards').get()
+        let existingBoards = boardsRef.data() && boardsRef.data().boards ? boardsRef.data().boards : [];
+        existingBoards = existingBoards.map(b => {
+            if (b.id === boardId) {
+                b.title = updatedTitle
+            }
+            return b;
+        })
+
+        // Update the boards in this domain with data from above.
+        await this.firebase.firestore()
+            .collection('domains')
+            .doc(this.domainId)
+            .collection('boardsInDomain')
+            .doc('appBoards')
+            .set({
+                boards: existingBoards
+            });
+
+        return Promise.resolve();
+    }
+
     /**
      * Delete a individual board.
      * 
