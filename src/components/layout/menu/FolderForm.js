@@ -40,7 +40,7 @@ const BForm = Form.create({
                 <Input 
                     placeholder="Folder name goes here" 
                     autoComplete="no way" 
-                    onBlur={() => handleBlur()}
+                    // onBlur={() => handleBlur()}
                 />
             )}
         </FormItem>
@@ -49,18 +49,28 @@ const BForm = Form.create({
 
 class FolderForm extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = { title: '' }
+        this.fields = { title: '' }
+    }
+
     handleFormChange = (changedFields) => {
-        if (changedFields.title !== this.props.folder.title) {
-            this.props.folder.title = changedFields.title;
-            this.props.onUpdateBoards(this.props.folder.id, changedFields.title);
+        if (changedFields.title !== this.state.title) {
+            // this.setState({ title: changedFields.title});
+            // this.props.onUpdateBoards(this.props.folder.id, changedFields.title);
         }
     }
 
-    fields = {
-        title: {
-            value: this.props.folder ? this.props.folder.title : '',
-        }
-    };
+    componentWillReceiveProps() {
+        this.fields = {
+            title: {
+                value: this.state.title ? this.state.title : '',
+            }
+        };
+    
+    }
+
 
     render() {
         return (

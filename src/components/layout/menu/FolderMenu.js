@@ -8,6 +8,8 @@ const SubMenu = Menu.SubMenu;
 
 const FolderMenu =  (props) => {
 
+    console.log('Folder MENU!!!!!!!!!!!!!!');
+
     const [selected, setSelected] = useState(false);
     const [hovering, setHovering] = useState(false);
     const [visible, setVisible] = useState(false);
@@ -31,9 +33,9 @@ const FolderMenu =  (props) => {
     >
         <SubMenu 
             className="folder-subfolder"
+            onTitleClick={() => setSelected(!selected)}
             title={
                 <span
-                    onClick={() => setSelected(!selected)}
                 >
                     <Icon type={selected ? 'folder-open' : 'folder'} />
                     <span>{item.title}</span>
@@ -55,11 +57,11 @@ const FolderMenu =  (props) => {
                     title="Edit Folder"
                     placement="right"
                     closable={true}
-                    onClose={() => setVisible(false)}
+                    // onClose={() => setVisible(false)}
                     visible={visible}
                     width={370}
                 >
-                    <FolderForm folder={item}/>
+                    {/* <FolderForm folder={item}/> */}
                 </Drawer>
             </React.Fragment>
         :
