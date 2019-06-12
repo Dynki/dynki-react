@@ -28,6 +28,14 @@ class DynSubMenu extends React.Component {
         this.props.addFolder();
     }
 
+    shouldComponentUpdate(nextProps) {
+        if (this.props.items !== nextProps.items) {
+            return true;
+        }
+
+        return false;
+    }
+
     render() {
         const {itemClicked, btnClicked, addFolder, title, icon , items, act, selectedKeys, ...other} = this.props;
 

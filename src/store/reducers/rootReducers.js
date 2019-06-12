@@ -4,6 +4,7 @@ import authReducer from './authReducer';
 import boardReducer from './boardReducer';
 import domainReducer from './domainReducer';
 import baseReducer from './baseReducer';
+import coreReducer from './coreReducers';
 
 // Add firebase to reducers
 const rootReducer = combineReducers({
@@ -11,7 +12,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
   boards: boardReducer,
   firebase: firebaseReducer,
-  domain: domainReducer
+  domain: domainReducer,
+  core: coreReducer
 })
 
 export default rootReducer;
