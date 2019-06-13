@@ -32,7 +32,7 @@ const FolderMenu =  (props) => {
             visible={visible}
             width={370}
         >
-            <FolderForm folder={item}/>
+            <FolderForm folder={item} onRemoveFolder={() => setVisible(false)}/>
         </Drawer>
         <Menu 
             className="foldermenu" 

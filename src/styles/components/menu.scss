@@ -302,6 +302,18 @@ dyn-sub-menu {
     justify-content: center;
     width: 240px;
 
+    span {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 158px;
+        max-width: 158px!important;
+        white-space: nowrap;
+    }
+
     &:hover{
         padding-left: 0px!important;
     }

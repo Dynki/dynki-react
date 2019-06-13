@@ -51,6 +51,21 @@ export const addNewFolder = () => {
     }
 }
 
+// Removes the specified folder using folder id.
+export const removeFolder = (id) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
+        await boardsHelper.removeFolder(id);
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+
+        dispatch(getBoards());        
+
+        return Promise.resolve();
+    }
+}
+
 // Get an individual board by id.
 export const getBoard = (id) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {

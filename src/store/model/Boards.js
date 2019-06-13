@@ -147,6 +147,27 @@ export class Boards {
         return Promise.resolve({ id: newFolder.id });
     }
 
+    async removeFolder(folderId) {
+
+        // Get from firestore the list of boards in this domain. 
+        // Then create a reference with the new boards added.
+        const boardsRef = await this.firebase.firestore().collection('domains').doc(this.domainId).collection('boardsInDomain').doc('appBoards').get()
+        let existingBoards = boardsRef.data() && boardsRef.data().boards ? boardsRef.data().boards : [];
+        existingBoards =  boardsRef.data().boards.filter(b => b.id !== folderId);
+
+        // Update the boards in this domain with data from above.
+        await this.firebase.firestore()
+            .collection('domains')
+            .doc(this.domainId)
+            .collection('boardsInDomain')
+            .doc('appBoards')
+            .set({
+                boards: existingBoards
+            });
+
+        return Promise.resolve();
+    }
+
     async updateBoardTitle(boardId, updatedTitle) {
         // Get from firestore the list of boards in this domain. 
         // Then create a reference with the new boards added.
@@ -188,8 +209,8 @@ export class Boards {
                 .collection('boards')
                 .doc(id).delete();
     
-            // Get a reference from firestore to the list of 'boardsInDomain' collection. 
-            const boardsRef = await this.firebase.firestore()
+                // Get a reference from firestore to the list of 'boardsInDomain' collection. 
+                const boardsRef = await this.firebase.firestore()
                                         .collection('domains')
                                         .doc(this.domainId)
                                         .collection('boardsInDomain')
