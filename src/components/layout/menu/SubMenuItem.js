@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { Menu, Icon, Button, Tooltip } from 'antd';
+import { Draggable } from 'react-beautiful-dnd';
 
 import { addNewFolder } from '../../../store/actions/boardActions';
 import FolderMenu from './FolderMenu';
@@ -47,15 +48,28 @@ class DynSubMenu extends React.Component {
                         { items.map((i, idx) => (
                             <React.Fragment key={idx}>
                                 {i.isFolder ? 
-                                <FolderMenu handleClick={this.handleClick} item={i}/>
+                                <Draggable key={idx} draggableId={i.id} index={idx}>
+                                {provided => (
+                                    <div ref={provided.innerRef} {...provided.draggableProps}  {...provided.dragHandleProps} >
+                                        <FolderMenu handleClick={this.handleClick} item={i}/>
+                                    </div>
+                                )}
+                                </Draggable>
                                 :
-                                <Menu.Item {...other} key={i.id}>
-                                    <Link onClick={(e) => this.handleClick(e, i.action)} to={i.target} key={i.id}>
-                                        {i.title}
-                                    </Link>
-                                </Menu.Item>
+                                <Draggable key={idx} draggableId={i.id} index={idx}>
+                                {provided => (
+                                    <div ref={provided.innerRef} {...provided.draggableProps}  {...provided.dragHandleProps} >
+                                        <Menu.Item {...other} key={i.id}>
+                                            <Link onClick={(e) => this.handleClick(e, i.action)} to={i.target} key={i.id}>
+                                                {i.title}
+                                            </Link>
+                                        </Menu.Item>
+                                        </div>
+                                )}
+                                </Draggable>
                                 }
-                            </React.Fragment>)) 
+                            </React.Fragment>
+                            )) 
                         }
                         <Menu.Item {...other} key={'newFolder'} onClick={this.addFolder}><Icon type="folder-add"/> New folder</Menu.Item>
                     </SubMenu>

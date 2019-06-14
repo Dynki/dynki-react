@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'
 import { Menu, Icon, Drawer } from 'antd';
+import { Droppable } from 'react-beautiful-dnd';
 
 import FolderForm from './FolderForm';
 
@@ -34,39 +35,45 @@ const FolderMenu =  (props) => {
         >
             <FolderForm folder={item} onRemoveFolder={() => setVisible(false)}/>
         </Drawer>
-        <Menu 
-            className="foldermenu" 
-            mode="inline"
-            onMouseEnter={mouseEnter}
-            onMouseLeave={mouseLeave}
-        >
-            <SubMenu 
-                className="folder-subfolder"
-                onTitleClick={() => setSelected(!selected)}
-                title={
-                    <span
+        <Droppable droppableId="Folder-Menu" type="menuitems">
+        {provided => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+                <Menu 
+                    className="foldermenu" 
+                    mode="inline"
+                    onMouseEnter={mouseEnter}
+                    onMouseLeave={mouseLeave}
+                >
+                    <SubMenu 
+                        className="folder-subfolder"
+                        onTitleClick={() => setSelected(!selected)}
+                        title={
+                            <span
+                            >
+                                <Icon type={selected ? 'folder-open' : 'folder'} />
+                                <span>{item.title}</span>
+                        </span>
+                        }
                     >
-                        <Icon type={selected ? 'folder-open' : 'folder'} />
-                        <span>{item.title}</span>
-                </span>
-                }
-            >
-                {item.items ? item.items.map(i2 => (
-                    <Menu.Item key={i2.id}>
-                        <Link onClick={(e) => handleClick(e, i2.action)} to={i2.target} key={i2.id}>
-                            {i2.title}
-                        </Link>
-                    </Menu.Item>
-                )) : null}
-            </SubMenu>
-            {hovering ?
-                <React.Fragment>
-                    <Icon type="edit" className="edit" onClick={() => setVisible(true)}/>
-                </React.Fragment>
-            :
-                null
-            }
-        </Menu>
+                        {item.items ? item.items.map(i2 => (
+                            <Menu.Item key={i2.id}>
+                                <Link onClick={(e) => handleClick(e, i2.action)} to={i2.target} key={i2.id}>
+                                    {i2.title}
+                                </Link>
+                            </Menu.Item>
+                        )) : null}
+                    </SubMenu>
+                    {hovering ?
+                        <React.Fragment>
+                            <Icon type="edit" className="edit" onClick={() => setVisible(true)}/>
+                        </React.Fragment>
+                    :
+                        null
+                    }
+                </Menu>
+            </div>
+        )}
+        </Droppable>
     </React.Fragment>);
 }
 
