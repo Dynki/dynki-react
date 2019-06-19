@@ -16,13 +16,57 @@
         }
     }
 
+    .ant-tree {
+        width: 100%;
+        .ant-tree-switcher {
+            position: absolute!important;
+            right: 60px!important;
+            top: 15px!important;
+        }
+
+        :first-child {
+            .ant-tree-node-content-wrapper {
+                height: 37px!important;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+    
+                &::before {
+                    height: 37px!important;
+                }
+    
+                .ant-tree-iconEle {
+                    padding-left: 12px;
+                    margin-right: 5px;
+                }
+    
+                .ant-tree-title {
+                    padding-left: 12px!important;
+                }
+            }
+
+            .ant-tree-child-tree {
+                .ant-tree-node-selected {
+                    &::before {
+                        background: #039be5!important;
+                    }
+                }
+
+            }
+
+        }
+    }
 
     li {
         flex-grow: 1;
         width: 100%;
 
         #\32 \$Menu {
-            margin-left: 15px!important;
+            // margin-left: 15px!important;
+
+            li {
+                height: 50px;
+            }
         }
     
         .ant-btn {
@@ -30,7 +74,7 @@
         }
 
         .ant-menu-item-selected {
-            width: calc(100% + 40px)!important;
+            // width: calc(100% + 40px)!important;
         }
 
         .ant-menu-submenu-title {
@@ -327,3 +371,4 @@ dyn-sub-menu {
         }
     }
 }
+

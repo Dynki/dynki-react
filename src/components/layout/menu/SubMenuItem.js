@@ -1,26 +1,30 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'
-import { Menu, Icon, Button, Tooltip } from 'antd';
-import { Draggable } from 'react-beautiful-dnd';
+import { Tree,  Menu, Icon, Button, Tooltip } from 'antd';
 
 import { addNewFolder } from '../../../store/actions/boardActions';
-import FolderMenu from './FolderMenu';
 
 const SubMenu = Menu.SubMenu;
+const { TreeNode, DirectoryTree } = Tree;
 
 class DynSubMenu extends React.Component {
 
+    onSelect = (keys, event) => {
+        console.log('Trigger Select', keys, event);
+    };
+        
     // Triggered by clicking a menu item.
     handleClick = (e, action) => {
         // Dispatches the action associated with this menu item's properties.
-        this.props.itemClicked(action);
+        console.log(action);
+        // this.props.itemClicked(action);
     }
 
     // Triggered by clicking a menu items function button (e.g. the add new board button).
     handleBtnClick = (e, action) => {
         // Dispatches the action associated with this menu item's properties.
-        this.props.btnClicked(action);
+        console.log(action);
+        // this.props.btnClicked(action);
     }
 
     // Triggered by clicking the add new folder button.
@@ -44,35 +48,50 @@ class DynSubMenu extends React.Component {
             <div>
             { items ? (
                 <div className="submenu">
-                    <SubMenu {...other} key={title} title={<span><Icon type={icon} /><span>{title}</span></span>}>
-                        { items.map((i, idx) => (
-                            <React.Fragment key={idx}>
-                                {i.isFolder ? 
-                                <Draggable key={idx} draggableId={i.id} index={idx}>
-                                {provided => (
-                                    <div ref={provided.innerRef} {...provided.draggableProps}  {...provided.dragHandleProps} >
-                                        <FolderMenu handleClick={this.handleClick} item={i}/>
-                                    </div>
-                                )}
-                                </Draggable>
-                                :
-                                <Draggable key={idx} draggableId={i.id} index={idx}>
-                                {provided => (
-                                    <div ref={provided.innerRef} {...provided.draggableProps}  {...provided.dragHandleProps} >
-                                        <Menu.Item {...other} key={i.id}>
-                                            <Link onClick={(e) => this.handleClick(e, i.action)} to={i.target} key={i.id}>
-                                                {i.title}
-                                            </Link>
-                                        </Menu.Item>
-                                        </div>
-                                )}
-                                </Draggable>
+                    {/* <SubMenu {...other} key={title} title={<span><Icon type={icon} /><span>{title}</span></span>}> */}
+                        <DirectoryTree onSelect={this.onSelect} switcherIcon={<Icon type="down" />} draggable>
+                            <TreeNode title="Boards" key={'000001'} icon={<Icon type="schedule" />}>
+
+                                    { items.map((i, idx) => {
+
+                                        return i.isFolder ?
+                                                <TreeNode title={i.title} key={i.id}>
+                                                    {i.items ? i.items.map((i2, idx2) => (
+                                                        <TreeNode title={i2.title} key={i2.id} isLeaf />
+                                                    )) : null}
+                                                </TreeNode>
+                                            :
+                                                <TreeNode title={i.title} key={i.id} icon={<div className="noicon"></div>}/>
+                                        }) 
+                
+                                    // <React.Fragment key={idx}>
+                                    //     {i.isFolder ? 
+                                    //     <Draggable key={idx} draggableId={i.id} index={idx}>
+                                    //     {provided => (
+                                    //         <div ref={provided.innerRef} {...provided.draggableProps}  {...provided.dragHandleProps} >
+                                    //             <FolderMenu handleClick={this.handleClick} item={i}/>
+                                    //         </div>
+                                    //     )}
+                                    //     </Draggable>
+                                    //     :
+                                    //     <Draggable key={idx} draggableId={i.id} index={idx}>
+                                    //     {provided => (
+                                    //         <div ref={provided.innerRef} {...provided.draggableProps}  {...provided.dragHandleProps} >
+                                    //             <Menu.Item {...other} key={i.id}>
+                                    //                 <Link onClick={(e) => this.handleClick(e, i.action)} to={i.target} key={i.id}>
+                                    //                     {i.title}
+                                    //                 </Link>
+                                    //             </Menu.Item>
+                                    //             </div>
+                                    //     )}
+                                    //     </Draggable>
+                                    //     }
+                                    // </React.Fragment>
                                 }
-                            </React.Fragment>
-                            )) 
-                        }
-                        <Menu.Item {...other} key={'newFolder'} onClick={this.addFolder}><Icon type="folder-add"/> New folder</Menu.Item>
-                    </SubMenu>
+                            </TreeNode>
+                            <Menu.Item {...other} key={'newFolder'} onClick={this.addFolder}><Icon type="folder-add"/> New folder</Menu.Item>
+                        </DirectoryTree>
+                    {/* </SubMenu> */}
                     <Tooltip placement="right" title="New Board">
                         <Button id={'btn' + title} className="btn-add-board" onClick={(e) => this.handleBtnClick(e, act)}  type="dashed" shape="circle" icon="plus"></Button>
                     </Tooltip>
