@@ -22,6 +22,28 @@
             position: absolute!important;
             right: 60px!important;
             top: 15px!important;
+
+        }
+
+        .ant-tree-node-selected {
+            &::before {
+                background: #039BE5!important;
+            }
+
+            .ant-tree-title {
+                color: #fff;
+            }
+
+            .ant-tree-iconEle {
+                // color: rgba(0, 0, 0, 0.65);
+            }
+        }
+
+        .ant-tree-treenode-selected {
+            .ant-tree-switcher {
+                // color: rgba(0, 0, 0, 0.65)!important;
+            }
+
         }
 
         :first-child {
@@ -48,8 +70,13 @@
             .ant-tree-child-tree {
                 .ant-tree-node-selected {
                     &::before {
-                        background: #039be5!important;
+                        background: #039BE5!important;
                     }
+
+                    .ant-tree-title {
+                        color: #fff;
+                    }
+
                 }
 
             }
