@@ -4,6 +4,7 @@
     flex-direction: row;
     align-items: center;
     overflow: hidden;
+    z-index: 0;
 
     button {
         position: absolute;
@@ -18,6 +19,7 @@
 
     .ant-tree {
         width: 100%;
+        z-index: 0;
         .ant-tree-switcher {
             position: absolute!important;
             right: 60px!important;
@@ -26,12 +28,13 @@
         }
 
         .ant-tree-node-selected {
+            color: #039BE5!important;
             &::before {
-                background: #039BE5!important;
+                background: #ffffff!important;
             }
 
             .ant-tree-title {
-                color: #fff;
+                color: #039BE5!important;
             }
 
             .ant-tree-iconEle {
@@ -58,23 +61,23 @@
                 }
     
                 .ant-tree-iconEle {
-                    padding-left: 12px;
-                    margin-right: 5px;
+                    // padding-left: 12px;
+                    // margin-right: 5px;
                 }
     
                 .ant-tree-title {
-                    padding-left: 12px!important;
+                    // padding-left: 12px!important;
                 }
             }
 
             .ant-tree-child-tree {
                 .ant-tree-node-selected {
                     &::before {
-                        background: #039BE5!important;
+                        background: #ffffff!important;
                     }
 
                     .ant-tree-title {
-                        color: #fff;
+                        color: #039BE5!important;
                     }
 
                 }
@@ -117,7 +120,6 @@
         ul {
             
             li {
-                width: calc(100% + 40px)!important;
                 // padding-left: 48px!important;
 
 
@@ -396,6 +398,33 @@ dyn-sub-menu {
             color: #1890ff;
             cursor: pointer;
         }
+    }
+}
+
+.firstitem {
+
+    :first-child {
+        .ant-tree-iconEle {
+            padding-left: 12px;
+            margin-right: 5px;
+        }
+
+        .ant-tree-title {
+            padding-left: 12px!important;
+        }
+    }
+}
+
+.subitemnoicon {
+
+    .ant-tree-iconEle {
+        padding-left: 0px!important;
+        margin-right: 0px!important;
+        width: 11px!important;
+    }
+
+    .ant-tree-title {
+        padding-left: 0px!important;
     }
 }
 

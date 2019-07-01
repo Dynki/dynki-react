@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'
-import { Menu, Icon, Drawer } from 'antd';
-import { Droppable } from 'react-beautiful-dnd';
+import { Icon, Drawer, Tree } from 'antd';
 
 import FolderForm from './FolderForm';
 
-const SubMenu = Menu.SubMenu;
+const { TreeNode } = Tree;
 
 const FolderMenu =  (props) => {
 
-    const [selected, setSelected] = useState(false);
     const [hovering, setHovering] = useState(false);
     const [visible, setVisible] = useState(false);
  
@@ -21,10 +18,13 @@ const FolderMenu =  (props) => {
         setHovering(false);
     }
 
-    const {handleClick, item} = props;
+    const {item} = props;
 
     return (
-    <React.Fragment>
+    <div
+        onMouseEnter={mouseEnter}
+        onMouseLeave={mouseLeave}
+    >
         <Drawer
             title="Edit Folder"
             placement="right"
@@ -35,46 +35,20 @@ const FolderMenu =  (props) => {
         >
             <FolderForm folder={item} onRemoveFolder={() => setVisible(false)}/>
         </Drawer>
-        <Droppable droppableId="Folder-Menu" type="menuitems">
-        {provided => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
-                <Menu 
-                    className="foldermenu" 
-                    mode="inline"
-                    onMouseEnter={mouseEnter}
-                    onMouseLeave={mouseLeave}
-                >
-                    <SubMenu 
-                        className="folder-subfolder"
-                        onTitleClick={() => setSelected(!selected)}
-                        title={
-                            <span
-                            >
-                                <Icon type={selected ? 'folder-open' : 'folder'} />
-                                <span>{item.title}</span>
-                        </span>
-                        }
-                    >
-                        {item.items ? item.items.map(i2 => (
-                            <Menu.Item key={i2.id}>
-                                <Link onClick={(e) => handleClick(e, i2.action)} to={i2.target} key={i2.id}>
-                                    {i2.title}
-                                </Link>
-                            </Menu.Item>
-                        )) : null}
-                    </SubMenu>
-                    {hovering ?
-                        <React.Fragment>
-                            <Icon type="edit" className="edit" onClick={() => setVisible(true)}/>
-                        </React.Fragment>
-                    :
-                        null
-                    }
-                </Menu>
-            </div>
-        )}
-        </Droppable>
-    </React.Fragment>);
+
+        <React.Fragment>
+            {item.items ? item.items.map(i2 => (
+                <TreeNode title={i2.title} key={i2.id} isLeaf />
+            )) : null}
+            {hovering ?
+                <React.Fragment>
+                    <Icon type="edit" className="edit" onClick={() => setVisible(true)}/>
+                </React.Fragment>
+            :
+                null
+            }
+        </React.Fragment>
+    </div>);
 }
 
 export default FolderMenu;
