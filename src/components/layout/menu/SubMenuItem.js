@@ -11,8 +11,6 @@ class DynSubMenu extends React.Component {
 
     onSelect = (keys, event) => {
 
-        console.log('On Selecte::', keys);
-
         if (keys[0] === 'New') {
             this.props.addFolder();
         } else {
@@ -35,7 +33,7 @@ class DynSubMenu extends React.Component {
     }
 
     onDrop = info => {
-        console.log(info);
+        // console.log(info);
     }
 
     render() {
