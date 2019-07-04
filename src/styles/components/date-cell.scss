@@ -1,0 +1,30 @@
+.date-cell {
+    width: 175px;
+
+    input {
+        border-radius: 0px;
+        border: none;
+        background: #2b82c1;
+        border-left: solid!important;
+        border-left-color: #fff;
+        color: #fff;
+        border-left-width: 1px!important;
+        border-right-width: 1px!important;
+        border-right: solid;
+        border-right-color: #fff;
+    }
+
+    .ant-calendar-picker-icon {
+        color: #fff;
+    }
+
+    .ant-calendar-picker-clear {
+        color: #fff;
+        background: #2b82c1;
+    }
+
+    .ant-calendar-picker-clear:hover {
+        color: #fff;
+        background: #2b82c1;
+    }
+}

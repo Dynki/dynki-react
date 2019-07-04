@@ -5,6 +5,7 @@ import BoardRowMenu from './BoardRowMenu';
 import { Tooltip, Icon, Checkbox } from 'antd';
 import SelectCellModal from './cellTypes/Select/SelectCellModal';
 import * as _ from 'lodash';
+import DateCell from './cellTypes/Date/DateCell';
 
 class BoardRow extends React.Component {
 
@@ -39,6 +40,17 @@ class BoardRow extends React.Component {
                     modelName={col.model}
                     groupKey={this.props.groupKey}>
                 </BoardRowForm>;
+
+            case 'date': 
+            return <DateCell
+                onUpdateBoard={this.props.onUpdateBoard}
+                board={this.props.board}
+                rowIdx={this.props.rowIdx}
+                rowId={this.props.rowId}
+                colIdx={idx}
+                modelName={col.model}
+                groupKey={this.props.groupKey}>
+            </DateCell>;
 
             case 'select':
                 return <div className="table__row__cell__container--nopadding">

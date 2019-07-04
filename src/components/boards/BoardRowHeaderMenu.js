@@ -17,6 +17,9 @@ class BoardRowHeaderMenu extends React.Component {
           <Menu.Item key="select">
             <a className="table_menu__link"><Icon type="arrow-down" />Select</a>
           </Menu.Item>
+          <Menu.Item key="date">
+            <a className="table_menu__link"><Icon type="calendar" />Date</a>
+          </Menu.Item>
         </Menu>
     );
 

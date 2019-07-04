@@ -9,6 +9,12 @@ const { TreeNode, DirectoryTree } = Tree;
 
 class DynSubMenu extends React.Component {
 
+    // Triggered by clicking a menu items function button (e.g. the add new board button).
+    handleBtnClick = (e, action) => {
+        // Dispatches the action associated with this menu item's properties.
+        this.props.btnClicked(action);
+    }
+
     onSelect = (keys, event) => {
 
         if (keys[0] === 'New') {

@@ -1,4 +1,5 @@
 import newGuid from '../utils/guid';
+import moment from 'moment';
 
 class BaseCell {
 
@@ -33,6 +34,18 @@ class SelectCell extends BaseCell {
     }
 }
 
+class DateCell extends BaseCell {
+
+    constructor(model, title) {
+        super(model, title);
+
+        this.class = 'date';
+        this.title = 'date';
+
+        this.values = moment();
+    }
+}
+
 export class CellFactory {
 
     createCell(type, model, title) {
@@ -41,6 +54,8 @@ export class CellFactory {
                 return new TextCell(model, title);
             case 'select':
                 return new SelectCell(model, title);
+            case 'date':
+                return new DateCell(model, title);
             default:
                 return null;
         }
