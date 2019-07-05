@@ -41,8 +41,6 @@ class DateCell extends BaseCell {
 
         this.class = 'date';
         this.title = 'date';
-
-        this.values = moment();
     }
 }
 

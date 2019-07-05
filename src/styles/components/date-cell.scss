@@ -1,17 +1,29 @@
 .date-cell {
     width: 175px;
 
-    input {
-        border-radius: 0px;
-        border: none;
-        background: #2b82c1;
+    .table__row__cell__container {
+        border: none!important;
+        
         border-left: solid!important;
-        border-left-color: #fff;
-        color: #fff;
-        border-left-width: 1px!important;
+        border-right: solid!important;
+
+        border-right-color: #fff!important;
+        border-left-color: #fff!important;
+        
         border-right-width: 1px!important;
-        border-right: solid;
-        border-right-color: #fff;
+        border-left-width: 1px!important;
+
+
+        padding: 0px!important;
+        background: #2b82c1!important;
+    }
+
+    input {
+        width: 170px!important;
+        border-radius: 0px!important;
+        border: none!important;
+        background: #2b82c1!important;
+        color: #fff!important;
     }
 
     .ant-calendar-picker-icon {

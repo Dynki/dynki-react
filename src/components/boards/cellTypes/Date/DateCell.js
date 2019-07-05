@@ -1,24 +1,19 @@
 import React from "react";
 import { connect } from 'react-redux';
-import { chunk } from 'lodash';
-import { DatePicker } from 'antd';
+import DateRowForm from './DateForm';
 
-import {
-    selectCellValue,
-    updateColumn,
-    addNewColumnValue
-} from '../../../../store/actions/boardActions';
-
+import { updateBoard } from '../../../../store/actions/boardActions';
 
 class DateCell extends React.Component {
 
+    onUpdateBoard = (updatedBoard) => {
+        this.props.updateBoard(updatedBoard);
+    }
 
     render() {
-        const { col, rowId } = this.props;
-
         return (
             <div className="date-cell">
-                <DatePicker size="large" />
+                <DateRowForm {...this.props} onUpdateBoard={this.onUpdateBoard}/>
             </div>
         )
     }
@@ -26,9 +21,7 @@ class DateCell extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        selectCellValue: (key, model, rowId, groupKey) => dispatch(selectCellValue(key, model, rowId, groupKey)),
-        updateColumn: (updatedColumn) => dispatch(updateColumn(updatedColumn)),
-        addNewColumnValue: (columnModel) => dispatch(addNewColumnValue(columnModel))
+        updateBoard: (board) => dispatch(updateBoard(board))
     }
 }
 
