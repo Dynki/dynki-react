@@ -44,7 +44,7 @@ export class Board extends React.Component {
 
     render() {
         return (
-            (this.props.board ? 
+            this.props.board &&
                 <section className="board">
                     <BoardHeader 
                         onUpdateBoard={this.onUpdateBoard}
@@ -58,9 +58,6 @@ export class Board extends React.Component {
                         board={this.props.board}>
                     </BoardDetail>
                 </section> 
-            : 
-                null 
-            )
         )
     }
 }

@@ -25,7 +25,7 @@ const DRForm = Form.create({
         <Form className="table__row__cell__container" autoComplete="off">
             <FormItem className="date-cell">
                 {getFieldDecorator('columnValue', {})(
-                    <DatePicker format="DD-MMM-YYYY"/>
+                    <DatePicker format="DD-MMM-YYYY" allowClear={false}/>
                 )}
             </FormItem>
         </Form>
@@ -39,8 +39,13 @@ const DateRowForm = (props) => {
     const handleFormChange = (changedFields) => {
         const updatedBoard = props.board;
         
-        updatedBoard.groups[props.groupKey].entities[idx][props.modelName] = changedFields['columnValue'].toString();
+        if (changedFields['columnValue']) {
+            updatedBoard.groups[props.groupKey].entities[idx][props.modelName] = changedFields['columnValue'].toString();
+        } else {
+            updatedBoard.groups[props.groupKey].entities[idx][props.modelName] = "";
+        }
         props.onUpdateBoard(updatedBoard);
+        props.setHoverState(false);
     }
 
     const fields = {

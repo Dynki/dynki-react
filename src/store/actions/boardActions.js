@@ -100,7 +100,7 @@ export const removeBoard = (boardId) => {
         const currentBoards = await boardsHelper.list();
         const currentBoard = getState().boards.currentBoard;
 
-        if (currentBoards) {
+        if (currentBoards && currentBoards.length > 0) {
             nextBoardId = currentBoards[0].id;
         }
 

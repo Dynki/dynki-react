@@ -36,53 +36,6 @@ class PostAuthShell extends React.Component {
         if (!result.destination) {
             return;
         }
-
-        console.log('Drag End::', result);
-
-        // if (result.draggableId.indexOf('value') > -1) {
-        //     this.props.updateColumnValueOrder(result);
-        // } else {
-        //     // Row drag end.
-
-        //     const newBoard = this.props.board;
-        //     const sourceGroupIdx = newBoard.groups.findIndex(grp => grp.id === result.source.droppableId);
-        //     const destinationGroupIdx = newBoard.groups.findIndex(grp => grp.id === result.destination.droppableId);
-
-        //     // result.desination/source.draggableId = The group id.
-        //     // If they are different then we need to move the row to the new group.
-
-        //     if (sourceGroupIdx !== destinationGroupIdx) {
-        //         // Get the existing row from the old group.
-        //         const existingRow = newBoard.groups[sourceGroupIdx].entities.find(e => e.id === result.draggableId);
-                
-        //         newBoard.groups[sourceGroupIdx].entities.splice(result.source.index, 1);
-
-        //         // Create a blank array if group has never had any entities.
-        //         if (!newBoard.groups[destinationGroupIdx].entities) {
-        //             newBoard.groups[destinationGroupIdx].entities = [];
-        //         }
-
-        //         // Push the row onto the destination group.
-        //         newBoard.groups[destinationGroupIdx].entities.splice(result.destination.index, 0, existingRow);
-
-        //         console.log('NewBoard Groups!!', newBoard.groups);
-
-        //         this.setState({ groups: newBoard.groups });
-        //     } else {
-                
-        //         // Reorder the rows in the destination group.
-        //         newBoard.groups[destinationGroupIdx].entities = this.reorder(
-        //             newBoard.groups[destinationGroupIdx].entities,
-        //             result.source.index,
-        //             result.destination.index
-        //         );
-        //     }
-    
-        //     // console.log('Call Update Board!!', newBoard);
-        //     // console.log('props.board', this.props.board);
-
-        //     this.onUpdateBoard(newBoard);
-        // }
     }
 
     render() {
@@ -94,29 +47,20 @@ class PostAuthShell extends React.Component {
                 <Toolbar progress={this.props.progress}></Toolbar>
                 <SideNav domainName={this.props.domain.displayName}></SideNav>
                 <main>
+                    {firstLoad && noBoards && boardsChecked &&
+                        <Redirect exact from='/' to={`/empty-boards`}/>
+                    }
+                    {firstLoad && boards && boards.length &&
+                        <Redirect exact from='/' to={`/board/${boards[0].id}`}/>
+                        // this.onDispatchBoardAction(boards[0].id)
+                    }
+                    {!firstLoad && location.pathname === '/empty-boards' && !noBoards && boards && boards.length > 0 &&
+                        <Redirect exact from='/empty-boards' to={`/board/${boards[0].id}`}/>
+                    }
                     <Switch>
-                        {firstLoad && noBoards ?
-                            (boardsChecked ? 
-                                <Redirect exact from='/' to={`/empty-boards`}/>
-                                :
-                                null
-                            )
-                            :
-                            <Redirect exact from='/' to={`/board/${boards[0].id}`}/>
-                        }
-                        {!firstLoad && location.pathname === '/empty-boards' && !noBoards ? 
-                            <Redirect exact from='/empty-boards' to={`/board/${boards[0].id}`}/>
-                            :
-                            null
-                        }
                         <Route path={'/board/:id'} component={Board}></Route>
                         <Route path={'/empty-boards'} component={EmptyBoards}></Route>
                     </Switch>
-                    {firstLoad && boards && boards.length > 0 ?
-                        this.onDispatchBoardAction(boards[0].id)
-                        : null
-                    }
-
                 </main>
             </DragDropContext>
             </div>

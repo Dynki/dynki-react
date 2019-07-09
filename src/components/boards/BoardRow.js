@@ -22,6 +22,10 @@ class BoardRow extends React.Component {
         this.setState({ hovering: false });
     }
 
+    setHoverState = (state) => {
+        this.setState({ hovering: state });
+    }
+
     renderSwitch = (col, idx) => {
         const {...restProps} = this.props;
 
@@ -49,7 +53,9 @@ class BoardRow extends React.Component {
                 rowId={this.props.rowId}
                 colIdx={idx}
                 modelName={col.model}
-                groupKey={this.props.groupKey}>
+                groupKey={this.props.groupKey}
+                setHoverState={this.setHoverState}
+                >
             </DateCell>;
 
             case 'select':
