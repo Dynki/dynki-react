@@ -7,7 +7,7 @@ const BoardDetail = (props) => {
 
     return (
         <React.Fragment>
-            {groups.map((group, groupKey)  => (
+            {groups.map((group, groupKey)  => 
                 <BoardGroup 
                     key={groupKey}
                     group={group}
@@ -17,7 +17,7 @@ const BoardDetail = (props) => {
                     progress={progress}
                     onUpdateBoard={onUpdateBoard}
                 ></BoardGroup>
-            ))}
+            )}
         </React.Fragment>
     )
 }

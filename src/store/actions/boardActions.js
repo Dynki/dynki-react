@@ -31,6 +31,7 @@ export const newBoard = () => {
         dispatch({ type: 'SET_PROGRESS', payload: false });
 
         dispatch(getBoards());        
+        dispatch(getBoard(newBoard.id));        
 
         return Promise.resolve(newBoard);
     }
@@ -108,9 +109,10 @@ export const removeBoard = (boardId) => {
         if (currentBoard && currentBoard.unsubscribe) {
             currentBoard.unsubscribe();
         }
-    
+        
+        dispatch(getBoards());
+
         if (nextBoardId) {
-            dispatch(getBoards());
             dispatch(getBoard(nextBoardId));
         }
 

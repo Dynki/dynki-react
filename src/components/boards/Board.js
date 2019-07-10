@@ -5,7 +5,7 @@ import { debounce } from 'lodash';
 import BoardHeader from './BoardHeader';
 import BoardDetail from './BoardDetail';
 
-import { updateBoard, newRow } from '../../store/actions/boardActions';
+import { getBoard, updateBoard, newRow } from '../../store/actions/boardActions';
 
 // Container for board components.
 export class Board extends React.Component {
@@ -26,6 +26,12 @@ export class Board extends React.Component {
         }
     }
 
+    componentDidMount = () => {
+        if (!this.props.board) {
+            this.props.getBoard(this.props.match.params.id);
+        }
+    }
+
     componentWillReceiveProps = (props) => {
         this.setState({
             groups: props.board ? props.board.groups : []
@@ -43,8 +49,9 @@ export class Board extends React.Component {
     }
 
     render() {
+        console.log('Board::Render::', this.props);
         return (
-            this.props.board &&
+            this.props.board ?
                 <section className="board">
                     <BoardHeader 
                         onUpdateBoard={this.onUpdateBoard}
@@ -58,6 +65,8 @@ export class Board extends React.Component {
                         board={this.props.board}>
                     </BoardDetail>
                 </section> 
+            :
+            null
         )
     }
 }
@@ -71,6 +80,7 @@ export const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = (dispatch) => {
     return{
+      getBoard: (id) => dispatch(getBoard(id)),
       updateBoard: (board) => dispatch(updateBoard(board)),
       newRow: (rowObj, groupKey) => dispatch(newRow(rowObj, groupKey))
     }

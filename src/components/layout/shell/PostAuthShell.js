@@ -47,12 +47,14 @@ class PostAuthShell extends React.Component {
                 <Toolbar progress={this.props.progress}></Toolbar>
                 <SideNav domainName={this.props.domain.displayName}></SideNav>
                 <main>
-                    {firstLoad && noBoards && boardsChecked &&
+                    {noBoards && boardsChecked &&
                         <Redirect exact from='/' to={`/empty-boards`}/>
                     }
-                    {firstLoad && boards && boards.length &&
-                        <Redirect exact from='/' to={`/board/${boards[0].id}`}/>
-                        // this.onDispatchBoardAction(boards[0].id)
+                    {location.pathname === '/' && boards && boards.length > 0 &&
+                        <React.Fragment>
+                            {this.onDispatchBoardAction(boards[0].id)}
+                            <Redirect exact from='/' to={`/board/${boards[0].id}`}/>
+                        </React.Fragment>
                     }
                     {!firstLoad && location.pathname === '/empty-boards' && !noBoards && boards && boards.length > 0 &&
                         <Redirect exact from='/empty-boards' to={`/board/${boards[0].id}`}/>
