@@ -26,7 +26,7 @@ const Home = (props) => {
                     <section className="home__sample">
                         <div className="home__h1">An elegant way to manage your work load</div>
                         <div className="home__h2">Whether its planning work or tracking orders</div>
-                        <Link to="/auth/signup">
+                        <Link to="/auth/signup" id="register">
                             <div className="home__button">Get Started For Free</div>
                         </Link>
                         

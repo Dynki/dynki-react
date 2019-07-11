@@ -19,7 +19,7 @@ class PreAuthShell extends React.Component {
                         {/* <Link to="/features">Features</Link> */}
                         <Link to="/Pricing">Pricing</Link>
                         <Link to="/auth/login">Log In</Link>
-                        <Link to="/auth/signup">Sign Up</Link>
+                        <Link id="register" to="/auth/signup">Sign Up</Link>
                     </div>
                 </div>
 
