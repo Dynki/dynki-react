@@ -60,11 +60,13 @@ Cypress.Commands.add('signup', (email = chance.email(), password = 'F@kelonger1'
     cy.get('#password').type(password).should('have.value', password)
     cy.get('#agree').click();
     cy.get('#btnRegister').click();
+    cy.wait(1000)
 })
 
 Cypress.Commands.add('newTeam', (name = 'Team1') => {
+    cy.wait(1000)
     cy.contains('Name your team')
     cy.get('#name').type(name).should('have.value', name)
     cy.get('#btnCreateTeam').click();
-    cy.wait(500)
+    cy.wait(1000)
 })

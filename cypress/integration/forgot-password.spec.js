@@ -9,17 +9,20 @@ context('Forgot Password', () => {
     })
 
     it('Check if valid email', () => {
-        cy.get('.login-form-forgot').click()
+        cy.contains('Log In').click()
+        cy.contains('Forgot password').click()
         cy.get('#email').type('fake').should('have.value', 'fake')
         cy.contains('Not a valid email address!');
-        cy.get('#backToLogin').click()
+        cy.get('#backToHome').click()
     })
 
     it('Fails to send email to unknown account', () => {
-        cy.get('.login-form-forgot').click()
+        cy.contains('Log In').click()
+        cy.contains('Forgot password').click()
         cy.get('#email').type('fake@fake.com').should('have.value', 'fake@fake.com')
-        cy.get('#submitbtn').click()
+        cy.contains('Send Email').click()
         cy.contains('There is no user record corresponding to this identifier. The user may have been deleted')
+        cy.get('#backToHome').click()
     })
 
     it('Should send email to known account', () => {
@@ -27,11 +30,12 @@ context('Forgot Password', () => {
         cy.signup(email)
         cy.newTeam()
         cy.logout()
-        cy.get('.login-form-forgot').click()
+        cy.contains('Log In').click()
+        cy.contains('Forgot password').click()
         cy.get('#email').type(email).should('have.value', email)
-        cy.get('#submitbtn').click()
+        cy.contains('Send Email').click()
         cy.contains('Reset email sent, please check your email!')
-        cy.get('#backToLogin').click()
+        cy.contains('Log In').click()
         cy.login(email, 'F@kelonger1');
         cy.deleteAccount();
     })

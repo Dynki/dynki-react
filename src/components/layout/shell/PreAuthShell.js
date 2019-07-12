@@ -9,7 +9,7 @@ class PreAuthShell extends React.Component {
             <div className="domain__choice">
                 <div className="home__header">
                     <div className="brand">
-                        <Link to="/home">
+                        <Link id="backToHome" to="/home">
                             <Spin indicator={<div className="section__img"></div>}></Spin>
                         </Link>
                         <h1>Dynki</h1>
@@ -18,7 +18,7 @@ class PreAuthShell extends React.Component {
                     <div className="home__links">
                         {/* <Link to="/features">Features</Link> */}
                         <Link to="/Pricing">Pricing</Link>
-                        <Link to="/auth/login">Log In</Link>
+                        <Link id="login" to="/auth/login">Log In</Link>
                         <Link id="register" to="/auth/signup">Sign Up</Link>
                     </div>
                 </div>

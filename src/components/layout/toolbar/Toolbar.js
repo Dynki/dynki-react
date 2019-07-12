@@ -27,7 +27,7 @@ class Toolbar extends React.Component {
         return (
             <div className="toolbar">
                 <SidenavDrawer domain={this.props.domain}/>
-                <div className={this.props.progress ? "toolbar__img--progress" : "toolbar__img"}></div>
+                <div id="backToHome" className={this.props.progress ? "toolbar__img--progress" : "toolbar__img"}></div>
                 <div className="toolbar__brand">Dynki</div>
                 <Dropdown overlay={menu} trigger={['click']}>
                     <label id="userprofile-icon" className="toolbar__user-profile">

@@ -115,7 +115,7 @@ class SignUpForm extends React.Component {
                             Go
                             <Icon type="check" />
                         </Button>
-                        Or <Link to="/auth/login">back to login</Link>
+                        Or <Link id="backToLogin" to="/auth/login">back to login</Link>
                     </FormItem>
                 </Form>
 

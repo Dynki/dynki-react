@@ -19,7 +19,7 @@ context('Boards', () => {
         cy.newTeam();
         cy.get('#btnBoards').click();
         cy.wait(1000);
-        cy.contains('Boards').click();
+        cy.get('.ant-tree-switcher').click();
         cy.contains('Scratch');
     })
 
@@ -32,6 +32,7 @@ context('Boards', () => {
     })
 
     it('Change board description', () => {
+        cy.wait(1000);
         cy.get('#description').clear();
         cy.get('#description').type('Test Desc');
         cy.get('#title').click();
