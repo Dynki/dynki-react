@@ -15,7 +15,16 @@ context('Boards', () => {
 
     it('Add board to menu', () => {
         const email = chance.email();
-        cy.signup(email);
+        // cy.signup(email);
+        const password = 'F@kelonger1'
+        cy.get('#register').click();
+        cy.get('#userName').type(email).should('have.value', email)
+        cy.get('#password').type(password).should('have.value', password)
+        cy.get('#agree').click();
+        cy.get('#btnRegister').click();
+    
+
+        cy.wait(1000);
         cy.newTeam();
         cy.get('#btnBoards').click();
         cy.wait(1000);

@@ -9,6 +9,11 @@
     overflow-y: scroll;
     min-height: 740px;
 
+    &::before {
+        content: '';
+        background-color: #BDEBE0;
+    }
+
     &::after {
         min-height: 740px;
         height: 100vh;
