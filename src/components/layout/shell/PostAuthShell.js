@@ -36,6 +36,45 @@ class PostAuthShell extends React.Component {
         if (!result.destination) {
             return;
         }
+
+        if (result.draggableId.indexOf('value') > -1) {
+            this.props.updateColumnValueOrder(result);
+        } else {
+            // Row drag end.
+
+            const newBoard = this.props.board;
+            const sourceGroupIdx = newBoard.groups.findIndex(grp => grp.id === result.source.droppableId);
+            const destinationGroupIdx = newBoard.groups.findIndex(grp => grp.id === result.destination.droppableId);
+
+            // result.desination/source.draggableId = The group id.
+            // If they are different then we need to move the row to the new group.
+
+             if (sourceGroupIdx !== destinationGroupIdx) {
+                // Get the existing row from the old group.
+                const existingRow = newBoard.groups[sourceGroupIdx].entities.find(e => e.id === result.draggableId);
+
+                 newBoard.groups[sourceGroupIdx].entities.splice(result.source.index, 1);
+
+                 // Create a blank array if group has never had any entities.
+                if (!newBoard.groups[destinationGroupIdx].entities) {
+                    newBoard.groups[destinationGroupIdx].entities = [];
+                }
+
+                 // Push the row onto the destination group.
+                newBoard.groups[destinationGroupIdx].entities.splice(result.destination.index, 0, existingRow);
+
+                this.setState({ groups: newBoard.groups });
+            } else {
+
+                 // Reorder the rows in the destination group.
+                newBoard.groups[destinationGroupIdx].entities = this.reorder(
+                    newBoard.groups[destinationGroupIdx].entities,
+                    result.source.index,
+                    result.destination.index
+                );
+            }
+             this.onUpdateBoard(newBoard);
+        }
     }
 
     render() {

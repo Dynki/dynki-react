@@ -9,7 +9,7 @@ const DRForm = Form.create({
         return {
           columnValue: Form.createFormField({
             ...props.columnValue,
-            value: moment(props.columnValue.value),
+            value: props.columnValue.value === '' ? null : moment(props.columnValue.value),
           })
         };
     },
@@ -25,7 +25,7 @@ const DRForm = Form.create({
         <Form className="table__row__cell__container" autoComplete="off">
             <FormItem className="date-cell">
                 {getFieldDecorator('columnValue', {})(
-                    <DatePicker format="DD-MMM-YYYY" allowClear={false}/>
+                    <DatePicker format="DD-MMM-YYYY" allowClear={true}/>
                 )}
             </FormItem>
         </Form>
