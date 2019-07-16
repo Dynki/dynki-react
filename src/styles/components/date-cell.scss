@@ -1,6 +1,10 @@
 .date-cell {
     width: 175px;
-
+    height: 40px;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #D1D3D4;
+    
     .table__row__cell__container {
         border: none!important;
         
@@ -15,28 +19,28 @@
 
 
         padding: 0px!important;
-        background: #2b82c1!important;
+        // background#2b82c1!important;
     }
 
     input {
         width: 170px!important;
         border-radius: 0px!important;
         border: none!important;
-        background: #2b82c1!important;
-        color: #fff!important;
+        // background: #2b82c1!important;
+        // color: #fff!important;
     }
 
-    .ant-calendar-picker-icon {
-        color: #fff;
-    }
+    // .ant-calendar-picker-icon {
+    //     color: #fff;
+    // }
 
     .ant-calendar-picker-clear {
-        color: #fff;
-        background: #2b82c1;
+        // color: #fff;
+        background: #EFF1F3;
     }
 
     .ant-calendar-picker-clear:hover {
-        color: #fff;
-        background: #2b82c1;
+        // color: #fff;
+        background: #EFF1F3;
     }
 }
