@@ -44,3 +44,14 @@
         background: #EFF1F3;
     }
 }
+
+.datedue {
+    &__placeholder {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+    }
+}

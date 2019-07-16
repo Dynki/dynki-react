@@ -10,7 +10,7 @@ class BoardRowHeaderMenu extends React.Component {
     };
 
     menu = (
-        <Menu onClick={this.onClick}>
+        <Menu onClick={this.onClick} className="table__header__menu">
           <Menu.Item key="text">
             <a className="table_menu__link"><Icon type="form" />Text</a>
           </Menu.Item>
@@ -19,6 +19,9 @@ class BoardRowHeaderMenu extends React.Component {
           </Menu.Item>
           <Menu.Item key="date">
             <a className="table_menu__link"><Icon type="calendar" />Date</a>
+          </Menu.Item>
+          <Menu.Item key="datedue">
+            <a className="table_menu__link"><Icon type="calendar" />Date Due</a>
           </Menu.Item>
         </Menu>
     );
