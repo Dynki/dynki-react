@@ -379,7 +379,7 @@
     &__h1 {
         color: #414141;
 
-        font-family: 'Raleway';
+        font-family: $font-family;
         font-size: 28px;
         font-weight: 600;
 
@@ -389,7 +389,7 @@
     &__h2 {
         color: #414141;
 
-        font-family: 'Raleway';
+        font-family: $font-family;
         font-size: 18px;
 
         margin-bottom: 15px;
@@ -410,7 +410,7 @@
             margin-right: 30px;
             color: #414141c2;
 
-            font-family: 'Raleway';
+            font-family: $font-family;
             font-size: 18px;
             font-weight: 600;
 
@@ -453,9 +453,9 @@
             margin-left: 18px;
             margin-right: 9px;
             color: #414141c2;
-            font-family: 'Raleway';
+            font-family: $font-family;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: lighter;
         }
     }
 

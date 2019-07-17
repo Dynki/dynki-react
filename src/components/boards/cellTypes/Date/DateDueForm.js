@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Form, DatePicker } from 'antd';
+import { debounce } from 'lodash';
 import moment from 'moment';
+import newGuid from '../../../../store/utils/guid';
 
 const FormItem = Form.Item;
 
@@ -22,19 +24,51 @@ const DateDueForm = Form.create({
 
     const [ open, setOpen ] = useState(false);
 
+    const uniqueId = newGuid();
+
+    let closeJustCalled = false;
+
+    const closeDate = () => {
+        console.log('Close date');
+        closeJustCalled = true;
+        setOpen(false);
+    }
+
+    const openDate = () => {
+        console.log('Open Date')
+
+        if (!closeJustCalled) {
+            setOpen(true);
+        } else {
+            closeJustCalled = false;
+        }
+    }
+
     const disabledDate = (current) => {
-    // Can not select days before today and today
-    return current && current < moment().endOf('day');
+        // Can not select days before today and today
+        return current && current < moment().endOf('day');
+    }
+
+    const determineColour = () => {
+        const days = moment(props.columnValue.value).diff({hours: 0}, 'days');
+        const color = days <= 3 ? '#EB144C' : (days > 3 && days < 14 ? '#FCB900' : '#00D084');
+        return color;
     }
     
+    const getCalendarContainer = () => {
+        return document.getElementById(uniqueId);
+    }
+
     return (
-        <Form className="table__row__cell__container" autoComplete="off" onClick={() => setOpen(!open)}>
-            <div className="datedue__placeholder">
-                {moment(props.columnValue.value).diff({hours: 0}, 'days')} days
+        <Form className="table__row__cell__container" autoComplete="off" onClick={openDate}>
+            <div id={uniqueId} className="datedue" style={{ 'backgroundColor': determineColour() }}>
+                <div className="datedue__placeholder" >
+                    {moment(props.columnValue.value).diff({hours: 0}, 'days')} days
+                </div>  
             </div>
-            <FormItem className="date-cell">
+            <FormItem className="datedue__date-cell">
                 {getFieldDecorator('columnValue', {})(
-                    <DatePicker style={{visibility: 'hidden'}} format="DD-MMM-YYYY" allowClear={true} open={open} disabledDate={disabledDate}/>
+                    <DatePicker style={{visibility: 'hidden', zIndex: 1}} format="DD-MMM-YYYY" allowClear={true} open={open} disabledDate={disabledDate} onChange={closeDate}/>
                 )}
             </FormItem>
         </Form>
