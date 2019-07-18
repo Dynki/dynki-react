@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Form, DatePicker } from 'antd';
-import { debounce } from 'lodash';
 import moment from 'moment';
-import newGuid from '../../../../store/utils/guid';
 
 const FormItem = Form.Item;
 
@@ -23,55 +21,63 @@ const DateDueForm = Form.create({
     const { getFieldDecorator } = props.form;
 
     const [ open, setOpen ] = useState(false);
-
-    const uniqueId = newGuid();
+    const node = useRef();
 
     let closeJustCalled = false;
 
-    const closeDate = () => {
-        console.log('Close date');
-        closeJustCalled = true;
-        setOpen(false);
-    }
+    useEffect(() => {
+        // add when mounted
+        document.addEventListener("mousedown", handleClick);
+        // return function to be called when unmounted
+        return () => {
+          document.removeEventListener("mousedown", handleClick);
+        };
+    }, []);
 
-    const openDate = () => {
-        console.log('Open Date')
-
-        if (!closeJustCalled) {
-            setOpen(true);
-        } else {
-            closeJustCalled = false;
+    const handleClick = e => {
+        if (node.current.contains(e.target)) {
+          // inside click
+          return;
         }
-    }
+        // outside click 
+        setOpen(false);
+    };
 
     const disabledDate = (current) => {
         // Can not select days before today and today
-        return current && current < moment().endOf('day');
+        // return current && current < moment().endOf('day');
     }
 
+    const days = moment(props.columnValue.value).diff({hours: 0}, 'days');
+
     const determineColour = () => {
-        const days = moment(props.columnValue.value).diff({hours: 0}, 'days');
-        const color = days <= 3 ? '#EB144C' : (days > 3 && days < 14 ? '#FCB900' : '#00D084');
+
+        const colorGroups = [
+            { color: '#EB144C', max: (x) => (x <= 1) }, // red
+            { color: '#FF6900', max: (x) => (x > 1 && x <= 3) }, // orange
+            { color: '#FCB900', max: (x) => (x > 3 && x <= 10 ) }, // yellow
+            { color: '#00D084', max: (x) => (x > 10 ) }, // green
+        ];
+
+        const color = colorGroups.filter(c => c.max(days))[0].color;
         return color;
     }
     
-    const getCalendarContainer = () => {
-        return document.getElementById(uniqueId);
-    }
-
     return (
-        <Form className="table__row__cell__container" autoComplete="off" onClick={openDate}>
-            <div id={uniqueId} className="datedue" style={{ 'backgroundColor': determineColour() }}>
+        <div ref={node} className="table__row__cell__container datedue__container">
+            <div className="datedue" style={{ 'backgroundColor': determineColour() }} onClick={() => setOpen(true)}>
                 <div className="datedue__placeholder" >
-                    {moment(props.columnValue.value).diff({hours: 0}, 'days')} days
+                    {days < 0 ? `+ ${Math.abs(days)} days` : `${days} days` } 
                 </div>  
             </div>
-            <FormItem className="datedue__date-cell">
-                {getFieldDecorator('columnValue', {})(
-                    <DatePicker style={{visibility: 'hidden', zIndex: 1}} format="DD-MMM-YYYY" allowClear={true} open={open} disabledDate={disabledDate} onChange={closeDate}/>
-                )}
-            </FormItem>
-        </Form>
+            <Form className="datedue__form" autoComplete="off" style={{visibility: 'hidden', zIndex: 1}}>
+                <FormItem className="datedue__date-cell">
+                    {getFieldDecorator('columnValue', {})(
+                        <DatePicker  format="DD-MMM-YYYY" allowClear={true} open={open} disabledDate={disabledDate} onChange={() => setOpen(false)}/>
+                    )}
+                </FormItem>
+            </Form>
+        </div>
     )
 });
 

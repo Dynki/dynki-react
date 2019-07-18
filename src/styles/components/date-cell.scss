@@ -55,6 +55,10 @@
     width: 100%;
     padding: 10px;
 
+    &__container {
+        padding: 0px;
+    }
+
     &__date-cell {
         width: 170px;
         border-bottom: solid;
@@ -75,7 +79,8 @@
         height: 20px;
         width: 95%;
         border-radius: 10px;
-        background-color: #fff;
+        background-color: #EFF1F3;
+        color: #2B82C1;
         z-index: 100;
 
         font-feature-settings: "lnum"!important;
