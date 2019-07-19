@@ -52,7 +52,7 @@
     justify-content: center;
     text-align: center;
     height: 39px;
-    width: 100%;
+    width: 172px;
     padding: 10px;
 
     &__container {
@@ -79,8 +79,9 @@
         height: 20px;
         width: 95%;
         border-radius: 10px;
-        background-color: #EFF1F3;
-        color: #2B82C1;
+        background-color: rgba(255, 255, 255, 0.4);
+        // color: #2B82C1;
+        color: #ffffff;
         z-index: 100;
 
         font-feature-settings: "lnum"!important;

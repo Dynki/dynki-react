@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Form, DatePicker } from 'antd';
 import moment from 'moment';
 
@@ -9,7 +9,7 @@ const DateDueForm = Form.create({
         return {
           columnValue: Form.createFormField({
             ...props.columnValue,
-            value: props.columnValue.value === '' ? null : moment(props.columnValue.value),
+            value: props.columnValue.value === '' || props.columnValue.value === undefined ? '' : moment(props.columnValue.value),
           })
         };
     },
@@ -21,34 +21,14 @@ const DateDueForm = Form.create({
     const { getFieldDecorator } = props.form;
 
     const [ open, setOpen ] = useState(false);
-    const node = useRef();
-
-    let closeJustCalled = false;
-
-    useEffect(() => {
-        // add when mounted
-        document.addEventListener("mousedown", handleClick);
-        // return function to be called when unmounted
-        return () => {
-          document.removeEventListener("mousedown", handleClick);
-        };
-    }, []);
-
-    const handleClick = e => {
-        if (node.current.contains(e.target)) {
-          // inside click
-          return;
-        }
-        // outside click 
-        setOpen(false);
-    };
-
-    const disabledDate = (current) => {
-        // Can not select days before today and today
-        // return current && current < moment().endOf('day');
-    }
 
     const days = moment(props.columnValue.value).diff({hours: 0}, 'days');
+
+    const datePickerStatus = status => {
+        if (!status) {
+            setOpen(false);
+        }
+    };
 
     const determineColour = () => {
 
@@ -58,22 +38,26 @@ const DateDueForm = Form.create({
             { color: '#FCB900', max: (x) => (x > 3 && x <= 10 ) }, // yellow
             { color: '#00D084', max: (x) => (x > 10 ) }, // green
         ];
-
-        const color = colorGroups.filter(c => c.max(days))[0].color;
+        
+        let color = '#59575A';
+        if (!isNaN(days)) {
+            color = colorGroups.filter(c => c.max(days))[0].color;
+        }
+            
         return color;
     }
     
     return (
-        <div ref={node} className="table__row__cell__container datedue__container">
+        <div className="table__row__cell__container datedue__container">
             <div className="datedue" style={{ 'backgroundColor': determineColour() }} onClick={() => setOpen(true)}>
                 <div className="datedue__placeholder" >
-                    {days < 0 ? `+ ${Math.abs(days)} days` : `${days} days` } 
+                    {isNaN(days) ? 'Select date' : (days < 0 ? `+ ${Math.abs(days)} days` : `${days} days`) } 
                 </div>  
             </div>
             <Form className="datedue__form" autoComplete="off" style={{visibility: 'hidden', zIndex: 1}}>
                 <FormItem className="datedue__date-cell">
                     {getFieldDecorator('columnValue', {})(
-                        <DatePicker  format="DD-MMM-YYYY" allowClear={true} open={open} disabledDate={disabledDate} onChange={() => setOpen(false)}/>
+                        <DatePicker format="DD-MMM-YYYY" open={open} onChange={() => setOpen(false)} onOpenChange={datePickerStatus}/>
                     )}
                 </FormItem>
             </Form>
@@ -99,7 +83,7 @@ const DateRowForm = (props) => {
 
     const fields = {
         columnValue: {
-        value: props.board && props.board.groups[props.groupKey] && props.board.groups[props.groupKey].entities[idx] ? props.board.groups[props.groupKey].entities[idx][props.modelName] : '',
+        value: props.board && props.board.groups[props.groupKey] && props.board.groups[props.groupKey].entities[idx] && props.board.groups[props.groupKey].entities[idx][props.modelName] ? props.board.groups[props.groupKey].entities[idx][props.modelName] : '',
         }
     };
 
