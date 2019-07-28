@@ -44,6 +44,16 @@ class DateCell extends BaseCell {
     }
 }
 
+class DateDueCell extends BaseCell {
+
+    constructor(model, title) {
+        super(model, title);
+
+        this.class = 'datedue';
+        this.title = 'date due';
+    }
+}
+
 export class CellFactory {
 
     createCell(type, model, title) {
@@ -54,6 +64,8 @@ export class CellFactory {
                 return new SelectCell(model, title);
             case 'date':
                 return new DateCell(model, title);
+            case 'datedue':
+                return new DateDueCell(model, title);
             default:
                 return null;
         }

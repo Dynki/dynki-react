@@ -1,7 +1,8 @@
-@import './settings.scss';
 @import './fonts';
+@import './settings.scss';
 
 @import './components/board.scss';
+@import './components/table.scss';
 @import './components/date-cell.scss';
 @import './components/home.scss';
 @import './components/login.scss';
@@ -11,7 +12,6 @@
 @import './components/pricing.scss';
 @import './components/select.scss';
 @import './components/sidenav.scss';
-@import './components/table.scss';
 
 
 @import './_antd-trumps.scss';

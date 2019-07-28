@@ -2,10 +2,11 @@
 import React from 'react';
 import BoardRowForm from './BoardRowForm';
 import BoardRowMenu from './BoardRowMenu';
-import { Tooltip, Icon, Checkbox } from 'antd';
+import { Tooltip, Icon } from 'antd';
 import SelectCellModal from './cellTypes/Select/SelectCellModal';
 import * as _ from 'lodash';
 import DateCell from './cellTypes/Date/DateCell';
+import DateDueCell from './cellTypes/Date/DateDueCell';
 
 class BoardRow extends React.Component {
 
@@ -57,6 +58,18 @@ class BoardRow extends React.Component {
                 setHoverState={this.setHoverState}
                 >
             </DateCell>;
+            case 'datedue': 
+            return <DateDueCell
+                onUpdateBoard={this.props.onUpdateBoard}
+                board={this.props.board}
+                rowIdx={this.props.rowIdx}
+                rowId={this.props.rowId}
+                colIdx={idx}
+                modelName={col.model}
+                groupKey={this.props.groupKey}
+                setHoverState={this.setHoverState}
+                >
+            </DateDueCell>;
 
             case 'select':
                 return <div className="table__row__cell__container--nopadding">

@@ -1,6 +1,10 @@
 .date-cell {
     width: 175px;
-
+    height: 40px;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #D1D3D4;
+    
     .table__row__cell__container {
         border: none!important;
         
@@ -15,28 +19,87 @@
 
 
         padding: 0px!important;
-        background: #2b82c1!important;
+        // background#2b82c1!important;
     }
 
     input {
         width: 170px!important;
         border-radius: 0px!important;
         border: none!important;
-        background: #2b82c1!important;
-        color: #fff!important;
+        // background: #2b82c1!important;
+        // color: #fff!important;
     }
 
-    .ant-calendar-picker-icon {
-        color: #fff;
-    }
+    // .ant-calendar-picker-icon {
+    //     color: #fff;
+    // }
 
     .ant-calendar-picker-clear {
-        color: #fff;
-        background: #2b82c1;
+        // color: #fff;
+        background: #EFF1F3;
     }
 
     .ant-calendar-picker-clear:hover {
-        color: #fff;
-        background: #2b82c1;
+        // color: #fff;
+        background: #EFF1F3;
+    }
+}
+
+.datedue {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 39px;
+    width: 172px;
+    padding: 10px;
+
+    &__container {
+        padding: 0px;
+    }
+
+    &__date-cell {
+        width: 170px;
+        border-bottom: solid;
+        border-bottom-width: 1px;
+        border-bottom-color: #D1D3D4;
+    
+        height: 0px!important;
+        z-index: 1;
+
+    }
+
+    &__placeholder {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        height: 20px;
+        width: 95%;
+        border-radius: 10px;
+        background-color: rgba(255, 255, 255, 0.4);
+        // color: #2B82C1;
+        color: #ffffff;
+        z-index: 100;
+
+        font-feature-settings: "lnum"!important;
+
+        font-variant-numeric: $font-variant-numeric;
+        font-variant-numeric: lining-nums;
+        -moz-font-feature-settings: "lnum" 1;
+        -moz-font-feature-settings: "lnum=1";
+        -ms-font-feature-settings: "lnum" 1;
+        -o-font-feature-settings: "lnum" 1;
+        -webkit-font-feature-settings: "lnum" 1;
+
+    }
+}
+
+.date-due-cell {
+    form {
+        padding: 0px!important;
+        padding-left: 0px!important;
     }
 }
