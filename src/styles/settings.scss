@@ -12,13 +12,22 @@ $green: #0ca959;
 $light-green: lighten($green, 5%);
 
 // Fonts
-$font-family: 'Raleway', 'Open Sans', sans-serif!important;
+$font-family: $font-family!important;
+
 
 // Logo
 $logo-font-size: 30px;
 $logo-font-size-large: 44px;
 
 body {
-    font-family: 'Raleway', sans-serif!important;
-    //overflow: hidden;
+    font-family: $font-family;
+    font-weight: 400;
+    // font-variant-numeric: $font-variant-numeric;
+    // font-variant-numeric: lining-nums;
+    // -moz-font-feature-settings: "lnum" 1;
+    // -moz-font-feature-settings: "lnum=1";
+    // -ms-font-feature-settings: "lnum" 1;
+    // -o-font-feature-settings: "lnum" 1;
+    // -webkit-font-feature-settings: "lnum" 1;
+    font-feature-settings: "lnum"!important;
 }

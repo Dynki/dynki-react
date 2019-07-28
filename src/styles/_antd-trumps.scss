@@ -1,5 +1,7 @@
 .ant-input, .ant-menu, .ant-dropdown {
-    font-family: 'Raleway', sans-serif!important;
+    font-family: $font-family;
+    // font-variant-numeric: $font-variant-numeric;
+    font-feature-settings: "lnum"!important;
 }
 
 .ant-drawer-title {

@@ -156,6 +156,10 @@ export const newRow = (row, groupId) => {
                             newData = {...newData, [col.model]: val.key }
                         }
                     });
+                } else if (col.class === 'date' || col.class === 'datedue') {
+                    newData = {...newData, [col.model]: '' }
+                } else if (col.class === 'text') {
+                    newData = {...newData, [col.model]: '' }
                 }
             });
         }
