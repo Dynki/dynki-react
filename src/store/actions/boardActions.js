@@ -158,7 +158,7 @@ export const newRow = (row, groupId) => {
                     });
                 } else if (col.class === 'date' || col.class === 'datedue') {
                     newData = {...newData, [col.model]: '' }
-                } else if (col.class === 'text') {
+                } else if (col.class === 'text' && col.model !== 'description') {
                     newData = {...newData, [col.model]: '' }
                 }
             });
