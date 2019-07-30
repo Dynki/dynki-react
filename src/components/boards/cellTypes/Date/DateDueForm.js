@@ -9,7 +9,7 @@ const DateDueForm = Form.create({
         return {
           columnValue: Form.createFormField({
             ...props.columnValue,
-            value: props.columnValue.value === '' || props.columnValue.value === undefined ? '' : moment(props.columnValue.value),
+            value: props.columnValue.value === '' || props.columnValue.value === undefined ? null : moment(props.columnValue.value),
           })
         };
     },
