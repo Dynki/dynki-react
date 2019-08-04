@@ -22,7 +22,9 @@ const DateDueForm = Form.create({
 
     const [ open, setOpen ] = useState(false);
 
-    const days = moment(props.columnValue.value).diff({hours: 0}, 'days');
+    console.log(props.columnValue.value);
+    const days = moment(props.columnValue.value).startOf('day').diff({hours: 0}, 'days');
+    const daysText = Math.abs(days) === 1 ? 'day' : 'days';
 
     const datePickerStatus = status => {
         if (!status) {
@@ -51,7 +53,7 @@ const DateDueForm = Form.create({
         <div className="table__row__cell__container datedue__container">
             <div className="datedue" style={{ 'backgroundColor': determineColour() }} onClick={() => setOpen(true)}>
                 <div className="datedue__placeholder" >
-                    {isNaN(days) ? 'Select date' : (days < 0 ? `+ ${Math.abs(days)} days` : `${days} days`) } 
+                    {isNaN(days) ? 'Select date' : (days < 0 ? `+ ${Math.abs(days)} ${daysText}` : `${days} ${daysText}`) } 
                 </div>  
             </div>
             <Form className="datedue__form" autoComplete="off" style={{visibility: 'hidden', zIndex: 1}}>
