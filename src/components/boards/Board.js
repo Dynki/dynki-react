@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { debounce } from 'lodash';
+import { Detector } from "react-detect-offline";
 
 import BoardHeader from './BoardHeader';
 import BoardDetail from './BoardDetail';
@@ -48,25 +49,36 @@ export class Board extends React.Component {
         this.props.newRow(description, groupKey);
     }
 
+    onConnectionStatusChanged = (online) => {
+        if (online) {
+            this.props.getBoard(this.props.match.params.id);
+        }
+    }    
+
     render() {
-        console.log('Board::Render::', this.props);
         return (
-            this.props.board ?
-                <section className="board">
-                    <BoardHeader 
-                        onUpdateBoard={this.onUpdateBoard}
-                        board={this.props.board}>
-                    </BoardHeader>
-                    <BoardDetail 
-                        onNewRow={this.onNewRow}
-                        onUpdateBoard={this.onUpdateBoard}
-                        progress={this.props.progress}
-                        groups={this.state.groups}
-                        board={this.props.board}>
-                    </BoardDetail>
-                </section> 
-            :
-            null
+            <Detector
+                onChange={this.onConnectionStatusChanged}
+                polling={false}
+                render={({ online }) => (
+                    this.props.board ?
+                    <section className="board">
+                        <BoardHeader 
+                            onUpdateBoard={this.onUpdateBoard}
+                            board={this.props.board}>
+                        </BoardHeader>
+                        <BoardDetail 
+                            onNewRow={this.onNewRow}
+                            onUpdateBoard={this.onUpdateBoard}
+                            progress={this.props.progress}
+                            groups={this.state.groups}
+                            board={this.props.board}>
+                        </BoardDetail>
+                    </section> 
+                :
+                    null
+                )}
+            />
         )
     }
 }
