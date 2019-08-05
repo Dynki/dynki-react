@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { Affix, Breadcrumb, Button, Icon, Tooltip } from 'antd';
+import { Dropdown, Breadcrumb, Button, Icon, Menu } from 'antd';
 
 import DynMenu from '../menu/Menu';
 import { getBoards, getBoard, newBoard } from '../../../store/actions/boardActions'; 
@@ -16,17 +16,25 @@ class SideNav extends React.Component {
 
     render() {
 
+        const menu = (
+            <Menu>
+              <Menu.Item>
+                <a>
+                  Create new team
+                </a>
+              </Menu.Item>
+            </Menu>
+          );
+    
         return (
             <div className="side-menu">
                 <Breadcrumb className="side-menu__bc">
                     <Breadcrumb.Item>
                         <Icon type="home" />
                     </Breadcrumb.Item>
-                    <Breadcrumb.Item>
-                        <Tooltip placement="right" title="Coming Soon">
-                            <Button type="dashed">{this.props.domainName}</Button>
-                        </Tooltip>
-                    </Breadcrumb.Item>
+                    <Dropdown overlay={menu}>
+                        <Button type="dashed">{this.props.domainName}</Button>
+                    </Dropdown>
                 </Breadcrumb>
                 <DynMenu menu={this.props.menuItems()} selectedKeys={this.props.selectedKeys}></DynMenu>        
             </div>
