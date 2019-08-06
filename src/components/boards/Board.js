@@ -6,7 +6,7 @@ import { Detector } from "react-detect-offline";
 import BoardHeader from './BoardHeader';
 import BoardDetail from './BoardDetail';
 
-import { getBoard, updateBoard, newRow } from '../../store/actions/boardActions';
+import { getBoard, getBoards, updateBoard, newRow } from '../../store/actions/boardActions';
 
 // Container for board components.
 export class Board extends React.Component {
@@ -29,7 +29,12 @@ export class Board extends React.Component {
 
     componentDidMount = () => {
         if (!this.props.board) {
-            this.props.getBoard(this.props.match.params.id);
+
+            if (this.props.boards && this.props.boards.length > 0) {
+                this.props.getBoard(this.props.boards[0].id);
+            } else {
+                this.props.getBoards();
+            }
         }
     }
 
@@ -51,7 +56,7 @@ export class Board extends React.Component {
 
     onConnectionStatusChanged = (online) => {
         if (online) {
-            this.props.getBoard(this.props.match.params.id);
+            this.props.getBoard(this.props.board.id);
         }
     }    
 
@@ -86,6 +91,7 @@ export class Board extends React.Component {
 export const mapStateToProps = (state) => {
     return{
       board: state.boards.currentBoard,
+      boards: state.boards.boards,
       progress: state.base.progress
     }
 }
@@ -93,6 +99,7 @@ export const mapStateToProps = (state) => {
 export const mapDispatchToProps = (dispatch) => {
     return{
       getBoard: (id) => dispatch(getBoard(id)),
+      getBoards: () => dispatch(getBoards()),
       updateBoard: (board) => dispatch(updateBoard(board)),
       newRow: (rowObj, groupKey) => dispatch(newRow(rowObj, groupKey))
     }
