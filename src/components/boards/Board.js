@@ -19,7 +19,7 @@ export class Board extends React.Component {
         // when editing existing or new row descriptions.
         // The debounce forces the code to wait until 1 second after the last key press, 
         // before it fires the persitence logic. 
-        this.onUpdateBoard = debounce(this.onUpdateBoard, 1000);
+        this.onUpdateBoard = debounce(this.onUpdateBoard, 4000);
         this.onNewRow = debounce(this.onNewRow, 1000);
 
         this.state = {
