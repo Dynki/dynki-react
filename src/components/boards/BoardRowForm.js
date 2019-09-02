@@ -15,12 +15,25 @@ const BRForm = Form.create({
         };
     },
 
-    onValuesChange(props, values) {
-        props.onChange(values);
-    }
+    // onValuesChange(props, values) {
+    //     props.onChange(values);
+    // }
 })((props) => {
     const { getFieldDecorator } = props.form;
 
+    const handleSubmit = (e) => {
+        if (e) e.preventDefault();
+
+        props.form.validateFields((err, values) => {
+            if (!err) {
+            }
+            props.onChange(values);
+        });
+    }
+
+    const handleBlur = () => {
+        handleSubmit();
+    }
     
     return (
         <Form className="table__row__cell__container" autoComplete="off">
@@ -29,6 +42,7 @@ const BRForm = Form.create({
                     <Input 
                         placeholder={props.colIdx === 0 ? "Enter some text here..." : ""}
                         className="table__header__input text--no-border"
+                        onBlur={() => handleBlur()}
                     />
                 )}
             </FormItem>
@@ -36,26 +50,46 @@ const BRForm = Form.create({
     )
 });
 
-const BoardRowForm = (props) => {
+class BoardRowForm extends React.Component {
 
-    const idx = props.board.groups[props.groupKey].entities.findIndex(r => props.rowId === r.id);
+    idx = null;
+    fields = null;
 
-    const handleFormChange = (changedFields) => {
-        const updatedBoard = props.board;
-        
-        updatedBoard.groups[props.groupKey].entities[idx][props.modelName] = changedFields['columnValue'];
-        props.onUpdateBoard(updatedBoard);
+    constructor(props) {
+        super(props);
+
+        this.idx = props.board.groups[props.groupKey].entities.findIndex(r => props.rowId === r.id);
+
+        this.fields = {
+            columnValue: {
+            value: props.board && props.board.groups[props.groupKey] 
+                && props.board.groups[props.groupKey].entities[this.idx] ? 
+                props.board.groups[props.groupKey].entities[this.idx][props.modelName] : '',
+            }
+        };
     }
 
-    const fields = {
-        columnValue: {
-        value: props.board && props.board.groups[props.groupKey] && props.board.groups[props.groupKey].entities[idx] ? props.board.groups[props.groupKey].entities[idx][props.modelName] : '',
-        }
-    };
+    shouldComponentUpdate(nextProps, nextState) {
+        const oldVal = this.props.board.groups[this.props.groupKey].entities[this.idx][this.props.modelName];
+        const newVal = nextProps.board.groups[nextProps.groupKey].entities[this.idx][nextProps.modelName]
+        return !oldVal || oldVal !== newVal;
+    }
 
-    return (
-        <BRForm {...fields} {...props} onChange={handleFormChange} />
-    );
+    handleFormChange = (changedFields) => {
+        const updatedBoard = this.props.board;
+        
+        updatedBoard.groups[this.props.groupKey].entities[this.idx][this.props.modelName] = changedFields['columnValue'];
+        this.props.onUpdateBoard(updatedBoard);
+    }
+
+
+    render() {
+        return (
+            this.fields && this.props ? 
+            <BRForm {...this.fields} {...this.props} onChange={this.handleFormChange} />
+            : null
+        );
+    }
 }
 
 
