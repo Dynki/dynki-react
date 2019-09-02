@@ -78,7 +78,7 @@ class PostAuthShell extends React.Component {
     }
 
     render() {
-        const { firstLoad, boards, noBoards, boardsChecked, location } = this.props;
+        const { firstLoad, board, boards, noBoards, boardsChecked, location } = this.props;
 
         if (this.props.domain.domainId) {
             return <div className="post-auth__content">
@@ -90,6 +90,12 @@ class PostAuthShell extends React.Component {
                         <Redirect exact from='/' to={`/empty-boards`}/>
                     }
                     {location.pathname === '/' && boards && boards.length > 0 &&
+                        <React.Fragment>
+                            {this.onDispatchBoardAction(boards[0].id)}
+                            <Redirect exact from='/' to={`/board`}/>
+                        </React.Fragment>
+                    }
+                    {location.pathname === '/board' && !board && boards.length > 0 &&
                         <React.Fragment>
                             {this.onDispatchBoardAction(boards[0].id)}
                             <Redirect exact from='/' to={`/board`}/>
