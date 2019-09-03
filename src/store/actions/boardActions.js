@@ -82,6 +82,8 @@ export const getBoard = (id) => {
         const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
         const board = await boardsHelper.get(id);
 
+        sessionStorage.setItem('dynki-currentboard', id);
+
         dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
         dispatch({ type: 'SET_PROGRESS', payload: false });
     }
@@ -109,6 +111,8 @@ export const removeBoard = (boardId) => {
         if (currentBoard && currentBoard.unsubscribe) {
             currentBoard.unsubscribe();
         }
+
+        sessionStorage.removeItem('dynki-currentboard');
         
         dispatch(getBoards());
 

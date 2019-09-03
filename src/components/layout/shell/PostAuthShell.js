@@ -80,6 +80,8 @@ class PostAuthShell extends React.Component {
     render() {
         const { firstLoad, board, boards, noBoards, boardsChecked, location } = this.props;
 
+        const sessionBoard = sessionStorage.getItem('dynki-currentboard');
+
         if (this.props.domain.domainId) {
             return <div className="post-auth__content">
             <DragDropContext onDragEnd={this.onDragEnd}>
@@ -97,7 +99,7 @@ class PostAuthShell extends React.Component {
                     }
                     {location.pathname === '/board' && !board && boards.length > 0 &&
                         <React.Fragment>
-                            {this.onDispatchBoardAction(boards[0].id)}
+                            {sessionBoard ? this.onDispatchBoardAction(sessionBoard) : this.onDispatchBoardAction(boards[0].id)}
                             <Redirect exact from='/' to={`/board`}/>
                         </React.Fragment>
                     }
