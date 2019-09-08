@@ -7,6 +7,7 @@ export class Teams extends React.Component {
     render() {
         return (
             <section className="teams">
+                Yay team
             </section> 
         )
     }

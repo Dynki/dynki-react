@@ -2,6 +2,7 @@ import React from 'react';
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { Dropdown, Breadcrumb, Button, Icon, Menu } from 'antd';
+import { withRouter } from "react-router-dom";
 
 import DynMenu from '../menu/Menu';
 import { getBoards, getBoard, newBoard } from '../../../store/actions/boardActions'; 
@@ -12,6 +13,14 @@ class SideNav extends React.Component {
     // Ensure the boards have been retrieved before rendering this component.
     componentWillMount() {
         this.props.getBoards();
+    }
+
+    displayTeam() {
+        this.props.history.push('/team/1');
+    }
+
+    loadBoard(id) {
+        this.props.history.push('/board/' + id);
     }
 
     render() {
@@ -33,7 +42,7 @@ class SideNav extends React.Component {
                         <Icon type="home" />
                     </Breadcrumb.Item>
                     <Dropdown overlay={menu}>
-                        <Button type="dashed">{this.props.domainName}</Button>
+                        <Button onClick={() => this.displayTeam()} type="dashed">{this.props.domainName}</Button>
                     </Dropdown>
                 </Breadcrumb>
                 <DynMenu menu={this.props.menuItems()} selectedKeys={this.props.selectedKeys}></DynMenu>        
@@ -82,12 +91,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getBoards: () => dispatch(getBoards()),
-        getBoard: (id) => dispatch(getBoard(id)),
         newBoard: () => dispatch(newBoard())
     }
 }
 
 
-export default compose(
+export default withRouter(compose(
     connect(mapStateToProps, mapDispatchToProps)
-  )(SideNav)
+  )(SideNav))

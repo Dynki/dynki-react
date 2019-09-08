@@ -8,6 +8,7 @@ import Board from '../../boards/Board';
 import EmptyBoards from '../../boards/EmptyBoards';
 import { getBoard } from '../../../store/actions/boardActions';
 import { updateBoard, updateColumnValueOrder } from '../../../store/actions/boardActions';
+import { Teams } from '../../teams/teams';
 
 class PostAuthShell extends React.Component {
 
@@ -100,6 +101,7 @@ class PostAuthShell extends React.Component {
                     }
                     <Switch>
                         <Route path={'/board/:id'} component={Board}></Route>
+                        <Route path={'/team/:id'} component={Teams}></Route>
                         <Route path={'/empty-boards'} component={EmptyBoards}></Route>
                     </Switch>
                 </main>
