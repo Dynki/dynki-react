@@ -10,9 +10,24 @@ import { getBoards, getBoard, newBoard } from '../../../store/actions/boardActio
 
 class SideNav extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = { menuItems: [] };
+    }
+    
+
+
     // Ensure the boards have been retrieved before rendering this component.
     componentWillMount() {
         this.props.getBoards();
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if (state.menuItems.length < 1 && state.boards) {
+            return { menuItems: props.constructMenuItems(state, newBoard, this.loadBoard) };
+        }
+
+        return null;
     }
 
     displayTeam() {
@@ -45,7 +60,7 @@ class SideNav extends React.Component {
                         <Button onClick={() => this.displayTeam()} type="dashed">{this.props.domainName}</Button>
                     </Dropdown>
                 </Breadcrumb>
-                <DynMenu menu={this.props.menuItems()} selectedKeys={this.props.selectedKeys}></DynMenu>        
+                <DynMenu menu={this.state.menuItems} selectedKeys={this.props.selectedKeys}></DynMenu>        
             </div>
         )
     }
@@ -56,35 +71,34 @@ const mapStateToProps = (state) => {
 
       selectedKeys: state.boards.currentBoard ? [state.boards.currentBoard.id] : [],
       domainName: state.domain.name,
+      constructMenuItems: (state, loadBoard, newBoard) => {
+            const constructItems = (itemArr) => {
+                return itemArr.map(i => ({
+                    id: i.id,
+                    title: i.title,
+                    target: `/board/${i.id}`,
+                    action: loadBoard(i.id),
+                    isFolder: i.isFolder,
+                    items: i.items ? constructItems(i.items) : null
+                }));
+            }
 
-      // Declare the menu items in this application.
-      menuItems: () => {
-        const constructItems = (itemArr) => {
-            return itemArr.map(i => ({
-                id: i.id,
-                title: i.title,
-                target: `/board/${i.id}`,
-                action: getBoard(i.id),
-                isFolder: i.isFolder,
-                items: i.items ? constructItems(i.items) : null
-            }));
+            let items = [];
+            if (this.state.boards.boards) {
+                items = constructItems(state.boards.boards);
+            }
+
+            const menuItems = [
+                { key: 1, title: 'Inbox', icon: 'mail', live: false },
+                { key: 2, title: 'Boards', icon: 'schedule', action: newBoard(), live:true,
+                    items: items },
+                { key: 3, title: 'Projects', icon: 'rocket', live: false },
+                { key: 4, title: 'Tags', icon: 'tags', live: false }
+            ]
+
+            return menuItems;
         }
-   
-        let items = [];
-        if (state.boards.boards) {
-            items = constructItems(state.boards.boards);
-        }
 
-        const menuItems = [
-            { key: 1, title: 'Inbox', icon: 'mail', live: false },
-            { key: 2, title: 'Boards', icon: 'schedule', action: newBoard(), live:true,
-                items: items },
-            { key: 3, title: 'Projects', icon: 'rocket', live: false },
-            { key: 4, title: 'Tags', icon: 'tags', live: false }
-        ]
-
-        return menuItems;
-      }
     }
 }
 
