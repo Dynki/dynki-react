@@ -22,7 +22,6 @@ const DateDueForm = Form.create({
 
     const [ open, setOpen ] = useState(false);
 
-    console.log(props.columnValue.value);
     const days = moment(props.columnValue.value).startOf('day').diff({hours: 0}, 'days');
     const daysText = Math.abs(days) === 1 ? 'day' : 'days';
 

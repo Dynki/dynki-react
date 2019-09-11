@@ -72,20 +72,23 @@ export const getBoard = (id) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'ATTEMPT_LOADING_BOARD', payload: id })
 
-        const currentBoard = getState().boards.currentBoard;
+        if (getState().base.progress === false) {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+            const currentBoard = getState().boards.currentBoard;
 
-        // This is required to stop firestore creating multiple subscriptions, which then spam the system.
-        if (currentBoard && currentBoard.unsubscribe) {
-            currentBoard.unsubscribe();
+            // This is required to stop firestore creating multiple subscriptions, which then spam the system.
+            if (currentBoard && currentBoard.unsubscribe) {
+                currentBoard.unsubscribe();
+            }
+    
+            const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
+            const board = await boardsHelper.get(id, dispatch);
+    
+            sessionStorage.setItem('dynki-currentboard', id);
+    
+            dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
+            dispatch({ type: 'SET_PROGRESS', payload: false });
         }
-
-        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
-        const board = await boardsHelper.get(id);
-
-        sessionStorage.setItem('dynki-currentboard', id);
-
-        dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
-        dispatch({ type: 'SET_PROGRESS', payload: false });
     }
 }
 
