@@ -90,7 +90,7 @@ export class Boards {
             title: 'Scratch',
             isFolder: false,
             entities: [{ id: 0, description: '' }],
-            groups: [{ id: newGuid(), name: 'Group 1', color: '2B82C1', collapsed: false, entities: [{ id: newGuid(), description: '' }] }],
+            groups: [{ id: newGuid(), name: 'Group 1', color: '2B82C1', collapsed: false, entities: [{ id: newGuid(), description: 'First row' }] }],
             columns: [{ title: 'Description', model: 'description', class: 'text' }],
             type: 'Scratch'
         }
