@@ -4,7 +4,6 @@ import * as _ from 'lodash';
 
 const FormItem = Form.Item;
 
-
 const BRForm = Form.create({
     mapPropsToFields(props) {
         return {
@@ -70,9 +69,10 @@ class BoardRowForm extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        const oldVal = this.props.board.groups[this.props.groupKey].entities[this.idx][this.props.modelName];
-        const newVal = nextProps.board.groups[nextProps.groupKey].entities[this.idx][nextProps.modelName]
-        return !oldVal || oldVal !== newVal;
+        // const oldVal = this.props.board.groups[this.props.groupKey].entities[this.idx][this.props.modelName];
+        // const newVal = nextProps.board.groups[nextProps.groupKey].entities[this.idx][nextProps.modelName]
+        // return !oldVal || oldVal !== newVal;
+        return false;
     }
 
     handleFormChange = (changedFields) => {

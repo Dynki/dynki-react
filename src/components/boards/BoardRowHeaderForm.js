@@ -11,20 +11,31 @@ const BRHForm = Form.create({
             value: props.headerValue.value,
           })
         };
-    },
-
-    onValuesChange(props, values) {
-        props.onChange(values);
     }
+
 })((props) => {
     const { getFieldDecorator } = props.form;
     const id = 'headerValue' + props.colIdx;
+
+    const handleSubmit = (e) => {
+        if (e) e.preventDefault();
+
+        props.form.validateFields((err, values) => {
+            if (!err) {
+            }
+            props.onChange(values);
+        });
+    }
+
+    const handleBlur = () => {
+        handleSubmit();
+    }
 
     return (
         <Form autoComplete="off">
             <FormItem>
                 {getFieldDecorator(id, {})(
-                    <Input className="table__header__input text--no-border"/>
+                    <Input className="table__header__input text--no-border" onBlur={() => handleBlur()}/>
                 )}
             </FormItem>
         </Form>
