@@ -5,9 +5,13 @@ import { PreAuthShell } from './components';
 import { Home, Pricing } from './components/landing';
 import App from './App';
 
+import { createBrowserHistory } from "history";
+
+const history = createBrowserHistory()
+
 const Root = ({ store }) => (
     <Provider store={store}>
-      <Router>
+      <Router history={history}>
         <div>
             <Route path="/" component={App} />
             <Route path="/auth" component={PreAuthShell} />
