@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { PageHeader, Menu, Dropdown, Icon, Button, Tag, Typography, Row } from 'antd';
+import TeamGroups from './teams-group';
+import TeamMembers from './teams-members';
 
 const { Paragraph } = Typography;
 
@@ -59,7 +61,7 @@ export class Teams extends React.Component {
                 <Row className="contentLink" type="flex">
                     <IconLink
                         src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg"
-                        text="Invite a user"
+                        text="Invite a team member"
                     />
                     <IconLink
                         src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg"
@@ -124,31 +126,43 @@ export class Teams extends React.Component {
         };
 
 
-        return <PageHeader
-            title="Team11"
-            subTitle="Like spokes in a wheel"
-            tags={<Tag color="blue">Team Enabled</Tag>}
-            extra={[
-                <Button key="3">Add a group</Button>,
-                <Button key="1" type="primary">
-                    Add a team member
-                </Button>,
-                <DropdownMenu key="more" />,
-            ]}
-            avatar={{ src: 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4' }}
-            breadcrumb={{ routes }}
-        >
-            <Content
-                extraContent={
-                    <img
-                        src="https://gw.alipayobjects.com/mdn/mpaas_user/afts/img/A*KsfVQbuLRlYAAAAAAAAAAABjAQAAAQ/original"
-                        alt="content"
-                    />
-                }
-            >
-                {content}
-            </Content>
-        </PageHeader>
+        return (
+            <React.Fragment>
+                <PageHeader
+                    title="Team11"
+                    subTitle="Like spokes in a wheel"
+                    tags={<Tag color="blue">Team Enabled</Tag>}
+                    extra={[
+                        <Button key="3">Add a group</Button>,
+                        <Button key="1" type="primary">
+                            Add a team member
+                        </Button>,
+                        <DropdownMenu key="more" />,
+                    ]}
+                    avatar={{ src: 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4' }}
+                    breadcrumb={{ routes }}
+                >
+                    <Content
+                        extraContent={
+                            <img
+                                src="https://gw.alipayobjects.com/mdn/mpaas_user/afts/img/A*KsfVQbuLRlYAAAAAAAAAAABjAQAAAQ/original"
+                                alt="content"
+                            />
+                        }
+                    >
+                        {content}
+                    </Content>
+                </PageHeader>
+
+                <div className="teams__content">
+                    <div className="teams__groups">
+                        <TeamGroups/>
+                    </div>
+                    <div className="teams__members">
+                        <TeamMembers/>
+                    </div>
+                </div>
+        </React.Fragment>);
     };
 
 }

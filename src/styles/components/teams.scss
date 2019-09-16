@@ -1,0 +1,19 @@
+.teams {
+    &__content {
+        display: flex;
+        flex-direction: row;
+        
+
+        margin: 10px;
+    }
+
+    &__groups {
+        width: 40%;
+        margin: 10px;
+    }
+
+    &__members {
+        width: 100%;
+        margin: 10px;
+    }
+}
