@@ -3,7 +3,7 @@ import { Table } from 'antd';
 
 const columns = [
   {
-    title: 'Groups',
+    title: 'Team Groups',
     dataIndex: 'name',
     key: 'name',
     render: text => <a>{text}</a>,

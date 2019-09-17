@@ -127,11 +127,11 @@ export class Teams extends React.Component {
 
 
         return (
-            <React.Fragment>
+            <div className="teams">
                 <PageHeader
                     title="Team11"
                     subTitle="Like spokes in a wheel"
-                    tags={<Tag color="blue">Team Enabled</Tag>}
+                    tags={<Tag color="blue">2 Team members</Tag>}
                     extra={[
                         <Button key="3">Add a group</Button>,
                         <Button key="1" type="primary">
@@ -162,7 +162,7 @@ export class Teams extends React.Component {
                         <TeamMembers/>
                     </div>
                 </div>
-        </React.Fragment>);
+        </div>);
     };
 
 }
