@@ -4,20 +4,15 @@ const chance = new Chance();
 /// <reference types="Cypress" />
 
 context('Boards', () => {
-    beforeEach(() => {
-      cy.visit('http://localhost:3000')
-    })
-
-    after(() => {
-        // Clean up
-        cy.deleteAccount();
+    before(() => {
+        cy.visit('http://localhost:3000');
+        const email = chance.email();
+        cy.signup(email);
+        cy.newTeam();
+  
     })
 
     it('Add board to menu', () => {
-        const email = chance.email();
-        cy.signup(email);
-        cy.wait(1000);
-        cy.newTeam();
         cy.get('#btnBoards').click();
         cy.wait(1000);
         cy.get('.ant-tree-switcher').click();

@@ -4,24 +4,29 @@ const chance = new Chance();
 /// <reference types="Cypress" />
 
 context('Login', () => {
-    beforeEach(() => {
-      cy.visit('http://localhost:3000')
+    before(() => {
+      cy.visit('http://localhost:3000');
     })
 
     it('Login Failure', () => {
-        cy.get('#email').type('fake@email.com').should('have.value', 'fake@email.com')
-        cy.get('#password').type('SomeFakePassword').should('have.value', 'SomeFakePassword')
-        cy.get('#loginbtn').click();
+        cy.contains('Log In').click();
+        cy.login('fake@email.com', 'SomeFakePassword');
         cy.contains('Login Failure');
     })
 
     it('Check if valid email', () => {
-      cy.get('#email').type('fake').should('have.value', 'fake')
+      cy.get('#email').clear();
+      cy.get('#password').clear();
+
+      cy.get('#email').type('fake').should('have.value', 'fake');
       cy.get('#password').click();
       cy.contains('Not a valid email address!');
     })
 
     it('Check for required values', () => {
+      cy.get('#email').clear();
+      cy.get('#password').clear();
+
       cy.get('#loginbtn').click();
       cy.contains('Please input an email!')
       cy.contains('Please input your Password!')
@@ -29,12 +34,13 @@ context('Login', () => {
 
     it('Should login', () => {
       const email = chance.email();
-      cy.signup(email)
-      cy.newTeam()
-      cy.logout()
+      cy.signup(email);
+      cy.newTeam();
+      cy.logout();
+      cy.contains('Log In').click();
       cy.login(email, 'F@kelonger1');
+      cy.wait(500);
       cy.contains('Inbox');
-      //cy.logout();
       cy.deleteAccount();
     })
 
