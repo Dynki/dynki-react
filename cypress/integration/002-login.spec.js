@@ -36,6 +36,7 @@ context('Login', () => {
       const email = chance.email();
       cy.signup(email);
       cy.newTeam();
+      cy.wait(500);
       cy.logout();
       cy.contains('Log In').click();
       cy.login(email, 'F@kelonger1');

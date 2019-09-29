@@ -9,7 +9,6 @@ context('Boards', () => {
         const email = chance.email();
         cy.signup(email);
         cy.newTeam();
-  
     })
 
     it('Add board to menu', () => {
@@ -34,6 +33,10 @@ context('Boards', () => {
         cy.get('#title').click();
         cy.wait(1000);
         cy.get('#description').should('have.value','Test Desc');
+    })
+
+    after(() => {
+        cy.deleteAccount();
     })
 })
   

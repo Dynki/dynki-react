@@ -60,6 +60,7 @@ context('Sign Up', () => {
         const email = chance.email();
         cy.signup(email);
         cy.newTeam();
+        cy.wait(1000);
         cy.logout();
         cy.signup(email);
         cy.contains('The email address is already in use by another account');

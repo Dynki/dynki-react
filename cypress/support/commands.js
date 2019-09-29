@@ -29,7 +29,7 @@ const chance = new Chance();
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 Cypress.Commands.add('login', (email, password) => {
     cy.get('#email').clear();
-    cy.get('#email').type(email).should('have.value', email)
+    cy.get('#email').type(email).should('have.value', email);
     cy.get('#password').type(password).should('have.value', password)
     cy.get('#loginbtn').click();
 })
@@ -55,7 +55,7 @@ Cypress.Commands.add('deleteAccount', () => {
 Cypress.Commands.add('signup', (email = chance.email(), password = 'F@kelonger1') => {
     // email = email ? email : chance.email();
     cy.server();
-    cy.route('auth/domain/*').as('getDomain')
+    cy.route('/auth/domain').as('getDomain');
 
     cy.get('#register').click();
     cy.get('#userName').type(email).should('have.value', email);
@@ -66,7 +66,7 @@ Cypress.Commands.add('signup', (email = chance.email(), password = 'F@kelonger1'
 
 Cypress.Commands.add('newTeam', (name = 'Team1') => {
     // cy.contains('Name your team')
-    cy.get('#name').type(name).should('have.value', name)
+    cy.get('#name', { timeout: 20000 } ).type(name).should('have.value', name);
     cy.get('#btnCreateTeam').click();
-    cy.wait(1000)
+    cy.wait(1000);
 })
