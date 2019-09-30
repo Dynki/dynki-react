@@ -237,20 +237,6 @@ const TeamMembers = (props) => {
         },
     ];
 
-    const data = [
-        {
-            key: '1',
-            name: 'DeanSelvey@gmail.com',
-            tags: ['Administrators', 'Users'],
-            status: 'Active'
-        },
-        {
-            key: '2',
-            name: 'Jake@gmail.com',
-            tags: ['Administrators'],
-            status: 'Active'
-        },
-    ];
 
     const components = {
         body: {
@@ -261,7 +247,7 @@ const TeamMembers = (props) => {
 
     return (
         <EditableContext.Provider value={props.form}>
-            <Table components={components} columns={columns} dataSource={data} />
+            <Table components={components} columns={columns} dataSource={props.members} />
         </EditableContext.Provider>);
 }
 

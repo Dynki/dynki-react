@@ -8,7 +8,7 @@ import Board from '../../boards/Board';
 import EmptyBoards from '../../boards/EmptyBoards';
 import { getBoard } from '../../../store/actions/boardActions';
 import { updateBoard, updateColumnValueOrder } from '../../../store/actions/boardActions';
-import { Teams } from '../../teams/teams';
+import Teams from '../../teams/teams';
 
 class PostAuthShell extends React.Component {
 

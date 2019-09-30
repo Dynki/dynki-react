@@ -8,11 +8,11 @@ import TeamMembers from './teams-members';
 const { Paragraph } = Typography;
 
 // Container for teams components.
-export class Teams extends React.Component {
-
-
+class Teams extends React.Component {
 
     render() {
+        console.log(this.props, 'Team props');
+
         const menu = (
             <Menu>
                 <Menu.Item>
@@ -103,7 +103,7 @@ export class Teams extends React.Component {
             },
             {
                 path: 'first',
-                breadcrumbName: 'Team11',
+                breadcrumbName: this.props.team ? this.props.team.name : 'Your Team',
             }
         ];
     
@@ -125,13 +125,14 @@ export class Teams extends React.Component {
             );
         };
 
+        const { team } = this.props;
 
-        return (
+        return team ? 
             <div className="teams">
                 <PageHeader
                     title="Team11"
                     subTitle="Like spokes in a wheel"
-                    tags={<Tag color="blue">2 Team members</Tag>}
+                    tags={<Tag color="blue">{team.members.length} Team members</Tag>}
                     extra={[
                         <Button key="3">Add a group</Button>,
                         <Button key="1" type="primary">
@@ -156,31 +157,25 @@ export class Teams extends React.Component {
 
                 <div className="teams__content">
                     <div className="teams__groups">
-                        <TeamGroups/>
+                        <TeamGroups groups={team.groups}/>
                     </div>
                     <div className="teams__members">
-                        <TeamMembers/>
+                        <TeamMembers members={team.members}/>
                     </div>
                 </div>
-        </div>);
+        </div> : null;
     };
-
 }
 
 export const mapStateToProps = (state) => {
     return {
-        teams: state.teams.teams,
         team: state.teams.currentTeam,
         progress: state.base.progress
     }
 }
 
-export const mapDispatchToProps = (dispatch) => {
-    return {
-    }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Teams);
+export default connect(mapStateToProps)(Teams);
 
 
 

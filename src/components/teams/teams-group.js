@@ -10,19 +10,8 @@ const columns = [
   },
 ];
 
-const data = [
-  {
-    key: '1',
-    name: 'Administrators',
-  },
-  {
-    key: '2',
-    name: 'Users',
-  },
-];
-
 const TeamGroups = (props) => {
-    return (<Table columns={columns} dataSource={data}  />);
+    return (<Table columns={columns} dataSource={props.groups}  />);
 }
 
 export default TeamGroups;
