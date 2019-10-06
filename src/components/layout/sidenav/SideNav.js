@@ -7,6 +7,7 @@ import { Breadcrumb, Button, Icon, Tooltip } from 'antd';
 
 import DynMenu from '../menu/Menu';
 import { getBoards, getBoard, newBoard } from '../../../store/actions/boardActions'; 
+import { getTeams } from '../../../store/actions/teamActions'; 
 
 
 class SideNav extends React.Component {
@@ -47,6 +48,7 @@ class SideNav extends React.Component {
     // Ensure the boards have been retrieved before rendering this component.
     componentWillMount() {
         this.props.getBoards();
+        this.props.getTeams();
     }
 
     componentDidMount() {
@@ -58,6 +60,7 @@ class SideNav extends React.Component {
     }
 
     render() {
+        console.log(this.props.teams, 'teams');
 
         return (
             this.props.boards ?
@@ -86,6 +89,7 @@ const mapStateToProps = (state) => {
       selectedKeys: state.boards.currentBoard ? [state.boards.currentBoard.id] : [],
       domainName: state.domain.name,
       boards: state.boards.boards,
+      teams: state.teams.teams
 
       // Declare the menu items in this application.
     //   menuItems: () => {
@@ -122,7 +126,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getBoards: () => dispatch(getBoards()),
         getBoard: (id) => dispatch(getBoard(id)),
-        newBoard: () => dispatch(newBoard())
+        newBoard: () => dispatch(newBoard()),
+        getTeams: () => dispatch(getTeams())
     }
 }
 

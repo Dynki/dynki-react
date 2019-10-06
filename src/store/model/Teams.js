@@ -1,3 +1,4 @@
+import axios from 'axios';
 import moment from 'moment';
 import newGuid from '../utils/guid';
 
@@ -6,6 +7,12 @@ export class Teams {
     constructor(firebase, domainId) {
         this.firebase = firebase;
         this.domainId = domainId;
+
+        if (process.env.NODE_ENV !== 'production') {
+            this.baseUrl = `https://us-central1-dynki-c5141.cloudfunctions.net/domains`;
+        } else {
+            this.baseUrl = `https://us-central1-dynki-prod.cloudfunctions.net/domains`;
+        }
     }
 
     /**
@@ -16,22 +23,21 @@ export class Teams {
      * Returns: A team class instance
      */
     get(id) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
 
-            const sub = this.firebase.firestore()
-                .collection('domains')
-                .doc(this.domainId)
-                .collection('teams')
-                .doc(id)
-                .onSnapshot({}, function (doc) {
-                    const team = doc.data();
+            const url = `${this.baseUrl}/${id}`;
+
+            try {
+                const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+                const uid = this.firebase.auth().currentUser.uid;
+
+                const domain = await axios.get(url, { headers: { uid, token, authorization: token } });
+
+                resolve(domain);
     
-                    // Add the subscription to the current board so we can kill it later.
-                    if (team) {
-                        team.unsubscribe = sub;
-                        resolve(team);
-                    }
-                });
+            } catch (error) {
+                reject(error);
+            }
         });
     }
 
@@ -41,22 +47,20 @@ export class Teams {
      * Returns: A firebase snapshot instance containing the teams
      */
     list() {
-        return new Promise((resolve, reject) => {
-            this.firebase.firestore()
-            .collection('domains')
-            .doc(this.domainId)
-            .collection('teams')
-            .get()
-            .then(function (querySnapshot) {
-                const teams = [];
+        return new Promise(async (resolve, reject) => {
+            let url = this.baseUrl;
 
-                querySnapshot.forEach(function(doc) {
-                    const team = {id: doc.id, ...doc.data()};
-                    teams.push(team);
-                });
+            try {
+                const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+                const uid = this.firebase.auth().currentUser.uid;
+    
+                const domain = await axios.get(url, { headers: { uid, token, authorization: token } });
 
-                resolve(teams);
-            });
+                resolve(domain);
+    
+            } catch (error) {
+                reject(error);
+            }
         });
     }
 
