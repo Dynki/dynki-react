@@ -54,9 +54,9 @@ export class Teams {
                 const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
                 const uid = this.firebase.auth().currentUser.uid;
     
-                const domain = await axios.get(url, { headers: { uid, token, authorization: token } });
+                const domains = await axios.get(url, { headers: { uid, token, authorization: token } });
 
-                resolve(domain);
+                resolve(domains.data);
     
             } catch (error) {
                 reject(error);

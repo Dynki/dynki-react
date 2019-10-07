@@ -3,12 +3,12 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router-dom";
 
-import { Breadcrumb, Button, Icon, Tooltip } from 'antd';
+import { Breadcrumb, Select, Button, Icon, Tooltip } from 'antd';
 
 import DynMenu from '../menu/Menu';
 import { getBoards, getBoard, newBoard } from '../../../store/actions/boardActions'; 
-import { getTeams } from '../../../store/actions/teamActions'; 
 
+const { Option } = Select;
 
 class SideNav extends React.Component {
 
@@ -48,7 +48,6 @@ class SideNav extends React.Component {
     // Ensure the boards have been retrieved before rendering this component.
     componentWillMount() {
         this.props.getBoards();
-        this.props.getTeams();
     }
 
     componentDidMount() {
@@ -70,9 +69,11 @@ class SideNav extends React.Component {
                         <Icon type="home" />
                     </Breadcrumb.Item>
                     <Breadcrumb.Item>
-                        <Tooltip placement="right" title="Coming Soon">
-                            <Button onClick={() => this.displayTeam()} type="dashed">{this.props.domainName}</Button>
-                        </Tooltip>
+                    <Select value={this.props.teams.length > 0 && this.props.teams ? this.props.teams[0].id : null} style={{ width: 170 }} >
+                        {this.props.teams && this.props.teams.length > 0 ? this.props.teams.map((t, idx) => {
+                            return <Option key={idx} value={t.id}>{t.display_name}</Option>
+                        }) : null }
+                    </Select>                    
                     </Breadcrumb.Item>
                 </Breadcrumb>
                 <DynMenu menu={this.initialiseMenuItems()} selectedKeys={this.props.selectedKeys}></DynMenu>        
@@ -127,7 +128,6 @@ const mapDispatchToProps = (dispatch) => {
         getBoards: () => dispatch(getBoards()),
         getBoard: (id) => dispatch(getBoard(id)),
         newBoard: () => dispatch(newBoard()),
-        getTeams: () => dispatch(getTeams())
     }
 }
 

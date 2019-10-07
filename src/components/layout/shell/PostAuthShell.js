@@ -7,10 +7,15 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import Board from '../../boards/Board';
 import EmptyBoards from '../../boards/EmptyBoards';
 import { getBoard } from '../../../store/actions/boardActions';
+import { getTeams } from '../../../store/actions/teamActions';
 import { updateBoard, updateColumnValueOrder } from '../../../store/actions/boardActions';
 import Teams from '../../teams/teams';
 
 class PostAuthShell extends React.Component {
+
+    componentWillMount() {
+        this.props.getTeams();
+    }
 
     onDispatchBoardAction(id) {
         this.props.getBoard(id);
@@ -128,6 +133,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getBoard: (id) => dispatch(getBoard(id)),
+        getTeams: () => dispatch(getTeams()),
         updateBoard: (board) => dispatch(updateBoard(board)),
         updateColumnValueOrder: (data) => dispatch(updateColumnValueOrder(data)),
       }
