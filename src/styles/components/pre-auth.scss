@@ -22,7 +22,10 @@
         height: 100vh;
         width: 100vw;
         content: "";
-        background-image: url(/assets/img/snippy.jpg), none;
+        // background-image: url(/assets/img/snippy2.jpg), none;
+        background-color: #BDB9B8;
+        background-image: linear-gradient(177deg, #bdb9b8 0%, #d8d7da 62%);
+
         //opacity: 0.8;
         background-size:     cover;
         background-repeat:   no-repeat;
@@ -55,7 +58,8 @@
         h1 {
             font-size: 34px;
             font-weight: 300;
-            color: #414141c2;
+            // color: #414141c2;
+            color: #ffffff;
         }
     }
 

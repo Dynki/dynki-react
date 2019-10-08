@@ -3,12 +3,10 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router-dom";
 
-import { Breadcrumb, Select, Button, Icon, Tooltip } from 'antd';
+import { Breadcrumb, Button, Icon, Tooltip, Dropdown, Menu } from 'antd';
 
 import DynMenu from '../menu/Menu';
 import { getBoards, getBoard, newBoard } from '../../../store/actions/boardActions'; 
-
-const { Option } = Select;
 
 class SideNav extends React.Component {
 
@@ -54,12 +52,19 @@ class SideNav extends React.Component {
         this.setState({ menuItems: this.constructItems });
     }
 
-    displayTeam() {
-        this.props.history.push('/team/1');
+    handleMenuClick(e) {
+        this.props.history.push(`/team/${e.key}`);
     }
 
     render() {
-        console.log(this.props.teams, 'teams');
+
+        const menu = (
+            <Menu onClick={this.handleMenuClick.bind(this)}>
+                {this.props.teams && this.props.teams.length > 0 ? this.props.teams.map((t, idx) => {
+                    return <Menu.Item key={t.id}>{t.display_name}</Menu.Item>
+                }) : null }
+            </Menu>
+        );
 
         return (
             this.props.boards ?
@@ -69,11 +74,13 @@ class SideNav extends React.Component {
                         <Icon type="home" />
                     </Breadcrumb.Item>
                     <Breadcrumb.Item>
-                    <Select value={this.props.teams.length > 0 && this.props.teams ? this.props.teams[0].id : null} style={{ width: 170 }} >
-                        {this.props.teams && this.props.teams.length > 0 ? this.props.teams.map((t, idx) => {
-                            return <Option key={idx} value={t.id}>{t.display_name}</Option>
-                        }) : null }
-                    </Select>                    
+                    {this.props.teams.length > 0 && this.props.teams ?
+                    <Dropdown overlay={menu}>
+                        <Button>
+                        {this.props.teams[0].display_name}<Icon type="down" />
+                        </Button>
+                    </Dropdown>
+                    : null}
                     </Breadcrumb.Item>
                 </Breadcrumb>
                 <DynMenu menu={this.initialiseMenuItems()} selectedKeys={this.props.selectedKeys}></DynMenu>        

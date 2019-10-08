@@ -17,7 +17,7 @@ const Home = (props) => {
                     <div className="home__links">
                         {/* <Link to="/features">Features</Link> */}
                         <Link to="/Pricing">Pricing</Link>
-                        <Link to="/auth/login">Log In</Link>
+                        <Link className="login-link-btn" to="/auth/login">Log In</Link>
                         <Link to="/auth/signup">Sign Up</Link>
                     </div>
                 </div>

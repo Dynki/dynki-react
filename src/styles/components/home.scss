@@ -19,7 +19,13 @@
         height: 100vh;
         width: 100vw;
         content: "";
-        background-image: url(/assets/img/snippy.jpg), none;
+        // background-image: url(/assets/img/snippy2.jpg), none;
+        
+        background-color: #BDB9B8;
+
+        background-image: linear-gradient(177deg, #bdb9b8 0%, #d8d7da 62%);
+                        
+
         //opacity: 0.8;
         background-size:     cover;
         background-repeat:   no-repeat;
@@ -52,7 +58,8 @@
         h1 {
             font-size: 34px;
             font-weight: 300;
-            color: #414141c2;
+            // color: #414141c2;
+            color: #ffffff;
         }
     }
 
@@ -286,7 +293,7 @@
         position: relative;
         min-height: 80px;
         max-height: 80px;
-        background-color: #ffffff4f;
+        // background-color: #ffffff4f;
         grid-area: header;
     }
 
@@ -398,7 +405,7 @@
     &__links {
         position: absolute;
         right: 37px;
-        top: 35px;
+        top: 24px;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -408,14 +415,27 @@
         a {
             margin-left: 30px;
             margin-right: 30px;
-            color: #414141c2;
+            // color: #414141c2;
+            color: #ffffff;
 
             font-family: $font-family;
             font-size: 18px;
-            font-weight: 600;
+            font-weight: 500;
 
             &:hover {
                 color: #2D83C1;
+            }
+        }
+
+        .login-link-btn {
+            border: solid;
+            border-width: 1.5px;
+            border-color: #ffffff;
+            border-radius: 4px;
+            padding: 5px;
+
+            &:hover {
+                border-color: #2D83C1;
             }
         }
     }
@@ -432,8 +452,10 @@
 
         img {
             width: 85%;
-            box-shadow: 0 1px 15px #ccc;
+            // box-shadow: 0 1px 15px #ccc;
         }
+
+
     }
 }
 
@@ -482,7 +504,8 @@
                     margin-bottom: 0px;
                     font-size: 23px;
                     font-weight: 300;
-                    color: #414141c2;
+                    // color: #414141c2;
+                    color: #ffffff;
                 }
 
                 .section {

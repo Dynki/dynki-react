@@ -59,6 +59,9 @@
         flex-direction: row;
         align-items: center;    
 
+        .ant-dropdown-trigger {
+            min-width: 170px;
+        }
     }
     
     &__img {
