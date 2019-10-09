@@ -53,7 +53,7 @@ export const getTeam = (id) => {
         const teamsHelper = new Teams(getFirebase(), getState().domain.domainId)
         const team = await teamsHelper.get(id);
 
-        dispatch({ type: 'SET_CURRENT_TEAM', payload: team });
+        dispatch({ type: 'SET_CURRENT_TEAM', payload: team.data });
         dispatch({ type: 'SET_PROGRESS', payload: false });
     }
 }

@@ -453,6 +453,10 @@
         img {
             width: 85%;
             // box-shadow: 0 1px 15px #ccc;
+            box-shadow: -2px 1px 17px 1px rgba(0,0,0,0.25);
+            -webkit-box-shadow: -2px 1px 17px 1px rgba(0,0,0,0.25);
+            -moz-box-shadow: -2px 1px 17px 1px rgba(0,0,0,0.25);
+        
         }
 
 
@@ -562,6 +566,9 @@
 
             img {
                 width: 105%;
+                box-shadow: -2px 1px 17px 6px rgba(0,0,0,0.25);
+-webkit-box-shadow: -2px 1px 17px 6px rgba(0,0,0,0.25);
+-moz-box-shadow: -2px 1px 17px 6px rgba(0,0,0,0.25);
             }
         }
 

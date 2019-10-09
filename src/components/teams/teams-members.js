@@ -172,18 +172,18 @@ const TeamMembers = (props) => {
     const columns = [
         {
             title: 'Team Member',
-            dataIndex: 'name',
-            key: 'name',
+            dataIndex: 'email',
+            key: 'email',
             render: text => <a>{text}</a>,
-            ...getColumnSearchProps('name')
+            ...getColumnSearchProps('email')
         },
         {
             title: 'Member of Groups',
-            key: 'tags',
-            dataIndex: 'tags',
-            render: tags => (
+            key: 'memberOf',
+            dataIndex: 'memberOf',
+            render: groups => (
                 <span>
-                    {tags.map(tag => {
+                    {groups.map(tag => {
                         let color = 'geekblue';
                         return (
                             <Tag color={color} key={tag}>
@@ -209,7 +209,7 @@ const TeamMembers = (props) => {
             onCell: record => ({
                 record,
                 editable: true,
-                dataIndex: 'tags',
+                dataIndex: 'memberOf',
                 title: 'Members of Groups'
               }),
         },

@@ -65,28 +65,29 @@ class SideNav extends React.Component {
                 }) : null }
             </Menu>
         );
+        const teamName = this.props.team ? this.props.team.display_name : '';
 
         return (
-            this.props.boards ?
             <div className="side-menu">
                 <Breadcrumb className="side-menu__bc">
                     <Breadcrumb.Item>
                         <Icon type="home" />
                     </Breadcrumb.Item>
                     <Breadcrumb.Item>
-                    {this.props.teams.length > 0 && this.props.teams ?
+                    
                     <Dropdown overlay={menu}>
-                        <Button>
-                        {this.props.teams[0].display_name}<Icon type="down" />
+                        <Button loading={(teamName === '')}>
+                        {teamName}<Icon type="down" />
                         </Button>
                     </Dropdown>
-                    : null}
                     </Breadcrumb.Item>
                 </Breadcrumb>
-                <DynMenu menu={this.initialiseMenuItems()} selectedKeys={this.props.selectedKeys}></DynMenu>        
+                { this.props.boards ?
+                    <DynMenu menu={this.initialiseMenuItems()} selectedKeys={this.props.selectedKeys}></DynMenu>        
+                    :
+                    null
+                }
             </div>
-            :
-            null
         )
     }
 }
@@ -97,7 +98,8 @@ const mapStateToProps = (state) => {
       selectedKeys: state.boards.currentBoard ? [state.boards.currentBoard.id] : [],
       domainName: state.domain.name,
       boards: state.boards.boards,
-      teams: state.teams.teams
+      teams: state.teams.teams,
+      team: state.teams.currentTeam
 
       // Declare the menu items in this application.
     //   menuItems: () => {

@@ -1,27 +1,6 @@
 const initialState = {
     teams: [],
-    currentTeam: {
-        name: 'Team Dynki',
-        enabled: true,
-        groups: [
-            { key: '1', name: 'Administrators' },
-            { key: '2', name: 'Users' }
-        ],
-        members: [
-            { 
-                key: '1',
-                name: 'DeanSelvey@gmail.com',
-                tags: ['Administrators', 'Users'],
-                status: 'Active' 
-            },
-            {
-                key: '2',
-                name: 'Jake@gmail.com',
-                tags: ['Administrators'],
-                status: 'Active'
-            }
-        ]
-    }   
+    currentTeam: null
 }
 
 const teamReducer = (state = initialState, action) => {
@@ -31,7 +10,14 @@ const teamReducer = (state = initialState, action) => {
                 ...state,
                 teams: action.payload
             }
+        case 'SET_CURRENT_TEAM':
+            console.log('Setting current team', action.payload);
 
+            return {
+                ...state,
+                currentTeam: action.payload
+            }
+    
         default:
             return state;
     }

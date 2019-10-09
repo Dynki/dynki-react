@@ -1,17 +1,31 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { PageHeader, Menu, Dropdown, Icon, Button, Tag, Typography, Row } from 'antd';
+import { PageHeader, Menu, Dropdown, Icon, Button, Tag, Typography, Row, Skeleton } from 'antd';
 import TeamGroups from './teams-group';
 import TeamMembers from './teams-members';
+import { getTeam } from '../../store/actions/teamActions';
 
 const { Paragraph } = Typography;
 
 // Container for teams components.
 class Teams extends React.Component {
 
+    componentDidMount = () => {
+        if (!this.props.team) {
+            this.props.getTeam(this.props.match.params.id);
+        }
+    }
+
     render() {
         console.log(this.props, 'Team props');
+
+        if (!this.props.team) {
+            return  (
+            <div className="teams__skeleton">
+                <Skeleton active={true} paragraph={{ rows: 4 }}></Skeleton>
+            </div>)
+        }
 
         const menu = (
             <Menu>
@@ -103,7 +117,7 @@ class Teams extends React.Component {
             },
             {
                 path: 'first',
-                breadcrumbName: this.props.team ? this.props.team.name : 'Your Team',
+                breadcrumbName: this.props.team ? this.props.team.display_name : 'Your Team',
             }
         ];
     
@@ -130,9 +144,9 @@ class Teams extends React.Component {
         return team ? 
             <div className="teams">
                 <PageHeader
-                    title="Team11"
+                    title={team.display_name}
                     subTitle="Like spokes in a wheel"
-                    tags={<Tag color="blue">{team.members.length} Team members</Tag>}
+                    tags={<Tag color="blue">{team.members.length} Team member{team.members.length === 1 ? '' : 's'}</Tag>}
                     extra={[
                         <Button key="3">Add a group</Button>,
                         <Button key="1" type="primary">
@@ -160,7 +174,7 @@ class Teams extends React.Component {
                         <TeamGroups groups={team.groups}/>
                     </div>
                     <div className="teams__members">
-                        <TeamMembers members={team.members}/>
+                        <TeamMembers members={team.members} groups={team.groups}/>
                     </div>
                 </div>
         </div> : null;
@@ -174,8 +188,13 @@ export const mapStateToProps = (state) => {
     }
 }
 
+export const mapDispatchToProps = (dispatch) => {
+    return{
+      getTeam: (id) => dispatch(getTeam(id)),
+    }
+}
 
-export default connect(mapStateToProps)(Teams);
+export default connect(mapStateToProps, mapDispatchToProps)(Teams);
 
 
 
