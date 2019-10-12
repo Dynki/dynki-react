@@ -25,12 +25,15 @@ export const getTeams = () => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'ATTEMPT_LOADING_TEAMS' })
         
+        console.log('get teams');
+
         const teamsHelper = new Teams(getFirebase(), getState().domain.domainId)
         const teams = await teamsHelper.list();
 
         if (!teams || teams.length < 1) {
             dispatch({ type: 'NO_TEAMS' });
         } else {
+            dispatch(getTeam(getState().domain.domainId));
             dispatch({ type: 'REFRESH_TEAMS', payload: teams });
         }
         dispatch({ type: 'SET_PROGRESS', payload: false });
@@ -57,3 +60,19 @@ export const getTeam = (id) => {
         dispatch({ type: 'SET_PROGRESS', payload: false });
     }
 }
+
+// Get an individual team by id.
+export const addTeamGroup = (id) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        const currentTeam = getState().teams.currenTeam;
+
+        const teamsHelper = new Teams(getFirebase(), getState().domain.domainId)
+        const newTeam = await teamsHelper.addGroup(id, 'New group');
+
+        // dispatch({ type: 'SET_CURRENT_TEAM', payload: team.data });
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+    }
+}
+

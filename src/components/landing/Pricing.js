@@ -39,6 +39,7 @@ const Pricing = (props) => {
                             <div className="pricing__section__title">Business</div>
                             <div className="pricing__section__description">Enhanced package</div>
                             <div className="pricing__section__blurb">Team management</div>
+                            <div className="pricing__section__blurb">Up to 3 Flow types</div>
                             <div className="pricing__section__blurb">Advanced Column Types</div>
                             <div className="pricing__section__blurb">Up to 10 users</div>
                             <div className="pricing__section__cost">£TBA</div>
@@ -49,7 +50,7 @@ const Pricing = (props) => {
                             <div className="pricing__section__title">Enterprise</div>
                             <div className="pricing__section__description">Premium package</div>
                             <div className="pricing__section__blurb">All the Business package plus</div>
-                            <div className="pricing__section__blurb">Unlimited Teams</div>
+                            <div className="pricing__section__blurb">Unlimited Flow Types</div>
                             <div className="pricing__section__blurb">Unlimited users</div>
                             <div className="pricing__section__cost">£TBA</div>
                             <div className="pricing__section__cost-basis">GBP / Month</div>

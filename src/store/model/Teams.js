@@ -28,6 +28,8 @@ export class Teams {
             const url = `${this.baseUrl}/${id}`;
 
             try {
+                console.log('Getting Team', id);
+
                 const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
                 const uid = this.firebase.auth().currentUser.uid;
 
@@ -63,6 +65,29 @@ export class Teams {
             }
         });
     }
+
+    /**
+     * Adds a new team.
+     * 
+     */
+    async addGroup(teamId, name) {
+        return new Promise(async (resolve, reject) => {
+            const url = `${this.baseUrl}/${teamId}/groups`;
+
+            try {
+                const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+                const uid = this.firebase.auth().currentUser.uid;
+
+                const newGroup = await axios.post(url, { group_name: name }, { headers: { uid, token, authorization: token } });
+
+                resolve(newGroup);
+
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
 
     /**
      * Adds a new team.
@@ -124,4 +149,6 @@ export class Teams {
             resolve();
         });
     }
+
+    
 }

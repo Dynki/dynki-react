@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { PageHeader, Menu, Dropdown, Icon, Button, Tag, Typography, Row, Skeleton } from 'antd';
 import TeamGroups from './teams-group';
 import TeamMembers from './teams-members';
-import { getTeam } from '../../store/actions/teamActions';
+import { getTeam, addTeamGroup } from '../../store/actions/teamActions';
 
 const { Paragraph } = Typography;
 
@@ -15,6 +15,10 @@ class Teams extends React.Component {
         if (!this.props.team) {
             this.props.getTeam(this.props.match.params.id);
         }
+    }
+
+    addGroup = () => {
+        this.props.addTeamGroup(this.props.team.id);
     }
 
     render() {
@@ -148,7 +152,7 @@ class Teams extends React.Component {
                     subTitle="Like spokes in a wheel"
                     tags={<Tag color="blue">{team.members.length} Team member{team.members.length === 1 ? '' : 's'}</Tag>}
                     extra={[
-                        <Button key="3">Add a group</Button>,
+                        <Button onClick={this.addGroup} key="3">Add a group</Button>,
                         <Button key="1" type="primary">
                             Add a team member
                         </Button>,
@@ -191,6 +195,7 @@ export const mapStateToProps = (state) => {
 export const mapDispatchToProps = (dispatch) => {
     return{
       getTeam: (id) => dispatch(getTeam(id)),
+      addTeamGroup: (id) => dispatch(addTeamGroup(id))
     }
 }
 

@@ -208,7 +208,7 @@ const TeamMembers = (props) => {
             editable: true,
             onCell: record => ({
                 record,
-                editable: true,
+                editable: true ,
                 dataIndex: 'memberOf',
                 title: 'Members of Groups'
               }),
