@@ -67,7 +67,7 @@ export class Teams {
     }
 
     /**
-     * Adds a new team.
+     * Adds a new team group.
      * 
      */
     async addGroup(teamId, name) {
@@ -79,6 +79,28 @@ export class Teams {
                 const uid = this.firebase.auth().currentUser.uid;
 
                 const newGroup = await axios.post(url, { group_name: name }, { headers: { uid, token, authorization: token } });
+
+                resolve(newGroup);
+
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    /**
+     * Removes a new team group.
+     * 
+     */
+    async removeGroup(teamId, name) {
+        return new Promise(async (resolve, reject) => {
+            const url = `${this.baseUrl}/${teamId}/groups`;
+
+            try {
+                const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+                const uid = this.firebase.auth().currentUser.uid;
+
+                const newGroup = await axios.delete(url, {}, { headers: { uid, token, authorization: token } });
 
                 resolve(newGroup);
 

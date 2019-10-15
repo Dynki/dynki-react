@@ -247,7 +247,13 @@ const TeamMembers = (props) => {
 
     return (
         <EditableContext.Provider value={props.form}>
-            <Table components={components} columns={columns} dataSource={props.members} />
+            <Table 
+            footer={() => <div>
+            <Button key="1" type="ghost">
+                Add a team member
+            </Button>,
+            </div>}
+            components={components} columns={columns} dataSource={props.members} />
         </EditableContext.Provider>);
 }
 

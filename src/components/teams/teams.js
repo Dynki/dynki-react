@@ -21,6 +21,10 @@ class Teams extends React.Component {
         this.props.addTeamGroup(this.props.team.id);
     }
 
+    deleteGroup = (id) => {
+        console.log('Delete group:', id);
+    }
+
     render() {
         console.log(this.props, 'Team props');
 
@@ -175,7 +179,7 @@ class Teams extends React.Component {
 
                 <div className="teams__content">
                     <div className="teams__groups">
-                        <TeamGroups groups={team.groups}/>
+                        <TeamGroups groups={team.groups} addGroup={this.addGroup} handleDelete={this.deleteGroup}/>
                     </div>
                     <div className="teams__members">
                         <TeamMembers members={team.members} groups={team.groups}/>

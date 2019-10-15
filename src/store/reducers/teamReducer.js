@@ -17,7 +17,17 @@ const teamReducer = (state = initialState, action) => {
                 ...state,
                 currentTeam: action.payload
             }
-    
+        case 'ADDED_TEAM_GROUP':
+            const updatedGroups = [...state.currentTeam.groups, action.payload];
+
+            console.log(action.payload, 'payload');
+            console.log(updatedGroups, 'updatedGRoups');
+
+            return {
+                ...state,
+                currentTeam: {...state.currentTeam, groups: updatedGroups}
+            }
+        
         default:
             return state;
     }

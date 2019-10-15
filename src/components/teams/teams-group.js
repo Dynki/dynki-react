@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Form, Input } from 'antd';
+import { Table, Form, Input, Button, Popconfirm, Icon } from 'antd';
 
 const EditableContext = React.createContext();
 
@@ -97,25 +97,57 @@ const components = {
   },
 };
 
-const columns = [
-  {
-    title: 'Team Groups',
-    dataIndex: 'name',
-    key: 'name',
-    render: text => <a>{text}</a>,
-    editable: true,
-    onCell: record => ({
-        record,
-        editable: record.name !== 'Administrators',
-        dataIndex: 'name',
-        title: 'name'
-      }),
 
-  },
-];
+class TeamGroups extends React.Component { 
 
-const TeamGroups = (props) => {
-    return (<Table components={components} columns={columns} dataSource={props.groups}  />);
+    constructor(props) {
+      super(props);
+
+      this.columns = [
+        {
+          title: 'Team Groups',
+          dataIndex: 'name',
+          key: 'id',
+          render: text => <a>{text}</a>,
+          editable: true,
+          onCell: record => ({
+              record,
+              editable: ['Administrators', 'Users'].indexOf(record.name) < 0,
+              dataIndex: 'name',
+              title: 'name'
+            }),
+      
+        },
+        {
+          title: 'Action',
+          dataIndex: 'id',
+          key: 'id',
+          width: 24,
+          align: 'center',
+          render: (text, record) =>
+            ['Administrators', 'Users'].indexOf(record.name) < 0 ? (
+              <Popconfirm title="Delete really?" onConfirm={() => this.handleDelete(record.id)}>
+                  <Icon type="delete" style={{'color': 'red'}}/>
+              </Popconfirm>
+            ) : null,
+        },
+      ];
+    }
+
+    handleDelete = (id) => {
+      console.log('record key', id);
+      this.props.handleDelete(id);
+    }
+
+    render() {
+      return (<Table
+        footer={() => <div><Button onClick={this.props.addGroup} key="3" type="ghost">Add a group</Button>,</div>}
+        components={components} 
+        columns={this.columns} 
+        dataSource={this.props.groups}
+        handleDelete={this.props.handleDelete}
+      />);
+    }
 }
 
 export default TeamGroups;
