@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { PageHeader, Menu, Dropdown, Icon, Button, Tag, Typography, Row, Skeleton } from 'antd';
 import TeamGroups from './teams-group';
 import TeamMembers from './teams-members';
-import { getTeam, addTeamGroup, deleteTeamGroup } from '../../store/actions/teamActions';
+import { getTeam, addTeamGroup, deleteTeamGroup, updateTeamGroup } from '../../store/actions/teamActions';
 
 const { Paragraph } = Typography;
 
@@ -21,8 +21,8 @@ class Teams extends React.Component {
         this.props.addTeamGroup(this.props.team.id);
     }
 
-    deleteGroup = (id) => {
-        console.log('Delete group:', id);
+    saveGroupUpdate = (record) => {
+        this.props.updateTeamGroup(record.id, record);
     }
 
     render() {
@@ -179,10 +179,18 @@ class Teams extends React.Component {
 
                 <div className="teams__content">
                     <div className="teams__groups">
-                        <TeamGroups groups={team.groups} addGroup={this.addGroup} handleDelete={this.props.deleteTeamGroup}/>
+                        <TeamGroups 
+                            groups={team.groups} 
+                            addGroup={this.addGroup} 
+                            handleDelete={this.props.deleteTeamGroup} 
+                            handleSave={this.saveGroupUpdate}
+                        />
                     </div>
                     <div className="teams__members">
-                        <TeamMembers members={team.members} groups={team.groups}/>
+                        <TeamMembers 
+                            members={team.members} 
+                            groups={team.groups}
+                        />
                     </div>
                 </div>
         </div> : null;
@@ -200,7 +208,8 @@ export const mapDispatchToProps = (dispatch) => {
     return{
       getTeam: (id) => dispatch(getTeam(id)),
       addTeamGroup: (id) => dispatch(addTeamGroup(id)),
-      deleteTeamGroup: (id) => dispatch(deleteTeamGroup(id))
+      deleteTeamGroup: (id) => dispatch(deleteTeamGroup(id)),
+      updateTeamGroup: (id,  updatedGroup) => dispatch(updateTeamGroup(id, updatedGroup))
     }
 }
 

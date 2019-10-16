@@ -248,8 +248,9 @@ const TeamMembers = (props) => {
     return (
         <EditableContext.Provider value={props.form}>
             <Table 
+            rowKey={record => record.id}
             footer={() => <div>
-            <Button key="1" type="ghost">
+            <Button key="1fdfdfd" type="ghost">
                 Add a team member
             </Button>,
             </div>}

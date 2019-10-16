@@ -112,6 +112,28 @@ export class Teams {
 
 
     /**
+     * Update a team group.
+     * 
+     */
+    async updateGroup(teamId, groupId, updatedGroup) {
+        return new Promise(async (resolve, reject) => {
+            const url = `${this.baseUrl}/${teamId}/groups/${groupId}`;
+
+            try {
+                const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+                const uid = this.firebase.auth().currentUser.uid;
+
+                const removedGroupRes = await axios.put(url, { group_name: updatedGroup.name }, { headers: { uid, token, authorization: token } });
+
+                resolve(removedGroupRes);
+
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    /**
      * Adds a new team.
      * 
      */

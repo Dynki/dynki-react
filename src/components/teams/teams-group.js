@@ -107,14 +107,15 @@ class TeamGroups extends React.Component {
         {
           title: 'Team Groups',
           dataIndex: 'name',
-          key: 'id',
+          key: 'name',
           render: text => <a>{text}</a>,
           editable: true,
           onCell: record => ({
               record,
               editable: ['Administrators', 'Users'].indexOf(record.name) < 0,
               dataIndex: 'name',
-              title: 'name'
+              title: 'name',
+              handleSave: this.handleSave.bind(this),
             }),
       
         },
@@ -138,14 +139,22 @@ class TeamGroups extends React.Component {
       this.props.handleDelete(id);
     }
 
+    handleSave = row => {
+      this.props.handleSave(row);
+    };
+
     render() {
-      return (<Table
-        footer={() => <div><Button onClick={this.props.addGroup} key="3" type="ghost">Add a group</Button>,</div>}
+      console.log(this.props.groups, 'props.groups');
+
+      return (this.props.groups ? <Table
+        footer={() => <div><Button onClick={this.props.addGroup} key="3qdsdsds" type="ghost">Add a group</Button>,</div>}
         components={components} 
         columns={this.columns} 
         dataSource={this.props.groups}
         handleDelete={this.props.handleDelete}
-      />);
+        handleSave={this.props.handleSave}
+        rowKey={record => record.id}
+        />: null);
     }
 }
 

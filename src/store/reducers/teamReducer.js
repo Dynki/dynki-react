@@ -38,6 +38,19 @@ const teamReducer = (state = initialState, action) => {
                     ...state,
                     currentTeam: {...state.currentTeam, groups: groups}
                 }
+
+        case 'UPDATED_TEAM_GROUP':
+                const groupsUpdated = state.currentTeam.groups.map(g => {
+                    if (g.id === action.payload.id) {
+                        g.name = action.payload.name
+                    }
+                    return g;
+                });
+    
+                return {
+                    ...state,
+                    currentTeam: {...state.currentTeam, groups: groupsUpdated}
+                }
         
         default:
             return state;

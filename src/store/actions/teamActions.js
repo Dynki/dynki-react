@@ -75,7 +75,7 @@ export const addTeamGroup = (id) => {
 }
 
 
-// Get an individual team by id.
+// Delete an individual team by id.
 export const deleteTeamGroup = (id) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
@@ -86,6 +86,21 @@ export const deleteTeamGroup = (id) => {
         if (deletedGroupResponse.status === 200) {
             dispatch({ type: 'REMOVED_TEAM_GROUP', payload: id });
         }
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+    }
+}
+
+// Update an individual team by id.
+export const updateTeamGroup = (id, updatedGroup) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        const teamsHelper = new Teams(getFirebase(), getState().domain.domainId)
+        dispatch({ type: 'UPDATED_TEAM_GROUP', payload: { id, name: updatedGroup.name } });
+
+        console.log(updatedGroup, 'updateGroup in action');
+        const updateGroupResponse = await teamsHelper.updateGroup(getState().teams.currentTeam.id, id, updatedGroup);
+
         dispatch({ type: 'SET_PROGRESS', payload: false });
     }
 }
