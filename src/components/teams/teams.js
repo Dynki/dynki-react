@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { PageHeader, Menu, Dropdown, Icon, Button, Tag, Typography, Row, Skeleton } from 'antd';
 import TeamGroups from './teams-group';
 import TeamMembers from './teams-members';
-import { getTeam, addTeamGroup } from '../../store/actions/teamActions';
+import { getTeam, addTeamGroup, deleteTeamGroup } from '../../store/actions/teamActions';
 
 const { Paragraph } = Typography;
 
@@ -179,7 +179,7 @@ class Teams extends React.Component {
 
                 <div className="teams__content">
                     <div className="teams__groups">
-                        <TeamGroups groups={team.groups} addGroup={this.addGroup} handleDelete={this.deleteGroup}/>
+                        <TeamGroups groups={team.groups} addGroup={this.addGroup} handleDelete={this.props.deleteTeamGroup}/>
                     </div>
                     <div className="teams__members">
                         <TeamMembers members={team.members} groups={team.groups}/>
@@ -199,7 +199,8 @@ export const mapStateToProps = (state) => {
 export const mapDispatchToProps = (dispatch) => {
     return{
       getTeam: (id) => dispatch(getTeam(id)),
-      addTeamGroup: (id) => dispatch(addTeamGroup(id))
+      addTeamGroup: (id) => dispatch(addTeamGroup(id)),
+      deleteTeamGroup: (id) => dispatch(deleteTeamGroup(id))
     }
 }
 

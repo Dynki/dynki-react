@@ -89,20 +89,20 @@ export class Teams {
     }
 
     /**
-     * Removes a new team group.
+     * Removes a team group.
      * 
      */
-    async removeGroup(teamId, name) {
+    async removeGroup(teamId, groupId) {
         return new Promise(async (resolve, reject) => {
-            const url = `${this.baseUrl}/${teamId}/groups`;
+            const url = `${this.baseUrl}/${teamId}/groups/${groupId}`;
 
             try {
                 const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
                 const uid = this.firebase.auth().currentUser.uid;
 
-                const newGroup = await axios.delete(url, {}, { headers: { uid, token, authorization: token } });
+                const removedGroupRes = await axios.delete(url, { headers: { uid, token, authorization: token } });
 
-                resolve(newGroup);
+                resolve(removedGroupRes);
 
             } catch (error) {
                 reject(error);
@@ -171,6 +171,4 @@ export class Teams {
             resolve();
         });
     }
-
-    
 }

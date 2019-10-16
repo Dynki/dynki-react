@@ -135,7 +135,6 @@ class TeamGroups extends React.Component {
     }
 
     handleDelete = (id) => {
-      console.log('record key', id);
       this.props.handleDelete(id);
     }
 

@@ -81,9 +81,11 @@ export const deleteTeamGroup = (id) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
 
         const teamsHelper = new Teams(getFirebase(), getState().domain.domainId)
-        const deletedGroupResponse = await teamsHelper.deleteGroup(id);
+        const deletedGroupResponse = await teamsHelper.removeGroup(getState().teams.currentTeam.id ,id);
 
-        dispatch({ type: 'REMOVED_TEAM_GROUP', payload: deletedGroupResponse });
+        if (deletedGroupResponse.status === 200) {
+            dispatch({ type: 'REMOVED_TEAM_GROUP', payload: id });
+        }
         dispatch({ type: 'SET_PROGRESS', payload: false });
     }
 }
