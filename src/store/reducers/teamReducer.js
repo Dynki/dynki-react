@@ -51,7 +51,20 @@ const teamReducer = (state = initialState, action) => {
                     ...state,
                     currentTeam: {...state.currentTeam, groups: groupsUpdated}
                 }
-        
+        case 'UPDATED_TEAM_MEMBER':
+            const membersUpdated = state.currentTeam.members.map(m => {
+                if (m.uid === action.payload.uid) {
+                    m.memberOf = action.payload.memberOf;
+                    m.status = action.payload.status;
+                }
+                return m;
+            });
+
+            return {
+                ...state,
+                currentTeam: {...state.currentTeam, members: membersUpdated}
+            }
+            
         default:
             return state;
     }

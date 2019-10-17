@@ -5,9 +5,6 @@ import Highlighter from 'react-highlight-words';
 const { Option } = Select;
 const EditableContext = React.createContext();
 
-const selectChildren = [];
-selectChildren.push(<Option key={'Administrators'}>{'Administrators'}</Option>);
-selectChildren.push(<Option key={'Users'}>{'Users'}</Option>);
 
 const EditableRow = ({ form, index, ...props }) => (
     <EditableContext.Provider value={form}>
@@ -48,8 +45,16 @@ class EditableCell extends React.Component {
   
     renderCell = form => {
         this.form = form;
-        const { children, dataIndex, record, title } = this.props;
+        const { values, children, dataIndex, record, title } = this.props;
         const { editing } = this.state;
+
+        const selectChildren = [];
+
+        values.map(v => {
+          selectChildren.push(<Option key={v}>{v}</Option>);
+        })
+
+        console.log('Select Cell Props', this.props);
         return editing ? (
           <Form.Item style={{ margin: 0 }}>
             {form.getFieldDecorator(dataIndex, {
@@ -168,6 +173,10 @@ const TeamMembers = (props) => {
         setSearchText('');
     };
 
+    const handleSave = row => {
+      props.handleSave(row);
+    };
+
 
     const columns = [
         {
@@ -193,16 +202,7 @@ const TeamMembers = (props) => {
                     })}
                 </span>
             ),
-            filters: [
-                {
-                    text: 'Administrators',
-                    value: 'Administrators',
-                },
-                {
-                    text: 'Users',
-                    value: 'Users',
-                },
-            ],
+            filters: props.groups.map(g => ({ text: g.name, value: g.name })),
             filterMultiple: true,
             onFilter: (value, record) => record.tags.includes(value),
             editable: true,
@@ -210,7 +210,9 @@ const TeamMembers = (props) => {
                 record,
                 editable: true ,
                 dataIndex: 'memberOf',
-                title: 'Members of Groups'
+                title: 'Members of Groups',
+                values: props.groups.map(g => g.name),
+                handleSave: handleSave.bind(this)
               }),
         },
         {
@@ -254,7 +256,10 @@ const TeamMembers = (props) => {
                 Add a team member
             </Button>,
             </div>}
-            components={components} columns={columns} dataSource={props.members} />
+            rowClassName={() => 'editable-row'}
+            components={components} columns={columns} dataSource={props.members} 
+            handleSave={props.handleSave}
+        />
         </EditableContext.Provider>);
 }
 

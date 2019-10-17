@@ -134,6 +134,30 @@ export class Teams {
     }
 
     /**
+     * Update a team member.
+     * 
+     */
+    async updateMember(teamId, memberId, updatedMember) {
+        return new Promise(async (resolve, reject) => {
+            const url = `${this.baseUrl}/${teamId}/members/${memberId}`;
+
+            try {
+                const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
+                const uid = this.firebase.auth().currentUser.uid;
+
+                const removedMemberRes = await axios.put(url, { ...updatedMember }, { headers: { uid, token, authorization: token } });
+
+                resolve(removedMemberRes);
+
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+
+
+    /**
      * Adds a new team.
      * 
      */

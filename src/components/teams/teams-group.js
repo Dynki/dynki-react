@@ -154,6 +154,7 @@ class TeamGroups extends React.Component {
         handleDelete={this.props.handleDelete}
         handleSave={this.props.handleSave}
         rowKey={record => record.id}
+        rowClassName={() => 'editable-row'}
         />: null);
     }
 }

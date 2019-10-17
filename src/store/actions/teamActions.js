@@ -104,3 +104,18 @@ export const updateTeamGroup = (id, updatedGroup) => {
         dispatch({ type: 'SET_PROGRESS', payload: false });
     }
 }
+
+// Update an individual team by id.
+export const updateTeamMember = (id, updatedMember) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        const teamsHelper = new Teams(getFirebase(), getState().domain.domainId)
+        dispatch({ type: 'UPDATED_TEAM_MEMBER', payload: updatedMember });
+
+        console.log(updatedMember, 'updatedMember in action');
+        const updateGroupResponse = await teamsHelper.updateMember(getState().teams.currentTeam.id, id, updatedMember);
+
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+    }
+}

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { PageHeader, Menu, Dropdown, Icon, Button, Tag, Typography, Row, Skeleton } from 'antd';
 import TeamGroups from './teams-group';
 import TeamMembers from './teams-members';
-import { getTeam, addTeamGroup, deleteTeamGroup, updateTeamGroup } from '../../store/actions/teamActions';
+import { getTeam, addTeamGroup, deleteTeamGroup, updateTeamGroup, updateTeamMember } from '../../store/actions/teamActions';
 
 const { Paragraph } = Typography;
 
@@ -23,6 +23,10 @@ class Teams extends React.Component {
 
     saveGroupUpdate = (record) => {
         this.props.updateTeamGroup(record.id, record);
+    }
+
+    saveMemberUpdate = (record) => {
+        this.props.updateTeamMember(record.uid, record);
     }
 
     render() {
@@ -190,6 +194,7 @@ class Teams extends React.Component {
                         <TeamMembers 
                             members={team.members} 
                             groups={team.groups}
+                            handleSave={this.saveMemberUpdate}
                         />
                     </div>
                 </div>
@@ -209,7 +214,8 @@ export const mapDispatchToProps = (dispatch) => {
       getTeam: (id) => dispatch(getTeam(id)),
       addTeamGroup: (id) => dispatch(addTeamGroup(id)),
       deleteTeamGroup: (id) => dispatch(deleteTeamGroup(id)),
-      updateTeamGroup: (id,  updatedGroup) => dispatch(updateTeamGroup(id, updatedGroup))
+      updateTeamGroup: (id,  updatedGroup) => dispatch(updateTeamGroup(id, updatedGroup)),
+      updateTeamMember: (id,  updatedMember) => dispatch(updateTeamMember(id, updatedMember)),
     }
 }
 
