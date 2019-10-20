@@ -4,12 +4,21 @@ import { connect } from 'react-redux';
 import { PageHeader, Menu, Dropdown, Icon, Button, Tag, Typography, Row, Skeleton } from 'antd';
 import TeamGroups from './teams-group';
 import TeamMembers from './teams-members';
+import TeamInvite from './teams-invite';
 import { getTeam, addTeamGroup, deleteTeamGroup, updateTeamGroup, updateTeamMember } from '../../store/actions/teamActions';
 
 const { Paragraph } = Typography;
 
 // Container for teams components.
 class Teams extends React.Component {
+
+    state = {
+        drawerVisible: false
+    }
+
+    setDrawerVisibility = (value) => {
+        this.setState({ drawerVisible: value });
+    }
 
     componentDidMount = () => {
         if (!this.props.team) {
@@ -78,21 +87,19 @@ class Teams extends React.Component {
             <div className="content">
                 <Paragraph>
                     Below is all the functionality you require to be able to manage your team, go ahead and 
-                    add some users to get started.
+                    invite some users to get started.
               </Paragraph>
                 <Paragraph>
-                    Why not start by organising your team into groups. For example you could add groups of admin, users
-                    to get going. You can always add more groups and reorganise users between groups at a later point.
+                    Why not start by organising your team into groups. We have added groups of admin, users
+                    to get you going. You can always add more groups and reorganise users between groups at a later point.
               </Paragraph>
                 <Row className="contentLink" type="flex">
-                    <IconLink
-                        src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg"
-                        text="Invite a team member"
-                    />
-                    <IconLink
-                        src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg"
-                        text=" Disable Team"
-                    />
+                    <Button type="link" size={"small"} onClick={() => this.setDrawerVisibility(true)}>
+                        <IconLink
+                            src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg"
+                            text="Invite a team member"
+                        />
+                    </Button>
                     <IconLink
                         src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg"
                         text="Team Info"
@@ -154,51 +161,55 @@ class Teams extends React.Component {
         const { team } = this.props;
 
         return team ? 
-            <div className="teams">
-                <PageHeader
-                    title={team.display_name}
-                    subTitle="Like spokes in a wheel"
-                    tags={<Tag color="blue">{team.members.length} Team member{team.members.length === 1 ? '' : 's'}</Tag>}
-                    extra={[
-                        <Button onClick={this.addGroup} key="3">Add a group</Button>,
-                        <Button key="1" type="primary">
-                            Add a team member
-                        </Button>,
-                        <DropdownMenu key="more" />,
-                    ]}
-                    avatar={{ src: 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4' }}
-                    breadcrumb={{ routes }}
-                >
-                    <Content
-                        extraContent={
-                            <img
-                                src="https://gw.alipayobjects.com/mdn/mpaas_user/afts/img/A*KsfVQbuLRlYAAAAAAAAAAABjAQAAAQ/original"
-                                alt="content"
-                            />
-                        }
+            <React.Fragment>
+                <TeamInvite members={team.members} setDrawerVisibility={this.setDrawerVisibility} visible={this.state.drawerVisible}/>
+                <div className="teams">
+                    <PageHeader
+                        title={team.display_name}
+                        subTitle="Like spokes in a wheel"
+                        tags={<Tag color="blue">{team.members.length} Team member{team.members.length === 1 ? '' : 's'}</Tag>}
+                        extra={[
+                            <Button onClick={this.addGroup} key="3">Add a group</Button>,
+                            <Button onClick={() => this.setDrawerVisibility(true)} key="1" type="primary">
+                                Invite a team member
+                            </Button>,
+                            <DropdownMenu key="more" />,
+                        ]}
+                        avatar={{ src: 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4' }}
+                        breadcrumb={{ routes }}
                     >
-                        {content}
-                    </Content>
-                </PageHeader>
+                        <Content
+                            extraContent={
+                                <img
+                                    src="https://gw.alipayobjects.com/mdn/mpaas_user/afts/img/A*KsfVQbuLRlYAAAAAAAAAAABjAQAAAQ/original"
+                                    alt="content"
+                                />
+                            }
+                        >
+                            {content}
+                        </Content>
+                    </PageHeader>
 
-                <div className="teams__content">
-                    <div className="teams__groups">
-                        <TeamGroups 
-                            groups={team.groups} 
-                            addGroup={this.addGroup} 
-                            handleDelete={this.props.deleteTeamGroup} 
-                            handleSave={this.saveGroupUpdate}
-                        />
+                    <div className="teams__content">
+                        <div className="teams__groups">
+                            <TeamGroups 
+                                groups={team.groups} 
+                                addGroup={this.addGroup} 
+                                handleDelete={this.props.deleteTeamGroup} 
+                                handleSave={this.saveGroupUpdate}
+                            />
+                        </div>
+                        <div className="teams__members">
+                            <TeamMembers 
+                                members={team.members} 
+                                groups={team.groups}
+                                handleSave={this.saveMemberUpdate}
+                                setDrawerVisibility={this.setDrawerVisibility}
+                            />
+                        </div>
                     </div>
-                    <div className="teams__members">
-                        <TeamMembers 
-                            members={team.members} 
-                            groups={team.groups}
-                            handleSave={this.saveMemberUpdate}
-                        />
-                    </div>
-                </div>
-        </div> : null;
+                </div>;
+            </React.Fragment> : null;
     };
 }
 

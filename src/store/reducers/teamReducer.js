@@ -30,13 +30,17 @@ const teamReducer = (state = initialState, action) => {
 
         case 'REMOVED_TEAM_GROUP':
                 const groups = state.currentTeam.groups.filter(g => g.id !== action.payload);
+                const members = state.currentTeam.members.map(m => {
+                    m.memberOf = m.memberOf.filter(grp => grp !== action.payload);
+                    return m;
+                });
     
                 console.log(action.payload, 'payload');
                 console.log(groups, 'updatedGRoups');
     
                 return {
                     ...state,
-                    currentTeam: {...state.currentTeam, groups: groups}
+                    currentTeam: {...state.currentTeam, groups: groups, members: members}
                 }
 
         case 'UPDATED_TEAM_GROUP':

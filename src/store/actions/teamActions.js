@@ -1,6 +1,6 @@
-import newGuid from '../utils/guid';
 import * as _ from 'lodash';
 import { Teams } from '../model/Teams';
+import notifiy from '../../components/notifications/Notification';
 
 
 // Create a new blank team with this user's domain.
@@ -113,8 +113,15 @@ export const updateTeamMember = (id, updatedMember) => {
         const teamsHelper = new Teams(getFirebase(), getState().domain.domainId)
         dispatch({ type: 'UPDATED_TEAM_MEMBER', payload: updatedMember });
 
-        console.log(updatedMember, 'updatedMember in action');
-        const updateGroupResponse = await teamsHelper.updateMember(getState().teams.currentTeam.id, id, updatedMember);
+        try {
+            console.log(updatedMember, 'updatedMember in action');
+            await teamsHelper.updateMember(getState().teams.currentTeam.id, id, updatedMember);
+        } catch (error) {
+            console.log(error, 'update member error');
+            notifiy({ type: 'error', message: 'Update Failure', description: error.data });
+            dispatch(getTeam(getState().domain.domainId));
+        }
+
 
         dispatch({ type: 'SET_PROGRESS', payload: false });
     }

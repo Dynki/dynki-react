@@ -150,7 +150,7 @@ export class Teams {
                 resolve(removedMemberRes);
 
             } catch (error) {
-                reject(error);
+                reject(error.response);
             }
         });
     }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Form, Input, Icon, Table, Tag, Select } from 'antd';
+import { Button, Form, Input, Icon, Select, Table, Tag } from 'antd';
 import Highlighter from 'react-highlight-words';
 
 const { Option } = Select;
@@ -51,7 +51,7 @@ class EditableCell extends React.Component {
         const selectChildren = [];
 
         values.map(v => {
-          selectChildren.push(<Option key={v}>{v}</Option>);
+          selectChildren.push(<Option key={v.id}>{v.name}</Option>);
         })
 
         console.log('Select Cell Props', this.props);
@@ -194,15 +194,17 @@ const TeamMembers = (props) => {
                 <span>
                     {groups.map(tag => {
                         let color = 'geekblue';
+                        const group = props.groups.find(g => g.id === tag);
+                        const name = group ? group.name : '';
                         return (
                             <Tag color={color} key={tag}>
-                                {tag.toUpperCase()}
+                                {name}
                             </Tag>
                         );
                     })}
                 </span>
             ),
-            filters: props.groups.map(g => ({ text: g.name, value: g.name })),
+            filters: props.groups.map(g => ({ text: g.name, value: g.id })),
             filterMultiple: true,
             onFilter: (value, record) => record.tags.includes(value),
             editable: true,
@@ -211,7 +213,7 @@ const TeamMembers = (props) => {
                 editable: true ,
                 dataIndex: 'memberOf',
                 title: 'Members of Groups',
-                values: props.groups.map(g => g.name),
+                values: props.groups,
                 handleSave: handleSave.bind(this)
               }),
         },
@@ -248,19 +250,21 @@ const TeamMembers = (props) => {
       };
 
     return (
+    <React.Fragment>
         <EditableContext.Provider value={props.form}>
             <Table 
             rowKey={record => record.id}
             footer={() => <div>
-            <Button key="1fdfdfd" type="ghost">
-                Add a team member
+            <Button key="1fdfdfd" type="ghost" onClick={() => props.setDrawerVisibility(true)}>
+                Invite a team member
             </Button>,
             </div>}
             rowClassName={() => 'editable-row'}
             components={components} columns={columns} dataSource={props.members} 
             handleSave={props.handleSave}
         />
-        </EditableContext.Provider>);
+        </EditableContext.Provider>;
+    </React.Fragment>)
 }
 
 export default Form.create()(TeamMembers);

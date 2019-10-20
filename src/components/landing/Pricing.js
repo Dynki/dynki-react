@@ -26,9 +26,10 @@ const Pricing = (props) => {
                         <div className="pricing__section">
                             <div className="pricing__section__title">Personal</div>
                             <div className="pricing__section__description">Our starter package (free forever)</div>
+                            <div className="pricing__section__blurb">Team management</div>
                             <div className="pricing__section__blurb">Unlimited Boards</div>
                             <div className="pricing__section__blurb">Basic Column Types</div>
-                            <div className="pricing__section__blurb">1 user</div>
+                            <div className="pricing__section__blurb">Up to 3 users</div>
                             <div className="pricing__section__cost">£Free</div>
                             <div className="pricing__section__cost-basis">GBP / User / Month</div>
                             <Link to="/auth/signup">
@@ -38,8 +39,7 @@ const Pricing = (props) => {
                         <div className="pricing__section pricing__section--main">
                             <div className="pricing__section__title">Business</div>
                             <div className="pricing__section__description">Enhanced package</div>
-                            <div className="pricing__section__blurb">Team management</div>
-                            <div className="pricing__section__blurb">Up to 3 Flow types</div>
+                            <div className="pricing__section__blurb">All the Personal package plus</div>
                             <div className="pricing__section__blurb">Advanced Column Types</div>
                             <div className="pricing__section__blurb">Up to 10 users</div>
                             <div className="pricing__section__cost">£TBA</div>
@@ -50,7 +50,7 @@ const Pricing = (props) => {
                             <div className="pricing__section__title">Enterprise</div>
                             <div className="pricing__section__description">Premium package</div>
                             <div className="pricing__section__blurb">All the Business package plus</div>
-                            <div className="pricing__section__blurb">Unlimited Flow Types</div>
+                            <div className="pricing__section__blurb">Flow Types</div>
                             <div className="pricing__section__blurb">Unlimited users</div>
                             <div className="pricing__section__cost">£TBA</div>
                             <div className="pricing__section__cost-basis">GBP / Month</div>
