@@ -41,13 +41,13 @@ const TeamsInvite = (props) => {
             tokenSeparators={[',']}>
             {children}
         </Select>
+        <Paragraph>
+            max 50 invites at a time
+        </Paragraph>
         <Divider />
-        <Button icon="mail" block id="btnInvite" type="primary" htmlType="submit">Send invites</Button>
+        <Button loading={props.progress} icon="mail" block id="btnInvite" type="primary" htmlType="submit">Send invites</Button>
         </Drawer>
     );
 }
 
 export default TeamsInvite;
-
-
-
