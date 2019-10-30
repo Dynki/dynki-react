@@ -5,7 +5,7 @@ import { PageHeader, Menu, Dropdown, Icon, Button, Tag, Typography, Row, Skeleto
 import TeamGroups from './teams-group';
 import TeamMembers from './teams-members';
 import TeamInvite from './teams-invite';
-import { getTeam, addTeamGroup, deleteTeamGroup, updateTeamGroup, updateTeamMember } from '../../store/actions/teamActions';
+import { getTeam, addTeamGroup, deleteTeamGroup, updateTeamGroup, updateTeamMember, inviteTeamMember } from '../../store/actions/teamActions';
 
 const { Paragraph } = Typography;
 
@@ -167,6 +167,7 @@ class Teams extends React.Component {
                     setDrawerVisibility={this.setDrawerVisibility}
                     visible={this.state.drawerVisible}
                     progress={progress}
+                    inviteMember={this.props.inviteMember}
                 />
                 <div className="teams">
                     <PageHeader
@@ -231,6 +232,7 @@ export const mapDispatchToProps = (dispatch) => {
       deleteTeamGroup: (id) => dispatch(deleteTeamGroup(id)),
       updateTeamGroup: (id,  updatedGroup) => dispatch(updateTeamGroup(id, updatedGroup)),
       updateTeamMember: (id,  updatedMember) => dispatch(updateTeamMember(id, updatedMember)),
+      inviteMember: (email) => dispatch(inviteTeamMember(email))
     }
 }
 

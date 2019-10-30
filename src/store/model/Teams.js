@@ -10,8 +10,10 @@ export class Teams {
 
         if (process.env.NODE_ENV !== 'production') {
             this.baseUrl = `https://us-central1-dynki-c5141.cloudfunctions.net/domains`;
+            this.inviteUrl = 'https://us-central1-dynki-c5141.cloudfunctions.net/invite';
         } else {
             this.baseUrl = `https://us-central1-dynki-prod.cloudfunctions.net/domains`;
+            this.inviteUrl = 'https://us-central1-dynki-prod.cloudfunctions.net/invite';
         }
     }
 
@@ -148,6 +150,39 @@ export class Teams {
                 const removedMemberRes = await axios.put(url, { ...updatedMember }, { headers: { uid, token, authorization: token } });
 
                 resolve(removedMemberRes);
+
+            } catch (error) {
+                reject(error.response);
+            }
+        });
+    }
+
+    /**
+     * Invite a team member.
+     * 
+     */
+    async inviteMember(email, domainId, domainName) {
+        return new Promise(async (resolve, reject) => {
+            const url = this.inviteUrl;
+
+            try {
+                const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
+                const uid = this.firebase.auth().currentUser.uid;
+
+                const payload = { 
+                    invitee: email,
+                    inviter: this.firebase.auth().currentUser.email,
+                    domain: domainId,
+                    domainName: domainName,
+                }
+
+                const inviteMemberRes = await axios.post(url, payload, { headers: { uid, token, authorization: token } });
+
+                if (inviteMemberRes.status !== 200) {
+                    reject(inviteMemberRes.statusText);
+                } else {
+                    resolve(inviteMemberRes.data);
+                }
 
             } catch (error) {
                 reject(error.response);
