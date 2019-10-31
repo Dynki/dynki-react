@@ -128,16 +128,16 @@ export const updateTeamMember = (id, updatedMember) => {
 }
 
 // Update an individual team by id.
-export const inviteTeamMember = (email) => {
+export const inviteTeamMember = (emails) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
 
         const teamsHelper = new Teams(getFirebase(), getState().domain.domainId)
 
         try {
-            await teamsHelper.inviteMember(email, getState().teams.currentTeam.id, getState().teams.currentTeam.display_name);
+            await teamsHelper.inviteMember(emails, getState().teams.currentTeam.id, getState().teams.currentTeam.display_name);
             dispatch({ type: 'INVITED_TEAM_MEMBER' });
-            notifiy({ type: 'error', message: 'Invite Success', description: 'Successfully invited team member' });
+            notifiy({ type: 'success', message: 'Invite Success', description: 'Successfully invited team member' });
         } catch (error) {
             console.log(error, 'update member error');
             notifiy({ type: 'error', message: 'Update Failure', description: error.data });

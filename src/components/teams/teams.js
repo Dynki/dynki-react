@@ -86,7 +86,7 @@ class Teams extends React.Component {
     
             <div className="content">
                 <Paragraph>
-                    Below is all the functionality you require to be able to manage your team, go ahead and 
+                    Below is all the functionality you require to be able to manage your team. Go ahead and 
                     invite some users to get started.
               </Paragraph>
                 <Paragraph>
@@ -232,7 +232,7 @@ export const mapDispatchToProps = (dispatch) => {
       deleteTeamGroup: (id) => dispatch(deleteTeamGroup(id)),
       updateTeamGroup: (id,  updatedGroup) => dispatch(updateTeamGroup(id, updatedGroup)),
       updateTeamMember: (id,  updatedMember) => dispatch(updateTeamMember(id, updatedMember)),
-      inviteMember: (email) => dispatch(inviteTeamMember(email))
+      inviteMember: (emails) => dispatch(inviteTeamMember(emails))
     }
 }
 

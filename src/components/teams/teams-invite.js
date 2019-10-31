@@ -14,7 +14,6 @@ class TeamsInviteForm extends React.Component {
     }
 
     handleChange = emailValues => {
-        console.log('Select values: ', emailValues);
         this.setState({ emailValues });
     }
 
@@ -22,8 +21,7 @@ class TeamsInviteForm extends React.Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
           if (!err) {
-            console.log('Received values of form: ', values);
-            this.props.inviteMember(values.emails[0]);
+            this.props.inviteMember(values.emails);
           }
         });
     };

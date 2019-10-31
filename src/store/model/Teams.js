@@ -161,7 +161,7 @@ export class Teams {
      * Invite a team member.
      * 
      */
-    async inviteMember(email, domainId, domainName) {
+    async inviteMember(emails, domainId, domainName) {
         return new Promise(async (resolve, reject) => {
             const url = this.inviteUrl;
 
@@ -170,7 +170,7 @@ export class Teams {
                 const uid = this.firebase.auth().currentUser.uid;
 
                 const payload = { 
-                    invitee: email,
+                    invitees: emails,
                     inviter: this.firebase.auth().currentUser.email,
                     domain: domainId,
                     domainName: domainName,
