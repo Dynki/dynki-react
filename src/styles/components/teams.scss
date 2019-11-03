@@ -10,11 +10,35 @@
     &__groups {
         width: 40%;
         margin: 10px;
+
+        .ant-table-thead > tr {
+            background: #696969;
+
+            & th {
+                color: #ffffff;
+            }
+        }
+
+        .ant-table-footer {
+            background: #FFF8E4;
+        }
     }
 
     &__members {
         width: 100%;
         margin: 10px;
+
+        .ant-table-thead > tr {
+            background: #696969;
+
+            & th {
+                color: #ffffff;
+            }
+        }
+
+        .ant-table-footer {
+            background: #FFF8E4;
+        }
     }
 
     &__skeleton {
@@ -34,3 +58,4 @@
         margin-top: 30px!important;
     }
 }
+

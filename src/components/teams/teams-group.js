@@ -147,7 +147,7 @@ class TeamGroups extends React.Component {
       console.log(this.props.groups, 'props.groups');
 
       return (this.props.groups ? <Table
-        footer={() => <div><Button onClick={this.props.addGroup} key="3qdsdsds" type="ghost">Add a group</Button>,</div>}
+        footer={() => <div><Button onClick={this.props.addGroup} key="3qdsdsds" type="default">Add a group</Button>,</div>}
         components={components} 
         columns={this.columns} 
         dataSource={this.props.groups}

@@ -253,9 +253,10 @@ const TeamMembers = (props) => {
     <React.Fragment>
         <EditableContext.Provider value={props.form}>
             <Table 
+            className="member-table"
             rowKey={record => record.id}
             footer={() => <div>
-            <Button key="1fdfdfd" type="ghost" onClick={() => props.setDrawerVisibility(true)}>
+            <Button key="1fdfdfd" type="default" onClick={() => props.setDrawerVisibility(true)}>
                 Invite a team member
             </Button>,
             </div>}
