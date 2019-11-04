@@ -7,18 +7,27 @@ import './App.scss';
 import { SecuredRoute, PostAuthShell } from './components';
 import MainErrorBoundary from './components/core/MainErrorBoundry';
 
+const AppContext = React.createContext({ invite: undefined });
+
 export class App extends Component {
 
   constructor(props) {
     super(props)
 
+
+    const params = new URLSearchParams(this.props.location.search);
+    const invite = params.get('invite');
+
+    console.log('invite', invite);
+
     this.state = {
-      domainLoaded: false
+      domainLoaded: false,
+      invite
     }
   }
 
   componentDidMount() {
-    this.onSetDomain()
+    this.onSetDomain();
   }
 
   onSetDomain() {
@@ -27,20 +36,24 @@ export class App extends Component {
   }
 
   render() {
+    console.log('state invite:', this.state.invite);
+
     const { auth, domain, domainChecked, location } = this.props;
       return (
-        <MainErrorBoundary>
-          <div className="App">
-            <SecuredRoute
-                path="/"
-                location={location}
-                component={PostAuthShell}
-                authenticated={auth}
-                domain={domain}
-                domainChecked={domainChecked}
-            />
-          </div>
-        </MainErrorBoundary> 
+        <AppContext.Provider value={this.state.invite}>
+          <MainErrorBoundary>
+            <div className="App">
+              <SecuredRoute
+                  path="/"
+                  location={location}
+                  component={PostAuthShell}
+                  authenticated={auth}
+                  domain={domain}
+                  domainChecked={domainChecked}
+              />
+            </div>
+          </MainErrorBoundary> 
+        </AppContext.Provider>
       );
   }
 }

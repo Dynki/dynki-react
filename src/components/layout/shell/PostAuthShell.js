@@ -16,6 +16,7 @@ class PostAuthShell extends React.Component {
 
     componentWillMount() {
         this.props.getTeams();
+        console.log('PostAuthShell', this.context);
     }
 
     onDispatchBoardAction(id) {
