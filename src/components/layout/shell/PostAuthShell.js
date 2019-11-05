@@ -12,11 +12,18 @@ import { updateBoard, updateColumnValueOrder } from '../../../store/actions/boar
 import Teams from '../../teams/teams';
 import TeamAccept from '../../teams/TeamAccept';
 
+import AppContext from '../../../context/appContext';
+
 class PostAuthShell extends React.Component {
+    static contextType = AppContext;
 
     componentWillMount() {
         this.props.getTeams();
         console.log('PostAuthShell', this.context);
+
+        if (this.context.invite) {
+            this.props.history.push(`/invite/${this.context.invite}`);
+        }
     }
 
     onDispatchBoardAction(id) {

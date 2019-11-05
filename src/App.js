@@ -6,8 +6,7 @@ import { setDomain } from './store/actions/authActions'
 import './App.scss';
 import { SecuredRoute, PostAuthShell } from './components';
 import MainErrorBoundary from './components/core/MainErrorBoundry';
-
-const AppContext = React.createContext({ invite: undefined });
+import AppContext from './context/appContext';
 
 export class App extends Component {
 
@@ -35,14 +34,21 @@ export class App extends Component {
     this.setState({ domainLoaded: true })
   }
 
+  resetInvite() {
+    this.setState({ invite: undefined });
+  }
+
   render() {
     console.log('state invite:', this.state.invite);
 
     const { auth, domain, domainChecked, location } = this.props;
       return (
-        <AppContext.Provider value={this.state.invite}>
           <MainErrorBoundary>
             <div className="App">
+              <AppContext.Provider value={{ 
+                invite: this.state.invite,
+                resetInvite: this.resetInvite
+              }}>
               <SecuredRoute
                   path="/"
                   location={location}
@@ -51,9 +57,9 @@ export class App extends Component {
                   domain={domain}
                   domainChecked={domainChecked}
               />
+                </AppContext.Provider>
             </div>
           </MainErrorBoundary> 
-        </AppContext.Provider>
       );
   }
 }
