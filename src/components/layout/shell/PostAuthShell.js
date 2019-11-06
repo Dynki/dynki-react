@@ -117,7 +117,7 @@ class PostAuthShell extends React.Component {
                         <Route path={'/board/:id'} component={Board}></Route>
                         <Route path={'/team/:id'} component={Teams}></Route>
                         <Route path={'/empty-boards'} component={EmptyBoards}></Route>
-                        <Route path={'/accept/:inviteId'} component={TeamAccept}></Route>
+                        <Route path={'/invite/:inviteId'} component={TeamAccept}></Route>
                     </Switch>
                 </main>
             </DragDropContext>
