@@ -16,12 +16,14 @@ export class App extends Component {
 
     const params = new URLSearchParams(this.props.location.search);
     const invite = params.get('invite');
+    const inviteName = params.get('invitename');
 
     console.log('invite', invite);
 
     this.state = {
       domainLoaded: false,
-      invite
+      invite,
+      inviteName
     }
   }
 
@@ -35,7 +37,7 @@ export class App extends Component {
   }
 
   resetInvite() {
-    this.setState({ invite: undefined });
+    this.setState({ invite: undefined, inviteName: undefined });
   }
 
   render() {
@@ -47,6 +49,7 @@ export class App extends Component {
             <div className="App">
               <AppContext.Provider value={{ 
                 invite: this.state.invite,
+                inviteName: this.state.inviteName,
                 resetInvite: this.resetInvite
               }}>
               <SecuredRoute

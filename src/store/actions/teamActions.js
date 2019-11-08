@@ -1,3 +1,4 @@
+import axios from 'axios';
 import * as _ from 'lodash';
 import { Teams } from '../model/Teams';
 import notifiy from '../../components/notifications/Notification';
@@ -148,3 +149,33 @@ export const inviteTeamMember = (emails) => {
         dispatch({ type: 'SET_PROGRESS', payload: false });
     }
 }
+
+export const acceptInvite = (inviteId) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        let url;
+        if (process.env.NODE_ENV !== 'production') {
+            url = `https://us-central1-dynki-c5141.cloudfunctions.net/invite/${inviteId}/accept`;
+        } else {
+            url = `https://us-central1-dynki-prod.cloudfunctions.net/invite/${inviteId}/accept`;
+        }
+        const firebase = getFirebase();
+
+        try {
+            const token = await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+            const uid = firebase.auth().currentUser.uid;
+
+            await axios.post(url, {}, { headers: { token, uid } })
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+            notifiy({ type: 'error', message: 'Success', description: 'Team accepted' });
+
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Accept Failure', description: error.data });
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+        }
+    }    
+}
+

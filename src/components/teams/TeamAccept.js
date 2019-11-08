@@ -1,19 +1,25 @@
 import React from 'react';
 import { Button, Icon, PageHeader, Result, Typography } from 'antd';
+import { connect } from 'react-redux';
 import styles from './TeamAccept.module.css';
+import { acceptInvite } from '../../store/actions/teamActions';
+
+import AppContext from '../../context/appContext';
 
 const { Text } = Typography;
 
-const TeamAccept = (props) => {
+class TeamAccept extends React.Component {
 
-    const routes = [
+    static contextType = AppContext;
+
+    routes = [
         {
           path: 'index',
           breadcrumbName: 'Team',
         },
         {
             path: 'first',
-            breadcrumbName: 'Dynki',
+            breadcrumbName: this.context.inviteName,
         },
           {
           path: 'second',
@@ -21,23 +27,47 @@ const TeamAccept = (props) => {
         }
     ];
 
-    return (
+    render() {
+        const routes = this.routes;
+
+        return (
         <React.Fragment>
             <PageHeader
                 breadcrumb={{ routes }}                
             >
-                <Text style={{color: '#3095DE'}}>Someone invited you to their team!</Text>
+                <Text style={{color: '#3095DE'}}>{`You have been cordially invited to join team ${this.context.inviteName}`}</Text>
             </PageHeader>
             <div className={styles.container}>
                     <Result
-                        icon={<Icon type="question-circle" theme="filled" style={{'color': '#FCB900'}}/>}
-                        title="You have been invited to join team 'Dynki'"
+                        icon={<Icon type="usergroup-add" style={{'color': '#FCB900'}}/>}
+                        title={`You have been invited to join team '${this.context.inviteName}'`}
                         subTitle="Click the button to join the team"
-                        extra={<Button type="primary" size="large" icon="check">Accept</Button>}
+                        extra={<Button
+                            type="primary"
+                            size="large"
+                            icon="check"
+                            loading={this.props.progress}
+                            onClick={() => this.props.acceptInvite(this.context.invite)}
+                        >
+                            Accept
+                        </Button>}
                     />
             </div>
         </React.Fragment>
-    );
+        );
+    }
 }
 
-export default TeamAccept;
+const mapStateToProps = (state) => {
+    return {
+        progress: state.base.progress,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        acceptInvite: (id) => dispatch(acceptInvite(id)),
+      }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TeamAccept);
