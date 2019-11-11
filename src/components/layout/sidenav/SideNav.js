@@ -3,10 +3,12 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router-dom";
 
-import { Breadcrumb, Button, Icon, Tooltip, Dropdown, Menu } from 'antd';
+import { Breadcrumb, Button, Icon, Skeleton, Dropdown, Menu } from 'antd';
 
 import DynMenu from '../menu/Menu';
 import { getBoards, getBoard, newBoard } from '../../../store/actions/boardActions'; 
+import { setDomain } from '../../../store/actions/authActions';
+import { getTeam } from '../../../store/actions/teamActions';
 
 class SideNav extends React.Component {
 
@@ -53,7 +55,14 @@ class SideNav extends React.Component {
     }
 
     handleMenuClick(e) {
-        this.props.history.push(`/team/${e.key}`);
+        this.props.setDomain(e.key).then(() => {
+            this.props.getTeam(e.key).then(() => {
+                this.props.getBoards();
+                this.props.history.push(`/team/${e.key}`);
+            });
+
+            // this.props.getTeam(this.props.match.params.id);
+        });
     }
 
     render() {
@@ -100,43 +109,16 @@ const mapStateToProps = (state) => {
       boards: state.boards.boards,
       teams: state.teams.teams,
       team: state.teams.currentTeam
-
-      // Declare the menu items in this application.
-    //   menuItems: () => {
-    //     const constructItems = (itemArr) => {
-    //         return itemArr.map(i => ({
-    //             id: i.id,
-    //             title: i.title,
-    //             target: `/board/${i.id}`,
-    //             action: getBoard(i.id),
-    //             isFolder: i.isFolder,
-    //             items: i.items ? constructItems(i.items) : null
-    //         }));
-    //     }
-   
-    //     let items = [];
-    //     if (state.boards.boards) {
-    //         items = constructItems(state.boards.boards);
-    //     }
-
-    //     const menuItems = [
-    //         { key: 1, title: 'Inbox', icon: 'mail', live: false },
-    //         { key: 2, title: 'Boards', icon: 'schedule', action: newBoard(), live:true,
-    //             items: items },
-    //         { key: 3, title: 'Projects', icon: 'rocket', live: false },
-    //         { key: 4, title: 'Tags', icon: 'tags', live: false }
-    //     ]
-
-    //     return menuItems;
-    //   }
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        getTeam: (id) => dispatch(getTeam(id)),
         getBoards: () => dispatch(getBoards()),
         getBoard: (id) => dispatch(getBoard(id)),
         newBoard: () => dispatch(newBoard()),
+        setDomain: (id) => dispatch(setDomain(id)),
     }
 }
 

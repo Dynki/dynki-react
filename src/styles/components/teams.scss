@@ -12,10 +12,10 @@
         margin: 10px;
 
         .ant-table-thead > tr {
-            background: #696969;
-
+            
             & th {
                 color: #ffffff;
+                background: #696969;
             }
         }
 
@@ -29,9 +29,9 @@
         margin: 10px;
 
         .ant-table-thead > tr {
-            background: #696969;
-
+            
             & th {
+                background: #696969;
                 color: #ffffff;
             }
         }
@@ -52,10 +52,15 @@
 }
 
 .ant-page-header {
+
     padding-bottom: 0px!important;
 
     .contentLink {
         margin-top: 30px!important;
+    }
+
+    .content {
+        padding-bottom: 2px;
     }
 }
 

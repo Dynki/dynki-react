@@ -13,7 +13,8 @@ export const signIn = (credentials) => {
       dispatch({ type: 'SET_CURRENT_USER', payload: firebase.auth().currentUser });
   
       const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
-  
+
+
       // Confirm the user is an Admin.
       if (idTokenResult.claims.domainId) {
   
@@ -77,9 +78,12 @@ export const signOut = () => {
   }
 }
 
-export const setDomain = () => {
+export const setDomain = (domainId) => {
   return async (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
+
+    console.log('SET Domain:', domainId);
+    dispatch({ type: 'SET_PROGRESS', payload: true });
 
     try {
       await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
@@ -88,12 +92,16 @@ export const setDomain = () => {
 
       firebase.auth().currentUser.getIdTokenResult()
         .then(async (idTokenResult) => {
+          console.log('claims', idTokenResult.claims);
+
+          const domainToSet = domainId ? domainId : idTokenResult.claims.domainId;
+
           // Confirm the user is an Admin.
-          if (idTokenResult.claims.domainId) {
+          if (domainToSet) {
 
             await firebase.firestore()
               .collection('domains')
-              .doc(idTokenResult.claims.domainId)
+              .doc(domainToSet)
               .onSnapshot({}, function (doc) {
                 const data = doc.data();
 
@@ -102,7 +110,7 @@ export const setDomain = () => {
                 }
               });
 
-            dispatch({ type: 'SET_DOMAIN', payload: idTokenResult.claims.domainId });
+            dispatch({ type: 'SET_DOMAIN', payload: domainToSet });
           } else {
             dispatch({ type: 'NO_DOMAIN' });
           }
@@ -116,6 +124,8 @@ export const setDomain = () => {
         dispatch({ type: 'SIGNOUT_SUCCESS' });
       })
 
+    } finally {
+      dispatch({ type: 'SET_PROGRESS', payload: false });
     }
   }
 }

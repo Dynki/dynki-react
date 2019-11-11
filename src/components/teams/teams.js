@@ -20,12 +20,6 @@ class Teams extends React.Component {
         this.setState({ drawerVisible: value });
     }
 
-    componentDidMount = () => {
-        if (!this.props.team) {
-            this.props.getTeam(this.props.match.params.id);
-        }
-    }
-
     addGroup = () => {
         this.props.addTeamGroup(this.props.team.id);
     }
@@ -39,7 +33,6 @@ class Teams extends React.Component {
     }
 
     render() {
-        console.log(this.props, 'Team props');
 
         if (!this.props.team) {
             return  (
@@ -213,7 +206,7 @@ class Teams extends React.Component {
                             />
                         </div>
                     </div>
-                </div>;
+                </div>
             </React.Fragment> : null;
     };
 }
@@ -221,18 +214,19 @@ class Teams extends React.Component {
 export const mapStateToProps = (state) => {
     return {
         team: state.teams.currentTeam,
+        domain: state.domain.domainId,
         progress: state.base.progress
     }
 }
 
 export const mapDispatchToProps = (dispatch) => {
     return{
-      getTeam: (id) => dispatch(getTeam(id)),
-      addTeamGroup: (id) => dispatch(addTeamGroup(id)),
-      deleteTeamGroup: (id) => dispatch(deleteTeamGroup(id)),
-      updateTeamGroup: (id,  updatedGroup) => dispatch(updateTeamGroup(id, updatedGroup)),
-      updateTeamMember: (id,  updatedMember) => dispatch(updateTeamMember(id, updatedMember)),
-      inviteMember: (emails) => dispatch(inviteTeamMember(emails))
+        getTeam: (id) => dispatch(getTeam(id)),
+        addTeamGroup: (id) => dispatch(addTeamGroup(id)),
+        deleteTeamGroup: (id) => dispatch(deleteTeamGroup(id)),
+        updateTeamGroup: (id,  updatedGroup) => dispatch(updateTeamGroup(id, updatedGroup)),
+        updateTeamMember: (id,  updatedMember) => dispatch(updateTeamMember(id, updatedMember)),
+        inviteMember: (emails) => dispatch(inviteTeamMember(emails))
     }
 }
 

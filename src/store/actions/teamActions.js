@@ -46,6 +46,7 @@ export const getTeams = () => {
 export const getTeam = (id) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'ATTEMPT_LOADING_TEAM', payload: id })
+        dispatch({ type: 'SET_PROGRESS', payload: true });
 
         const currentTeam = getState().teams.currenTeam;
 
@@ -169,10 +170,10 @@ export const acceptInvite = (inviteId) => {
 
             await axios.post(url, {}, { headers: { token, uid } })
             dispatch({ type: 'SET_PROGRESS', payload: true });
-            notifiy({ type: 'error', message: 'Success', description: 'Team accepted' });
+            notifiy({ type: 'success', message: 'Way to go!', description: 'You are now part of this team' });
 
         } catch (error) {
-            notifiy({ type: 'error', message: 'Accept Failure', description: error.data });
+            notifiy({ type: 'error', message: 'Acceptance Failure', description: error.data });
         } finally {
             dispatch({ type: 'SET_PROGRESS', payload: true });
         }

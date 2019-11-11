@@ -54,7 +54,6 @@ class EditableCell extends React.Component {
           selectChildren.push(<Option key={v.id}>{v.name}</Option>);
         })
 
-        console.log('Select Cell Props', this.props);
         return editing ? (
           <Form.Item style={{ margin: 0 }}>
             {form.getFieldDecorator(dataIndex, {
@@ -82,7 +81,7 @@ class EditableCell extends React.Component {
           >
             {children}
           </div>
-        );
+        )
     };
   
     render() {
@@ -258,7 +257,7 @@ const TeamMembers = (props) => {
             footer={() => <div>
             <Button key="1fdfdfd" type="default" onClick={() => props.setDrawerVisibility(true)}>
                 Invite a team member
-            </Button>,
+            </Button>
             </div>}
             rowClassName={() => 'editable-row'}
             components={components} columns={columns} dataSource={props.members} 

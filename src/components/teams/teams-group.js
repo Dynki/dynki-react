@@ -123,7 +123,7 @@ class TeamGroups extends React.Component {
           title: 'Action',
           dataIndex: 'id',
           key: 'id',
-          width: 24,
+          width: 84,
           align: 'center',
           render: (text, record) =>
             ['Administrators', 'Users'].indexOf(record.name) < 0 ? (
@@ -144,10 +144,9 @@ class TeamGroups extends React.Component {
     };
 
     render() {
-      console.log(this.props.groups, 'props.groups');
 
       return (this.props.groups ? <Table
-        footer={() => <div><Button onClick={this.props.addGroup} key="3qdsdsds" type="default">Add a group</Button>,</div>}
+        footer={() => <div><Button onClick={this.props.addGroup} key="3qdsdsds" type="default">Add a group</Button></div>}
         components={components} 
         columns={this.columns} 
         dataSource={this.props.groups}
@@ -155,7 +154,7 @@ class TeamGroups extends React.Component {
         handleSave={this.props.handleSave}
         rowKey={record => record.id}
         rowClassName={() => 'editable-row'}
-        />: null);
+        />: null)
     }
 }
 

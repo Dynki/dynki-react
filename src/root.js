@@ -7,7 +7,7 @@ import App from './App';
 
 import { createBrowserHistory } from "history";
 
-const history = createBrowserHistory()
+export const history = createBrowserHistory()
 
 const Root = ({ store }) => (
     <Provider store={store}>
