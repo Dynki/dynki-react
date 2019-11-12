@@ -263,7 +263,7 @@ const TeamMembers = (props) => {
             components={components} columns={columns} dataSource={props.members} 
             handleSave={props.handleSave}
         />
-        </EditableContext.Provider>;
+        </EditableContext.Provider>
     </React.Fragment>)
 }
 

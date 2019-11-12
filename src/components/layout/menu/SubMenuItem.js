@@ -43,7 +43,9 @@ class DynSubMenu extends React.Component {
     }
 
     render() {
-        const {itemClicked, btnClicked, addFolder, title, icon , items, act, selectedKeys, currentBoard, ...other} = this.props;
+        const {itemClicked, btnClicked, addFolder, title, icon , items, act, selectedKeys, currentBoard, loadingBoards, ...other} = this.props;
+
+        const expandedKeys = loadingBoards ? [] : ['000001'];
 
         return (
             <React.Fragment>
@@ -53,6 +55,7 @@ class DynSubMenu extends React.Component {
                         onSelect={this.onSelect} 
                         switcherIcon={<Icon type="down" />} 
                         draggable 
+                        expandedKeys={expandedKeys}
                         defaultExpandedKeys={['000001']} 
                         onDrop={this.onDrop}
                         className="firstitem"

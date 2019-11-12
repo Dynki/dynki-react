@@ -29,10 +29,19 @@
 
     span:nth-child(2) {
         width: 100%;
+
+    }
+
+    .ant-dropdown-button {
+        width: calc(100% - 35px);
     }
 
     .ant-breadcrumb-link {
         width: 100%!important;
+
+        .ant-btn:nth-child(1) {
+            width: 100%!important;
+        }
     }
 }
 
@@ -56,6 +65,7 @@
         font-size: 18px!important;
     }
 
+
     &__brand {
         background-color: #e1e4e5;
         min-height: 57px;
@@ -68,7 +78,12 @@
         align-items: center;    
 
         .ant-breadcrumb-link {
-            width: 100%;
+            // width: 100%;
+
+            // i:nth-child(1) {
+            //     font-size: 22px!important;
+            // }
+        
         }
     }
     

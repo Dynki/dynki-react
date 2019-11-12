@@ -207,7 +207,7 @@ class Teams extends React.Component {
                         </div>
                     </div>
                 </div>
-            </React.Fragment> : null;
+            </React.Fragment> : null
     };
 }
 

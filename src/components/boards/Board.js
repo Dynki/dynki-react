@@ -56,9 +56,6 @@ export class Board extends React.Component {
     }    
 
     render() {
-
-        console.log('Board::Render');
-
         return (
             <Detector
                 onChange={this.onConnectionStatusChanged}

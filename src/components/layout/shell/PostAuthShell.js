@@ -110,7 +110,7 @@ class PostAuthShell extends React.Component {
                             <Redirect exact from='/' to={`/board/${boards[0].id}`}/>
                         </React.Fragment>
                     }
-                    {!firstLoad && location.pathname === '/empty-boards' && !noBoards && boards && boards.length > 0 &&
+                    {!this.context.invite && !firstLoad && location.pathname === '/empty-boards' && !noBoards && boards && boards.length > 0 &&
                         <Redirect exact from='/empty-boards' to={`/board/${boards[0].id}`}/>
                     }
                     <Switch>

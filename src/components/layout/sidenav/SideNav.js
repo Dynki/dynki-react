@@ -3,7 +3,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router-dom";
 
-import { Breadcrumb, Button, Icon, Skeleton, Dropdown, Menu } from 'antd';
+import { Breadcrumb, Icon, Dropdown, Menu, Tooltip } from 'antd';
 
 import DynMenu from '../menu/Menu';
 import { getBoards, getBoard, newBoard } from '../../../store/actions/boardActions'; 
@@ -11,6 +11,13 @@ import { setDomain } from '../../../store/actions/authActions';
 import { getTeam } from '../../../store/actions/teamActions';
 
 class SideNav extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            loadingTeam: false
+        };
+    }
 
     initialiseMenuItems() {
         const constructItems = (itemArr) => {
@@ -31,7 +38,7 @@ class SideNav extends React.Component {
 
         const menuItems = [
             { key: 1, title: 'Inbox', icon: 'mail', live: false },
-            { key: 2, title: 'Boards', icon: 'schedule', action: newBoard(), live:true,
+            { key: 2, title: 'Boards', icon: 'schedule', action: newBoard(), live:true, 
                 items: items },
             { key: 3, title: 'Projects', icon: 'rocket', live: false },
             { key: 4, title: 'Tags', icon: 'tags', live: false }
@@ -40,7 +47,8 @@ class SideNav extends React.Component {
         return menuItems;
     }
 
-    loadBoard(id) {
+    loadBoard = (id) => {
+        console.log('LOAD BOARD::', id);
         this.props.history.push('/board/' + id);
         this.props.getBoard(id);
     }
@@ -54,15 +62,23 @@ class SideNav extends React.Component {
         this.setState({ menuItems: this.constructItems });
     }
 
-    handleMenuClick(e) {
-        this.props.setDomain(e.key).then(() => {
-            this.props.getTeam(e.key).then(() => {
-                this.props.getBoards();
-                this.props.history.push(`/team/${e.key}`);
-            });
+    handleMenuClick = async (e) => {
+        const { setDomain, getTeam, getBoards } = this.props;
 
-            // this.props.getTeam(this.props.match.params.id);
-        });
+        this.setState({ loadingTeam: true });
+
+        await setDomain(e.key);
+        await getTeam(e.key);
+        await getBoards();
+        this.setState({ loadingTeam: false });
+
+        if (this.props.boards) {
+            this.loadBoard(this.props.boards[0].id);
+        }
+    }
+
+    handleButtonClick = () => {
+        this.props.history.push(`/team/${this.props.team.id}`);
     }
 
     render() {
@@ -70,29 +86,36 @@ class SideNav extends React.Component {
         const menu = (
             <Menu onClick={this.handleMenuClick.bind(this)}>
                 {this.props.teams && this.props.teams.length > 0 ? this.props.teams.map((t, idx) => {
-                    return <Menu.Item key={t.id}>{t.display_name}</Menu.Item>
+                    return <Menu.Item key={t.id}><Icon type="team" /> {t.display_name}</Menu.Item>
                 }) : null }
             </Menu>
         );
         const teamName = this.props.team ? this.props.team.display_name : '';
+        const btnLoading = !this.props.team || this.state.loadingTeam ? true : false;
 
         return (
             <div className="side-menu">
                 <Breadcrumb className="side-menu__bc">
                     <Breadcrumb.Item>
-                        <Icon type="home" />
+                        <Icon type="home"/>
                     </Breadcrumb.Item>
                     <Breadcrumb.Item>
-                    
-                    <Dropdown overlay={menu}>
-                        <Button loading={(teamName === '')}>
-                        {teamName}<Icon type="down" />
-                        </Button>
-                    </Dropdown>
+                        <Tooltip placement="topRight" title="Choose a team">
+                            <Dropdown.Button type="dashed" overlay={menu} icon={<Icon type="team" />} onClick={this.handleButtonClick}>
+                                {btnLoading ? 
+                                    <React.Fragment>
+                                        {'Loading team - '}
+                                        <Icon type="loading" />
+                                    </React.Fragment>
+                                    :
+                                    teamName
+                                }
+                            </Dropdown.Button>
+                        </Tooltip>
                     </Breadcrumb.Item>
                 </Breadcrumb>
                 { this.props.boards ?
-                    <DynMenu menu={this.initialiseMenuItems()} selectedKeys={this.props.selectedKeys}></DynMenu>        
+                    <DynMenu loadingBoards={btnLoading} menu={this.initialiseMenuItems()} selectedKeys={this.props.selectedKeys}></DynMenu>        
                     :
                     null
                 }
