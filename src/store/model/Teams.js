@@ -26,20 +26,16 @@ export class Teams {
      */
     get(id) {
         return new Promise(async (resolve, reject) => {
-
-            const url = `${this.baseUrl}/${id}`;
-
             try {
-                console.log('Getting Team', id);
+                const domainRecord = await this.firebase.firestore()
+                .collection('user-domains')
+                .doc(id)
+                .get();
 
-                const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-                const uid = this.firebase.auth().currentUser.uid;
-
-                const domain = await axios.get(url, { headers: { uid, token, authorization: token } });
-
-                resolve(domain);
+                resolve({ id: domainRecord.id, ...domainRecord.data() });
     
             } catch (error) {
+                console.log('Error getting team', error);
                 reject(error);
             }
         });

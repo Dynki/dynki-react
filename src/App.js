@@ -13,12 +13,9 @@ export class App extends Component {
   constructor(props) {
     super(props)
 
-
     const params = new URLSearchParams(this.props.location.search);
     const invite = params.get('invite');
     const inviteName = params.get('invitename');
-
-    console.log('invite', invite);
 
     this.state = {
       domainLoaded: false,
@@ -41,8 +38,6 @@ export class App extends Component {
   }
 
   render() {
-    console.log('state invite:', this.state.invite);
-
     const { auth, domain, domainChecked, location } = this.props;
       return (
           <MainErrorBoundary>

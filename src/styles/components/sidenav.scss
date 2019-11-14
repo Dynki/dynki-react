@@ -22,6 +22,7 @@
 .side-menu__bc {
     padding: 10px!important;
     padding-top: 15px!important;
+    padding-left: 15px!important;
 
     .menu {
         height: calc(100% - 120px)!important;
@@ -29,7 +30,6 @@
 
     span:nth-child(2) {
         width: 100%;
-
     }
 
     .ant-dropdown-button {
@@ -77,14 +77,6 @@
         flex-direction: row;
         align-items: center;    
 
-        .ant-breadcrumb-link {
-            // width: 100%;
-
-            // i:nth-child(1) {
-            //     font-size: 22px!important;
-            // }
-        
-        }
     }
     
     &__img {

@@ -3,7 +3,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router-dom";
 
-import { Breadcrumb, Icon, Dropdown, Menu, Tooltip } from 'antd';
+import { Breadcrumb, Icon, Dropdown, Menu, Tooltip, Divider } from 'antd';
 
 import DynMenu from '../menu/Menu';
 import { getBoards, getBoard, newBoard } from '../../../store/actions/boardActions'; 
@@ -114,6 +114,7 @@ class SideNav extends React.Component {
                         </Tooltip>
                     </Breadcrumb.Item>
                 </Breadcrumb>
+                <Divider dashed={true} style={{ margin: '0px', marginTop: '4px' }}/>
                 { this.props.boards ?
                     <DynMenu loadingBoards={btnLoading} menu={this.initialiseMenuItems()} selectedKeys={this.props.selectedKeys}></DynMenu>        
                     :
