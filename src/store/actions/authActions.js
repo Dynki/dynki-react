@@ -82,7 +82,6 @@ export const setDomain = (domainId) => {
   return async (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
 
-    console.log('SET Domain:', domainId);
     dispatch({ type: 'SET_PROGRESS', payload: true });
 
     try {
@@ -90,34 +89,29 @@ export const setDomain = (domainId) => {
 
       dispatch({ type: 'SET_CURRENT_USER', payload: firebase.auth().currentUser });
 
-      firebase.auth().currentUser.getIdTokenResult()
-        .then(async (idTokenResult) => {
-          console.log('claims', idTokenResult.claims);
+      const idTokenResult = await firebase.auth().currentUser.getIdTokenResult(true)
+      const domainToSet = domainId ? domainId : idTokenResult.claims.domainId;
 
-          const domainToSet = domainId ? domainId : idTokenResult.claims.domainId;
+      // Confirm the user is an Admin.
+      if (domainToSet) {
 
-          // Confirm the user is an Admin.
-          if (domainToSet) {
+        console.log('Setting Domain', domainToSet);
 
-            await firebase.firestore()
-              .collection('domains')
-              .doc(domainToSet)
-              .onSnapshot({}, function (doc) {
-                const data = doc.data();
+        await firebase.firestore()
+          .collection('domains')
+          .doc(domainToSet)
+          .onSnapshot({}, function (doc) {
+            const data = doc.data();
 
-                if (data) {
-                  dispatch({ type: 'SET_DOMAIN_NAME', payload: data.display_name });
-                }
-              });
+            if (data) {
+              dispatch({ type: 'SET_DOMAIN_NAME', payload: data.display_name });
+            }
+          }, (err) => console.log('Error with domain', err));
 
-            dispatch({ type: 'SET_DOMAIN', payload: domainToSet });
-          } else {
-            dispatch({ type: 'NO_DOMAIN' });
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        dispatch({ type: 'SET_DOMAIN', payload: domainToSet });
+      } else {
+        dispatch({ type: 'NO_DOMAIN' });
+      }
     } catch (error) {
       firebase.auth().signOut().then(() => {
         dispatch({ type: 'NO_DOMAIN' });

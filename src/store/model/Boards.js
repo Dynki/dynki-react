@@ -17,6 +17,9 @@ export class Boards {
      * Returns: A board class instance
      */
     get(id) {
+
+        console.log('Getting A Board', this.domainId);
+
         return new Promise((resolve, reject) => {
 
             const sub = this.firebase.firestore()
@@ -49,6 +52,9 @@ export class Boards {
      * Returns: A firebase snapshot instance containing the boards
      */
     list() {
+
+        console.log('Getting Boards', this.domainId);
+
         return new Promise((resolve, reject) => {
             this.firebase.firestore()
             .collection('domains')
@@ -69,7 +75,7 @@ export class Boards {
                 } else {
                     resolve([])
                 }
-            });
+            }, (err) => console.log('Error getting boards', err));
         });
     }
 

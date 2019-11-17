@@ -27,13 +27,11 @@ export class Teams {
     get(id) {
         return new Promise(async (resolve, reject) => {
             try {
-                const domainRecord = await this.firebase.firestore()
-                .collection('user-domains')
-                .doc(id)
-                .get();
+                const snapshot = await this.firebase.firestore().collection('user-domains')
+                .where('users', 'array-contains', this.firebase.auth().currentUser.uid)
+                .get()
+                resolve(snapshot.docs.filter(doc => doc.id === id).map(doc => ({ id: doc.id, ...doc.data() }))[0] );
 
-                resolve({ id: domainRecord.id, ...domainRecord.data() });
-    
             } catch (error) {
                 console.log('Error getting team', error);
                 reject(error);
@@ -51,14 +49,22 @@ export class Teams {
             let url = this.baseUrl;
 
             try {
-                const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-                const uid = this.firebase.auth().currentUser.uid;
+                // const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+                // const uid = this.firebase.auth().currentUser.uid;
     
-                const domains = await axios.get(url, { headers: { uid, token, authorization: token } });
+                // const domains = await axios.get(url, { headers: { uid, token, authorization: token } });
 
-                resolve(domains.data);
+                // resolve(domains.data);
+
+                console.log('UID ',this.firebase.auth().currentUser.token);
+
+                const snapshot = await this.firebase.firestore().collection('user-domains')
+                .where('users', 'array-contains', this.firebase.auth().currentUser.uid)
+                .get()
+                resolve(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     
             } catch (error) {
+                console.log('Error getting teams', error);
                 reject(error);
             }
         });
