@@ -27,6 +27,10 @@ class TeamAccept extends React.Component {
         }
     ];
 
+    acceptTheInvite = () => {
+        this.props.acceptInvite(this.context.invite).then(() => this.context.resetInvite());
+    }
+
     render() {
         const routes = this.routes;
 
@@ -47,7 +51,7 @@ class TeamAccept extends React.Component {
                             size="large"
                             icon="check"
                             loading={this.props.progress}
-                            onClick={() => this.props.acceptInvite(this.context.invite)}
+                            onClick={this.acceptTheInvite}
                         >
                             Accept
                         </Button>}

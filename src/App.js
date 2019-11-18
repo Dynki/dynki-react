@@ -33,7 +33,7 @@ export class App extends Component {
     this.setState({ domainLoaded: true })
   }
 
-  resetInvite() {
+  resetInvite = () => {
     this.setState({ invite: undefined, inviteName: undefined });
   }
 

@@ -165,17 +165,17 @@ export const acceptInvite = (inviteId) => {
         const firebase = getFirebase();
 
         try {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
             const token = await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
             const uid = firebase.auth().currentUser.uid;
 
             await axios.post(url, {}, { headers: { token, uid } })
-            dispatch({ type: 'SET_PROGRESS', payload: true });
-            notifiy({ type: 'success', message: 'Way to go!', description: 'You are now part of this team' });
+            notifiy({ type: 'success', message: 'Way to go!', description: 'You are now part of this team, please log out and log back in to see you new team', duration: 0 });
 
         } catch (error) {
             notifiy({ type: 'error', message: 'Acceptance Failure', description: error.data });
         } finally {
-            dispatch({ type: 'SET_PROGRESS', payload: true });
+            dispatch({ type: 'SET_PROGRESS', payload: false });
         }
     }    
 }

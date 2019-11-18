@@ -101,7 +101,7 @@ class PostAuthShell extends React.Component {
                 <Toolbar progress={this.props.progress}></Toolbar>
                 <SideNav domainName={this.props.domain.displayName}></SideNav>
                 <main>
-                    {noBoards && boardsChecked &&
+                    {!this.context.invite && noBoards && boardsChecked &&
                         <Redirect exact from='/' to={`/empty-boards`}/>
                     }
                     {location.pathname === '/' && boards && boards.length > 0 &&

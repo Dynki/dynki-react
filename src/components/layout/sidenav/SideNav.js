@@ -72,7 +72,7 @@ class SideNav extends React.Component {
         await getBoards();
         this.setState({ loadingTeam: false });
 
-        if (this.props.boards) {
+        if (this.props.boards && this.props.boards.length > 0) {
             this.loadBoard(this.props.boards[0].id);
         }
     }
