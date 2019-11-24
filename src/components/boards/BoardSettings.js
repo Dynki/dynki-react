@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Drawer, Icon, Tabs } from 'antd';
 
+import BoardSettingsForm from './BoardSettingsForm';
+
 const TabPane = Tabs.TabPane;
 
 const BoardSettingsDrawer = (props) => {
@@ -31,6 +33,7 @@ const BoardSettingsDrawer = (props) => {
             >
                 <Tabs defaultActiveKey="1">
                     <TabPane tab={<span><Icon type="lock" />Permissions</span>} key="1">
+                        <BoardSettingsForm/>
                     </TabPane>
                 </Tabs>
 
