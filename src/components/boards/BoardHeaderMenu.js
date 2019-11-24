@@ -1,8 +1,9 @@
 import React from 'react';
-import { Icon, Popconfirm, Menu, Dropdown, Button } from 'antd';
+import { Divider, Icon, Popconfirm, Menu, Dropdown, Button } from 'antd';
 import { connect } from 'react-redux';
 import { removeBoard } from '../../store/actions/boardActions';
-import { Redirect } from 'react-router-dom';
+
+import BoardSettings from './BoardSettings';
 
 class BoardHeaderMenu extends React.Component {
 
@@ -18,16 +19,22 @@ class BoardHeaderMenu extends React.Component {
 
     menu = (
         <Menu>
-          <Menu.Item>
-              <Popconfirm title="Are you sure delete this board?"
+            <Menu.Item>
+                <BoardSettings/>
+            </Menu.Item>
+            <Menu.Item disabled>
+                <Divider style={{ margin: '0' }} dashed />
+            </Menu.Item>
+            <Menu.Item>
+                <Popconfirm title="Are you sure delete this board?"
                     okText="Yes"
                     cancelText="No Way"
                     trigger="click"
                     placement="bottomLeft"
                     onConfirm={this.handleConfirm.bind(this)}>
-                    <a><Icon type="delete" /> Delete Board</a>
+                    <a><Icon type="delete" style={{ paddingRight: '10px' }}/> Delete board</a>
                 </Popconfirm>
-          </Menu.Item>
+            </Menu.Item>
         </Menu>
     );
 
