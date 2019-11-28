@@ -82,6 +82,8 @@ export const getBoard = (id) => {
         const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
         const board = await boardsHelper.get(id);
 
+        console.log('GOT BOARD', board);
+        
         dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
         dispatch({ type: 'SET_PROGRESS', payload: false });
     }

@@ -17,9 +17,6 @@ export class Boards {
      * Returns: A board class instance
      */
     get(id) {
-
-        console.log('Getting A Board', this.domainId);
-
         return new Promise((resolve, reject) => {
 
             const sub = this.firebase.firestore()
@@ -38,8 +35,6 @@ export class Boards {
                             board.groups = [{ id: newGuid(), name: 'Group 1', color: '2B82C1', entities: board.entities}];
                         }
 
-                        console.log('Got Board::', board);
-    
                         resolve(board);
                     }
                 });
@@ -52,8 +47,6 @@ export class Boards {
      * Returns: A firebase snapshot instance containing the boards
      */
     list() {
-
-        console.log('Getting Boards', this.domainId);
 
         return new Promise((resolve, reject) => {
             this.firebase.firestore()
@@ -101,26 +94,41 @@ export class Boards {
         const data = JSON.parse(JSON.stringify(newBoard));
 
         // Create the new board document, and then get it, to get it's ID.
-        await this.firebase.firestore().collection('domains').doc(this.domainId).collection('boards').doc(newBoard.id).set(data);
-        const newDoc = await this.firebase.firestore().collection('domains').doc(this.domainId).collection('boards').doc(newBoard.id).get();
+        const newBoardRef = await this.firebase.firestore()
+            .collection('domains').doc(this.domainId).collection('boards').doc(newBoard.id);
+
+        const newBoardRolesRef = await this.firebase.firestore()
+            .collection('domains').doc(this.domainId).collection('boards')
+            .doc(newBoard.id).collection('roles').doc('permissions');
     
-        // Get from firestore the list of boards in this domain. 
-        // Then create a reference with the new boards added.
-        const boardsRef = await this.firebase.firestore().collection('domains').doc(this.domainId).collection('boardsInDomain').doc('appBoards').get()
-        let existingBoards = boardsRef.data() && boardsRef.data().boards ? boardsRef.data().boards : [];
-        existingBoards.push({ id: newDoc.id, title: 'Scratch' });
-
         // Update the boards in this domain with data from above.
-        await this.firebase.firestore()
-            .collection('domains')
-            .doc(this.domainId)
-            .collection('boardsInDomain')
-            .doc('appBoards')
-            .set({
-                boards: existingBoards
-            });
+        const appBoardsRef = this.firebase.firestore()
+            .collection('domains').doc(this.domainId).collection('boardsInDomain').doc('appBoards');
 
-        return Promise.resolve({ id: newDoc.id, ...newDoc.data() });
+        const boardRoles = { 
+            read: ['BOARD_USERS'],
+            write: ['BOARD_USERS'],
+            delete: ['BOARD_USERS']
+        }
+
+        await this.firebase.firestore().runTransaction(async transaction => {
+            const appBoardsDoc = await transaction.get(appBoardsRef);
+
+            console.log('AppBoardDoc', appBoardsDoc);
+
+            let existingBoards = appBoardsDoc.data() && appBoardsDoc.data().boards ? appBoardsDoc.data().boards : [];
+            existingBoards.push({ id: newBoardRef.id, title: 'Scratch' });
+
+            // Update app boards document which drives the menu
+            transaction.set(appBoardsRef, { boards: existingBoards });
+
+            // Add the new board document
+            transaction.set(newBoardRef, data);
+
+            transaction.set(newBoardRolesRef, { data: boardRoles });
+        });
+
+        return Promise.resolve({ id: newBoardRef.id, ...newBoard });
     }
 
     async addFolder() {

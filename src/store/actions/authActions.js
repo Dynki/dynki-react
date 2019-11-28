@@ -92,6 +92,8 @@ export const setDomain = (domainId) => {
       const idTokenResult = await firebase.auth().currentUser.getIdTokenResult(true)
       const domainToSet = domainId ? domainId : idTokenResult.claims.domainId;
 
+      console.log('Token claims', idTokenResult.claims);
+
       // Confirm the user is an Admin.
       if (domainToSet) {
 
