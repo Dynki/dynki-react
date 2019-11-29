@@ -25,6 +25,11 @@ const boardReducer = (state = initialState, action) => {
                 noBoards: false,
                 firstLoad: false
             }
+        case 'SET_CURRENT_BOARD_ROLES':
+            return {
+                ...state,
+                currentBoardRoles: _.cloneDeep(action.payload),
+            }
         case 'RESET_FIRSTLOAD':
             return {
                 ...state,

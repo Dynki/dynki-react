@@ -6,9 +6,9 @@ import { Boards } from '../model/Boards';
 // Get all boards within this user's domain/team.
 export const getBoards = () => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        dispatch({ type: 'ATTEMPT_LOADING_BOARDS' })
+        dispatch({ type: 'ATTEMPT_LOADING_BOARDS' });
         
-        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
+        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
         const boards = await boardsHelper.list();
 
         if (!boards || boards.length < 1) {
@@ -25,7 +25,7 @@ export const newBoard = () => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
 
-        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
+        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
         const newBoard = await boardsHelper.add();
         dispatch({ type: 'SET_CURRENT_BOARD', payload: newBoard });
         dispatch({ type: 'SET_PROGRESS', payload: false });
@@ -42,7 +42,7 @@ export const addNewFolder = () => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
 
-        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
+        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
         const newFolder = await boardsHelper.addFolder();
         dispatch({ type: 'SET_PROGRESS', payload: false });
 
@@ -89,13 +89,28 @@ export const getBoard = (id) => {
     }
 }
 
+// Get a board roles by board id.
+export const getBoardRoles = (id) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'ATTEMPT_LOADING_BOARD_ROLES', payload: id });
+
+        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
+        const boardRoles = await boardsHelper.getBoardRoles(id);
+
+        console.log('GOT BOARD ROLES', boardRoles);
+        
+        dispatch({ type: 'SET_CURRENT_BOARD_ROLES', payload: boardRoles });
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+    }
+}
+
 // Remove the specified board via the board id supplied
 export const removeBoard = (boardId) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
 
         dispatch({ type: 'SET_PROGRESS', payload: true });
 
-        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
+        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
         await boardsHelper.delete(boardId);
 
         let nextBoardId;   
@@ -124,13 +139,13 @@ export const removeBoard = (boardId) => {
 
 export const updateBoard = (board) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        dispatch({ type: 'SET_CURRENT_BOARD', payload: board })
+        dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
         dispatch({ type: 'SET_PROGRESS', payload: true });
-        dispatch({ type: 'ATTEMPT_UPDATE_BOARD', payload: board })
+        dispatch({ type: 'ATTEMPT_UPDATE_BOARD', payload: board });
 
-        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
+        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
         await boardsHelper.update(board);
-        dispatch({ type: 'SET_CURRENT_BOARD', payload: board })
+        dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
         dispatch(getBoards());
         dispatch({ type: 'SET_PROGRESS', payload: false });
     }
