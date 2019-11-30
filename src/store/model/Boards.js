@@ -61,6 +61,32 @@ export class Boards {
         });
     }
 
+    updateBoardRoles(boardId, roles) {
+        return new Promise(async (resolve, reject) => {
+
+            try {
+                const batch = this.firebase.firestore().batch();
+
+                const boardRolesRef = await this.firebase.firestore()
+                    .collection('domains')
+                    .doc(this.domainId)
+                    .collection('boards')
+                    .doc(boardId)
+                    .collection('roles')
+                    .doc('permissions');
+        
+                batch.set(boardRolesRef, { data: roles });
+                await batch.commit();
+                
+                resolve();
+
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+
     /**
      * Get all boards for this domain.
      * 

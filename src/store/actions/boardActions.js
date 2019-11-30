@@ -70,7 +70,7 @@ export const removeFolder = (id) => {
 // Get an individual board by id.
 export const getBoard = (id) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        dispatch({ type: 'ATTEMPT_LOADING_BOARD', payload: id })
+        dispatch({ type: 'ATTEMPT_LOADING_BOARD', payload: id });
 
         const currentBoard = getState().boards.currentBoard;
 
@@ -79,8 +79,9 @@ export const getBoard = (id) => {
             currentBoard.unsubscribe();
         }
 
-        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
+        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
         const board = await boardsHelper.get(id);
+        board.roles = await boardsHelper.getBoardRoles(id);
 
         console.log('GOT BOARD', board);
         
@@ -94,7 +95,7 @@ export const getBoardRoles = (id) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'ATTEMPT_LOADING_BOARD_ROLES', payload: id });
 
-        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId)
+        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
         const boardRoles = await boardsHelper.getBoardRoles(id);
 
         console.log('GOT BOARD ROLES', boardRoles);
@@ -147,6 +148,17 @@ export const updateBoard = (board) => {
         await boardsHelper.update(board);
         dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
         dispatch(getBoards());
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+    }
+}
+
+export const updateBoardRoles = (boardId, roles) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
+        await boardsHelper.updateBoardRoles(boardId, roles);
+        dispatch({ type: 'SET_CURRENT_BOARD_ROLES', payload: roles });
         dispatch({ type: 'SET_PROGRESS', payload: false });
     }
 }

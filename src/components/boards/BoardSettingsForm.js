@@ -1,29 +1,33 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-    Form, Input, Select, Icon
-} from 'antd';
+import { Form, Select } from 'antd';
+
+import { updateBoardRoles } from '../../store/actions/boardActions';
 
 const { Option } = Select;
 
-class UserProfileForm extends React.Component {
+class BoardSettingsForm extends React.Component {
     state = {
         confirmDirty: false,
         autoCompleteResult: [],
     };
 
     handleSubmit = (e) => {
-        e.preventDefault();
-        // this.props.form.validateFieldsAndScroll((err, values) => {
-        //     if (!err) {
-        //         this.props.updateUserProfile(values);
-        //     }
-        // });
+        this.props.form.validateFieldsAndScroll((err, values) => {
+            if (!err) {
+                console.log('Roles:::', values);
+                this.props.updateBoardRoles(this.props.board.id, values);
+            }
+        });
     }
 
     render() {
         const { getFieldDecorator } = this.props.form;
         const { team } = this.props;
+
+        const handleBlur = () => {
+            this.handleSubmit();
+        }
 
         const selectChildren = [];
 
@@ -32,7 +36,7 @@ class UserProfileForm extends React.Component {
         });
 
         return (
-            <div className="userprofile">
+            <div className="boardSettings">
 
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Item
@@ -46,6 +50,7 @@ class UserProfileForm extends React.Component {
                             style={{ width: '100%' }}
                             placeholder="Please select"
                             ref={node => (this.input = node)} 
+                            onBlur={() => handleBlur()}
                             >{selectChildren}</Select>
                         )}
                     </Form.Item>
@@ -84,32 +89,38 @@ class UserProfileForm extends React.Component {
     }
 }
 
-const WrappedUserProfileForm = Form.create({ 
-    name: 'userProfile',
+const WrappedBoardSettingsForm = Form.create({ 
+    name: 'boardSettings',
     mapPropsToFields(props) {
         return {
-          email: Form.createFormField({
-            ...props.currentUser.email,
-            value: props.currentUser.email,
+          read: Form.createFormField({
+            ...props.board.roles.read,
+            value: props.board.roles.read,
           }),
-          displayName: Form.createFormField({
-            ...props.currentUser.displayName,
-            value: props.currentUser.displayName,
+          write: Form.createFormField({
+            ...props.board.roles.write,
+            value: props.board.roles.write,
           }),
+          delete: Form.createFormField({
+            ...props.board.roles.delete,
+            value: props.board.roles.delete,
+          })
         };
     }
-})(UserProfileForm);
+})(BoardSettingsForm);
 
 export const mapStateToProps = (state) => {
     return{
-      currentUser: state.auth.currentUser,
+      user: state.auth.currentUser,
+      board: state.boards.currentBoard,
       team: state.teams.currentTeam
     }
   }
   
 export const mapDispatchToProps = (dispatch) => {
     return {
+        updateBoardRoles: (boardId, roles) => dispatch(updateBoardRoles(boardId, roles))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WrappedUserProfileForm);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedBoardSettingsForm);
