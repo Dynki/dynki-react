@@ -9,11 +9,10 @@ export const signIn = (credentials) => {
       dispatch({ type: 'ATTEMPT_LOGIN' })
   
       await firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password);
-  
-      dispatch({ type: 'SET_CURRENT_USER', payload: firebase.auth().currentUser });
-  
       const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
-
+  
+      const currentUser = { ...firebase.auth().currentUser, roles: idTokenResult.claims.roles }
+      dispatch({ type: 'SET_CURRENT_USER', payload: currentUser });
 
       // Confirm the user is an Admin.
       if (idTokenResult.claims.domainId) {
@@ -86,10 +85,11 @@ export const setDomain = (domainId) => {
 
     try {
       await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-
-      dispatch({ type: 'SET_CURRENT_USER', payload: firebase.auth().currentUser });
-
       const idTokenResult = await firebase.auth().currentUser.getIdTokenResult(true)
+
+      const currentUser = { ...firebase.auth().currentUser, roles: idTokenResult.claims.roles }
+      dispatch({ type: 'SET_CURRENT_USER', payload: currentUser });
+
       const domainToSet = domainId ? domainId : idTokenResult.claims.domainId;
 
       console.log('Token claims', idTokenResult.claims);

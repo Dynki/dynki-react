@@ -3,7 +3,8 @@ const initialState = {
     pending: false,
     currentUser: {
         email: '',
-        displayName: ''
+        displayName: '',
+        hasRole: (roles, role) => roles.indexOf(role) !== -1
     }
 }
 
@@ -56,9 +57,10 @@ const authReducer = (state = initialState, action) => {
                 ...initialState
             }
         case 'SET_CURRENT_USER':
+            console.log('Setting current user', action.payload);
             return {
                 ...state,
-                currentUser: action.payload
+                currentUser: { ...initialState.currentUser, ...action.payload }
             }
 
         default:

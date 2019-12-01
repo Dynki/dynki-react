@@ -17,39 +17,53 @@ class BoardHeaderMenu extends React.Component {
         this.props.removeBoard(this.props.boardId)
     }
 
-    menu = (
-        <Menu>
-            <Menu.Item>
-                <BoardSettings/>
-            </Menu.Item>
-            <Menu.Item disabled>
-                <Divider style={{ margin: '0' }} dashed />
-            </Menu.Item>
-            <Menu.Item>
-                <Popconfirm title="Are you sure delete this board?"
-                    okText="Yes"
-                    cancelText="No Way"
-                    trigger="click"
-                    placement="bottomLeft"
-                    onConfirm={this.handleConfirm.bind(this)}>
-                    <a><Icon type="delete" style={{ paddingRight: '10px' }}/> Delete board</a>
-                </Popconfirm>
-            </Menu.Item>
-        </Menu>
-    );
+    renderMenu = () =>  {
+        const { user } = this.props;
+
+        return (
+            <Menu>
+                {user.hasRole(user.roles, 'ADMINISTRATORS') ?
+                    <Menu.Item>
+                        <BoardSettings/>
+                    </Menu.Item> : null
+                }
+                {user.hasRole(user.roles, 'ADMINISTRATORS') ?
+                    <Menu.Item disabled>
+                        <Divider style={{ margin: '0' }} dashed />
+                    </Menu.Item> : null
+                }
+                <Menu.Item>
+                    <Popconfirm title="Are you sure delete this board?"
+                        okText="Yes"
+                        cancelText="No Way"
+                        trigger="click"
+                        placement="bottomLeft"
+                        onConfirm={this.handleConfirm.bind(this)}
+                    >
+                        <a><Icon type="delete" style={{ paddingRight: '10px' }}/> Delete board</a>
+                    </Popconfirm>
+                </Menu.Item>
+            </Menu>
+        );
+    };
 
     render() {
+        const { user } = this.props;
+
         return <div>
-            <Dropdown overlay={this.menu}>
-                <Button shape="circle" icon="bars" className="board__header__btn"/>
-            </Dropdown>
+            {user ? 
+                <Dropdown overlay={this.renderMenu()}>
+                    <Button shape="circle" icon="bars" className="board__header__btn"/>
+                </Dropdown>
+            : null }
         </div>
     }
 }
 
 const mapStateToProps = (state) => {
     return{
-      board: state.boards.currentBoard
+      board: state.boards.currentBoard,
+      user: state.auth.currentUser,
     }
 }
 
