@@ -1,6 +1,5 @@
 import moment from 'moment';
 import newGuid from '../utils/guid';
-import * as _ from 'lodash';
 
 export class Boards {
 
@@ -192,7 +191,6 @@ export class Boards {
             }
     
             // Firebase requires the data to be parsed this way!!.
-            const data = JSON.parse(JSON.stringify(newFolder));
     
             // Get from firestore the list of boards in this domain. 
             // Then create a reference with the new boards added.

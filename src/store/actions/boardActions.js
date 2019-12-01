@@ -292,6 +292,7 @@ export const removeColumn = (modelId) => {
                     return e;
                 })
             }
+            return grpKey;
         });
 
         // currentBoard.groups = groups;

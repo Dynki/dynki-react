@@ -40,7 +40,7 @@ class BoardHeaderMenu extends React.Component {
                         placement="bottomLeft"
                         onConfirm={this.handleConfirm.bind(this)}
                     >
-                        <a><Icon type="delete" style={{ paddingRight: '10px' }}/> Delete board</a>
+                        <a href="no-ref"><Icon type="delete" style={{ paddingRight: '10px' }}/> Delete board</a>
                     </Popconfirm>
                 </Menu.Item>
             </Menu>

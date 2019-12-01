@@ -33,6 +33,7 @@ class BoardSettingsForm extends React.Component {
 
         team.groups.map(v => {
             selectChildren.push(<Option key={v.id}>{v.name}</Option>);
+            return v;
         });
 
         return (
