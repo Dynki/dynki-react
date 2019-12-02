@@ -37,8 +37,32 @@ context('Create Team', () => {
     it('Should create a new team', () => {
         cy.newTeam();
         cy.contains('Team1');
+    })
 
-        // Clean up
-        cy.deleteAccount();
+    it('Should display team details', () => {
+        cy.get('[data-testid=displayTeam]').click();
+        cy.contains('Invite a team member');
+    })
+
+    it('Should add a new group to the team', () => {
+        cy.get('[data-testid=addGroup]').click();
+        cy.contains('New group');
+    })
+
+    it('Should be able to change the new group name', () => {
+        cy.get('[data-testid=group-New-group]').click();
+        cy.get('#groupNameInput').clear().type('Test name');
+        cy.get('[data-testid=group-Administrators]').click();
+        cy.contains('Test name');
+    })
+    
+    it('Should be able to delete a group', () => {
+        cy.get('[data-testid=group-Test-name]').parent('tr').within(() => {
+            // all searches are automatically rooted to the found tr element
+            cy.get('td').eq(1).contains('.anticon-delete').click();
+            cy.contains('Delete really?');
+            cy.contains('OK').click();
+            cy.contains('Test name').should('not.exist');
+        })
     })
 })

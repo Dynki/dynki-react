@@ -1,16 +1,7 @@
-import Chance from 'chance';
-const chance = new Chance();
 
 /// <reference types="Cypress" />
 
 context('Boards', () => {
-    before(() => {
-        cy.visit('http://localhost:3000');
-        const email = chance.email();
-        cy.signup(email);
-        cy.newTeam();
-    })
-
     it('Add board to menu', () => {
         cy.get('#btnBoards').click();
         cy.wait(1000);
@@ -33,10 +24,6 @@ context('Boards', () => {
         cy.get('#title').click();
         cy.wait(1000);
         cy.get('#description').should('have.value','Test Desc');
-    })
-
-    after(() => {
-        cy.deleteAccount();
     })
 })
   

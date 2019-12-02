@@ -25,6 +25,7 @@ class Teams extends React.Component {
     }
 
     saveGroupUpdate = (record) => {
+        console.log('Calling update group', record);
         this.props.updateTeamGroup(record.id, record);
     }
 

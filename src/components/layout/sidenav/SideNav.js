@@ -101,7 +101,7 @@ class SideNav extends React.Component {
                     </Breadcrumb.Item>
                     <Breadcrumb.Item>
                         <Tooltip placement="topRight" title="Choose a team">
-                            <Dropdown.Button type="dashed" overlay={menu} icon={<Icon type="team" />} onClick={this.handleButtonClick}>
+                            <Dropdown.Button data-testid="displayTeam" type="dashed" overlay={menu} icon={<Icon type="team" />} onClick={this.handleButtonClick}>
                                 {btnLoading ? 
                                     <React.Fragment>
                                         {'Loading team - '}

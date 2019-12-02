@@ -2,36 +2,48 @@ import newGuid from '../utils/guid';
 import * as _ from 'lodash';
 import { CellFactory } from '../model/board-cell.factory';
 import { Boards } from '../model/Boards';
+import notifiy from '../../components/notifications/Notification';
 
 // Get all boards within this user's domain/team.
 export const getBoards = () => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        dispatch({ type: 'ATTEMPT_LOADING_BOARDS' });
-        
-        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
-        const boards = await boardsHelper.list();
 
-        if (!boards || boards.length < 1) {
-            dispatch({ type: 'NO_BOARDS' });
-        } else {
-            dispatch({ type: 'REFRESH_BOARDS', payload: boards });
+        try {
+            dispatch({ type: 'ATTEMPT_LOADING_BOARDS' });
+            
+            const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
+            const boards = await boardsHelper.list();
+    
+            if (!boards || boards.length < 1) {
+                dispatch({ type: 'NO_BOARDS' });
+            } else {
+                dispatch({ type: 'REFRESH_BOARDS', payload: boards });
+            }
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to get the boards' });
         }
-        dispatch({ type: 'SET_PROGRESS', payload: false });
     }
 }
 
 // Create a new blank board with this user's domain/team.
 export const newBoard = () => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        dispatch({ type: 'SET_PROGRESS', payload: true });
 
-        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
-        const newBoard = await boardsHelper.add();
-        dispatch({ type: 'SET_CURRENT_BOARD', payload: newBoard });
-        dispatch({ type: 'SET_PROGRESS', payload: false });
-
-        dispatch(getBoards());        
-        dispatch(getBoard(newBoard.id));        
+        try {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+    
+            const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
+            const newBoard = await boardsHelper.add();
+            dispatch({ type: 'SET_CURRENT_BOARD', payload: newBoard });
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+    
+            dispatch(getBoards());        
+            dispatch(getBoard(newBoard.id));        
+            
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to create the new board' });
+        }
 
         return Promise.resolve(newBoard);
     }
@@ -70,68 +82,84 @@ export const removeFolder = (id) => {
 // Get an individual board by id.
 export const getBoard = (id) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        dispatch({ type: 'ATTEMPT_LOADING_BOARD', payload: id });
-
-        const currentBoard = getState().boards.currentBoard;
-
-        // This is required to stop firestore creating multiple subscriptions, which then spam the system.
-        if (currentBoard && currentBoard.unsubscribe) {
-            currentBoard.unsubscribe();
-        }
-
-        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
-        const board = await boardsHelper.get(id);
-        board.roles = await boardsHelper.getBoardRoles(id);
-
-        console.log('GOT BOARD', board);
         
-        dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
-        dispatch({ type: 'SET_PROGRESS', payload: false });
+        try {
+            dispatch({ type: 'ATTEMPT_LOADING_BOARD', payload: id });
+    
+            const currentBoard = getState().boards.currentBoard;
+    
+            // This is required to stop firestore creating multiple subscriptions, which then spam the system.
+            if (currentBoard && currentBoard.unsubscribe) {
+                currentBoard.unsubscribe();
+            }
+    
+            const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
+            const board = await boardsHelper.get(id);
+            board.roles = await boardsHelper.getBoardRoles(id);
+    
+            console.log('GOT BOARD', board);
+            
+            dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+            
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to get the board' });
+        }
     }
 }
 
 // Get a board roles by board id.
 export const getBoardRoles = (id) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        dispatch({ type: 'ATTEMPT_LOADING_BOARD_ROLES', payload: id });
-
-        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
-        const boardRoles = await boardsHelper.getBoardRoles(id);
-
-        console.log('GOT BOARD ROLES', boardRoles);
         
-        dispatch({ type: 'SET_CURRENT_BOARD_ROLES', payload: boardRoles });
-        dispatch({ type: 'SET_PROGRESS', payload: false });
+        try {
+            dispatch({ type: 'ATTEMPT_LOADING_BOARD_ROLES', payload: id });
+    
+            const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
+            const boardRoles = await boardsHelper.getBoardRoles(id);
+    
+            console.log('GOT BOARD ROLES', boardRoles);
+            
+            dispatch({ type: 'SET_CURRENT_BOARD_ROLES', payload: boardRoles });
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+            
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to get the board roles' });
+        }
     }
 }
 
 // Remove the specified board via the board id supplied
 export const removeBoard = (boardId) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
-
-        dispatch({ type: 'SET_PROGRESS', payload: true });
-
-        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
-        await boardsHelper.delete(boardId);
-
-        let nextBoardId;   
-
-        const currentBoards = await boardsHelper.list();
-        const currentBoard = getState().boards.currentBoard;
-
-        if (currentBoards && currentBoards.length > 0) {
-            nextBoardId = currentBoards[0].id;
-        }
-
-        // This is required to stop firestore creating multiple subscriptions, which then spam the system.
-        if (currentBoard && currentBoard.unsubscribe) {
-            currentBoard.unsubscribe();
-        }
-        
-        dispatch(getBoards());
-
-        if (nextBoardId) {
-            dispatch(getBoard(nextBoardId));
+        try {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+    
+            const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
+            await boardsHelper.delete(boardId);
+    
+            let nextBoardId;   
+    
+            const currentBoards = await boardsHelper.list();
+            const currentBoard = getState().boards.currentBoard;
+    
+            if (currentBoards && currentBoards.length > 0) {
+                nextBoardId = currentBoards[0].id;
+            }
+    
+            // This is required to stop firestore creating multiple subscriptions, which then spam the system.
+            if (currentBoard && currentBoard.unsubscribe) {
+                currentBoard.unsubscribe();
+            }
+            
+            dispatch(getBoards());
+    
+            if (nextBoardId) {
+                dispatch(getBoard(nextBoardId));
+            }
+            
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to remove the board' });
         }
 
         return Promise.resolve();
@@ -140,203 +168,246 @@ export const removeBoard = (boardId) => {
 
 export const updateBoard = (board) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
-        dispatch({ type: 'SET_PROGRESS', payload: true });
-        dispatch({ type: 'ATTEMPT_UPDATE_BOARD', payload: board });
-
-        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
-        await boardsHelper.update(board);
-        dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
-        dispatch(getBoards());
-        dispatch({ type: 'SET_PROGRESS', payload: false });
+        
+        try {
+            dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+            dispatch({ type: 'ATTEMPT_UPDATE_BOARD', payload: board });
+    
+            const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
+            await boardsHelper.update(board);
+            dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
+            dispatch(getBoards());
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+            
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to update the board' });
+        }
     }
 }
 
 export const updateBoardRoles = (boardId, roles) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        dispatch({ type: 'SET_PROGRESS', payload: true });
-
-        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
-        await boardsHelper.updateBoardRoles(boardId, roles);
-        dispatch({ type: 'SET_CURRENT_BOARD_ROLES', payload: roles });
-        dispatch({ type: 'SET_PROGRESS', payload: false });
+        
+        try {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+    
+            const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
+            await boardsHelper.updateBoardRoles(boardId, roles);
+            dispatch({ type: 'SET_CURRENT_BOARD_ROLES', payload: roles });
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+            
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to update the board roles' });
+        }
     }
 }
 
 export const newRow = (row, groupId) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        dispatch({ type: 'SET_PROGRESS', payload: true });
 
-        const firebase = getFirebase();
-        const currentBoard = getState().boards.currentBoard;
-        const domainId = getState().domain.domainId;
-
-        let newData = { id: newGuid(), description: row.description, group: row.groupKey };
-
-        if (currentBoard.columns) {
-            // Add any default values
-            currentBoard.columns.forEach(col => {
-                // Check if column is of type select.
-                if (col.class === 'select' && col.values) {
-                    
-                    // Check if any values for the select column are marked as the default value.
-                    col.values.forEach(val => {
-                        if (val['default'] === true) {
-                            newData = {...newData, [col.model]: val.key }
-                        }
-                    });
-                } else if (col.class === 'date' || col.class === 'datedue') {
-                    newData = {...newData, [col.model]: '' }
-                } else if (col.class === 'text' && col.model !== 'description') {
-                    newData = {...newData, [col.model]: '' }
-                }
-            });
+        try {
+            
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+    
+            const firebase = getFirebase();
+            const currentBoard = getState().boards.currentBoard;
+            const domainId = getState().domain.domainId;
+    
+            let newData = { id: newGuid(), description: row.description, group: row.groupKey };
+    
+            if (currentBoard.columns) {
+                // Add any default values
+                currentBoard.columns.forEach(col => {
+                    // Check if column is of type select.
+                    if (col.class === 'select' && col.values) {
+                        
+                        // Check if any values for the select column are marked as the default value.
+                        col.values.forEach(val => {
+                            if (val['default'] === true) {
+                                newData = {...newData, [col.model]: val.key }
+                            }
+                        });
+                    } else if (col.class === 'date' || col.class === 'datedue') {
+                        newData = {...newData, [col.model]: '' }
+                    } else if (col.class === 'text' && col.model !== 'description') {
+                        newData = {...newData, [col.model]: '' }
+                    }
+                });
+            }
+    
+            // Default the entities array to an empty array if it does not exist.
+            if (currentBoard.groups[groupId] && !currentBoard.groups[groupId].entities) {
+                currentBoard.groups[groupId].entities = [];    
+            }
+    
+            // Add the new row to the current board, this MUST include the columns too.
+            currentBoard.groups[groupId].entities.push(newData);
+    
+            // Need to remove subscription function before saving.
+            const updatedBoard = _.cloneDeep(currentBoard);
+            delete updatedBoard.unsubscribe;
+    
+            const data = JSON.parse(JSON.stringify(updatedBoard));
+    
+            await firebase.firestore()
+                .collection('domains')
+                .doc(domainId)
+                .collection('boards')
+                .doc(data.id)
+                .set(data);
+    
+                dispatch({ type: 'SET_PROGRESS', payload: false });
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to add the new row' });
+            
         }
-
-        // Default the entities array to an empty array if it does not exist.
-        if (currentBoard.groups[groupId] && !currentBoard.groups[groupId].entities) {
-            currentBoard.groups[groupId].entities = [];    
-        }
-
-        // Add the new row to the current board, this MUST include the columns too.
-        currentBoard.groups[groupId].entities.push(newData);
-
-        // Need to remove subscription function before saving.
-        const updatedBoard = _.cloneDeep(currentBoard);
-        delete updatedBoard.unsubscribe;
-
-        const data = JSON.parse(JSON.stringify(updatedBoard));
-
-        await firebase.firestore()
-            .collection('domains')
-            .doc(domainId)
-            .collection('boards')
-            .doc(data.id)
-            .set(data);
-
-            dispatch({ type: 'SET_PROGRESS', payload: false });
     }
 }
 
 export const removeRow = (rowIdxToRemove, groupId) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        dispatch({ type: 'SET_PROGRESS', payload: true });
-        const firebase = getFirebase();
-        const currentBoard = getState().boards.currentBoard;
-        const domainId = getState().domain.domainId;
-
-        // Add the new row to the current board, this MUST include the columns too.
-        currentBoard.groups[groupId].entities = currentBoard.groups[groupId].entities.filter((e, idx) => idx !== rowIdxToRemove);
-
-        // Need to remove subscription function before saving.
-        const updatedBoard = _.cloneDeep(currentBoard);
-        delete updatedBoard.unsubscribe;
-
-        await firebase.firestore()
-            .collection('domains')
-            .doc(domainId)
-            .collection('boards')
-            .doc(updatedBoard.id)
-            .set(updatedBoard);
-
-        dispatch({ type: 'SET_PROGRESS', payload: false });
+        
+        try {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+            const firebase = getFirebase();
+            const currentBoard = getState().boards.currentBoard;
+            const domainId = getState().domain.domainId;
+    
+            // Add the new row to the current board, this MUST include the columns too.
+            currentBoard.groups[groupId].entities = currentBoard.groups[groupId].entities.filter((e, idx) => idx !== rowIdxToRemove);
+    
+            // Need to remove subscription function before saving.
+            const updatedBoard = _.cloneDeep(currentBoard);
+            delete updatedBoard.unsubscribe;
+    
+            await firebase.firestore()
+                .collection('domains')
+                .doc(domainId)
+                .collection('boards')
+                .doc(updatedBoard.id)
+                .set(updatedBoard);
+    
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+            
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to remove the row' });
+        }
     }
 }
 
 
 export const addColumn = (columnType) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        dispatch({ type: 'SET_PROGRESS', payload: true });
-
-        const firebase = getFirebase();
-        const currentBoard = getState().boards.currentBoard;
-        const domainId = getState().domain.domainId;
-
-        const model = newGuid();
-        const cellFactory = new CellFactory();
-        const newCell = JSON.parse(JSON.stringify(cellFactory.createCell(columnType, model, model)));
-        currentBoard.columns.push(newCell);
-
-        delete currentBoard['unsubscribe'];
-
-        await firebase.firestore()
-        .collection('domains')
-        .doc(domainId)
-        .collection('boards')
-        .doc(currentBoard.id)
-        .set(currentBoard);
-
-        dispatch({ type: 'SET_PROGRESS', payload: false });
+        
+        try {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+    
+            const firebase = getFirebase();
+            const currentBoard = getState().boards.currentBoard;
+            const domainId = getState().domain.domainId;
+    
+            const model = newGuid();
+            const cellFactory = new CellFactory();
+            const newCell = JSON.parse(JSON.stringify(cellFactory.createCell(columnType, model, model)));
+            currentBoard.columns.push(newCell);
+    
+            delete currentBoard['unsubscribe'];
+    
+            await firebase.firestore()
+            .collection('domains')
+            .doc(domainId)
+            .collection('boards')
+            .doc(currentBoard.id)
+            .set(currentBoard);
+    
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+            
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to add the new column' });
+        }
     }
 }
 
 export const removeColumn = (modelId) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        dispatch({ type: 'SET_PROGRESS', payload: true });
-
-        const firebase = getFirebase();
-        const currentBoard = getState().boards.currentBoard;
-        const domainId = getState().domain.domainId;
-
-        // Remove the column data
-        currentBoard.columns = currentBoard.columns.filter(c => c.model !== modelId);
-
-        // Remove the orphaned entity data for this column.
-        let groups = Object.keys(currentBoard.groups);
-
-        // // Loop through all groups and remove the column from any entities.
-        groups.map(grpKey =>{
-            if (currentBoard.groups[grpKey] && currentBoard.groups[grpKey].entities) {
-                currentBoard.groups[grpKey].entities = currentBoard.groups[grpKey].entities.map(e => {
-                    delete e[modelId];
-                    return e;
-                })
-            }
-            return grpKey;
-        });
-
-        // currentBoard.groups = groups;
-
-        delete currentBoard['unsubscribe'];
-
-        await firebase.firestore()
-        .collection('domains')
-        .doc(domainId)
-        .collection('boards')
-        .doc(currentBoard.id)
-        .set(currentBoard);
-
-        dispatch({ type: 'SET_PROGRESS', payload: false });
+        
+        try {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+    
+            const firebase = getFirebase();
+            const currentBoard = getState().boards.currentBoard;
+            const domainId = getState().domain.domainId;
+    
+            // Remove the column data
+            currentBoard.columns = currentBoard.columns.filter(c => c.model !== modelId);
+    
+            // Remove the orphaned entity data for this column.
+            let groups = Object.keys(currentBoard.groups);
+    
+            // // Loop through all groups and remove the column from any entities.
+            groups.map(grpKey =>{
+                if (currentBoard.groups[grpKey] && currentBoard.groups[grpKey].entities) {
+                    currentBoard.groups[grpKey].entities = currentBoard.groups[grpKey].entities.map(e => {
+                        delete e[modelId];
+                        return e;
+                    })
+                }
+                return grpKey;
+            });
+    
+            // currentBoard.groups = groups;
+    
+            delete currentBoard['unsubscribe'];
+    
+            await firebase.firestore()
+            .collection('domains')
+            .doc(domainId)
+            .collection('boards')
+            .doc(currentBoard.id)
+            .set(currentBoard);
+    
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+            
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to remove the column' });
+        }
     }
 }
 
 export const selectCellValue = (key, model, rowId, groupId) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        dispatch({ type: 'SET_PROGRESS', payload: true });
-
-        const firebase = getFirebase();
-        const domainId = getState().domain.domainId;
-        const currentBoard = getState().boards.currentBoard;
-
-        currentBoard.groups[groupId].entities = currentBoard.groups[groupId].entities.map(e => {
-            // Is this the row we wish to update?
-            if (e.id === rowId) {
-                e[model] = key;
-            }
-
-            return e;
-        });
-
-        delete currentBoard['unsubscribe'];
-
-        await firebase.firestore()
-        .collection('domains')
-        .doc(domainId)
-        .collection('boards')
-        .doc(currentBoard.id)
-        .set(currentBoard);
-
-        dispatch({ type: 'SET_PROGRESS', payload: false });
+        
+        try {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+    
+            const firebase = getFirebase();
+            const domainId = getState().domain.domainId;
+            const currentBoard = getState().boards.currentBoard;
+    
+            currentBoard.groups[groupId].entities = currentBoard.groups[groupId].entities.map(e => {
+                // Is this the row we wish to update?
+                if (e.id === rowId) {
+                    e[model] = key;
+                }
+    
+                return e;
+            });
+    
+            delete currentBoard['unsubscribe'];
+    
+            await firebase.firestore()
+            .collection('domains')
+            .doc(domainId)
+            .collection('boards')
+            .doc(currentBoard.id)
+            .set(currentBoard);
+    
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+            
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to update the board' });
+        }
     }
 }
 
@@ -633,14 +704,20 @@ export const removeGroup = (groupId) => {
 // Create a new blank board with this user's domain/team.
 export const updateBoardTitle = (boardId, updateBoardTitle) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        dispatch({ type: 'SET_PROGRESS', payload: true });
+        
+        try {
+            
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+    
+            const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
+            const newFolder = await boardsHelper.updateBoardTitle(boardId, updateBoardTitle);
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+    
+            dispatch(getBoards());        
+            return Promise.resolve(newFolder);
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to update the board description' });
+        }
 
-        const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
-        const newFolder = await boardsHelper.updateBoardTitle(boardId, updateBoardTitle);
-        dispatch({ type: 'SET_PROGRESS', payload: false });
-
-        dispatch(getBoards());        
-
-        return Promise.resolve(newFolder);
     }
 }

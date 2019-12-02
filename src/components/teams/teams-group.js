@@ -32,6 +32,7 @@ class EditableCell extends React.Component {
           return;
         }
         this.toggleEdit();
+        values.name = values.groupNameInput;
         handleSave({ ...record, ...values });
       });
   };
@@ -46,7 +47,7 @@ class EditableCell extends React.Component {
       const { editing } = this.state;
       return editing ? (
         <Form.Item style={{ margin: 0 }}>
-          {form.getFieldDecorator(dataIndex, {
+          {form.getFieldDecorator('groupNameInput', {
             rules: [
               {
                 required: true,
@@ -108,11 +109,11 @@ class TeamGroups extends React.Component {
           title: 'Team Groups',
           dataIndex: 'name',
           key: 'name',
-          render: text => <a>{text}</a>,
+          render: text => <a data-testid={`group-${text.replace(' ', '-')}`}>{text}</a>,
           editable: true,
           onCell: record => ({
               record,
-              editable: ['Administrators', 'Users'].indexOf(record.name) < 0,
+              editable: ['Administrators', 'Board Users', 'Board Creators'].indexOf(record.name) < 0,
               dataIndex: 'name',
               title: 'name',
               handleSave: this.handleSave.bind(this),
@@ -122,11 +123,12 @@ class TeamGroups extends React.Component {
         {
           title: 'Action',
           dataIndex: 'id',
+          id: 'deleteGroup',
           key: 'id',
           width: 84,
           align: 'center',
           render: (text, record) =>
-            ['Administrators', 'Users'].indexOf(record.name) < 0 ? (
+            ['Administrators', 'Board Users', 'Board Creators'].indexOf(record.name) < 0 ? (
               <Popconfirm title="Delete really?" onConfirm={() => this.handleDelete(record.id)}>
                   <Icon type="delete" style={{'color': 'red'}}/>
               </Popconfirm>
@@ -146,9 +148,10 @@ class TeamGroups extends React.Component {
     render() {
 
       return (this.props.groups ? <Table
-        footer={() => <div><Button onClick={this.props.addGroup} key="3qdsdsds" type="default">Add a group</Button></div>}
+        footer={() => <div><Button data-testid="addGroup" onClick={this.props.addGroup} key="3qdsdsds" type="default">Add a group</Button></div>}
         components={components} 
         columns={this.columns} 
+        id="groups"
         dataSource={this.props.groups}
         handleDelete={this.props.handleDelete}
         handleSave={this.props.handleSave}
