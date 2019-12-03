@@ -129,8 +129,8 @@ class TeamGroups extends React.Component {
           align: 'center',
           render: (text, record) =>
             ['Administrators', 'Board Users', 'Board Creators'].indexOf(record.name) < 0 ? (
-              <Popconfirm title="Delete really?" onConfirm={() => this.handleDelete(record.id)}>
-                  <Icon type="delete" style={{'color': 'red'}}/>
+              <Popconfirm title="Delete really?" onConfirm={() => this.handleDelete(record.id)} okText="Yes delete group">
+                  <Icon data-testid={`delete-group-${record.name.replace(' ', '-')}`} type="delete" style={{'color': 'red'}}/>
               </Popconfirm>
             ) : null,
         },

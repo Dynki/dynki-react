@@ -57,12 +57,10 @@ context('Create Team', () => {
     })
     
     it('Should be able to delete a group', () => {
-        cy.get('[data-testid=group-Test-name]').parent('tr').within(() => {
-            // all searches are automatically rooted to the found tr element
-            cy.get('td').eq(1).contains('.anticon-delete').click();
-            cy.contains('Delete really?');
-            cy.contains('OK').click();
-            cy.contains('Test name').should('not.exist');
-        })
+        // all searches are automatically rooted to the found tr element
+        cy.get('[data-testid=delete-group-Test-name]').click();
+        cy.contains('Delete really?');
+        cy.contains('Yes delete group').click();
+        cy.contains('Test name').should('not.exist');
     })
 })
