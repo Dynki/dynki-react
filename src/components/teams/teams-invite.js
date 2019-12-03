@@ -39,7 +39,7 @@ class TeamsInviteForm extends React.Component {
             width={370}
             style={{
                 overflow: 'auto',
-                height: 'calc(100% - 108px)',
+                height: '100%',
                 paddingBottom: '108px',
             }}
         >
