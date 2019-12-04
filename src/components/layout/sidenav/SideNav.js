@@ -2,13 +2,37 @@ import React from 'react';
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router-dom";
+import styled from 'styled-components';
 
-import { Breadcrumb, Icon, Dropdown, Menu, Tooltip, Divider } from 'antd';
+import { Divider } from 'antd';
 
 import DynMenu from '../menu/Menu';
+import SideMenuBreadCrumb from './SideNavBreadCrumb';
+
 import { getBoards, getBoard, newBoard } from '../../../store/actions/boardActions'; 
 import { setDomain } from '../../../store/actions/authActions';
 import { getTeam } from '../../../store/actions/teamActions';
+
+const StyledSideNav = styled.div`
+    height: 100%;
+    border-right: 1px solid #e8e8e8;
+    grid-area: sidenav;
+
+    .ant-menu {
+        .ant-menu-item {
+            padding-left: 16px!important;
+
+            &:hover {
+                background-color: #e6f7ff;
+                color: rgba(0, 0, 0, 0.65);
+            } 
+        }
+    }
+
+    i {
+        font-size: 18px!important;
+    }
+`;
 
 class SideNav extends React.Component {
 
@@ -83,51 +107,37 @@ class SideNav extends React.Component {
 
     render() {
 
-        const menu = (
-            <Menu onClick={this.handleMenuClick.bind(this)}>
-                {this.props.teams && this.props.teams.length > 0 ? this.props.teams.map((t, idx) => {
-                    return <Menu.Item key={t.id}><Icon type="team" /> {t.display_name}</Menu.Item>
-                }) : null }
-            </Menu>
-        );
+        const { boards, hideHome, selectedKeys, teams } = this.props;
         const teamName = this.props.team ? this.props.team.display_name : '';
-        const btnLoading = !this.props.team || this.state.loadingTeam ? true : false;
+        const loading = !this.props.team || this.state.loadingTeam ? true : false;
 
         return (
-            <div className="side-menu">
-                <Breadcrumb className="side-menu__bc">
-                    <Breadcrumb.Item>
-                        <Icon type="home"/>
-                    </Breadcrumb.Item>
-                    <Breadcrumb.Item>
-                        <Tooltip placement="topRight" title="Choose a team">
-                            <Dropdown.Button data-testid="displayTeam" type="dashed" overlay={menu} icon={<Icon type="team" />} onClick={this.handleButtonClick}>
-                                {btnLoading ? 
-                                    <React.Fragment>
-                                        {'Loading team - '}
-                                        <Icon type="loading" />
-                                    </React.Fragment>
-                                    :
-                                    teamName
-                                }
-                            </Dropdown.Button>
-                        </Tooltip>
-                    </Breadcrumb.Item>
-                </Breadcrumb>
+            <StyledSideNav>
+                <SideMenuBreadCrumb 
+                    hideHome={hideHome}
+                    loading={loading}
+                    teamName={teamName}
+                    teams={teams}
+                    selectTeam={this.handleMenuClick} 
+                    displayTeam={this.handleButtonClick}
+                />
                 <Divider dashed={true} style={{ margin: '0px', marginTop: '4px' }}/>
-                { this.props.boards ?
-                    <DynMenu loadingBoards={btnLoading} menu={this.initialiseMenuItems()} selectedKeys={this.props.selectedKeys}></DynMenu>        
+                { boards ?
+                    <DynMenu 
+                        loadingBoards={loading}
+                        menu={this.initialiseMenuItems()}
+                        selectedKeys={selectedKeys}
+                    />        
                     :
                     null
                 }
-            </div>
+            </StyledSideNav>
         )
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-
       selectedKeys: state.boards.currentBoard ? [state.boards.currentBoard.id] : [],
       domainName: state.domain.name,
       boards: state.boards.boards,
@@ -146,7 +156,6 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-
 export default withRouter(compose(
     connect(mapStateToProps, mapDispatchToProps)
-  )(SideNav))
+)(SideNav))

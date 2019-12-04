@@ -27,15 +27,13 @@ const SidenavDrawer = (props) => {
                 placement="left"
                 style={{
                     overflow: 'auto',
-                    height: 'calc(100% - 108px)',
+                    height: '100%',
                     paddingBottom: '108px',
                     'paddingTop': '0px',
                     'zIndex': '20000'
                 }}
             >
-                <div>
-                    <SideNav domainName={props.domain.displayName}></SideNav>
-                </div>
+                <SideNav hideHome={true} domainName={props.domain.displayName}></SideNav>
             </Drawer>
         </React.Fragment>
     );

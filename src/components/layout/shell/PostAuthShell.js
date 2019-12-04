@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Toolbar, SideNav } from '..';
+import { SideNav, Toolbar } from '..';
 import { Route, withRouter, Switch, Redirect } from 'react-router-dom';
 import { DragDropContext } from 'react-beautiful-dnd';
+import styled from 'styled-components';
 
 import Board from '../../boards/Board';
 import EmptyBoards from '../../boards/EmptyBoards';
@@ -13,6 +14,12 @@ import Teams from '../../teams/teams';
 import TeamAccept from '../../teams/TeamAccept';
 
 import AppContext from '../../../context/appContext';
+
+const StyledSideNav = styled.div`
+    @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
+        display: none;
+    }
+`;
 
 class PostAuthShell extends React.Component {
     static contextType = AppContext;
@@ -93,13 +100,15 @@ class PostAuthShell extends React.Component {
     }
 
     render() {
-        const { firstLoad, boards, noBoards, boardsChecked, location } = this.props;
+        const { firstLoad, boards, noBoards, boardsChecked, location, domain, progress } = this.props;
 
         if (this.props.domain.domainId) {
             return <div className="post-auth__content">
             <DragDropContext onDragEnd={this.onDragEnd}>
-                <Toolbar progress={this.props.progress}></Toolbar>
-                <SideNav domainName={this.props.domain.displayName}></SideNav>
+                <Toolbar progress={progress}/>
+                <StyledSideNav>
+                    <SideNav domainName={domain.displayName}/>
+                </StyledSideNav>
                 <main>
                     {!this.context.invite && noBoards && boardsChecked &&
                         <Redirect exact from='/' to={`/empty-boards`}/>
