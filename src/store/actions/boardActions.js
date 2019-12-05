@@ -181,7 +181,7 @@ export const updateBoard = (board) => {
             dispatch({ type: 'SET_PROGRESS', payload: false });
             
         } catch (error) {
-            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to update the board' });
+            notifiy({ type: 'error', message: 'Board Failure', description: error.message });
         }
     }
 }

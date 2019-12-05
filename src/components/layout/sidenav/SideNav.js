@@ -16,7 +16,6 @@ import { getTeam } from '../../../store/actions/teamActions';
 const StyledSideNav = styled.div`
     height: 100%;
     border-right: 1px solid #e8e8e8;
-    grid-area: sidenav;
 
     .ant-menu {
         .ant-menu-item {

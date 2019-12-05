@@ -44,25 +44,27 @@ export const signIn = (credentials) => {
   }
 }
 
-export const signUp = (credentials) => {
-  return (dispatch, getState, { getFirebase }) => {
-    const firebase = getFirebase();
-
-    dispatch({ type: 'ATTEMPT_SIGNUP' })
+export const signUp = credentials => {
+  return async (dispatch, getState, { getFirebase }) => {
+    try {
+      const firebase = getFirebase();
   
-    firebase.auth().createUserWithEmailAndPassword(
-      credentials.userName,
-      credentials.password
-    ).then(() => {
+      dispatch({ type: 'ATTEMPT_SIGNUP' });
   
+      await firebase.auth().createUserWithEmailAndPassword(
+          credentials.userName,
+          credentials.password);
+          
       firebase.auth().currentUser.reload();
-      dispatch({ type: 'SIGNUP_SUCCESS', payload: firebase.auth().currentUser });
+      const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
+  
+      const currentUser = { ...firebase.auth().currentUser, roles: idTokenResult.claims.roles }
 
-    }).catch((err) => {
-      dispatch({ type: 'SIGNUP_ERROR', err });
-      notifiy({ type: 'warning', message: 'Sign up Failure', description: err.message })
-    });
-
+      dispatch({ type: 'SIGNUP_SUCCESS', payload: currentUser });
+    } catch (error) {
+      dispatch({ type: 'SIGNUP_ERROR', error });
+      notifiy({ type: 'warning', message: 'Sign up Failure', description: error.message })
+    }
   }
 }
 

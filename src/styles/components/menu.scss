@@ -348,10 +348,6 @@ dyn-sub-menu {
     cursor: pointer;
 }
 
-.ant-menu {
-    height: calc(100% - 120px);
-}
-
 .ant-menu-item, .ant-menu-submenu {
     text-align: start;
     font-family: $font-family;

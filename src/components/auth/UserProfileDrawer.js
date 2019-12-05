@@ -1,9 +1,19 @@
 import React, { useState } from 'react';
 import { Drawer, Icon, Tabs } from 'antd';
+import styled from 'styled-components';
+
 import WrappedUserProfileForm from './UserProfileForm';
 import WrappedResetPasswordForm from './ResetPasswordForm';
 
 const TabPane = Tabs.TabPane;
+
+const StyledAnchor = styled.a`
+    margin: 10px;
+
+    i {
+        margin-right: 10px;
+    }
+`;
 
 const UserProfileDrawer = (props) => {
 
@@ -19,7 +29,7 @@ const UserProfileDrawer = (props) => {
 
     return (
         <React.Fragment>
-            <a id="userProfile" className="usermenu__item" href="#" onClick={showDrawer}><Icon type="robot" /> User Profile</a>
+            <StyledAnchor id="userProfile" onClick={showDrawer}><Icon type="robot" /> User Profile</StyledAnchor>
 
             <Drawer
                 title="User Profile"

@@ -8,7 +8,7 @@ import BoardSettings from './BoardSettings';
 class BoardHeaderMenu extends React.Component {
 
     constructor(props) {
-        super();
+        super(props);
         this.state = { deleted: false }
     }
 
@@ -19,6 +19,10 @@ class BoardHeaderMenu extends React.Component {
 
     renderMenu = () =>  {
         const { user } = this.props;
+
+        if (!user) {
+            return null;
+        }
 
         return (
             <Menu>
@@ -60,14 +64,14 @@ class BoardHeaderMenu extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     return{
       board: state.boards.currentBoard,
-      user: state.auth.currentUser,
+      user: state.auth.currentUser
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
     return {
         removeBoard: (rowIdx) => dispatch(removeBoard(rowIdx))
     }

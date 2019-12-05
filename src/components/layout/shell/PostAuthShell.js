@@ -5,18 +5,22 @@ import { Route, withRouter, Switch, Redirect } from 'react-router-dom';
 import { DragDropContext } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
-import Board from '../../boards/Board';
-import EmptyBoards from '../../boards/EmptyBoards';
+import { signOut } from '../../../store/actions/authActions';
 import { getBoard } from '../../../store/actions/boardActions';
 import { getTeams } from '../../../store/actions/teamActions';
 import { updateBoard, updateColumnValueOrder } from '../../../store/actions/boardActions';
+
+import Board from '../../boards/Board';
+import EmptyBoards from '../../boards/EmptyBoards';
 import Teams from '../../teams/teams';
 import TeamAccept from '../../teams/TeamAccept';
 
 import AppContext from '../../../context/appContext';
 
 const StyledSideNav = styled.div`
-    @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
+    grid-area: sidenav;
+
+    @media all and (min-device-width : 0px) and (max-device-width : 680px) {
         display: none;
     }
 `;
@@ -26,7 +30,6 @@ class PostAuthShell extends React.Component {
 
     componentWillMount() {
         this.props.getTeams();
-        console.log('PostAuthShell', this.context);
 
         if (this.context.invite) {
             this.props.history.push(`/invite/${this.context.invite}`);
@@ -100,20 +103,26 @@ class PostAuthShell extends React.Component {
     }
 
     render() {
-        const { firstLoad, boards, noBoards, boardsChecked, location, domain, progress } = this.props;
+        const { boards, boardsChecked, currentUser, domain, firstLoad, location, noBoards, progress, signOut } = this.props;
 
-        if (this.props.domain.domainId) {
+        if (domain.domainId) {
             return <div className="post-auth__content">
             <DragDropContext onDragEnd={this.onDragEnd}>
-                <Toolbar progress={progress}/>
+                <Toolbar progress={progress} domain={domain} currentUser={currentUser} signOut={signOut}/>
                 <StyledSideNav>
                     <SideNav domainName={domain.displayName}/>
                 </StyledSideNav>
                 <main>
-                    {!this.context.invite && noBoards && boardsChecked &&
+                    {!this.context.invite && noBoards && boardsChecked && location.pathname !== '/empty-boards' &&
                         <Redirect exact from='/' to={`/empty-boards`}/>
                     }
                     {location.pathname === '/' && boards && boards.length > 0 &&
+                        <React.Fragment>
+                            {this.onDispatchBoardAction(boards[0].id)}
+                            <Redirect exact from='/' to={`/board/${boards[0].id}`}/>
+                        </React.Fragment>
+                    }
+                    {location.pathname === '/empty-boards' && boards && boards.length > 0 &&
                         <React.Fragment>
                             {this.onDispatchBoardAction(boards[0].id)}
                             <Redirect exact from='/' to={`/board/${boards[0].id}`}/>
@@ -140,6 +149,7 @@ class PostAuthShell extends React.Component {
 const mapStateToProps = (state) => {
     return {
         domain: state.domain,
+        currentUser: state.auth.currentUser,
         progress: state.base.progress,
         boards: state.boards.boards,
         board: state.boards.currentBoard,
@@ -155,6 +165,7 @@ const mapDispatchToProps = (dispatch) => {
         getTeams: () => dispatch(getTeams()),
         updateBoard: (board) => dispatch(updateBoard(board)),
         updateColumnValueOrder: (data) => dispatch(updateColumnValueOrder(data)),
+        signOut: () => dispatch(signOut())
       }
 }
 

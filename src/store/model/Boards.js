@@ -325,11 +325,11 @@ export class Boards {
                     boards[boardIdx].title = board.title;
                     batch.set(appBoardsRef, { boards });
                 }
+                delete board['unsubscribe'];
         
                 batch.set(boardsRef, board);
                 await batch.commit();
                 
-                delete board['unsubscribe'];
                 resolve();
 
             } catch (error) {

@@ -4,6 +4,7 @@ const initialState = {
     currentUser: {
         email: '',
         displayName: '',
+        roles: [],
         hasRole: (roles, role) => roles.indexOf(role) !== -1
     }
 }
@@ -48,7 +49,7 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 authError: null,
-                currentUser: action.payload,
+                currentUser: { ...initialState.currentUser, ...action.payload },
                 pending: false
             }
         case 'SIGNOUT_SUCCESS':
