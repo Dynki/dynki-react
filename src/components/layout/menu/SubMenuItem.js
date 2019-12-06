@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Tree,  Menu, Icon, Button, Tooltip } from 'antd';
+import { Tree,  Menu, Icon, Button, Tooltip, Typography } from 'antd';
 
 import { addNewFolder } from '../../../store/actions/boardActions';
 import FolderMenu from './FolderMenu';
 
 const { TreeNode, DirectoryTree } = Tree;
+const { Text } = Typography;
 
 class DynSubMenu extends React.Component {
 
@@ -43,9 +44,7 @@ class DynSubMenu extends React.Component {
     }
 
     render() {
-        const {itemClicked, btnClicked, addFolder, title, icon , items, act, selectedKeys, currentBoard, loadingBoards, ...other} = this.props;
-
-        // const expandedKeys = loadingBoards ? [] : ['000001'];
+        const {itemClicked, btnClicked, addFolder, title, icon , items, act, selectedKeys, currentBoard, loadingBoards, progress, ...other} = this.props;
 
         return (
             <React.Fragment>
@@ -55,7 +54,6 @@ class DynSubMenu extends React.Component {
                         onSelect={this.onSelect} 
                         switcherIcon={<Icon type="down" />} 
                         draggable 
-                        // expandedKeys={expandedKeys}
                         defaultExpandedKeys={['000001']} 
                         onDrop={this.onDrop}
                         className="firstitem"
@@ -74,11 +72,10 @@ class DynSubMenu extends React.Component {
                                         <TreeNode className="subitemnoicon" title={i.title} key={i.id} icon={<div className="noicon"></div>}/>
                                 }) 
                             }            
-                            {/* <TreeNode title={'Add new folder'} key={'New'} isLeaf icon={<Icon type="folder-add" />}/> */}
                         </TreeNode>
                     </DirectoryTree>
                     <Tooltip placement="right" title="New Board">
-                        <Button id={'btn' + title} className="btn-add-board" onClick={(e) => this.handleBtnClick(e, act)}  type="dashed" shape="circle" icon="plus"></Button>
+                        <Button id={'btn' + title} disabled={progress} className="btn-add-board" onClick={(e) => this.handleBtnClick(e, act)}  type="dashed" shape="circle" icon="plus"></Button>
                     </Tooltip>
                 </div>
             ): (
@@ -101,7 +98,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
     return {
-        currentBoard: state.boards.currentBoard
+        currentBoard: state.boards.currentBoard,
+        progress: state.base.progress
     }
 }
 

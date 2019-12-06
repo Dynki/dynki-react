@@ -423,6 +423,9 @@ dyn-sub-menu {
     }
 
     .ant-tree-title {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 210px;
         padding-left: 0px!important;
     }
 }

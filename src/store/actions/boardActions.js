@@ -19,9 +19,10 @@ export const getBoards = () => {
             } else {
                 dispatch({ type: 'REFRESH_BOARDS', payload: boards });
             }
-            dispatch({ type: 'SET_PROGRESS', payload: false });
         } catch (error) {
             notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to get the boards' });
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
         }
     }
 }
@@ -36,13 +37,14 @@ export const newBoard = () => {
             const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
             const newBoard = await boardsHelper.add();
             dispatch({ type: 'SET_CURRENT_BOARD', payload: newBoard });
-            dispatch({ type: 'SET_PROGRESS', payload: false });
     
             dispatch(getBoards());        
             dispatch(getBoard(newBoard.id));        
             
         } catch (error) {
             notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to create the new board' });
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
         }
 
         return Promise.resolve(newBoard);
@@ -100,10 +102,11 @@ export const getBoard = (id) => {
             console.log('GOT BOARD', board);
             
             dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
-            dispatch({ type: 'SET_PROGRESS', payload: false });
             
         } catch (error) {
             notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to get the board' });
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
         }
     }
 }
@@ -121,10 +124,11 @@ export const getBoardRoles = (id) => {
             console.log('GOT BOARD ROLES', boardRoles);
             
             dispatch({ type: 'SET_CURRENT_BOARD_ROLES', payload: boardRoles });
-            dispatch({ type: 'SET_PROGRESS', payload: false });
             
         } catch (error) {
             notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to get the board roles' });
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
         }
     }
 }
@@ -160,6 +164,8 @@ export const removeBoard = (boardId) => {
             
         } catch (error) {
             notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to remove the board' });
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
         }
 
         return Promise.resolve();
@@ -182,6 +188,8 @@ export const updateBoard = (board) => {
             
         } catch (error) {
             notifiy({ type: 'error', message: 'Board Failure', description: error.message });
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
         }
     }
 }
@@ -199,6 +207,8 @@ export const updateBoardRoles = (boardId, roles) => {
             
         } catch (error) {
             notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to update the board roles' });
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
         }
     }
 }
@@ -257,10 +267,11 @@ export const newRow = (row, groupId) => {
                 .doc(data.id)
                 .set(data);
     
-                dispatch({ type: 'SET_PROGRESS', payload: false });
         } catch (error) {
             notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to add the new row' });
             
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
         }
     }
 }
@@ -288,10 +299,10 @@ export const removeRow = (rowIdxToRemove, groupId) => {
                 .doc(updatedBoard.id)
                 .set(updatedBoard);
     
-            dispatch({ type: 'SET_PROGRESS', payload: false });
-            
         } catch (error) {
             notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to remove the row' });
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
         }
     }
 }
@@ -321,10 +332,10 @@ export const addColumn = (columnType) => {
             .doc(currentBoard.id)
             .set(currentBoard);
     
-            dispatch({ type: 'SET_PROGRESS', payload: false });
-            
         } catch (error) {
             notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to add the new column' });
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
         }
     }
 }
@@ -367,10 +378,10 @@ export const removeColumn = (modelId) => {
             .doc(currentBoard.id)
             .set(currentBoard);
     
-            dispatch({ type: 'SET_PROGRESS', payload: false });
-            
         } catch (error) {
             notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to remove the column' });
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
         }
     }
 }
@@ -403,10 +414,10 @@ export const selectCellValue = (key, model, rowId, groupId) => {
             .doc(currentBoard.id)
             .set(currentBoard);
     
-            dispatch({ type: 'SET_PROGRESS', payload: false });
-            
         } catch (error) {
             notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to update the board' });
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
         }
     }
 }
@@ -704,20 +715,18 @@ export const removeGroup = (groupId) => {
 // Create a new blank board with this user's domain/team.
 export const updateBoardTitle = (boardId, updateBoardTitle) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        
         try {
-            
             dispatch({ type: 'SET_PROGRESS', payload: true });
     
             const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
             const newFolder = await boardsHelper.updateBoardTitle(boardId, updateBoardTitle);
-            dispatch({ type: 'SET_PROGRESS', payload: false });
     
             dispatch(getBoards());        
             return Promise.resolve(newFolder);
         } catch (error) {
             notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to update the board description' });
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
         }
-
     }
 }
