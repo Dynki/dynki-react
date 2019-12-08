@@ -33,7 +33,14 @@ export const newBoard = () => {
 
         try {
             dispatch({ type: 'SET_PROGRESS', payload: true });
-    
+
+            const currentBoard = getState().boards.currentBoard;
+
+            // This is required to stop firestore creating multiple subscriptions, which then spam the system.
+            if (currentBoard && currentBoard.unsubscribe) {
+                currentBoard.unsubscribe();
+            }
+            
             const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
             const newBoard = await boardsHelper.add();
             dispatch({ type: 'SET_CURRENT_BOARD', payload: newBoard });
@@ -96,7 +103,7 @@ export const getBoard = (id) => {
             }
     
             const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
-            const board = await boardsHelper.get(id);
+            const board = await boardsHelper.get(id, dispatch, getState);
             board.roles = await boardsHelper.getBoardRoles(id);
     
             console.log('GOT BOARD', board);

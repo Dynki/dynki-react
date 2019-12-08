@@ -4,7 +4,6 @@ import * as _ from 'lodash';
 
 const FormItem = Form.Item;
 
-
 const BRForm = Form.create({
     mapPropsToFields(props) {
         return {
@@ -20,14 +19,15 @@ const BRForm = Form.create({
     }
 })((props) => {
     const { getFieldDecorator } = props.form;
-
+    const { colIdx, progress } = props;
     
     return (
         <Form className="table__row__cell__container" autoComplete="off">
             <FormItem >
                 {getFieldDecorator('columnValue', {})(
                     <Input 
-                        placeholder={props.colIdx === 0 ? "Enter some text here..." : ""}
+                        disabled={progress}
+                        placeholder={colIdx === 0 ? "Enter some text here..." : ""}
                         className="table__header__input text--no-border"
                     />
                 )}

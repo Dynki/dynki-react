@@ -29,7 +29,7 @@ export class Teams {
             try {
                 const snapshot = await this.firebase.firestore().collection('user-domains')
                 .where('users', 'array-contains', this.firebase.auth().currentUser.uid)
-                .get()
+                .get();
                 resolve(snapshot.docs.filter(doc => doc.id === id).map(doc => ({ id: doc.id, ...doc.data() }))[0] );
 
             } catch (error) {
@@ -46,21 +46,10 @@ export class Teams {
      */
     list() {
         return new Promise(async (resolve, reject) => {
-            let url = this.baseUrl;
-
             try {
-                // const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-                // const uid = this.firebase.auth().currentUser.uid;
-    
-                // const domains = await axios.get(url, { headers: { uid, token, authorization: token } });
-
-                // resolve(domains.data);
-
-                console.log('UID ',this.firebase.auth().currentUser.token);
-
                 const snapshot = await this.firebase.firestore().collection('user-domains')
                 .where('users', 'array-contains', this.firebase.auth().currentUser.uid)
-                .get()
+                .get();
                 resolve(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     
             } catch (error) {
@@ -79,13 +68,12 @@ export class Teams {
             const url = `${this.baseUrl}/${teamId}/groups`;
 
             try {
-                const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+                const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
                 const uid = this.firebase.auth().currentUser.uid;
 
                 const newGroup = await axios.post(url, { group_name: name }, { headers: { uid, token, authorization: token } });
 
                 resolve(newGroup);
-
             } catch (error) {
                 reject(error);
             }
@@ -101,13 +89,12 @@ export class Teams {
             const url = `${this.baseUrl}/${teamId}/groups/${groupId}`;
 
             try {
-                const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+                const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
                 const uid = this.firebase.auth().currentUser.uid;
 
                 const removedGroupRes = await axios.delete(url, { headers: { uid, token, authorization: token } });
 
                 resolve(removedGroupRes);
-
             } catch (error) {
                 reject(error);
             }
@@ -124,13 +111,12 @@ export class Teams {
             const url = `${this.baseUrl}/${teamId}/groups/${groupId}`;
 
             try {
-                const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+                const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
                 const uid = this.firebase.auth().currentUser.uid;
 
                 const removedGroupRes = await axios.put(url, { group_name: updatedGroup.name }, { headers: { uid, token, authorization: token } });
 
                 resolve(removedGroupRes);
-
             } catch (error) {
                 reject(error);
             }
@@ -152,7 +138,6 @@ export class Teams {
                 const removedMemberRes = await axios.put(url, { ...updatedMember }, { headers: { uid, token, authorization: token } });
 
                 resolve(removedMemberRes);
-
             } catch (error) {
                 reject(error.response);
             }
@@ -185,14 +170,11 @@ export class Teams {
                 } else {
                     resolve(inviteMemberRes.data);
                 }
-
             } catch (error) {
                 reject(error.response);
             }
         });
     }
-
-
 
     /**
      * Adds a new team.
@@ -240,7 +222,7 @@ export class Teams {
      * Update a individual team.
      * 
     */
-   update(team) {
+    update(team) {
         return new Promise(async (resolve, reject) => {
             delete team['unsubscribe'];
     

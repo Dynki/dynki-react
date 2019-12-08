@@ -9,9 +9,11 @@ const StyledBreadcrumb = styled(Breadcrumb)`
     align-items: center;   
 `;
 
-const SelectTeamButton = styled(Dropdown.Button)`
+const SelectTeamButton = styled.div`
     button:nth-child(1) {
-        min-width: 150px;
+        min-width: ${props => props.hideHome ? '200px' : '150px'};
+        max-width: ${props => props.hideHome ? '200px' : '150px'};
+        overflow: hidden;
     }
 `;
 
@@ -33,21 +35,23 @@ const SideNavBreadCrumb = ({ loading, teams, teamName, displayTeam, selectTeam, 
             {renderHome(hideHome)}
             <Breadcrumb.Item>
                 <Tooltip placement="topRight" title="Choose a team">
-                    <SelectTeamButton 
-                        data-testid="displayTeam" 
-                        type="dashed" 
-                        overlay={menu} 
-                        icon={<Icon type="team" />} 
-                        onClick={displayTeam}
-                    >
-                        {loading ? 
-                            <React.Fragment>
-                                {'Loading team - '}
-                                <Icon type="loading" />
-                            </React.Fragment>
-                            :
-                            teamName
-                        }
+                    <SelectTeamButton hideHome={hideHome}>
+                        <Dropdown.Button
+                            data-testid="displayTeam" 
+                            type="dashed" 
+                            overlay={menu}
+                            icon={<Icon type="team" />} 
+                            onClick={displayTeam}
+                        >
+                            {loading ? 
+                                <React.Fragment>
+                                    {'Loading team - '}
+                                    <Icon type="loading" />
+                                </React.Fragment>
+                                :
+                                teamName
+                            }
+                        </Dropdown.Button>
                     </SelectTeamButton>
                 </Tooltip>
             </Breadcrumb.Item>

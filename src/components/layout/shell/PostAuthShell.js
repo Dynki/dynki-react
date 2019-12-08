@@ -110,7 +110,7 @@ class PostAuthShell extends React.Component {
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <Toolbar progress={progress} domain={domain} currentUser={currentUser} signOut={signOut}/>
                 <StyledSideNav>
-                    <SideNav domainName={domain.displayName}/>
+                    <SideNav hideHome={true}/>
                 </StyledSideNav>
                 <main>
                     {!this.context.invite && noBoards && boardsChecked && location.pathname !== '/empty-boards' &&

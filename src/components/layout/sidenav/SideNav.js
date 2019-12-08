@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { Divider } from 'antd';
 
 import DynMenu from '../menu/Menu';
-import SideMenuBreadCrumb from './SideNavBreadCrumb';
+import SideNavBreadCrumb from './SideNavBreadCrumb';
 
 import { getBoards, getBoard, newBoard } from '../../../store/actions/boardActions'; 
 import { setDomain } from '../../../store/actions/authActions';
@@ -112,7 +112,7 @@ class SideNav extends React.Component {
 
         return (
             <StyledSideNav>
-                <SideMenuBreadCrumb 
+                <SideNavBreadCrumb 
                     hideHome={hideHome}
                     loading={loading}
                     teamName={teamName}

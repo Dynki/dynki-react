@@ -33,6 +33,7 @@ const BoardTable = (props) => {
                                             board={props.board}
                                             provided={provided}
                                             groupKey={groupKey}
+                                            progress={progress}
                                             >
                                         </BoardRow>
                                     </tr>

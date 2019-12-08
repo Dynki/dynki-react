@@ -11,7 +11,7 @@ import DateDueCell from './cellTypes/Date/DateDueCell';
 class BoardRow extends React.Component {
 
     constructor(props) {
-        super();
+        super(props);
         this.state = { hovering: false };
     }
 
@@ -43,7 +43,8 @@ class BoardRow extends React.Component {
                     rowId={this.props.rowId}
                     colIdx={idx}
                     modelName={col.model}
-                    groupKey={this.props.groupKey}>
+                    groupKey={this.props.groupKey}
+                    progress={this.props.progress}>
                 </BoardRowForm>;
 
             case 'date': 

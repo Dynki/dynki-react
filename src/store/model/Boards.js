@@ -15,7 +15,7 @@ export class Boards {
      * 
      * Returns: A board class instance
      */
-    get(id) {
+    get(id, dispatch, getState) {
         return new Promise(async (resolve, reject) => {
 
             const sub = this.firebase.firestore()
@@ -33,6 +33,17 @@ export class Boards {
                         if (!board.groups) {
                             board.groups = [{ id: newGuid(), name: 'Group 1', color: '2B82C1', entities: board.entities}];
                         }
+
+                        if (dispatch && getState) {
+                            const currentBoard = getState().boards.currentBoard;
+
+                            // This is required to stop firestore creating multiple subscriptions, which then spam the system.
+                            if (currentBoard && currentBoard.id === board.id) {
+                                dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
+                                console.log('Board updated', resolve);
+                            }
+                        }
+
 
                         resolve(board);
                     }
