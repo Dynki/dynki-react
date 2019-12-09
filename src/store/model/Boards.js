@@ -44,7 +44,6 @@ export class Boards {
                             }
                         }
 
-
                         resolve(board);
                     }
                 }, (err) => reject(err));
@@ -102,7 +101,7 @@ export class Boards {
      * 
      * Returns: A firebase snapshot instance containing the boards
      */
-    list() {
+    list(dispatch) {
 
         return new Promise((resolve, reject) => {
             this.firebase.firestore()
@@ -114,13 +113,13 @@ export class Boards {
                 const data = doc.data();
 
                 if (data) {
-                    const boards = data.boards;
+                    const boards = !data.boards || data.boards.length < 1 ? [] : data.boards;
 
-                    if (!data.boards || data.boards.length < 1) {
-                        resolve([]);
-                    } else {
-                        resolve(boards);
+                    if (dispatch) {
+                        dispatch({ type: 'REFRESH_BOARDS', payload: boards });
                     }
+
+                    resolve(boards);
                 } else {
                     resolve([])
                 }

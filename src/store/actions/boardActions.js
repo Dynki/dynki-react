@@ -12,7 +12,7 @@ export const getBoards = () => {
             dispatch({ type: 'ATTEMPT_LOADING_BOARDS' });
             
             const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
-            const boards = await boardsHelper.list();
+            const boards = await boardsHelper.list(dispatch);
     
             if (!boards || boards.length < 1) {
                 dispatch({ type: 'NO_BOARDS' });
@@ -49,6 +49,7 @@ export const newBoard = () => {
             dispatch(getBoard(newBoard.id));        
             
         } catch (error) {
+            console.log('Board add error', error);
             notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to create the new board' });
         } finally {
             dispatch({ type: 'SET_PROGRESS', payload: false });

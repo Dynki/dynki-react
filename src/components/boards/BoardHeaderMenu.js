@@ -1,37 +1,31 @@
 import React from 'react';
 import { Divider, Icon, Popconfirm, Menu, Dropdown, Button } from 'antd';
 import { connect } from 'react-redux';
+
 import { removeBoard } from '../../store/actions/boardActions';
 
+import authWrapper from '../auth/AuthWrapper';
 import BoardSettings from './BoardSettings';
 
-class BoardHeaderMenu extends React.Component {
+const BoardHeaderMenu = ({ boardId, user, hasRole, removeBoard }) => {
 
-    constructor(props) {
-        super(props);
-        this.state = { deleted: false }
+    const handleConfirm = (e) => {
+        removeBoard(boardId)
     }
 
-    handleConfirm = (e) => {
-        this.setState({ deleted: true });
-        this.props.removeBoard(this.props.boardId)
-    }
-
-    renderMenu = () =>  {
-        const { user } = this.props;
-
+    const renderMenu = () =>  {
         if (!user) {
             return null;
         }
 
         return (
             <Menu>
-                {user.hasRole(user.roles, 'ADMINISTRATORS') ?
+                {hasRole('ADMINISTRATORS') ?
                     <Menu.Item>
                         <BoardSettings/>
                     </Menu.Item> : null
                 }
-                {user.hasRole(user.roles, 'ADMINISTRATORS') ?
+                {hasRole('ADMINISTRATORS') ?
                     <Menu.Item disabled>
                         <Divider style={{ margin: '0' }} dashed />
                     </Menu.Item> : null
@@ -42,7 +36,7 @@ class BoardHeaderMenu extends React.Component {
                         cancelText="No Way"
                         trigger="click"
                         placement="bottomLeft"
-                        onConfirm={this.handleConfirm.bind(this)}
+                        onConfirm={handleConfirm}
                     >
                         <a href="no-ref"><Icon type="delete" style={{ paddingRight: '10px' }}/> Delete board</a>
                     </Popconfirm>
@@ -51,23 +45,20 @@ class BoardHeaderMenu extends React.Component {
         );
     };
 
-    render() {
-        const { user } = this.props;
-
-        return <div>
+    return (
+        <div>
             {user ? 
-                <Dropdown overlay={this.renderMenu()}>
+                <Dropdown overlay={renderMenu()}>
                     <Button shape="circle" icon="bars" className="board__header__btn"/>
                 </Dropdown>
             : null }
         </div>
-    }
+    )
 }
 
 const mapStateToProps = state => {
     return{
-      board: state.boards.currentBoard,
-      user: state.auth.currentUser
+      board: state.boards.currentBoard
     }
 }
 
@@ -77,4 +68,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BoardHeaderMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(authWrapper(BoardHeaderMenu));

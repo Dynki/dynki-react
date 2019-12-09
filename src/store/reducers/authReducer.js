@@ -3,9 +3,7 @@ const initialState = {
     pending: false,
     currentUser: {
         email: '',
-        displayName: '',
-        roles: [],
-        hasRole: (roles, role) => roles.indexOf(role) !== -1
+        displayName: ''
     }
 }
 

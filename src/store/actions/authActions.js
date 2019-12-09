@@ -11,7 +11,7 @@ export const signIn = (credentials) => {
       await firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password);
       const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
   
-      const currentUser = { ...firebase.auth().currentUser, roles: idTokenResult.claims.roles }
+      const currentUser = { ...firebase.auth().currentUser, claims: idTokenResult.claims }
       dispatch({ type: 'SET_CURRENT_USER', payload: currentUser });
 
       // Confirm the user is an Admin.
@@ -58,7 +58,7 @@ export const signUp = credentials => {
       firebase.auth().currentUser.reload();
       const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
   
-      const currentUser = { ...firebase.auth().currentUser, roles: idTokenResult.claims.roles }
+      const currentUser = { ...firebase.auth().currentUser, claims: idTokenResult.claims }
 
       dispatch({ type: 'SIGNUP_SUCCESS', payload: currentUser });
     } catch (error) {
@@ -89,7 +89,7 @@ export const setDomain = (domainId) => {
       await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
       const idTokenResult = await firebase.auth().currentUser.getIdTokenResult(true)
 
-      const currentUser = { ...firebase.auth().currentUser, roles: idTokenResult.claims.roles }
+      const currentUser = { ...firebase.auth().currentUser, claims: idTokenResult.claims }
       dispatch({ type: 'SET_CURRENT_USER', payload: currentUser });
 
       const domainToSet = domainId ? domainId : idTokenResult.claims.domainId;

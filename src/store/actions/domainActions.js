@@ -89,7 +89,7 @@ export const createDomain = (name) => {
             await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
             const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
 
-            const currentUser = { ...firebase.auth().currentUser, roles: idTokenResult.claims.roles }
+            const currentUser = { ...firebase.auth().currentUser, claims: idTokenResult.claims }
             dispatch({ type: 'SET_CURRENT_USER', payload: currentUser });
 
             // Confirm the user is an Admin.
