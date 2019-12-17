@@ -1,11 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { PageHeader, Menu, Dropdown, Icon, Button, Tag, Typography, Row, Skeleton } from 'antd';
+import { PageHeader, Button, Tag, Typography, Row, Skeleton } from 'antd';
 import TeamGroups from './teams-group';
 import TeamMembers from './teams-members';
 import TeamInvite from './teams-invite';
-import { getTeam, addTeamGroup, deleteTeamGroup, updateTeamGroup, updateTeamMember, inviteTeamMember } from '../../store/actions/teamActions';
+import authWrapper from '../auth/AuthWrapper';
+import { 
+    getTeam, 
+    addTeamGroup, 
+    deleteTeamGroup, 
+    updateTeamGroup, 
+    updateTeamMember, 
+    inviteTeamMember 
+} from '../../store/actions/teamActions';
 
 const { Paragraph } = Typography;
 
@@ -35,6 +43,8 @@ class Teams extends React.Component {
 
     render() {
 
+        const { team, progress, hasRole } = this.props;
+
         if (!this.props.team) {
             return  (
             <div className="teams__skeleton">
@@ -42,21 +52,6 @@ class Teams extends React.Component {
             </div>)
         }
 
-        const menu = (
-            <Menu>
-                <Menu.Item>
-                    <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">
-                        Disable team
-                </a>
-                </Menu.Item>
-                <Menu.Item>
-                    <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">
-                        Remove team
-                </a>
-                </Menu.Item>
-            </Menu>
-        );
-    
         const IconLink = ({ src, text }) => (
             <a
                 style={{
@@ -88,40 +83,15 @@ class Teams extends React.Component {
                     to get you going. You can always add more groups and reorganise users between groups at a later point.
               </Paragraph>
                 <Row className="contentLink" type="flex">
-                    <Button type="link" size={"small"} onClick={() => this.setDrawerVisibility(true)}>
+                    <Button disabled={!hasRole('ADMINISTRATORS')} type="link" size={"small"} onClick={() => this.setDrawerVisibility(true)}>
                         <IconLink
                             src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg"
                             text="Invite a team member"
                         />
                     </Button>
-                    <IconLink
-                        src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg"
-                        text="Team Info"
-                    />
                 </Row>
             </div>
         );
-    
-        const DropdownMenu = () => {
-            return (
-                <Dropdown key="more" overlay={menu}>
-                    <Button
-                        style={{
-                            border: 'none',
-                            padding: 0,
-                        }}
-                    >
-                        <Icon
-                            type="ellipsis"
-                            style={{
-                                fontSize: 20,
-                                verticalAlign: 'top',
-                            }}
-                        />
-                    </Button>
-                </Dropdown>
-            );
-        };
     
         const routes = [
             {
@@ -152,8 +122,6 @@ class Teams extends React.Component {
             );
         };
 
-        const { team, progress } = this.props;
-
         return team ? 
             <React.Fragment>
                 <TeamInvite 
@@ -169,11 +137,14 @@ class Teams extends React.Component {
                         subTitle="Like spokes in a wheel"
                         tags={<Tag color="blue">{team.members.length} Team member{team.members.length === 1 ? '' : 's'}</Tag>}
                         extra={[
-                            <Button onClick={this.addGroup} key="3">Add a group</Button>,
-                            <Button onClick={() => this.setDrawerVisibility(true)} key="1" type="primary">
+                            <Button disabled={!hasRole('ADMINISTRATORS')} onClick={this.addGroup} key="3">Add a group</Button>,
+                            <Button 
+                                data-testid="inviteButton"
+                                disabled={!hasRole('ADMINISTRATORS')} 
+                                onClick={() => this.setDrawerVisibility(true)} key="1" type="primary"
+                            >
                                 Invite a team member
-                            </Button>,
-                            <DropdownMenu key="more" />,
+                            </Button>
                         ]}
                         breadcrumb={{ routes }}
                     >
@@ -196,6 +167,7 @@ class Teams extends React.Component {
                                 addGroup={this.addGroup} 
                                 handleDelete={this.props.deleteTeamGroup} 
                                 handleSave={this.saveGroupUpdate}
+                                hasRole={hasRole}
                             />
                         </div>
                         <div className="teams__members">
@@ -204,6 +176,7 @@ class Teams extends React.Component {
                                 groups={team.groups}
                                 handleSave={this.saveMemberUpdate}
                                 setDrawerVisibility={this.setDrawerVisibility}
+                                hasRole={hasRole}
                             />
                         </div>
                     </div>
@@ -231,7 +204,7 @@ export const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Teams);
+export default connect(mapStateToProps, mapDispatchToProps)(authWrapper(Teams));
 
 
 

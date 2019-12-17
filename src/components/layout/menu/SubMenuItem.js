@@ -4,6 +4,7 @@ import { Tree,  Menu, Icon, Button, Tooltip, Typography } from 'antd';
 
 import { addNewFolder } from '../../../store/actions/boardActions';
 import FolderMenu from './FolderMenu';
+import authWrapper from '../../auth/AuthWrapper';
 
 const { TreeNode, DirectoryTree } = Tree;
 const { Text } = Typography;
@@ -44,7 +45,7 @@ class DynSubMenu extends React.Component {
     }
 
     render() {
-        const {itemClicked, btnClicked, addFolder, title, icon , items, act, selectedKeys, currentBoard, loadingBoards, progress, ...other} = this.props;
+        const { itemClicked, btnClicked, addFolder, title, icon , items, act, selectedKeys, currentBoard, loadingBoards, progress, hasRole, ...other} = this.props;
 
         return (
             <React.Fragment>
@@ -75,7 +76,7 @@ class DynSubMenu extends React.Component {
                         </TreeNode>
                     </DirectoryTree>
                     <Tooltip placement="right" title="New Board">
-                        <Button id={'btn' + title} disabled={progress} className="btn-add-board" onClick={(e) => this.handleBtnClick(e, act)}  type="dashed" shape="circle" icon="plus"></Button>
+                        <Button id={'btn' + title} disabled={progress || !hasRole('BOARD_CREATORS')} className="btn-add-board" onClick={(e) => this.handleBtnClick(e, act)}  type="dashed" shape="circle" icon="plus"></Button>
                     </Tooltip>
                 </div>
             ): (
@@ -103,4 +104,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DynSubMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(authWrapper(DynSubMenu));

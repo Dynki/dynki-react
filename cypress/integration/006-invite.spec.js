@@ -1,29 +1,24 @@
-import Chance from 'chance';
-const chance = new Chance();
 
 /// <reference types="Cypress" />
 
 context('Team Invite', () => {
 
-    // it('Change board title', () => {
-    //     cy.get('#title').clear();
-    //     cy.get('#title').type('Test Title');
-    //     cy.get('#description').click();
-    //     cy.wait(1000);
-    //     cy.get('#title').should('have.value', 'Test Title');
-    // })
+    it('should open the invite drawer', () => {
+        cy.get('[data-testid=inviteButton]').click();
+        cy.contains('Invite team members');
+    });
 
-    // it('Change board description', () => {
-    //     cy.wait(1000);
-    //     cy.get('#description').clear();
-    //     cy.get('#description').type('Test Desc');
-    //     cy.get('#title').click();
-    //     cy.wait(1000);
-    //     cy.get('#description').should('have.value','Test Desc');
-    // })
+    it('should allow an email address to be inputted', () => {
+        cy.get('[data-testid=inviteSelect]').type('fake1@fake.com').should('have.value', ['fake1@fake.com']);
+    });
 
-    // after(() => {
-    //     cy.deleteAccount();
-    // })
-})
-  
+    it('should allow multiple email address to be inputted', () => {
+        cy.get('[data-testid=inviteSelect]').type('fake2@fake.com').should('have.value', ['fake1@fake.com' ,'fake2@fake.com']);
+    });
+
+    it('should send be notified of sending invites', () => {
+        cy.get('[data-testid=sendInvitesButton]').click();
+        cy.contains('Successfully invited team member');
+    });
+
+});

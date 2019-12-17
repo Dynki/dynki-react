@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Icon } from 'antd';
 
+import Footer from '../layout/footer/Footer';
+
 const Home = (props) => {
 
     return (
@@ -15,7 +17,6 @@ const Home = (props) => {
                         <h1>Dynki</h1>
                     </div>
                     <div className="home__links">
-                        {/* <Link to="/features">Features</Link> */}
                         <Link to="/Pricing">Pricing</Link>
                         <Link className="login-link-btn" to="/auth/login">Log In</Link>
                         <Link to="/auth/signup">Sign Up</Link>
@@ -59,6 +60,7 @@ const Home = (props) => {
                     <Link to="/auth/signup">
                         <div className="home__button">Sign Up For Free</div>
                     </Link>
+                    <Footer/>
                 </div>
             </div>
         </React.Fragment>

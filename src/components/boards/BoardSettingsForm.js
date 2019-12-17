@@ -23,7 +23,7 @@ class BoardSettingsForm extends React.Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        const { team } = this.props;
+        const { progress, team } = this.props;
 
         const handleBlur = () => {
             this.handleSubmit();
@@ -48,6 +48,7 @@ class BoardSettingsForm extends React.Component {
                         })(
                             <Select 
                             mode="tags"
+                            disabled={progress}
                             style={{ width: '100%' }}
                             placeholder="Please select"
                             ref={node => (this.input = node)} 
@@ -63,9 +64,11 @@ class BoardSettingsForm extends React.Component {
                         })(
                             <Select 
                             mode="multiple"
+                            disabled={progress}
                             style={{ width: '100%' }}
                             placeholder="Please select"
                             ref={node => (this.input = node)} 
+                            onBlur={() => handleBlur()}
                             >{selectChildren}</Select>
                         )}
                     </Form.Item>
@@ -76,10 +79,12 @@ class BoardSettingsForm extends React.Component {
                             rules: [],
                         })(
                             <Select 
+                            disabled={progress}
                             mode="multiple"
                             style={{ width: '100%' }}
                             placeholder="Please select"
                             ref={node => (this.input = node)} 
+                            onBlur={() => handleBlur()}
                             >{selectChildren}</Select>
                         )}
                     </Form.Item>
@@ -114,7 +119,8 @@ export const mapStateToProps = (state) => {
     return{
       user: state.auth.currentUser,
       board: state.boards.currentBoard,
-      team: state.teams.currentTeam
+      team: state.teams.currentTeam,
+      progress: state.base.progress
     }
   }
   

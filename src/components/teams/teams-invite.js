@@ -55,8 +55,11 @@ class TeamsInviteForm extends React.Component {
                     rules: [{ required: true, message: 'Please input an email address!' }],
                 })(
                     <Select
+                        data-testid="inviteSelect"
                         placeholder="Enter email addresses" 
-                        mode="tags" 
+                        mode="tags"
+                        maxTagCount="50"
+                        maxTagTextLength="200" 
                         style={{ 
                             width: '100%'
                         }} 
@@ -72,6 +75,7 @@ class TeamsInviteForm extends React.Component {
                 </Paragraph>
                 <Divider />
                 <Button 
+                    data-testid="sendInvitesButton"
                     loading={this.props.progress} 
                     icon="mail" 
                     block id="btnInvite" 

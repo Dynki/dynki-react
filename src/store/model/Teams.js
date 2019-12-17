@@ -54,7 +54,8 @@ export class Teams {
     
             } catch (error) {
                 console.log('Error getting teams', error);
-                reject(error);
+                const response = error.response
+                reject(response.data.error);
             }
         });
     }
@@ -75,7 +76,8 @@ export class Teams {
 
                 resolve(newGroup);
             } catch (error) {
-                reject(error);
+                const response = error.response
+                reject(response.data.error);
             }
         });
     }
@@ -96,7 +98,8 @@ export class Teams {
 
                 resolve(removedGroupRes);
             } catch (error) {
-                reject(error);
+                const response = error.response
+                reject(response.data.error);
             }
         });
     }
@@ -118,7 +121,8 @@ export class Teams {
 
                 resolve(removedGroupRes);
             } catch (error) {
-                reject(error);
+                const response = error.response
+                reject(response.data.error);
             }
         });
     }
@@ -139,7 +143,8 @@ export class Teams {
 
                 resolve(removedMemberRes);
             } catch (error) {
-                reject(error.response);
+                const response = error.response
+                reject(response.data.error);
             }
         });
     }
@@ -171,7 +176,8 @@ export class Teams {
                     resolve(inviteMemberRes.data);
                 }
             } catch (error) {
-                reject(error.response);
+                const response = error.response
+                reject(response.data.error);
             }
         });
     }

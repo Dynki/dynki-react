@@ -16,7 +16,7 @@ export const newTeam = () => {
             dispatch(getTeam(newTeam.id));        
         } catch (error) {
             console.log(error, 'Add team error');
-            notifiy({ type: 'error', message: 'Add team failure', description: error.data });
+            notifiy({ type: 'error', message: 'Add team failure', description: error.message });
         } finally {
             dispatch({ type: 'SET_PROGRESS', payload: false });
         }
@@ -44,7 +44,7 @@ export const getTeams = () => {
             
         } catch (error) {
             console.log(error, 'Get teams error');
-            notifiy({ type: 'error', message: 'Teams retrieval failure', description: error.data });
+            notifiy({ type: 'error', message: 'Teams retrieval failure', description: error.message });
         } finally {
             dispatch({ type: 'SET_PROGRESS', payload: false });
         }
@@ -71,14 +71,14 @@ export const getTeam = (id) => {
             dispatch({ type: 'SET_CURRENT_TEAM', payload: team });
         } catch (error) {
             console.log(error, 'Get team error');
-            notifiy({ type: 'error', message: 'Team retrieval failure', description: error.data });
+            notifiy({ type: 'error', message: 'Team retrieval failure', description: error.message });
         } finally {
             dispatch({ type: 'SET_PROGRESS', payload: false });
         }
     }
 }
 
-// Get an individual team by id.
+// Add an individual team by id.
 export const addTeamGroup = (id) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         try {
@@ -90,7 +90,7 @@ export const addTeamGroup = (id) => {
             dispatch({ type: 'ADDED_TEAM_GROUP', payload: newTeam.data });
         } catch (error) {
             console.log(error, 'add team group error');
-            notifiy({ type: 'error', message: 'Delete failure', description: error.data });
+            notifiy({ type: 'error', message: 'Add group failure', description: error });
         } finally {
             dispatch({ type: 'SET_PROGRESS', payload: false });
         }
@@ -112,7 +112,7 @@ export const deleteTeamGroup = (id) => {
             }
         } catch (error) {
             console.log(error, 'delete team group error');
-            notifiy({ type: 'error', message: 'Update failure', description: error.data });
+            notifiy({ type: 'error', message: 'Delete group failure', description: error });
         } finally {
             dispatch({ type: 'SET_PROGRESS', payload: false });
         }
@@ -126,13 +126,11 @@ export const updateTeamGroup = (id, updatedGroup) => {
             dispatch({ type: 'SET_PROGRESS', payload: true });
     
             const teamsHelper = new Teams(getFirebase(), getState().domain.domainId);
-            dispatch({ type: 'UPDATED_TEAM_GROUP', payload: { id, name: updatedGroup.name } });
-    
-            console.log(updatedGroup, 'updateGroup in action');
             await teamsHelper.updateGroup(getState().teams.currentTeam.id, id, updatedGroup);
+            dispatch({ type: 'UPDATED_TEAM_GROUP', payload: { id, name: updatedGroup.name } });
         } catch (error) {
             console.log(error, 'update group error');
-            notifiy({ type: 'error', message: 'Update failure', description: error.data });
+            notifiy({ type: 'error', message: 'Update group failure', description: error });
         } finally {
             dispatch({ type: 'SET_PROGRESS', payload: false });
         }
@@ -142,16 +140,16 @@ export const updateTeamGroup = (id, updatedGroup) => {
 // Update an individual team by id.
 export const updateTeamMember = (id, updatedMember) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        dispatch({ type: 'SET_PROGRESS', payload: true });
-
-        const teamsHelper = new Teams(getFirebase(), getState().domain.domainId);
-        dispatch({ type: 'UPDATED_TEAM_MEMBER', payload: updatedMember });
-
         try {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+
+            const teamsHelper = new Teams(getFirebase(), getState().domain.domainId);
             await teamsHelper.updateMember(getState().teams.currentTeam.id, id, updatedMember);
+
+            dispatch({ type: 'UPDATED_TEAM_MEMBER', payload: updatedMember });
         } catch (error) {
             console.log(error, 'update member error');
-            notifiy({ type: 'error', message: 'Update failure', description: error.data });
+            notifiy({ type: 'error', message: 'Update failure', description: error });
         } finally {
             dispatch({ type: 'SET_PROGRESS', payload: false });
         }
@@ -171,7 +169,7 @@ export const inviteTeamMember = (emails) => {
             notifiy({ type: 'success', message: 'Invite Success', description: 'Successfully invited team member' });
         } catch (error) {
             console.log('Failed to invite user', error);
-            notifiy({ type: 'error', message: 'Update failure', description: error.data, duration: 0 });
+            notifiy({ type: 'error', message: 'Invite failure', description: error, duration: 0 });
             dispatch(getTeam(getState().domain.domainId));
         } finally {
             dispatch({ type: 'SET_PROGRESS', payload: false });
@@ -202,7 +200,7 @@ export const acceptInvite = (inviteId) => {
             dispatch(getTeams());        
     
         } catch (error) {
-            notifiy({ type: 'error', message: 'Acceptance failure', description: error.data });
+            notifiy({ type: 'error', message: 'Acceptance failure', description: error });
         } finally {
             dispatch({ type: 'SET_PROGRESS', payload: false });
         }

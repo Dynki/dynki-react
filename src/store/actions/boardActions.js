@@ -207,10 +207,9 @@ export const updateBoardRoles = (boardId, roles) => {
         
         try {
             dispatch({ type: 'SET_PROGRESS', payload: true });
-    
+            dispatch({ type: 'SET_CURRENT_BOARD_ROLES', payload: roles });
             const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
             await boardsHelper.updateBoardRoles(boardId, roles);
-            dispatch({ type: 'SET_CURRENT_BOARD_ROLES', payload: roles });
             dispatch({ type: 'SET_PROGRESS', payload: false });
             
         } catch (error) {

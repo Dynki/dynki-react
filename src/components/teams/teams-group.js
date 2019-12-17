@@ -104,6 +104,8 @@ class TeamGroups extends React.Component {
     constructor(props) {
       super(props);
 
+      const { hasRole } = props;
+
       this.columns = [
         {
           title: 'Team Groups',
@@ -113,7 +115,7 @@ class TeamGroups extends React.Component {
           editable: true,
           onCell: record => ({
               record,
-              editable: ['Administrators', 'Board Users', 'Board Creators'].indexOf(record.name) < 0,
+              editable: ['ADMINISTRATORS', 'BOARD_USERS', 'BOARD_CREATORS'].indexOf(record.name) < 0 && hasRole('ADMINISTRATORS'),
               dataIndex: 'name',
               title: 'name',
               handleSave: this.handleSave.bind(this),
@@ -128,7 +130,7 @@ class TeamGroups extends React.Component {
           width: 84,
           align: 'center',
           render: (text, record) =>
-            ['Administrators', 'Board Users', 'Board Creators'].indexOf(record.name) < 0 ? (
+            ['ADMINISTRATORS', 'BOARD_USERS', 'BOARD_CREATORS'].indexOf(record.name) < 0 && hasRole('ADMINISTRATORS') ? (
               <Popconfirm title="Delete really?" onConfirm={() => this.handleDelete(record.id)} okText="Yes delete group">
                   <Icon data-testid={`delete-group-${record.name.replace(' ', '-')}`} type="delete" style={{'color': 'red'}}/>
               </Popconfirm>
@@ -147,14 +149,16 @@ class TeamGroups extends React.Component {
 
     render() {
 
-      return (this.props.groups ? <Table
-        footer={() => <div><Button data-testid="addGroup" onClick={this.props.addGroup} key="3qdsdsds" type="default">Add a group</Button></div>}
+      const { addGroup, groups, handleDelete, handleSave, hasRole } = this.props;
+
+      return (groups ? <Table
+        footer={() => <div><Button disabled={!hasRole('ADMINISTRATORS')} data-testid="addGroup" onClick={addGroup} key="3qdsdsds" type="default">Add a group</Button></div>}
         components={components} 
         columns={this.columns} 
         id="groups"
-        dataSource={this.props.groups}
-        handleDelete={this.props.handleDelete}
-        handleSave={this.props.handleSave}
+        dataSource={groups}
+        handleDelete={handleDelete}
+        handleSave={handleSave}
         rowKey={record => record.id}
         rowClassName={() => 'editable-row'}
         />: null)

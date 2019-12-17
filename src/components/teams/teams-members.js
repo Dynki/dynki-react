@@ -109,6 +109,9 @@ class EditableCell extends React.Component {
   
 
 const TeamMembers = (props) => {
+
+    const { hasRole } = props;
+
     const [searchText, setSearchText] = useState('');
     const [searchInput, setSearchInput] = useState(null);
 
@@ -206,10 +209,10 @@ const TeamMembers = (props) => {
             filters: props.groups.map(g => ({ text: g.name, value: g.id })),
             filterMultiple: true,
             onFilter: (value, record) => record.tags.includes(value),
-            editable: true,
+            editable: hasRole('ADMINISTRATORS'),
             onCell: record => ({
                 record,
-                editable: true ,
+                editable: hasRole('ADMINISTRATORS'),
                 dataIndex: 'memberOf',
                 title: 'Members of Groups',
                 values: props.groups,
@@ -255,7 +258,7 @@ const TeamMembers = (props) => {
             className="member-table"
             rowKey={record => record.id}
             footer={() => <div>
-            <Button key="1fdfdfd" type="default" onClick={() => props.setDrawerVisibility(true)}>
+            <Button disabled={!hasRole('ADMINISTRATORS')} key="1fdfdfd" type="default" onClick={() => props.setDrawerVisibility(true)}>
                 Invite a team member
             </Button>
             </div>}

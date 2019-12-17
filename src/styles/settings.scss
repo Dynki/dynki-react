@@ -21,6 +21,11 @@ $logo-font-size-large: 44px;
 
 body {
     font-family: $font-family;
+    -webkit-font-feature-settings: "lnum";
+    -moz-font-feature-settings: "lnum";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'lnum' 1;
     font-weight: 400;
     // font-variant-numeric: $font-variant-numeric;
     // font-variant-numeric: lining-nums;

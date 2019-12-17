@@ -71,7 +71,7 @@ class SignUpForm extends React.Component {
         const { getFieldDecorator, getFieldsError } = this.props.form;
         return (
             <div className="login">
-                <h1 className="login__heading">Free Sign Up</h1>
+                <h1 className="login__heading">Sign Up</h1>
                 <Form onSubmit={this.handleSubmit}>
                     <FormItem>
                         {getFieldDecorator('userName', {

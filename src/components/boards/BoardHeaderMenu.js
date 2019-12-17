@@ -30,7 +30,7 @@ const BoardHeaderMenu = ({ boardId, user, hasRole, removeBoard }) => {
                         <Divider style={{ margin: '0' }} dashed />
                     </Menu.Item> : null
                 }
-                <Menu.Item>
+                <Menu.Item disabled={!hasRole('BOARD_CREATORS')}>
                     <Popconfirm title="Are you sure delete this board?"
                         okText="Yes"
                         cancelText="No Way"
