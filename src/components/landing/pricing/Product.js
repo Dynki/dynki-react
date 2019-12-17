@@ -2,12 +2,22 @@ import React from 'react';
 import styles from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Icon, Typography } from 'antd';
+const { Title, Text } = Typography;
 
-const { Paragraph, Title, Text } = Typography;
+const StyledPicture = styles.img`
+    display: block;
+    background-image: url(${props => props.imageSource ? props.imageSource : '/assets/img/dog-sm.jpg'}), none;
+    background-size:     cover;
+    background-repeat:   no-repeat;
+    background-position: center center;  
+    width: 100%;
+    height: 100%;
+`;
 
 const StyledWrapper = styles.div`
     display: flex;
     flex-direction: column;
+    margin: 15px;
 `;
 
 const ProductName = styles.div`
@@ -16,7 +26,7 @@ const ProductName = styles.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100px;
+    height: 300px;
 
     h1 {
         color: #ffffff;
@@ -30,7 +40,7 @@ const StyledContent = styles.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 400px;
+    min-height: 500px;
     min-width: 300px;
     margin-bottom: 20px;
 
@@ -73,6 +83,7 @@ const StyledButtonLink = styles.div`
 
 const StyledFeatures = styles.div`
     margin-top: 25px;
+    margin-bottom: 25px;
     display: flex;
     flex-direction: column;
 `;
@@ -97,24 +108,29 @@ const StyledCost = styles.div`
     }
 `;
 
-const Product = ({ blurb, buttonText, color, cost, description, main, redirectLink, title }) => {
+const Product = ({ blurb, buttonText, color, cost, description, free, imageSource, main, redirectLink, title }) => {
     return (
         <StyledWrapper>
             <ProductName bgColor={color}>
-                <Title>{title}</Title>
+                <StyledPicture imageSource={imageSource}/>
             </ProductName>
             <StyledContent>
+                <Title level={3}>{title}</Title>
                 <Text>{description}</Text>
                 <StyledCost color={color}>
                     <Title level={4}>{cost}</Title>
                 </StyledCost>
-                <Text>Per month</Text>
-                <Text strong>Billed monthly</Text>
+                {!free && 
+                    <React.Fragment>
+                        <Text>Per user/month</Text>
+                        <Text strong>Billed monthly</Text>
+                    </React.Fragment>
+                }
                 <StyledFeatures>
                 {blurb.map((b,i) => {
-                    return <StyledFeature>
+                    return <StyledFeature key={i}>
                         <Icon type="check-circle" theme="filled" />
-                        <Text key={i}>{b}</Text>
+                        <Text>{b}</Text>
                     </StyledFeature>
                 })}
                 </StyledFeatures>

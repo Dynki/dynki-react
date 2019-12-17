@@ -9,6 +9,9 @@ const StyledContent = styles.div`
     min-height: 80px;
     max-height: 80px;
     grid-area: header;
+
+    background-color: #a5a4a4;
+    z-index: 100000;
 `;
 
 const Brand = styles.div`

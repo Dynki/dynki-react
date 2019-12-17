@@ -2,32 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Icon } from 'antd';
 
-import Footer from '../layout/footer/Footer';
-
-const Home = (props) => {
+const Home = props => {
 
     return (
         <React.Fragment>
             <div className="home__choice">
-                <div className="home__header">
-                    <div className="brand">
-                        <Link to="/home">
-                            <div className="section__img"></div>
-                        </Link>
-                        <h1>Dynki</h1>
-                    </div>
-                    <div className="home__links">
-                        <Link to="/Pricing">Pricing</Link>
-                        <Link className="login-link-btn" to="/auth/login">Log In</Link>
-                        <Link to="/Pricing">Sign Up</Link>
-                    </div>
-                </div>
-
                 <div className="home">
                     <section className="home__sample">
                         <div className="home__h1">An elegant way to manage your work load</div>
                         <div className="home__h2">Whether its planning work or tracking orders</div>
-                        <Link to="/auth/signup" id="register">
+                        <Link to="/Pricing" id="register">
                             <div className="home__button">Get Started For Free</div>
                         </Link>
                         
@@ -62,7 +46,6 @@ const Home = (props) => {
                     </Link>
                 </div>
             </div>
-            <Footer/>
         </React.Fragment>
     )
 }
