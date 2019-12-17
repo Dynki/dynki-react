@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { Radio } from 'antd';
+import { Radio, Select } from 'antd';
 import styles from 'styled-components';
+import Media from 'react-media';
+
+const { Option } = Select;
 
 const StyledContent = styles.div`
     margin: 30px;
@@ -33,13 +36,36 @@ const PricingUsers =  ({ onSetUserCount }) => {
     const [teamSize, setTeamSize] = useState("2");
     const teamSizes = ["2", "5", "10", "15", "25", "50", "100", "200", "10000"];
 
-    const onSetTeamSize = (e) => {
+    const onSetTeamSize = e => {
         setTeamSize(e.target.value);
         onSetUserCount(e.target.value);
     }
 
-    return (
-        <StyledContent>
+    const onSelectSetTeamSize = value => {
+        setTeamSize(value);
+        onSetUserCount(value);
+    }
+
+    const renderSelect = () => {
+        return (
+            <Select
+                showSearch
+                style={{ width: 300 }}
+                placeholder="Select users"
+                optionFilterProp="children"
+                onChange={onSelectSetTeamSize}
+                defaultValue="2"
+                size="large"
+            >
+                {teamSizes.map((s, i) => (
+                    <Option key={i} value={s}>{`${s==="10000" ? '200': s}${s==="10000" ? '+':''} Users`}</Option>
+                ))}
+            </Select>
+        )
+    }
+
+    const renderRadio = () => {
+        return (
             <StyledRadioGroup size="large" defaultValue="2" value={teamSize} onChange={onSetTeamSize}>
                 {teamSizes.map((s, i) => (
                     <StyledButton selected={teamSize === s ? true : false}  value={s} key={i}>
@@ -47,6 +73,24 @@ const PricingUsers =  ({ onSetUserCount }) => {
                     </StyledButton>
                 ))}
             </StyledRadioGroup>
+        )
+    }
+
+    return (
+        <StyledContent>
+            <Media queries={{
+                small: "(max-width: 599px)",
+                medium: "(min-width: 600px) and (max-width: 1199px)",
+                large: "(min-width: 1200px)"
+                }}>
+                {matches => (
+                    <React.Fragment>
+                    {matches.small && renderSelect()}
+                    {matches.medium && renderRadio()}
+                    {matches.large && renderRadio()}
+                    </React.Fragment>
+                )}
+            </Media>
         </StyledContent>
     );
 }

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { Button, Typography } from 'antd';
+import { Typography } from 'antd';
 import styles from 'styled-components';
 
 import PreAuthToolbar from '../../layout/shell/PreAuthToolbar';
 import PricingUsers from './PricingUsers';
 import ProductOfferings from './ProductOfferings';
 import Product from './Product';
+import Footer from '../../layout/footer/Footer';
 
-const { Text, Title } = Typography;
+const { Title } = Typography;
 
 const StyledContent = styles.div`
     display: grid;
@@ -135,31 +136,33 @@ const Pricing = props => {
     ]
 
     return (
-        <StyledContent>
-            <PreAuthToolbar/>
-            <ProductOfferings>
-                <Title level={2}>Start your free trial</Title>
-                <StyledH2>No credit card required</StyledH2>
-                <GettingStartedButton>Get started</GettingStartedButton>
+        <React.Fragment>
+            <StyledContent>
+                <PreAuthToolbar/>
+                <ProductOfferings>
+                    <Title level={2}>Start your free trial</Title>
+                    <StyledH2>No credit card required</StyledH2>
+                    <GettingStartedButton>Get started</GettingStartedButton>
 
-                <PricingUsers onSetUserCount={setNumberOfUsers}/>
-                <Products>
-                    {products.map(({ buttonText, color, cost, description, features, link, mainPackage, name }, i) => {
-                        return <Product
-                            key={i}
-                            blurb={features}
-                            buttonText={buttonText}
-                            color={color}
-                            cost={cost}
-                            description={description}
-                            main={mainPackage}
-                            redirectLink={link}
-                            title={name}
-                        />
-                    })}
-                </Products>
-            </ProductOfferings>
-        </StyledContent>
+                    <PricingUsers onSetUserCount={setNumberOfUsers}/>
+                    <Products>
+                        {products.map(({ buttonText, color, cost, description, features, link, mainPackage, name }, i) => {
+                            return <Product
+                                key={i}
+                                blurb={features}
+                                buttonText={buttonText}
+                                color={color}
+                                cost={cost}
+                                description={description}
+                                main={mainPackage}
+                                redirectLink={link}
+                                title={name}
+                            />
+                        })}
+                    </Products>
+                </ProductOfferings>
+            </StyledContent>
+        </React.Fragment>
     )
 }
 

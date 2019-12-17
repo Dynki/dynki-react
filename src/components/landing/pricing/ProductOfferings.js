@@ -13,6 +13,7 @@ const StyledSection = styles.section`
     @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
         flex-direction: column;
         min-height: calc(100% - 20px);
+        width: 95%;
 
         a {
             width: 100%;

@@ -19,7 +19,7 @@ const Home = (props) => {
                     <div className="home__links">
                         <Link to="/Pricing">Pricing</Link>
                         <Link className="login-link-btn" to="/auth/login">Log In</Link>
-                        <Link to="/auth/signup">Sign Up</Link>
+                        <Link to="/Pricing">Sign Up</Link>
                     </div>
                 </div>
 
@@ -57,12 +57,12 @@ const Home = (props) => {
                             <p className="h2">Create pipelines that allow you to focus on the actions that get deals closed.</p>
                         </div>
                     </div>
-                    <Link to="/auth/signup">
+                    <Link to="/Pricing">
                         <div className="home__button">Sign Up For Free</div>
                     </Link>
-                    <Footer/>
                 </div>
             </div>
+            <Footer/>
         </React.Fragment>
     )
 }

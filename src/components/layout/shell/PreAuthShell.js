@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
 import { Login, SignUp, Domain, Forgot } from '../../auth';
 import { Spin } from 'antd';
-
+    
 class PreAuthShell extends React.Component {
     render() {
         return <div>
@@ -16,7 +16,6 @@ class PreAuthShell extends React.Component {
                     </div>
     
                     <div className="home__links">
-                        {/* <Link to="/features">Features</Link> */}
                         <Link to="/Pricing">Pricing</Link>
                         <Link className="login-link-btn" id="login" to="/auth/login">Log In</Link>
                         <Link id="register" to="/auth/signup">Sign Up</Link>
