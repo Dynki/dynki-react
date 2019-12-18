@@ -47,31 +47,9 @@ const StyledContent = styles.div`
 
 const StyledH2 = styles.h2`
     color: #414141;
-    font-family: "Raleway", "Roboto" !important;
-    -webkit-font-feature-settings: "lnum";
-    -moz-font-feature-settings: "lnum";
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-feature-settings: 'lnum' 1;
+    // font-family: "Raleway", "Roboto" !important;
     font-size: 18px;
     margin-bottom: 15px;
-`;
-
-const GettingStartedButton = styles.div`
-    background-color: #2E84C2;
-    padding: 15px;
-    color: #fff;
-    font-size: 20px;
-    margin-bottom: 24px;
-    cursor: pointer;
-    min-width: 150px;
-    text-align: center;
-
-    :hover {
-        background-color: #489EDC;
-    }
-
-    
 `;
 
 const Products = styles.div`
@@ -91,12 +69,50 @@ const Products = styles.div`
 
 const Pricing = props => {
 
-    const products = [
+    const products = Object.freeze({ personal: 'Personal', business: 'Business', enterprise: 'Enterprise' });
+
+    const features = [
+        { 
+            name: 'Unlimited Boards', 
+            description: 'Create as many task boards as you like',
+            products: [products.personal, products.business, products.enterprise]
+        }, {
+            name: 'Standard Column Types',
+            description: 'E.g. Text, Number, Date, List',
+            products: [products.personal, products.business, products.enterprise]
+        }, {
+            name: 'Advanced Column Types',
+            description: 'E.g. Due By, Percentage, Timer',
+            products: [products.business, products.enterprise]
+        }, {
+            name: 'Team Management',
+            description: 'Create/manage teams of users',
+            products: [products.business, products.enterprise]
+        }, {
+            name: 'User Groups',
+            description: 'Assign users roles via groups',
+            products: [products.business, products.enterprise]
+        }, {
+            name: 'Board Permissions',
+            description: 'Restrict which groups have access to boards',
+            products: [products.business, products.enterprise]
+        }, {
+            name: 'Tags',
+            description: 'Create lists that can be used across boards',
+            products: [products.enterprise]
+        }, {
+            name: 'Flow Types',
+            description: 'Create workflows that are tailored to your needs',
+            products: [products.enterprise]
+        }
+    ];
+
+    const packages = [
         {
             buttonText: 'Sign up for free',
             color: '#2C82C1',
             cost:`Free for 1 user`,
-            features: ['Unlimited Boards', 'Basic Column Types'],
+            features: features.filter(f => f.products.includes(products.personal)),
             free: true,
             link: '/auth/signup?package=personal&users=1',
             imageSource: '/assets/img/personal.jpg',
@@ -106,7 +122,7 @@ const Pricing = props => {
         {
             color: '#FCB900',
             name: 'Business',
-            features: ['Team Management', 'Unlimited Boards', 'Basic Column Types'],
+            features: features.filter(f => f.products.includes(products.business)),
             link: `/auth/signup?package=business&users=1`,
             cost:`£5.99`,
             mainPackage: false,
@@ -115,7 +131,7 @@ const Pricing = props => {
         {
             color: '#9900EF',
             name: 'Enterprise',
-            features: ['Team Management', 'Unlimited Boards', 'Basic Column Types', 'Advanced Column Types', 'Tags', 'Flow Types'],
+            features: features.filter(f => f.products.includes(products.enterprise)),
             link: `/auth/signup?package=enterprise&users=1`,
             imageSource: '/assets/img/enterprise.jpg',
             cost: 'Contact us',
@@ -132,7 +148,7 @@ const Pricing = props => {
                     <StyledH2>No credit card required</StyledH2>
 
                     <Products>
-                        {products.map(({ buttonText, color, cost, description, features, free, imageSource ,link, mainPackage, name }, i) => {
+                        {packages.map(({ buttonText, color, cost, description, features, free, imageSource ,link, mainPackage, name }, i) => {
                             return <Product
                                 key={i}
                                 blurb={features}

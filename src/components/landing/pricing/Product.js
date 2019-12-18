@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Icon, Typography } from 'antd';
+import { Icon, Tooltip, Typography } from 'antd';
 const { Title, Text } = Typography;
 
 const StyledPicture = styles.img`
@@ -108,6 +108,17 @@ const StyledCost = styles.div`
     }
 `;
 
+const StyledText = styles(Text)`
+    margin-right: auto;
+    padding-right: 10px;
+`;
+
+const HelpIcon = styles(Icon)`
+    svg {
+        fill: #A5A4A4!important;
+    }
+`;
+
 const Product = ({ blurb, buttonText, color, cost, description, free, imageSource, main, redirectLink, title }) => {
     return (
         <StyledWrapper>
@@ -127,10 +138,13 @@ const Product = ({ blurb, buttonText, color, cost, description, free, imageSourc
                     </React.Fragment>
                 }
                 <StyledFeatures>
-                {blurb.map((b,i) => {
+                {blurb.map((feature,i) => {
                     return <StyledFeature key={i}>
                         <Icon type="check-circle" theme="filled" />
-                        <Text>{b}</Text>
+                        <StyledText>{feature.name}</StyledText>
+                        <Tooltip title={feature.description}>
+                            <HelpIcon type="question-circle" />
+                        </Tooltip>
                     </StyledFeature>
                 })}
                 </StyledFeatures>

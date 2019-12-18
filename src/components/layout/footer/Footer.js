@@ -46,7 +46,7 @@ const Logo = styles.div`
     height: 42px;
     margin-left: 11px;
     display: inline-block;
-    background-image: url(/assets/img/logo-blue.png), none;
+    background-image: url(/assets/img/logo-blue-sm.png), none;
     background-size: 53px 42px;
 
     @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {

@@ -86,13 +86,13 @@
 
         font-feature-settings: "lnum"!important;
 
-        font-variant-numeric: $font-variant-numeric;
-        font-variant-numeric: lining-nums;
-        -moz-font-feature-settings: "lnum" 1;
-        -moz-font-feature-settings: "lnum=1";
-        -ms-font-feature-settings: "lnum" 1;
-        -o-font-feature-settings: "lnum" 1;
-        -webkit-font-feature-settings: "lnum" 1;
+        // font-variant-numeric: $font-variant-numeric;
+        // font-variant-numeric: lining-nums;
+        // -moz-font-feature-settings: "lnum" 1;
+        // -moz-font-feature-settings: "lnum=1";
+        // -ms-font-feature-settings: "lnum" 1;
+        // -o-font-feature-settings: "lnum" 1;
+        // -webkit-font-feature-settings: "lnum" 1;
 
     }
 }

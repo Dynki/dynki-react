@@ -62,7 +62,7 @@ const StyledForm = styles.div`
 
     .heading {
         color:  #3095de;;
-        font-family: Raleway;
+        // font-family: Raleway;
         font-size: 37px;
         margin-bottom: 20px;
     }
