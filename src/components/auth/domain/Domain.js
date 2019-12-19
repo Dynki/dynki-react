@@ -58,7 +58,7 @@ const Domain = ({ checkDomain, createDomain, domain, pending }) => {
         <StyledForm>
             <h1 className="registration__heading">Name your team</h1>
             <h4>Give your team a name they can be proud of</h4>
-            <DomainForm {...domain} onCheckDomain={onCheckDomain} onCreateDomain={onCreateDomain} pending={pending}></DomainForm>
+            <DomainForm onCreateDomain={onCreateDomain} pending={pending}></DomainForm>
         </StyledForm>
     );
 }

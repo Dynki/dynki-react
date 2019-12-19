@@ -3,18 +3,14 @@ import { Form, Icon, Input, Button } from 'antd';
 
 const FormItem = Form.Item;
 
-export const DForm = Form.create({
-    onValuesChange(props, values) {
-        props.onChange(values.name);
-    }
-})((props) => {
-    const { getFieldDecorator } = props.form;
+const DomainForm = ({ form, onCreateDomain, pending, validateFeedback, validateStatus }) => {
+    const { getFieldDecorator } = form;
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        props.form.validateFields((err, values) => {
+        form.validateFields((err, values) => {
             if (!err) {
-                props.onCreateDomain(values.name)
+                onCreateDomain(values.name)
             }
         });
     }
@@ -37,8 +33,8 @@ export const DForm = Form.create({
         <Form className="new_domain__form" onSubmit={handleSubmit}>
             <FormItem 
                 hasFeedback
-                validateStatus={props.validateStatus}
-                help={props.validateFeedback}
+                validateStatus={validateStatus}
+                help={validateFeedback}
             >
                 {getFieldDecorator('name', {
                     rules: [
@@ -58,26 +54,12 @@ export const DForm = Form.create({
                 )}
             </FormItem>
             <FormItem>
-                <Button id="btnCreateTeam" type="dashed" htmlType="submit" className="button" loading={props.pending} disabled={props.pending}>
+                <Button id="btnCreateTeam" type="dashed" htmlType="submit" className="button" loading={pending} disabled={pending}>
                     Create Team
                 </Button>
             </FormItem>
         </Form>
     )
-});
+};
 
-const DomainForm = (props) => {
-
-    const handleFormChange = (name) => {
-        // props.onCheckDomain(name);
-    }
-
-    return (
-        <div style={{width: "100%" }}>
-            <DForm {...props} onChange={handleFormChange} />
-        </div>
-    );
-}
-
-
-export default DomainForm;
+export default Form.create()(DomainForm);

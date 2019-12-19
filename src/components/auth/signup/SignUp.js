@@ -1,10 +1,8 @@
-import React, { Fragment } from 'react';
-import { connect } from 'react-redux';
+import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import styles from 'styled-components';
 
-import { signUp } from '../../../store/actions/authActions';
 import Terms from '../Terms';
 import Privacy from '../Privacy';
 
@@ -55,16 +53,16 @@ function hasErrors(fieldsError) {
 
 const SignUpForm = ({ form, pending, signUp }) => {
 
-    let numberSuccess = 'red';
-    let mixedSuccess = 'red';
-    let specialSuccess = 'red';
-    let agreeFailed = false;
+    const [numberSuccess, setNumberSuccess] = useState('red');
+    const [mixedSuccess, setMixedSuccess] = useState('red');
+    const [specialSuccess, setSpecialSuccess] = useState('red');
+    const [agreeFailed, setAgreeFailed] = useState(false);
     
     const handleSubmit = (e) => {
         e.preventDefault();
         form.validateFields((err, values) => {
             if (!values.agree) {
-                agreeFailed = true;
+                setAgreeFailed(true);
             } else {
                 if (!err) {
                     signUp(values);
@@ -87,9 +85,9 @@ const SignUpForm = ({ form, pending, signUp }) => {
             return new RegExp(/[!#@$%^&*)(+=._-]/).test(value);
         }
 
-        specialSuccess = hasSpecial(password) ? '#52C41A' : 'red';
-        mixedSuccess = hasMixed(password) ? '#52C41A' : 'red';
-        numberSuccess = hasNumber(password) ? '#52C41A' : 'red';
+        setSpecialSuccess(hasSpecial(password) ? '#52C41A' : 'red');
+        setMixedSuccess(hasMixed(password) ? '#52C41A' : 'red');
+        setNumberSuccess(hasNumber(password) ? '#52C41A' : 'red');
 
         if (!password) {
             callback();
@@ -130,7 +128,7 @@ const SignUpForm = ({ form, pending, signUp }) => {
                         {getFieldDecorator('password', {
                             rules: [
                                 { required: true, message: 'Please input a Password!' },
-                                { validator: validatePassword }
+                                { validator: (rule, value, callback) => validatePassword(rule, value, callback) }
                             ],
                         })(
                             <Input size="large" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />

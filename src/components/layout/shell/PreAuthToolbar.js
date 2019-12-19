@@ -104,7 +104,7 @@ const Logo = styles.div`
 `;
 
 const StyledLink = styles(Link)`
-    border: ${({ location, to, login }) => location.pathname === to ? 'solid' : (location.pathname === '/home' && login ? 'solid' : 'none')};
+    border: ${({ location, match }) => match.includes(location.pathname) ? 'solid' : 'none'};
     border-width: 1.5px;
     border-color: #ffffff;
     border-radius: 4px;
@@ -126,9 +126,9 @@ const PreAuthToolbar = ({ location }) => {
             </Brand>
 
             <HomeLinks>
-                <StyledLink id="pricing" to="/Pricing" location={location} >Pricing</StyledLink>
-                <StyledLink id="login" to="/auth/login" location={location} login={true}>Log In</StyledLink>
-                <StyledLink id="register" to="/auth/signup" location={location}>Sign Up</StyledLink>
+                <StyledLink id="pricing" to="/Pricing" match={['/Pricing']} location={location} >Pricing</StyledLink>
+                <StyledLink id="login" to="/auth/login" match={['/auth/login', '/home']} location={location}>Log In</StyledLink>
+                <StyledLink id="register" to="/auth/signup" match={['/auth/signup', '/auth/domain']} location={location}>Sign Up</StyledLink>
             </HomeLinks>
         </StyledContent>
     )

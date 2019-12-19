@@ -44,6 +44,7 @@ export const createDomain = (name) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
 
         dispatch({ type: 'CREATING_DOMAIN' })
+        dispatch({ type: 'SET_PROGRESS', payload: true });
 
         let url;
 
@@ -94,6 +95,8 @@ export const createDomain = (name) => {
 
         } catch (error) {
             dispatch({ type: 'DOMAIN_CREATION_ERROR' })
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
         }
     }
 }

@@ -119,7 +119,7 @@ const HelpIcon = styles(Icon)`
     }
 `;
 
-const Product = ({ blurb, buttonText, color, cost, description, free, imageSource, main, redirectLink, title }) => {
+const Product = ({ billingBasis, billingFrequency, blurb, buttonText, color, cost, description, free, imageSource, main, redirectLink, title }) => {
     return (
         <StyledWrapper>
             <ProductName bgColor={color}>
@@ -131,12 +131,8 @@ const Product = ({ blurb, buttonText, color, cost, description, free, imageSourc
                 <StyledCost color={color}>
                     <Title level={4}>{cost}</Title>
                 </StyledCost>
-                {!free && 
-                    <React.Fragment>
-                        <Text>Per user/month</Text>
-                        <Text strong>Billed monthly</Text>
-                    </React.Fragment>
-                }
+                <Text>{billingBasis}</Text>
+                <Text strong>{billingFrequency}</Text>
                 <StyledFeatures>
                 {blurb.map((feature,i) => {
                     return <StyledFeature key={i}>

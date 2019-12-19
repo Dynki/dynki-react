@@ -113,7 +113,8 @@ const Pricing = props => {
             color: '#2C82C1',
             cost:`Free for 1 user`,
             features: features.filter(f => f.products.includes(products.personal)),
-            free: true,
+            billingBasis: 'Free user/month',
+            billingFrequency: 'Free forever',
             link: '/auth/signup?package=personal&users=1',
             imageSource: '/assets/img/personal.jpg',
             mainPackage: true,
@@ -123,6 +124,8 @@ const Pricing = props => {
             color: '#FCB900',
             name: 'Business',
             features: features.filter(f => f.products.includes(products.business)),
+            billingBasis: 'Per user/month',
+            billingFrequency: 'Billed monthly',
             link: `/auth/signup?package=business&users=1`,
             cost:`£5.99`,
             mainPackage: false,
@@ -132,6 +135,8 @@ const Pricing = props => {
             color: '#9900EF',
             name: 'Enterprise',
             features: features.filter(f => f.products.includes(products.enterprise)),
+            billingBasis: 'Per user/month',
+            billingFrequency: 'Billed monthly',
             link: `/auth/signup?package=enterprise&users=1`,
             imageSource: '/assets/img/enterprise.jpg',
             cost: 'Contact us',
@@ -148,9 +153,11 @@ const Pricing = props => {
                     <StyledH2>No credit card required</StyledH2>
 
                     <Products>
-                        {packages.map(({ buttonText, color, cost, description, features, free, imageSource ,link, mainPackage, name }, i) => {
+                        {packages.map(({ billingBasis, billingFrequency, buttonText, color, cost, description, features, free, imageSource ,link, mainPackage, name }, i) => {
                             return <Product
                                 key={i}
+                                billingBasis={billingBasis}
+                                billingFrequency={billingFrequency}
                                 blurb={features}
                                 buttonText={buttonText}
                                 color={color}

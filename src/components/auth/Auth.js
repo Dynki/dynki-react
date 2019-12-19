@@ -49,7 +49,7 @@ const StyledPicture = styles.img`
     height: 600px;
 `;
 
-const Auth = ({ auth, createDomain, checkDomain, domain, location, pending, signIn, signUp }) => {
+const Auth = ({ auth, basePending, createDomain, checkDomain, domain, location, pending, signIn, signUp }) => {
 
     if (auth && auth.uid) {
         if (!domain && location.pathname !== '/auth/domain') {
@@ -80,7 +80,7 @@ const Auth = ({ auth, createDomain, checkDomain, domain, location, pending, sign
                     <Switch>
                         <Route exact path={'/auth/login'} component={() => renderLogin(pending, signIn)}/>
                         <Route exact path={'/auth/signup'} component={() => renderSignUp(pending, signUp)}/>
-                        <Route exact path={'/auth/domain'} component={() => renderDomain(createDomain, checkDomain, domain, pending)}/>
+                        <Route exact path={'/auth/domain'} component={() => renderDomain(createDomain, checkDomain, domain, basePending)}/>
                         <Route exact path={'/auth/forgot'} component={() => renderForgot(forgotPassword, pending)}/>
                     </Switch>
 
@@ -105,6 +105,7 @@ export const mapStateToProps = (state) => {
     return{
       authError: state.auth.authError,
       pending: state.auth.pending,
+      basePending: state.base.progress,
       auth: state.firebase.auth,
       domain: state.domain.domainId
     }
