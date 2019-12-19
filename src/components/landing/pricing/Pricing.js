@@ -61,7 +61,7 @@ const Products = styles.div`
     justify-content: center;
 
     /* Smartphones (portrait and landscape) ----------- */
-    @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
+    @media only screen and (min-device-width : 0px) and (max-device-width : 1000px) {
         flex-direction: column;
         justify-content: flex-start;
     }

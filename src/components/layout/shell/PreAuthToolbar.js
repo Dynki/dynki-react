@@ -82,7 +82,6 @@ const HomeLinks = styles.div`
             margin-right: 9px;
             font-size: 14px;
             font-weight: lighter;
-            color: #414141c2;
         }
     }
 `;

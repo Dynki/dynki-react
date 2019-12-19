@@ -54,6 +54,22 @@ const SampleSection = styles.div`
         margin-bottom: 15px;
     }
 
+    /* Smartphones (portrait and landscape) ----------- */
+    @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
+        width: 100%;
+
+        h1 {
+            text-align: center;
+        }
+
+        img {
+            width: 105%;
+            box-shadow: -2px 1px 17px 6px rgba(0,0,0,0.25);
+            -webkit-box-shadow: -2px 1px 17px 6px rgba(0,0,0,0.25);
+            -moz-box-shadow: -2px 1px 17px 6px rgba(0,0,0,0.25);
+        }
+
+    }
 `;
 
 const GettingStartedButton = styles.button`

@@ -50,12 +50,9 @@ const StyledContent = styles.div`
     height: 80%;
     padding: 30px;
 
-    // @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
-    //     width: 100%;
-    //     padding: 30px;
-    //     height: 100%;
-    //     display: block;
-    // }
+    @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
+        min-height: 10px;
+    }
 `;
 
 const StyledLink = styles(Link)`
