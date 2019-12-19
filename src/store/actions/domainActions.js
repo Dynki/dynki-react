@@ -29,31 +29,13 @@ export const checkDomain = (name) => {
     }
 
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'VALIDATING_DOMAIN' })
 
         if (!domainValidForSubmission(name, dispatch)) {
             return;
         }
 
-        dispatch({ type: 'VALIDATING_DOMAIN' })
-
-        let url;
-        if (process.env.NODE_ENV !== 'production') {
-            url = `https://us-central1-dynki-c5141.cloudfunctions.net/checkdomain/${name}`;
-        } else {
-            url = `https://us-central1-dynki-prod.cloudfunctions.net/checkdomain/${name}`;
-        }
-        const firebase = getFirebase();
-
-        try {
-            const token = await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-            const uid = firebase.auth().currentUser.uid;
-
-            await axios.get(url, { headers: { token, uid } })
-            dispatch({ type: 'DOMAIN_OK' })
-
-        } catch (error) {
-            dispatch({ type: 'DOMAIN_EXISTS' })
-        }
+        dispatch({ type: 'DOMAIN_OK' })
     }
 }
 

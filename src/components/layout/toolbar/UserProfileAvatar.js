@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Dropdown, Icon, Menu, Avatar } from 'antd';
 
-import UserProfileDrawer from '../../auth/UserProfileDrawer';
+import UserProfileDrawer from '../../auth/user/UserProfileDrawer';
 
 const StyledContent = styled(Avatar)`
     background-color: #3095de;

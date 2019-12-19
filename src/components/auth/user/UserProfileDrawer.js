@@ -3,7 +3,7 @@ import { Drawer, Icon, Tabs } from 'antd';
 import styled from 'styled-components';
 
 import WrappedUserProfileForm from './UserProfileForm';
-import WrappedResetPasswordForm from './ResetPasswordForm';
+import WrappedResetPasswordForm from '../reset/ResetPasswordForm';
 
 const TabPane = Tabs.TabPane;
 

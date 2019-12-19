@@ -4,7 +4,7 @@ import {
     Form, Input, Button, Alert
 } from 'antd';
 
-import { changePassword } from '../../store/actions/authActions';
+import { changePassword } from '../../../store/actions/authActions';
 
 
 class ResetPasswordForm extends React.Component {

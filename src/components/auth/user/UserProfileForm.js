@@ -4,7 +4,7 @@ import {
     Form, Input, Button, Icon, Popconfirm
 } from 'antd';
 
-import { updateUserProfile, deleteAccount } from '../../store/actions/authActions';
+import { updateUserProfile, deleteAccount } from '../../../store/actions/authActions';
 
 
 class UserProfileForm extends React.Component {

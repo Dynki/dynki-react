@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import styles from 'styled-components';
 
@@ -11,7 +12,7 @@ const StyledContent = styles.div`
     grid-area: header;
 
     background-color: #a5a4a4;
-    z-index: 100000;
+    z-index: 1;
 `;
 
 const Brand = styles.div`
@@ -103,7 +104,7 @@ const Logo = styles.div`
 `;
 
 const StyledLink = styles(Link)`
-    border: solid;
+    border: ${({ location, to, login }) => location.pathname === to ? 'solid' : (location.pathname === '/home' && login ? 'solid' : 'none')};
     border-width: 1.5px;
     border-color: #ffffff;
     border-radius: 4px;
@@ -114,7 +115,7 @@ const StyledLink = styles(Link)`
     }
 `;
 
-const PreAuthToolbar = props => {
+const PreAuthToolbar = ({ location }) => {
     return (
         <StyledContent>
             <Brand>
@@ -125,12 +126,12 @@ const PreAuthToolbar = props => {
             </Brand>
 
             <HomeLinks>
-                <Link to="/Pricing">Pricing</Link>
-                <StyledLink className="login-link-btn" id="login" to="/auth/login">Log In</StyledLink>
-                <Link id="register" to="/auth/signup">Sign Up</Link>
+                <StyledLink id="pricing" to="/Pricing" location={location} >Pricing</StyledLink>
+                <StyledLink id="login" to="/auth/login" location={location} login={true}>Log In</StyledLink>
+                <StyledLink id="register" to="/auth/signup" location={location}>Sign Up</StyledLink>
             </HomeLinks>
         </StyledContent>
     )
 }
 
-export default PreAuthToolbar;
+export default withRouter(PreAuthToolbar);
