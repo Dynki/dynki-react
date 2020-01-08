@@ -127,7 +127,7 @@ const PreAuthToolbar = ({ location }) => {
             <HomeLinks>
                 <StyledLink id="pricing" to="/Pricing" match={['/Pricing']} location={location} >Pricing</StyledLink>
                 <StyledLink id="login" to="/auth/login" match={['/auth/login', '/home']} location={location}>Log In</StyledLink>
-                <StyledLink id="register" to="/auth/signup" match={['/auth/signup', '/auth/domain']} location={location}>Sign Up</StyledLink>
+                <StyledLink id="register" to="/pricing" match={['/auth/signup', '/auth/domain']} location={location}>Sign Up</StyledLink>
             </HomeLinks>
         </StyledContent>
     )

@@ -11,7 +11,7 @@ import Domain from './domain/Domain';
 import Forgot from './forgot/Forgot';
 
 import { forgotPassword, signIn, signUp } from '../../store/actions/authActions';
-import { checkDomain, createDomain } from '../../store/actions/domainActions';
+import { checkDomain, updateDomain } from '../../store/actions/domainActions';
 
 const Background = styles.div`
     display: flex;
@@ -49,9 +49,9 @@ const StyledPicture = styles.img`
     height: 600px;
 `;
 
-const Auth = ({ auth, basePending, createDomain, checkDomain, domain, location, pending, signIn, signUp }) => {
+const Auth = ({ auth, basePending, updateDomain, checkDomain, domain, location, pending, signIn, signUp, signUpInProgress }) => {
 
-    if (auth && auth.uid) {
+    if (auth && auth.uid && !signUpInProgress) {
         if (!domain && location.pathname !== '/auth/domain') {
             return <Redirect to='/auth/domain'/>
         }
@@ -65,8 +65,8 @@ const Auth = ({ auth, basePending, createDomain, checkDomain, domain, location, 
         <SignUp pending={pending} signUp={signUp}/>
     );
 
-    const renderDomain = (createDomain, checkDomain, domain, pending) => (
-        <Domain createDomain={createDomain} checkDomain={checkDomain} domain={domain} pending={pending}/>
+    const renderDomain = (updateDomain, checkDomain, domain, pending) => (
+        <Domain updateDomain={updateDomain} checkDomain={checkDomain} domain={domain} pending={pending}/>
     );
 
     const renderForgot = (forgotPassword, pending) => (
@@ -79,8 +79,8 @@ const Auth = ({ auth, basePending, createDomain, checkDomain, domain, location, 
                 <Fragment>
                     <Switch>
                         <Route exact path={'/auth/login'} component={() => renderLogin(pending, signIn)}/>
-                        <Route exact path={'/auth/signup'} component={() => renderSignUp(pending, signUp)}/>
-                        <Route exact path={'/auth/domain'} component={() => renderDomain(createDomain, checkDomain, domain, basePending)}/>
+                        <Route path={'/auth/signup'} component={() => renderSignUp(pending, signUp)}/>
+                        <Route exact path={'/auth/domain'} component={() => renderDomain(updateDomain, checkDomain, domain, basePending)}/>
                         <Route exact path={'/auth/forgot'} component={() => renderForgot(forgotPassword, pending)}/>
                     </Switch>
 
@@ -104,6 +104,7 @@ const Auth = ({ auth, basePending, createDomain, checkDomain, domain, location, 
 export const mapStateToProps = (state) => {
     return{
       authError: state.auth.authError,
+      signUpInProgress: state.auth.signUpInProgress,
       pending: state.auth.pending,
       basePending: state.base.progress,
       auth: state.firebase.auth,
@@ -114,10 +115,10 @@ export const mapStateToProps = (state) => {
 export const mapDispatchToProps = (dispatch) => {
     return {
         checkDomain: (name) => dispatch(checkDomain(name)),
-        createDomain: (name) => dispatch(createDomain(name)),
+        updateDomain: (name) => dispatch(updateDomain(name)),
         forgotPassword: (creds) => dispatch(forgotPassword(creds)),
         signIn: (creds) => dispatch(signIn(creds)),
-        signUp: (creds) => dispatch(signUp(creds))
+        signUp: (creds, packageName) => dispatch(signUp(creds, packageName))
     }
 }
 

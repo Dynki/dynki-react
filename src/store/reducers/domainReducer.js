@@ -5,6 +5,8 @@ const initialState = {
     domainChecked: false,
     noDomain: false,
     domainId: null,
+    data: null,
+    hiddenId: null,
     pending: false,
     name: ''
 }
@@ -63,6 +65,7 @@ const domainReducer = (state = initialState, action) => {
                 ...state,
                 noDomain: false,
                 domainId: action.payload,
+                hiddenId: action.payload,
                 domainValid: true,
                 pending: false,
                 domainChecked: true
@@ -72,12 +75,18 @@ const domainReducer = (state = initialState, action) => {
                 ...state,
                 name: action.payload
             }
+        case 'SET_DOMAIN_DETAILS':
+            return {
+                ...state,
+                data: action.payload
+            }
         case 'NO_DOMAIN':
             return {
                 ...state,
                 noDomain: true,
                 pending: false,
                 domainId: null,
+                hiddenId: null,
                 domainValid: false,
                 domainChecked: true
             }

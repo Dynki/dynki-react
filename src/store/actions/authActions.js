@@ -1,4 +1,6 @@
 import notifiy from '../../components/notifications/Notification';
+import { Subscriptions } from '../model/Subscriptions';
+import { Domains } from '../model/Domains';
 
 export const signIn = (credentials) => {
   return async (dispatch, getState, { getFirebase }) => {
@@ -39,12 +41,10 @@ export const signIn = (credentials) => {
       dispatch({ type: 'LOGIN_ERROR', error });
       notifiy({ type: 'warning', message: 'Login Failure', description: error.message })
     }
-
-
   }
 }
 
-export const signUp = credentials => {
+export const signUp = (credentials, packageName) => {
   return async (dispatch, getState, { getFirebase }) => {
     try {
       const firebase = getFirebase();
@@ -53,13 +53,23 @@ export const signUp = credentials => {
   
       await firebase.auth().createUserWithEmailAndPassword(
           credentials.userName,
-          credentials.password);
+          credentials.password
+      );  
           
       firebase.auth().currentUser.reload();
-      const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
-  
+
+      const domainsHelper = new Domains(getFirebase());
+      const newDomain = await domainsHelper.add('Your Team');
+
+      const idTokenResult = await firebase.auth().currentUser.getIdTokenResult(true)
       const currentUser = { ...firebase.auth().currentUser, claims: idTokenResult.claims }
 
+      dispatch({ type: 'SET_DOMAIN', payload: newDomain.id });
+
+      const subsHelper = new Subscriptions(getFirebase(), newDomain.id);
+      const newSub = await subsHelper.add(packageName);
+
+      dispatch({ type: 'SET_SUBSCRIPTION', payload: newSub });
       dispatch({ type: 'SIGNUP_SUCCESS', payload: currentUser });
     } catch (error) {
       dispatch({ type: 'SIGNUP_ERROR', error });
@@ -109,8 +119,20 @@ export const setDomain = (domainId) => {
 
             if (data) {
               dispatch({ type: 'SET_DOMAIN_NAME', payload: data.display_name });
+              dispatch({ type: 'SET_DOMAIN_DETAILS', payload: data });
             }
           }, (err) => console.log('Error with domain', err));
+
+        await firebase.firestore()
+          .collection('user-domains')
+          .doc(domainToSet)
+          .onSnapshot({}, function (doc) {
+            const data = doc.data();
+
+            if (data) {
+              dispatch({ type: 'SET_SUBSCRITPION_INFO', payload: data.subscriptionInfo });
+            }
+          });
 
         dispatch({ type: 'SET_DOMAIN', payload: domainToSet });
       } else {

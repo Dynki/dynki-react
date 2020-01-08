@@ -111,6 +111,8 @@ const StyledText = styles(Text)`
 `;
 
 const HelpIcon = styles(Icon)`
+    cursor: pointer;
+
     svg {
         fill: #A5A4A4!important;
     }

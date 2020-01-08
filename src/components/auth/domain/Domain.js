@@ -42,7 +42,7 @@ const StyledForm = styles.div`
     }
 `;
 
-const Domain = ({ checkDomain, createDomain, domain, pending }) => {
+const Domain = ({ checkDomain, updateDomain, domain, pending }) => {
 
     // Call logic to determine this this domain name is valid and unique.
     const onCheckDomain = name => {
@@ -50,15 +50,15 @@ const Domain = ({ checkDomain, createDomain, domain, pending }) => {
     }
 
     // Fire logic to persist the new domain name.
-    const onCreateDomain = name => {
-        createDomain(name);
+    const onUpdateDomain = name => {
+        updateDomain(name);
     }
       
     return (
         <StyledForm>
             <h1 className="registration__heading">Name your team</h1>
             <h4>Give your team a name they can be proud of</h4>
-            <DomainForm onCreateDomain={onCreateDomain} pending={pending}></DomainForm>
+            <DomainForm onUpdateDomain={onUpdateDomain} pending={pending}></DomainForm>
         </StyledForm>
     );
 }

@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import styles from 'styled-components';
@@ -51,7 +52,11 @@ function hasErrors(fieldsError) {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
 
-const SignUpForm = ({ form, pending, signUp }) => {
+const SignUpForm = ({ form, location, pending, signUp }) => {
+
+    const splitPackageName = location.pathname.split('/')[3];
+
+    const packageName = splitPackageName ? splitPackageName : 'personal';
 
     const [numberSuccess, setNumberSuccess] = useState('red');
     const [mixedSuccess, setMixedSuccess] = useState('red');
@@ -60,15 +65,14 @@ const SignUpForm = ({ form, pending, signUp }) => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        form.validateFields((err, values) => {
+        form.validateFields(async (err, values) => {
             if (!values.agree) {
                 setAgreeFailed(true);
             } else {
                 if (!err) {
-                    signUp(values);
+                    await signUp(values, packageName);
                 }
             }
-
         });
     }
 
@@ -163,5 +167,5 @@ const SignUpForm = ({ form, pending, signUp }) => {
     );
 }
 
-export const SignUp = Form.create()(SignUpForm);
+export const SignUp = withRouter(Form.create()(SignUpForm));
 export default SignUp;

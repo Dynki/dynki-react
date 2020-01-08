@@ -58,7 +58,7 @@ export const getTeam = (id) => {
             dispatch({ type: 'ATTEMPT_LOADING_TEAM', payload: id });
             dispatch({ type: 'SET_PROGRESS', payload: true });
     
-            const currentTeam = getState().teams.currenTeam;
+            const currentTeam = getState().teams.currentTeam;
     
             // This is required to stop firestore creating multiple subscriptions, which then spam the system.
             if (currentTeam && currentTeam.unsubscribe) {

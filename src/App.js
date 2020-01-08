@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
-import { setDomain } from './store/actions/authActions'
+import { setDomain } from './store/actions/authActions';
+import { obtainCountryCode } from './store/actions/coreActions';
 
 import './App.scss';
 import { SecuredRoute, PostAuthShell } from './components';
@@ -26,6 +27,7 @@ export class App extends Component {
 
   componentDidMount() {
     this.onSetDomain();
+    this.props.ObtainCountryCode();
   }
 
   onSetDomain() {
@@ -38,7 +40,8 @@ export class App extends Component {
   }
 
   render() {
-    const { auth, domain, domainChecked, location } = this.props;
+    const { auth, domain, domainChecked, location, signUpInProgress } = this.props;
+
       return (
           <MainErrorBoundary>
             <div className="App">
@@ -54,6 +57,7 @@ export class App extends Component {
                   authenticated={auth}
                   domain={domain}
                   domainChecked={domainChecked}
+                  signUpInProgress={signUpInProgress}
               />
                 </AppContext.Provider>
             </div>
@@ -65,6 +69,7 @@ export class App extends Component {
 export const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
+    signUpInProgress: state.auth.signUpInProgress,
     domain: state.domain.domainId,
     domainChecked: state.domain.domainChecked
   }
@@ -72,7 +77,8 @@ export const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = (dispatch) => {
   return {
-      SetDomain: () => dispatch(setDomain())
+      SetDomain: () => dispatch(setDomain()),
+      ObtainCountryCode: () => dispatch(obtainCountryCode())
   }
 }
 

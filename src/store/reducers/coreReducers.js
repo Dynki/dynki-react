@@ -1,5 +1,6 @@
 const initialState = {
-    folderDrawerVisible: false
+    folderDrawerVisible: false,
+    countryCode: 'UNKNOWN'
 }
 
 const coreReducer = (state = initialState, action) => {
@@ -8,6 +9,11 @@ const coreReducer = (state = initialState, action) => {
             return {
                 ...state,
                 folderDrawerVisible: !state.folderDrawerVisible
+            }
+        case 'SET_COUNTRY_CODE':
+            return {
+                ...state,
+                countryCode: action.payload,
             }
         default:
             return state;

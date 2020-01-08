@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Domains } from '../model/Domains';
 
 export const checkDomain = (name) => {
 
@@ -39,62 +40,23 @@ export const checkDomain = (name) => {
     }
 }
 
-export const createDomain = (name) => {
+export const updateDomain = (name) => {
 
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
 
-        dispatch({ type: 'CREATING_DOMAIN' })
         dispatch({ type: 'SET_PROGRESS', payload: true });
 
-        let url;
-
-        if (process.env.NODE_ENV !== 'production') {
-            url = `https://us-central1-dynki-c5141.cloudfunctions.net/domains/`;
-        } else {
-            url = `https://us-central1-dynki-prod.cloudfunctions.net/domains/`;
-        }
-
-        const firebase = getFirebase();
-
         try {
-            const token = await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-            const uid = firebase.auth().currentUser.uid;
+            console.log('Domain actions: domain', getState().domain);
 
-            await axios.post(url,
-                {
-                    uid,
-                    name: name,
-                    email: firebase.auth().currentUser.email,
-                    displayName: firebase.auth().currentUser.displayName
-                },
-                { headers: { token, uid } })
+            const domainId = getState().domain.hiddenId
+            const domainsHelper = new Domains(getFirebase());
+            await domainsHelper.update(domainId, name);
 
-            await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-            const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
-
-            const currentUser = { ...firebase.auth().currentUser, claims: idTokenResult.claims }
-            dispatch({ type: 'SET_CURRENT_USER', payload: currentUser });
-
-            // Confirm the user is an Admin.
-            if (idTokenResult.claims.domainId) {
-                await firebase.firestore()
-                    .collection('domains')
-                    .doc(idTokenResult.claims.domainId)
-                    .onSnapshot({}, function (doc) {
-                        const data = doc.data();
-
-                        if (data) {
-                            dispatch({ type: 'SET_DOMAIN_NAME', payload: data.display_name });
-                        }
-                    });
-                
-                    dispatch({ type: 'SET_DOMAIN', payload: idTokenResult.claims.domainId });
-            } else {
-                dispatch({ type: 'NO_DOMAIN' });
-            }
+            dispatch({ type: 'SET_DOMAIN', payload: domainId });
 
         } catch (error) {
-            dispatch({ type: 'DOMAIN_CREATION_ERROR' })
+           dispatch({ type: 'DOMAIN_CREATION_ERROR' })
         } finally {
             dispatch({ type: 'SET_PROGRESS', payload: false });
         }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Typography } from 'antd';
 import styles from 'styled-components';
 
@@ -107,6 +108,8 @@ const Pricing = props => {
         }
     ];
 
+    const businessPrice = props.countryCode === 'GB' ? '£5.99 (Excl VAT)' : '$5.99';
+
     const packages = [
         {
             buttonText: 'Sign up for free',
@@ -115,7 +118,7 @@ const Pricing = props => {
             features: features.filter(f => f.products.includes(products.personal)),
             billingBasis: 'Free user/month',
             billingFrequency: 'Free forever',
-            link: '/auth/signup?package=personal&users=1',
+            link: '/auth/signup/personal',
             imageSource: '/assets/img/personal.jpg',
             mainPackage: true,
             name: 'Personal'
@@ -126,8 +129,8 @@ const Pricing = props => {
             features: features.filter(f => f.products.includes(products.business)),
             billingBasis: 'Per user/month',
             billingFrequency: 'Billed monthly',
-            link: `/auth/signup?package=business&users=1`,
-            cost:`£5.99`,
+            link: `/auth/signup/business`,
+            cost: businessPrice,
             mainPackage: false,
             buttonText: 'Start free trial'
         },
@@ -177,4 +180,10 @@ const Pricing = props => {
     )
 }
 
-export default Pricing;
+export const mapStateToProps = (state) => {
+    return {
+        countryCode: state.core.countryCode
+    }
+}
+
+export default connect(mapStateToProps)(Pricing);

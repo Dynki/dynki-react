@@ -7,13 +7,14 @@ export default function SecuredRoute ({
   domain,
   domainChecked,
   location,
+  signUpInProgress,
   ...rest
 }) {
   return (
     <Route
       {...rest}
       render={props =>
-        authenticated.uid ? (
+        authenticated.uid && signUpInProgress === false ? (
           (domainChecked ?
             (domain 
               ? location.pathname === '/auth/domain' ? <Redirect to="/"/> : <Component {...props} {...rest} /> 
@@ -22,7 +23,7 @@ export default function SecuredRoute ({
             : null
           )
         ) : (
-          <Redirect to="/home" />
+          signUpInProgress ? null : <Redirect to="/home" />
         )
       }
     />
