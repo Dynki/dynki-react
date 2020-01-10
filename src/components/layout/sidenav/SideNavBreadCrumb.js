@@ -17,7 +17,7 @@ const SelectTeamButton = styled.div`
     }
 `;
 
-const SideNavBreadCrumb = ({ loading, teams, teamName, displayTeam, selectTeam, hideHome }) => {
+const SideNavBreadCrumb = ({ loading, teams, teamName, displayTeam, isActiveSubscriber, selectTeam, hideHome }) => {
     const menu = (
         <Menu onClick={selectTeam}>
             {teams && teams.length > 0 ? teams.map(t => {
@@ -30,11 +30,13 @@ const SideNavBreadCrumb = ({ loading, teams, teamName, displayTeam, selectTeam, 
         return hideHome ? null : <Breadcrumb.Item><Icon type="home"/></Breadcrumb.Item>
     }
 
+    const teamTooltip = !isActiveSubscriber() ? null : 'Choose a team';
+
     return (
         <StyledBreadcrumb>
             {renderHome(hideHome)}
             <Breadcrumb.Item>
-                <Tooltip placement="topRight" title="Choose a team">
+                <Tooltip placement="right" title={teamTooltip}>
                     <SelectTeamButton hideHome={hideHome}>
                         <Dropdown.Button
                             data-testid="displayTeam" 
@@ -42,6 +44,7 @@ const SideNavBreadCrumb = ({ loading, teams, teamName, displayTeam, selectTeam, 
                             overlay={menu}
                             icon={<Icon type="team" />} 
                             onClick={displayTeam}
+                            disabled={!isActiveSubscriber()}
                         >
                             {loading ? 
                                 <React.Fragment>

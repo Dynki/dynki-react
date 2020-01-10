@@ -1,19 +1,18 @@
 const initialState = {
     status: null,
-    planName: null
 }
 
-const domainReducer = (state = initialState, action) => {
+const subscriptionReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'SET_DOMAIN':
+        case 'SET_SUBSCRIPTION_STATUS':
+            console.log('SR Setting sub status', action.payload);
             return {
                 ...state,
-                status: action.payload.status,
-                planName: action.payload.nickname
+                status: action.payload
             }
         default:
             return state;
     }
 }
 
-export default domainReducer;
+export default subscriptionReducer;

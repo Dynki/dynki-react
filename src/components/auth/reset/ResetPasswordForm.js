@@ -1,11 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-    Form, Input, Button, Alert
-} from 'antd';
+import { Alert, Button, Card, Form, Input } from 'antd';
+import styles from 'styled-components';
 
 import { changePassword } from '../../../store/actions/authActions';
 
+const StyledForm = styles(Form)`
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+`;
 
 class ResetPasswordForm extends React.Component {
     state = {
@@ -87,7 +91,13 @@ class ResetPasswordForm extends React.Component {
         const { getFieldDecorator } = this.props.form;
 
         return (
-            <Form onSubmit={this.handleSubmit}>
+            <Card 
+                title="Change Password"
+                actions={[
+                    <Button type="primary" size="large" icon="save" htmlType="submit">Change Password</Button>
+                ]}
+            >
+            <StyledForm onSubmit={this.handleSubmit}>
                 <Form.Item
                 label="Current password"
                 >
@@ -148,10 +158,8 @@ class ResetPasswordForm extends React.Component {
                     />
                 )}
                 </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">Change Password</Button>
-                </Form.Item>
-            </Form>
+            </StyledForm>
+            </Card>
         );
     }
 }

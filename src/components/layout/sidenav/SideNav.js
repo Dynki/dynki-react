@@ -8,6 +8,7 @@ import { Divider } from 'antd';
 
 import DynMenu from '../menu/Menu';
 import SideNavBreadCrumb from './SideNavBreadCrumb';
+import authWrapper from '../../auth/AuthWrapper';
 
 import { getBoards, getBoard, newBoard } from '../../../store/actions/boardActions'; 
 import { setDomain } from '../../../store/actions/authActions';
@@ -106,7 +107,7 @@ class SideNav extends React.Component {
 
     render() {
 
-        const { boards, hideHome, selectedKeys, teams } = this.props;
+        const { boards, hideHome, isActiveSubscriber, selectedKeys, teams } = this.props;
         const teamName = this.props.team ? this.props.team.display_name : '';
         const loading = !this.props.team || this.state.loadingTeam ? true : false;
 
@@ -119,6 +120,7 @@ class SideNav extends React.Component {
                     teams={teams}
                     selectTeam={this.handleMenuClick} 
                     displayTeam={this.handleButtonClick}
+                    isActiveSubscriber={isActiveSubscriber}
                 />
                 <Divider dashed={true} style={{ margin: '0px', marginTop: '4px' }}/>
                 { boards ?
@@ -157,4 +159,4 @@ const mapDispatchToProps = (dispatch) => {
 
 export default withRouter(compose(
     connect(mapStateToProps, mapDispatchToProps)
-)(SideNav))
+)(authWrapper(SideNav)))

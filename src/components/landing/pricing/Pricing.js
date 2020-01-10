@@ -74,6 +74,10 @@ const Pricing = props => {
 
     const features = [
         { 
+            name: '30 days Business Trial', 
+            description: 'Create as many task boards as you like',
+            products: [products.personal]
+        }, { 
             name: 'Unlimited Boards', 
             description: 'Create as many task boards as you like',
             products: [products.personal, products.business, products.enterprise]

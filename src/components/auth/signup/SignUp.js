@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
@@ -53,6 +53,11 @@ function hasErrors(fieldsError) {
 }
 
 const SignUpForm = ({ form, location, pending, signUp }) => {
+
+    useEffect(() => {
+        // Update the document title using the browser API
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 
     const splitPackageName = location.pathname.split('/')[3];
 

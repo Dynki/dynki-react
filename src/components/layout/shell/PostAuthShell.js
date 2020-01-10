@@ -14,6 +14,7 @@ import Board from '../../boards/Board';
 import EmptyBoards from '../../boards/EmptyBoards';
 import Teams from '../../teams/teams';
 import TeamAccept from '../../teams/TeamAccept';
+import AccountOverview from '../../auth/user/AccountOverview';
 
 import AppContext from '../../../context/appContext';
 
@@ -134,6 +135,7 @@ class PostAuthShell extends React.Component {
                     <Switch>
                         <Route path={'/board/:id'} component={Board}></Route>
                         <Route path={'/team/:id'} component={Teams}></Route>
+                        <Route path={'/account'} component={AccountOverview}></Route>
                         <Route path={'/empty-boards'} component={EmptyBoards}></Route>
                         <Route path={'/invite/:inviteId'} component={TeamAccept}></Route>
                     </Switch>

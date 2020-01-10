@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Drawer, Icon, Tabs } from 'antd';
 import styled from 'styled-components';
+import { withRouter } from 'react-router-dom';
 
-import WrappedUserProfileForm from './UserProfileForm';
+import UserProfileForm from './UserProfileForm';
+import SubscriptionForm from './SubscriptionForm';
 import WrappedResetPasswordForm from '../reset/ResetPasswordForm';
 
 const TabPane = Tabs.TabPane;
@@ -17,10 +19,12 @@ const StyledAnchor = styled.a`
 
 const UserProfileDrawer = (props) => {
 
+
     const [visible, setVisible] = useState(false);
 
     const showDrawer = () => {
-        setVisible(true);
+        // setVisible(true);
+        props.history.push('/account');
     };
 
     const onClose = () => {
@@ -29,10 +33,10 @@ const UserProfileDrawer = (props) => {
 
     return (
         <React.Fragment>
-            <StyledAnchor id="userProfile" onClick={showDrawer}><Icon type="robot" /> User Profile</StyledAnchor>
+            <StyledAnchor id="userProfile" onClick={showDrawer}><Icon type="robot" /> Account Details</StyledAnchor>
 
-            <Drawer
-                title="User Profile"
+            {/* <Drawer
+                title="Account Details"
                 width={370}
                 onClose={onClose}
                 visible={visible}
@@ -45,17 +49,20 @@ const UserProfileDrawer = (props) => {
                 <div>
                     <Tabs defaultActiveKey="1">
                         <TabPane tab={<span><Icon type="profile" />Profile</span>} key="1">
-                            <WrappedUserProfileForm/>
-                            </TabPane>
-                        <TabPane tab={<span><Icon type="lock" />Security</span>} key="2">
+                            <UserProfileForm/>
+                        </TabPane>
+                        <TabPane tab={<span><Icon type="shopping-cart" />Subscription</span>} key="2">
+                            <SubscriptionForm/>
+                        </TabPane>
+                        <TabPane tab={<span><Icon type="lock" />Security</span>} key="3">
                             <WrappedResetPasswordForm/>
                         </TabPane>
                     </Tabs>
 
                 </div>
-            </Drawer>
+            </Drawer> */}
         </React.Fragment>
     );
 }
 
-export default UserProfileDrawer;
+export default withRouter(UserProfileDrawer);

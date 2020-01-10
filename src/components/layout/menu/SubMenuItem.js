@@ -45,7 +45,7 @@ class DynSubMenu extends React.Component {
     }
 
     render() {
-        const { itemClicked, btnClicked, addFolder, title, icon , items, act, selectedKeys, currentBoard, loadingBoards, progress, hasRole, ...other} = this.props;
+        const { isActiveSubscriber, itemClicked, btnClicked, addFolder, title, icon , items, act, selectedKeys, currentBoard, loadingBoards, progress, hasRole, ...other} = this.props;
 
         return (
             <React.Fragment>

@@ -6,6 +6,7 @@ import domainReducer from './domainReducer';
 import baseReducer from './baseReducer';
 import coreReducer from './coreReducers';
 import teamReducer from './teamReducer';
+import subscriptionReducer from './subscriptionReducer';
 
 // Add firebase to reducers
 const rootReducer = combineReducers({
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
   teams: teamReducer,
   firebase: firebaseReducer,
   domain: domainReducer,
-  core: coreReducer
+  core: coreReducer,
+  subscription: subscriptionReducer
 })
 
 export default rootReducer;

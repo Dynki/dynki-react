@@ -1,5 +1,19 @@
 import axios from 'axios';
 
+const plans = {
+    business: 'Business',
+    personal: 'Personal'
+}
+
+const subscriptionStatus = {
+    active: { name: 'Active', plan: plans.business, allowUpgrade: false, configurePayment: true },
+    trialing: { name: 'Business Trial', plan: plans.business, allowUpgrade: false, configurePayment: true },
+    past_due: { name: 'Payment Overdue', plan: plans.business, allowUpgrade: false, configurePayment: true },
+    unpaid: { name: 'Payment Overdue', plan: plans.business, allowUpgrade: false, configurePayment: true },
+    incomplete: { name: 'Expired', plan: plans.personal, allowUpgrade: true, configurePayment: false },
+    incomplete_expired: { name: 'Expired', plan: plans.personal, allowUpgrade: true, configurePayment: false }
+}
+
 export class Subscriptions {
 
     constructor(firebase, domainId) {
@@ -96,5 +110,25 @@ export class Subscriptions {
                 reject(error);
             }
         });
+    }
+
+    allowPaymentMethodSetup(status) {
+        return subscriptionStatus[status] ? subscriptionStatus[status].configurePayment : false;
+    }
+
+    allowUpgrade(status) {
+        return subscriptionStatus[status] ? subscriptionStatus[status].allowUpgrade : false;
+    }
+
+    allowDowngrade(status) {
+        return subscriptionStatus[status] ? subscriptionStatus[status].allowUpgrade === false : false;
+    }
+
+    getPlanName = status => {
+        return subscriptionStatus[status] ? subscriptionStatus[status].plan : 'Personal';
+    }
+
+    getPlanStatus = status => {
+        return subscriptionStatus[status] ? subscriptionStatus[status].name : 'Uknown';
     }
 }

@@ -15,6 +15,7 @@ import {
     inviteTeamMember 
 } from '../../store/actions/teamActions';
 
+const { Title } = Typography;
 const { Paragraph } = Typography;
 
 // Container for teams components.
@@ -133,7 +134,7 @@ class Teams extends React.Component {
                 />
                 <div className="teams">
                     <PageHeader
-                        title={team.display_name}
+                        title="Team Dashboard"
                         subTitle="Like spokes in a wheel"
                         tags={<Tag color="blue">{team.members.length} Team member{team.members.length === 1 ? '' : 's'}</Tag>}
                         extra={[
@@ -146,7 +147,6 @@ class Teams extends React.Component {
                                 Invite a team member
                             </Button>
                         ]}
-                        breadcrumb={{ routes }}
                     >
                         <Content
                             extraContent={

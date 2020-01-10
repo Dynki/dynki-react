@@ -1,11 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-    Form, Input, Button, Icon, Popconfirm
+    Card, Form, Input, Button, Icon,
 } from 'antd';
+import styles from 'styled-components';
 
 import { updateUserProfile, deleteAccount } from '../../../store/actions/authActions';
 
+const StyledForm = styles(Form)`
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+`;
 
 class UserProfileForm extends React.Component {
     state = {
@@ -31,9 +37,14 @@ class UserProfileForm extends React.Component {
         const { getFieldDecorator } = this.props.form;
 
         return (
-            <div className="userprofile">
+            <Card
+                title="User Profile Information"
+                actions={[
+                    <Button type="primary" size="large" icon="save" htmlType="submit">Apply Changes</Button>
+                ]}
+            >
 
-                <Form onSubmit={this.handleSubmit}>
+                <StyledForm onSubmit={this.handleSubmit}>
                     <Form.Item
                         label="Email"
                     >
@@ -62,22 +73,9 @@ class UserProfileForm extends React.Component {
                             />
                         )}
                     </Form.Item>
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit">Save Changes</Button>
-                    </Form.Item>
-                </Form>
-                <Popconfirm 
-                    className="userprofile__removeac-btn"
-                    title="Are you sure？There is no going back once you confirm" 
-                    okText="Yes Remove My Account"
-                    okType="danger"
-                    cancelText="No way, I want to stay!!"
-                    onConfirm={this.props.deleteAccount}
-                    icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
-                >
-                    <Button id="btnRemoveAccount" className="userprofile__deleteac-btn" type="danger" htmlType="submit">Remove My Account</Button>
-                </Popconfirm>
-            </div>
+                </StyledForm>
+
+            </Card>
         );
     }
 }

@@ -27,6 +27,7 @@ export const signIn = (credentials) => {
 
             if (data) {
               dispatch({ type: 'SET_DOMAIN_NAME', payload: data.display_name });
+              dispatch({ type: 'SET_SUBSCRIPTION_STATUS', payload: data.status });
             }
           });
 
@@ -65,11 +66,12 @@ export const signUp = (credentials, packageName) => {
       const currentUser = { ...firebase.auth().currentUser, claims: idTokenResult.claims }
 
       dispatch({ type: 'SET_DOMAIN', payload: newDomain.id });
+      dispatch({ type: 'SET_DOMAIN_DETAILS', payload: newDomain });
 
       const subsHelper = new Subscriptions(getFirebase(), newDomain.id);
       const newSub = await subsHelper.add(packageName);
 
-      dispatch({ type: 'SET_SUBSCRIPTION', payload: newSub });
+      dispatch({ type: 'SET_SUBSCRIPTION_STATUS', payload: newSub.status });
       dispatch({ type: 'SIGNUP_SUCCESS', payload: currentUser });
     } catch (error) {
       dispatch({ type: 'SIGNUP_ERROR', error });
@@ -96,8 +98,8 @@ export const setDomain = (domainId) => {
     dispatch({ type: 'SET_PROGRESS', payload: true });
 
     try {
-      await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-      const idTokenResult = await firebase.auth().currentUser.getIdTokenResult(true)
+      await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
+      const idTokenResult = await firebase.auth().currentUser.getIdTokenResult(true);
 
       const currentUser = { ...firebase.auth().currentUser, claims: idTokenResult.claims }
       dispatch({ type: 'SET_CURRENT_USER', payload: currentUser });
@@ -119,20 +121,9 @@ export const setDomain = (domainId) => {
 
             if (data) {
               dispatch({ type: 'SET_DOMAIN_NAME', payload: data.display_name });
-              dispatch({ type: 'SET_DOMAIN_DETAILS', payload: data });
+              dispatch({ type: 'SET_SUBSCRIPTION_STATUS', payload: data.status });
             }
           }, (err) => console.log('Error with domain', err));
-
-        await firebase.firestore()
-          .collection('user-domains')
-          .doc(domainToSet)
-          .onSnapshot({}, function (doc) {
-            const data = doc.data();
-
-            if (data) {
-              dispatch({ type: 'SET_SUBSCRITPION_INFO', payload: data.subscriptionInfo });
-            }
-          });
 
         dispatch({ type: 'SET_DOMAIN', payload: domainToSet });
       } else {

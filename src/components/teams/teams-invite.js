@@ -58,8 +58,8 @@ class TeamsInviteForm extends React.Component {
                         data-testid="inviteSelect"
                         placeholder="Enter email addresses" 
                         mode="tags"
-                        maxTagCount="50"
-                        maxTagTextLength="200" 
+                        maxTagCount={50}
+                        maxTagTextLength={200}
                         style={{ 
                             width: '100%'
                         }} 
