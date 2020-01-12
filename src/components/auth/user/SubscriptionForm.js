@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Card, Form, Button, Icon, Popconfirm, Row, Col, Statistic } from 'antd';
+import { Card, Form, Button, Icon, Popconfirm, Row, Col, Statistic, Skeleton } from 'antd';
 import styles from 'styled-components';
 
+import { getSubscriptionDetails } from '../../../store/actions/subscriptionActions';
 import { updateUserProfile, deleteAccount } from '../../../store/actions/authActions';
 import { Subscriptions } from '../../../store/model/Subscriptions';
 import CheckoutModal from './CheckoutModal';
+import PaymentMethods from './PaymentMethods';
 
 const DowngradeButton = styles(Button)`
     background-color: #F5A113;
@@ -20,6 +22,13 @@ const StyledPaymentButton = styles.div`
     margin-top: 30px;
 `;
 
+const StyledStatistic = styles(Statistic)`
+
+    .ant-statistic-content-value {
+        color: ${props => props.value === 'Payment Overdue' ? '#FF6900' : '#000000d9'}
+    }
+`;
+
 class SubscriptionForm extends React.Component {
 
     subsHelper = null;
@@ -29,16 +38,28 @@ class SubscriptionForm extends React.Component {
         this.subsHelper = new Subscriptions();
     }
 
+    componentDidMount() {
+        this.props.getSubscriptionDetails();
+    }
+
     renderDowngrade = status => {
         return this.subsHelper.allowDowngrade(status) ? this.renderCancelSubscriptionButton() : null;
     }
 
-    renderSetUpPayment = status => {
-        return this.subsHelper.allowPaymentMethodSetup(status) ? this.renderPaymentMethodButton() : null;
+    renderUpgrade = status => {
+        return this.subsHelper.allowUpgrade(status) ? this.renderPaymentButton('Upgrade to business plan') : null;
     }
 
-    renderUpgrade = status => {
-        return this.subsHelper.allowUpgrade(status) ? this.renderPaymentMethodButton() : null;
+    renderUpgradeButton = () => {
+        return <Button type="primary" size="large">Upgrade to Business Plan</Button>
+    }
+
+    renderPaymentButton = label => {
+        return (
+            <StyledPaymentButton>
+                <CheckoutModal label={label} teamName={this.props.team}/>
+            </StyledPaymentButton>
+        );
     }
 
     renderCancelSubscriptionButton = () => {
@@ -58,12 +79,8 @@ class SubscriptionForm extends React.Component {
         );
     }
 
-    renderPaymentMethodButton = () => {
-        return (
-            <StyledPaymentButton>
-                <CheckoutModal teamName={this.props.team}/>
-            </StyledPaymentButton>
-        );
+    renderPaymentMethods = () => {
+        return <PaymentMethods/>
     }
 
     renderCancelTrialButton = () => {
@@ -130,9 +147,8 @@ class SubscriptionForm extends React.Component {
                         <Statistic title="Current Plan" value={this.getPlanName(status)} />
                     </Col>
                     <Col span={12}>
-                        <Statistic title="Subscription Status" value={this.getPlanStatus(status)} />
+                        <StyledStatistic title="Subscription Status" value={this.getPlanStatus(status)} />
                         {this.renderUpgrade(status)}
-                        {this.renderSetUpPayment(status)}
                     </Col>
                 </Row>
             </Card>
@@ -140,14 +156,20 @@ class SubscriptionForm extends React.Component {
     }
 
     render() {
-        const { status } = this.props.subscription;
+        const { status, data } = this.props.subscription;
+
+        console.log(this.props.subscription.data);
 
         return (
-            <React.Fragment>
-                {this.renderPlanDetails()}
-                {this.renderDowngrade(status)}
-                {this.renderDeleteAccount()}
-            </React.Fragment>
+            data ? 
+                <React.Fragment>
+                    {this.renderPlanDetails()}
+                    {this.renderPaymentMethods(data.paymentMethods)}
+                    {this.renderDowngrade(status)}
+                    {this.renderDeleteAccount()}
+                </React.Fragment>
+                :
+                <Skeleton active={true} />
         );
     }
 }
@@ -174,7 +196,8 @@ export const mapStateToProps = (state) => {
 export const mapDispatchToProps = (dispatch) => {
     return {
         updateUserProfile: (updatedValues) => dispatch(updateUserProfile(updatedValues)),
-        deleteAccount: () => dispatch(deleteAccount())
+        deleteAccount: () => dispatch(deleteAccount()),
+        getSubscriptionDetails: () => dispatch(getSubscriptionDetails())
     }
 }
 

@@ -7,7 +7,7 @@ const plans = {
 
 const subscriptionStatus = {
     active: { name: 'Active', plan: plans.business, allowUpgrade: false, configurePayment: true },
-    trialing: { name: 'Business Trial', plan: plans.business, allowUpgrade: false, configurePayment: true },
+    trialing: { name: 'Business Trial', plan: plans.business, allowUpgrade: true, configurePayment: true },
     past_due: { name: 'Payment Overdue', plan: plans.business, allowUpgrade: false, configurePayment: true },
     unpaid: { name: 'Payment Overdue', plan: plans.business, allowUpgrade: false, configurePayment: true },
     incomplete: { name: 'Expired', plan: plans.personal, allowUpgrade: true, configurePayment: false },
@@ -22,8 +22,11 @@ export class Subscriptions {
 
         if (process.env.NODE_ENV !== 'production') {
             this.baseUrl = `https://us-central1-dynki-c5141.cloudfunctions.net/subscriptions`;
+            this.pmUrl = `https://us-central1-dynki-c5141.cloudfunctions.net/paymentMethods`;
+            
         } else {
             this.baseUrl = `https://us-central1-dynki-prod.cloudfunctions.net/subscriptions`;
+            this.pmUrl = `https://us-central1-dynki-prod.cloudfunctions.net/paymentMethods`;
         }
     }
 
@@ -34,19 +37,18 @@ export class Subscriptions {
      * 
      * Returns: A subscription class instance
      */
-    get(id) {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const snapshot = await this.firebase.firestore().collection('user-domains')
-                .where('users', 'array-contains', this.firebase.auth().currentUser.uid)
-                .get();
-                resolve(snapshot.docs.filter(doc => doc.id === id).map(doc => ({ id: doc.id, ...doc.data() }))[0] );
+    async get() {
+        try {
+            const url = `${this.baseUrl}/account`;
+            const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
+            const uid = this.firebase.auth().currentUser.uid;
+            const response = await axios.get(url, { headers: { uid, token, authorization: token } });
 
-            } catch (error) {
-                console.log('Error getting subscription', error);
-                reject(error);
-            }
-        });
+            return response.data;
+        } catch (error) {
+            console.log('Error getting subscription', error);
+            return error;
+        }
     }
 
     /**
@@ -112,6 +114,21 @@ export class Subscriptions {
         });
     }
 
+    async attachPaymentMethod(paymentMethodId) {
+        const url = `${this.pmUrl}`;
+
+        try {
+            const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
+            const uid = this.firebase.auth().currentUser.uid;
+            const response = await axios.post(url, { paymentMethodId }, { headers: { uid, token, authorization: token } });
+
+            return response.statu;
+        } catch (error) {
+            console.log('Error updating subscription', error);
+            return error;
+        }
+    }
+
     allowPaymentMethodSetup(status) {
         return subscriptionStatus[status] ? subscriptionStatus[status].configurePayment : false;
     }
@@ -130,5 +147,10 @@ export class Subscriptions {
 
     getPlanStatus = status => {
         return subscriptionStatus[status] ? subscriptionStatus[status].name : 'Uknown';
+    }
+
+    paymentRequired = status => {
+        console.log('Payment required check', status);
+        return status === 'past_due' || status === 'unpaid';
     }
 }

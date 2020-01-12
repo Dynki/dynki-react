@@ -1,5 +1,6 @@
 const initialState = {
     status: null,
+    data: null
 }
 
 const subscriptionReducer = (state = initialState, action) => {
@@ -9,6 +10,12 @@ const subscriptionReducer = (state = initialState, action) => {
             return {
                 ...state,
                 status: action.payload
+            }
+        case 'SET_SUBSCRIPTION_DATA':
+            console.log('SR Setting sub data', action.payload);
+            return {
+                ...state,
+                data: action.payload
             }
         default:
             return state;

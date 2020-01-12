@@ -9,10 +9,10 @@ export const signIn = (credentials) => {
       const firebase = getFirebase();
   
       dispatch({ type: 'ATTEMPT_LOGIN' })
-  
+
       await firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password);
       const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
-  
+
       const currentUser = { ...firebase.auth().currentUser, claims: idTokenResult.claims }
       dispatch({ type: 'SET_CURRENT_USER', payload: currentUser });
 

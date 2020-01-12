@@ -6,6 +6,7 @@ import UserProfileForm from './UserProfileForm';
 import SubscriptionForm from './SubscriptionForm';
 import ResetPasswordForm from '../reset/ResetPasswordForm';
 
+
 const { TabPane } = Tabs;
 
 const StyledPageHeader = styles(PageHeader)`
@@ -17,7 +18,9 @@ const StyledPageHeader = styles(PageHeader)`
 const StyledCard = styles(Card)`
 `;
 
-const AccountOverview = props => {
+const AccountOverview = ({ getSubscriptionDetails, subscription }) => {
+
+
     return (
         <StyledPageHeader
             title="Account Dashboard"
@@ -28,7 +31,7 @@ const AccountOverview = props => {
                         <UserProfileForm/>
                     </TabPane>
                     <TabPane tab="Billing" key="2">
-                        <SubscriptionForm/>
+                        <SubscriptionForm subscription={subscription}/>
                     </TabPane>
                     <TabPane tab="Security" key="3">
                             <ResetPasswordForm/>
