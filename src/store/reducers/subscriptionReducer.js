@@ -1,6 +1,7 @@
 const initialState = {
     status: null,
-    data: null
+    data: null,
+    loading: false
 }
 
 const subscriptionReducer = (state = initialState, action) => {
@@ -16,6 +17,11 @@ const subscriptionReducer = (state = initialState, action) => {
             return {
                 ...state,
                 data: action.payload
+            }
+        case 'SET_SUBSCRIPTION_LOADING':
+            return {
+                ...state,
+                loading: action.payload
             }
         default:
             return state;

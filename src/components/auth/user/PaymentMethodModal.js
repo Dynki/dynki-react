@@ -5,7 +5,7 @@ import styles from 'styled-components';
 import { Button, Icon, Modal, Typography } from 'antd';
 import PaymentMethodForm from './PaymentMethodForm';
 
-import { attachPaymentMethod } from '../../../store/actions/subscriptionActions';
+import { attachPaymentMethod, createSetupIntent } from '../../../store/actions/subscriptionActions';
 
 const { Text, Title } = Typography;
 
@@ -42,18 +42,33 @@ const ShopIcon = styles(Icon)`
     }
 `;
 
-const PaymentMethodModal = ({ attachPaymentMethod, label }) => {
+const PaymentMethodModal = ({ attachPaymentMethod, createSetupIntent, label }) => {
     label = label ? label : 'Make a payment';
 
     const [isVisible, setIsVisible] = useState(false);
     const [triggerSubmit, setTriggerSubmit] = useState(false);
+    const [inProgress, setInProgress] = useState(false);
 
     const addPaymentMethod = () => {
         setTriggerSubmit(true);
     }
 
-    const onAttachPaymentMethod = paymentMethodId => {
-        attachPaymentMethod(paymentMethodId);
+    const onAttachPaymentMethod = async paymentMethodId => {
+        try {
+            await attachPaymentMethod(paymentMethodId);
+            const clientSecret = await createSetupIntent(paymentMethodId);
+            return clientSecret.client_secret;
+        } catch (error) {
+            return error;
+        }
+    }
+
+    const onSetVisible = status => {
+        setIsVisible(status);
+    }
+
+    const onSetInProgress = status => {
+        setInProgress(status);
     }
 
     return (
@@ -67,7 +82,8 @@ const PaymentMethodModal = ({ attachPaymentMethod, label }) => {
                 cancelButtonProps={{ hidden: true }}
                 okButtonProps={{
                     icon: "shopping",
-                    size: "large"
+                    size: "large",
+                    loading: inProgress
                 }}
                 onOk={addPaymentMethod}
             >
@@ -86,6 +102,8 @@ const PaymentMethodModal = ({ attachPaymentMethod, label }) => {
                                 triggerSubmit={triggerSubmit}
                                 resetSubmitTrigger={() => setTriggerSubmit(false)}
                                 onAttachPaymentMethod={onAttachPaymentMethod}
+                                onSetVisible={onSetVisible}
+                                onSetInProgress={onSetInProgress}
                             />
                         </Elements>
                     </StripeProvider>
@@ -98,7 +116,8 @@ const PaymentMethodModal = ({ attachPaymentMethod, label }) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        attachPaymentMethod: paymentMethodId => dispatch(attachPaymentMethod(paymentMethodId))        
+        attachPaymentMethod: paymentMethodId => dispatch(attachPaymentMethod(paymentMethodId)),        
+        createSetupIntent: paymentMethodId => dispatch(createSetupIntent(paymentMethodId))
     }
 }
 

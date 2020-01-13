@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import { Card, Form, Button, Icon, Popconfirm, Row, Col, Statistic, Skeleton } from 'antd';
 import styles from 'styled-components';
 
-import { getSubscriptionDetails } from '../../../store/actions/subscriptionActions';
+import { getSubscriptionDetails, detachPaymentMethod, setDefaultPaymentMethod } from '../../../store/actions/subscriptionActions';
 import { updateUserProfile, deleteAccount } from '../../../store/actions/authActions';
 import { Subscriptions } from '../../../store/model/Subscriptions';
 import CheckoutModal from './CheckoutModal';
 import PaymentMethods from './PaymentMethods';
+import InvoiceHistory from './InvoiceHistory';
 
 const DowngradeButton = styles(Button)`
     background-color: #F5A113;
@@ -42,12 +43,24 @@ class SubscriptionForm extends React.Component {
         this.props.getSubscriptionDetails();
     }
 
+    onHandleDelete = paymentMethodId => {
+        this.props.detachPaymentMethod(paymentMethodId)
+    }
+
     renderDowngrade = status => {
         return this.subsHelper.allowDowngrade(status) ? this.renderCancelSubscriptionButton() : null;
     }
 
     renderUpgrade = status => {
         return this.subsHelper.allowUpgrade(status) ? this.renderPaymentButton('Upgrade to business plan') : null;
+    }
+
+    renderPaymentMethods = (status, paymentMethods) => {
+        return !this.subsHelper.allowUpgrade(status) ? this.renderPaymentMethodsContent(paymentMethods) : null;
+    }
+
+    renderInvoices = () => {
+        return this.renderInvoiceHistory();
     }
 
     renderUpgradeButton = () => {
@@ -79,8 +92,20 @@ class SubscriptionForm extends React.Component {
         );
     }
 
-    renderPaymentMethods = () => {
-        return <PaymentMethods/>
+    renderPaymentMethodsContent = () => {
+        const { detachPaymentMethod, setDefaultPaymentMethod, subscription } = this.props;
+
+        return (
+            <PaymentMethods 
+                subscription={subscription}
+                handleDelete={detachPaymentMethod}
+                handleSetDefault={setDefaultPaymentMethod}
+            />
+        );
+    }
+
+    renderInvoiceHistory = () => {
+        return <InvoiceHistory subscription={this.props.subscription}/>
     }
 
     renderCancelTrialButton = () => {
@@ -164,7 +189,8 @@ class SubscriptionForm extends React.Component {
             data ? 
                 <React.Fragment>
                     {this.renderPlanDetails()}
-                    {this.renderPaymentMethods(data.paymentMethods)}
+                    {this.renderPaymentMethods(status, data.PaymentMethods)}
+                    {this.renderInvoices()}
                     {this.renderDowngrade(status)}
                     {this.renderDeleteAccount()}
                 </React.Fragment>
@@ -195,9 +221,11 @@ export const mapStateToProps = (state) => {
   
 export const mapDispatchToProps = (dispatch) => {
     return {
-        updateUserProfile: (updatedValues) => dispatch(updateUserProfile(updatedValues)),
         deleteAccount: () => dispatch(deleteAccount()),
-        getSubscriptionDetails: () => dispatch(getSubscriptionDetails())
+        detachPaymentMethod: paymentMethodId => dispatch(detachPaymentMethod(paymentMethodId)),
+        getSubscriptionDetails: () => dispatch(getSubscriptionDetails()),
+        setDefaultPaymentMethod: paymentMethodId => dispatch(setDefaultPaymentMethod(paymentMethodId)),
+        updateUserProfile: (updatedValues) => dispatch(updateUserProfile(updatedValues)),
     }
 }
 

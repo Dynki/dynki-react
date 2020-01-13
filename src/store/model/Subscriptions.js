@@ -23,10 +23,12 @@ export class Subscriptions {
         if (process.env.NODE_ENV !== 'production') {
             this.baseUrl = `https://us-central1-dynki-c5141.cloudfunctions.net/subscriptions`;
             this.pmUrl = `https://us-central1-dynki-c5141.cloudfunctions.net/paymentMethods`;
+            this.siUrl = `https://us-central1-dynki-c5141.cloudfunctions.net/setupIntents`;
             
         } else {
             this.baseUrl = `https://us-central1-dynki-prod.cloudfunctions.net/subscriptions`;
             this.pmUrl = `https://us-central1-dynki-prod.cloudfunctions.net/paymentMethods`;
+            this.siUrl = `https://us-central1-dynki-prod.cloudfunctions.net/setupIntents`;
         }
     }
 
@@ -114,6 +116,21 @@ export class Subscriptions {
         });
     }
 
+    async createSetupIntent(paymentMethodId) {
+        const url = `${this.siUrl}`;
+
+        try {
+            const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
+            const uid = this.firebase.auth().currentUser.uid;
+            const response = await axios.post(url, { paymentMethodId }, { headers: { uid, token, authorization: token } });
+
+            return response.data;
+        } catch (error) {
+            console.log('Error creating setup intent', error);
+            return error;
+        }
+    }
+
     async attachPaymentMethod(paymentMethodId) {
         const url = `${this.pmUrl}`;
 
@@ -122,9 +139,39 @@ export class Subscriptions {
             const uid = this.firebase.auth().currentUser.uid;
             const response = await axios.post(url, { paymentMethodId }, { headers: { uid, token, authorization: token } });
 
-            return response.statu;
+            return response.status;
         } catch (error) {
-            console.log('Error updating subscription', error);
+            console.log('Error attaching payment method', error);
+            return error;
+        }
+    }
+
+    async detachPaymentMethod(paymentMethodId) {
+        const url = `${this.pmUrl}/${paymentMethodId}`;
+
+        try {
+            const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
+            const uid = this.firebase.auth().currentUser.uid;
+            const response = await axios.put(url, { action: 'detach' }, { headers: { uid, token, authorization: token } });
+
+            return response.status;
+        } catch (error) {
+            console.log('Error detaching payment method', error);
+            return error;
+        }
+    }
+
+    async setDefaultPaymentMethod(paymentMethodId) {
+        const url = `${this.pmUrl}/${paymentMethodId}`;
+
+        try {
+            const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
+            const uid = this.firebase.auth().currentUser.uid;
+            const response = await axios.put(url, { action: 'set_default' }, { headers: { uid, token, authorization: token } });
+
+            return response.status;
+        } catch (error) {
+            console.log('Error detaching payment method', error);
             return error;
         }
     }

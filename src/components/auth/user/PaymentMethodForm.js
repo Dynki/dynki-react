@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { CardElement, injectStripe } from 'react-stripe-elements';
-import { Card, Input, Typography } from 'antd';
+import { Card, Input, Typography, notification } from 'antd';
 import styles from 'styled-components';
+
 
 const { Text, Title } = Typography;
 
@@ -103,7 +104,7 @@ const TotalsCard = styles(Card)`
     width: 100%;
 `;
 
-const PaymentMethodForm = ({ elements, onAttachPaymentMethod, stripe, triggerSubmit, resetSubmitTrigger }) => {
+const PaymentMethodForm = ({ elements, onAttachPaymentMethod, onSetVisible, onSetInProgress, stripe, triggerSubmit, resetSubmitTrigger }) => {
 
     const [formData, setFormData] = useState({ 
         name: '',
@@ -120,6 +121,8 @@ const PaymentMethodForm = ({ elements, onAttachPaymentMethod, stripe, triggerSub
 
     const addPaymentMethod = async () => {
         try {
+            onSetInProgress(true);
+
             console.log('Payment Method Form Data::', formData);
 
             const cardElement = elements.getElement('card');
@@ -137,12 +140,26 @@ const PaymentMethodForm = ({ elements, onAttachPaymentMethod, stripe, triggerSub
                     }
                 },
             })
-            .then(({paymentMethod}) => {
-                onAttachPaymentMethod(paymentMethod.id);
+            .then(async ({ paymentMethod }) => {
+                const intentClientSecret = await onAttachPaymentMethod(paymentMethod.id);
+                
+                await stripe.handleCardSetup(intentClientSecret);
+
+                onSetInProgress(false);
+                onSetVisible(false);
+
+                notification['success']({
+                    message: 'Payment method',
+                    description:
+                      'Your payment method was addedd successfully',
+                });
+
+
             });
         
         } catch (error) {
-            
+            onSetInProgress(false);
+            console.log('Payment Setup Error', error);
         }
     }
 

@@ -16,18 +16,74 @@ export const getSubscriptionDetails = () => {
 
 export const attachPaymentMethod = paymentMethodId => {
     return async (dispatch, getState, { getFirebase }) => {
+        dispatch({ type: 'SET_SUBSCRIPTION_LOADING', payload: true });
+  
+        try {
+            const subsHelper = new Subscriptions(getFirebase());
+            await subsHelper.attachPaymentMethod(paymentMethodId);
+            await dispatch(getSubscriptionDetails());
+            notifiy({ type: 'success', message: 'Payment method', description: 'Payment method successfully attached' });
+
+            return true;
+        } catch (error) {
+            return error;
+        } finally {
+            dispatch({ type: 'SET_SUBSCRIPTION_LOADING', payload: false });
+        }
+    }
+}
+
+export const detachPaymentMethod = paymentMethodId => {
+    return async (dispatch, getState, { getFirebase }) => {
+  
+        dispatch({ type: 'SET_SUBSCRIPTION_LOADING', payload: true });
+  
+        try {
+            const subsHelper = new Subscriptions(getFirebase());
+            await subsHelper.detachPaymentMethod(paymentMethodId);
+            await dispatch(getSubscriptionDetails());
+            notifiy({ type: 'success', message: 'Payment method', description: 'Payment method successfully detached' });
+
+            return true;
+        } catch (error) {
+            return error;
+        } finally {
+            dispatch({ type: 'SET_SUBSCRIPTION_LOADING', payload: false });
+        }
+    }
+}
+
+export const setDefaultPaymentMethod = paymentMethodId => {
+    return async (dispatch, getState, { getFirebase }) => {
+
+        dispatch({ type: 'SET_SUBSCRIPTION_LOADING', payload: true });
+
+        try {
+            const subsHelper = new Subscriptions(getFirebase());
+            await subsHelper.setDefaultPaymentMethod(paymentMethodId);
+            await dispatch(getSubscriptionDetails());
+            notifiy({ type: 'success', message: 'Payment method', description: 'Default payment method successfully set' });
+
+            return true;
+        } catch (error) {
+            return error;
+        } finally {
+            dispatch({ type: 'SET_SUBSCRIPTION_LOADING', payload: false });
+        }
+    }
+}
+
+export const createSetupIntent = paymentMethodId => {
+    return async (dispatch, getState, { getFirebase }) => {
   
       try {
         const subsHelper = new Subscriptions(getFirebase());
-        await subsHelper.attachPaymentMethod(paymentMethodId);
+        const response = await subsHelper.createSetupIntent(paymentMethodId);
 
-        notifiy({ type: 'success', message: 'Payment method attached', description: 'Payment method was sucessfully attached' });
-        
-        return true;
+        return response;
       } catch (error) {
-        notifiy({ type: 'warning', message: 'Failure to attach payment method', description: error.message });
+        return error;
       }
     }
-  }
-  
+}
   
