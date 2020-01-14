@@ -10,6 +10,7 @@ const columns = [
     {
         title: 'Invoice Date',
         dataIndex: 'created',
+        render: (text) => new Date(text * 1000).toDateString()
       },
     {
       title: 'Billing Reason',
@@ -20,13 +21,17 @@ const columns = [
       dataIndex: 'amount_due',
     },
     {
-      title: 'Date Due',
-      dataIndex: 'date_due',
+      title: 'Currency',
+      dataIndex: 'currency',
     },
     {
-        title: 'Paid',
-        dataIndex: 'paid',
-        render: (text) => text ? 'Yes' : 'No'
+      title: 'Next Payment Attempt',
+      dataIndex: 'next_payment_attempt',
+      render: (text) => new Date(text * 1000).toDateString()
+    },
+    {
+        title: 'Status',
+        dataIndex: 'status'
     }
 ];
 

@@ -122,7 +122,7 @@ const Pricing = props => {
             features: features.filter(f => f.products.includes(products.personal)),
             billingBasis: 'Free user/month',
             billingFrequency: 'Free forever',
-            link: '/auth/signup/personal',
+            link: `/auth/signup/personal?country=${props.countryCode}`,
             imageSource: '/assets/img/personal.jpg',
             mainPackage: true,
             name: 'Personal'
@@ -133,7 +133,7 @@ const Pricing = props => {
             features: features.filter(f => f.products.includes(products.business)),
             billingBasis: 'Per user/month',
             billingFrequency: 'Billed monthly',
-            link: `/auth/signup/business`,
+            link: `/auth/signup/business?country=${props.countryCode}`,
             cost: businessPrice,
             mainPackage: false,
             buttonText: 'Start free trial'

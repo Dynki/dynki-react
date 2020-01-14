@@ -42,8 +42,10 @@ const ShopIcon = styles(Icon)`
     }
 `;
 
-const PaymentMethodModal = ({ attachPaymentMethod, createSetupIntent, label }) => {
+const PaymentMethodModal = ({ attachPaymentMethod, buttonText, createSetupIntent, label, nextPayment, title, createPaymentIntent, subscription }) => {
     label = label ? label : 'Make a payment';
+
+    console.log('Create payment intent flag', createPaymentIntent);
 
     const [isVisible, setIsVisible] = useState(false);
     const [triggerSubmit, setTriggerSubmit] = useState(false);
@@ -78,7 +80,7 @@ const PaymentMethodModal = ({ attachPaymentMethod, createSetupIntent, label }) =
                 style={{ minWidth: '800px' }}
                 visible={isVisible}
                 onCancel={() => setIsVisible(false)}
-                okText="Add Payment Method"
+                okText={buttonText}
                 cancelButtonProps={{ hidden: true }}
                 okButtonProps={{
                     icon: "shopping",
@@ -90,7 +92,7 @@ const PaymentMethodModal = ({ attachPaymentMethod, createSetupIntent, label }) =
                 <div>
                     <Heading>
                         <ShopIcon type="shop" />
-                        <Title level={2}>Add Payment Method for Business Plan</Title>
+                        <Title level={2}>{title}</Title>
                     </Heading>
                     <SupportedPayments>
                         <PaymentType alt="Visa" src="./assets/pay/icons/1.png"/>
@@ -104,6 +106,9 @@ const PaymentMethodModal = ({ attachPaymentMethod, createSetupIntent, label }) =
                                 onAttachPaymentMethod={onAttachPaymentMethod}
                                 onSetVisible={onSetVisible}
                                 onSetInProgress={onSetInProgress}
+                                nextPayment={nextPayment}
+                                subscription={subscription}
+                                createPaymentIntent={createPaymentIntent}
                             />
                         </Elements>
                     </StripeProvider>

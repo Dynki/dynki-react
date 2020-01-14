@@ -60,7 +60,6 @@ const SignUpForm = ({ form, location, pending, signUp }) => {
     });
 
     const splitPackageName = location.pathname.split('/')[3];
-
     const packageName = splitPackageName ? splitPackageName : 'personal';
 
     const [numberSuccess, setNumberSuccess] = useState('red');

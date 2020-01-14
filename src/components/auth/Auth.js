@@ -49,7 +49,7 @@ const StyledPicture = styles.img`
     height: 600px;
 `;
 
-const Auth = ({ auth, basePending, updateDomain, checkDomain, domain, location, pending, signIn, signUp, signUpInProgress }) => {
+const Auth = ({ auth, basePending, countryCode, updateDomain, checkDomain, domain, location, pending, signIn, signUp, signUpInProgress }) => {
 
     if (auth && auth.uid && !signUpInProgress) {
         if (!domain && location.pathname !== '/auth/domain') {
@@ -73,13 +73,17 @@ const Auth = ({ auth, basePending, updateDomain, checkDomain, domain, location, 
         <Forgot forgotPassword={forgotPassword} pending={pending}/>
     );
 
+    const onSignUp = (creds, packageName) => {
+        signUp(creds, packageName, countryCode)
+    }
+
     return (
         <Background>
             <StyledContent>
                 <Fragment>
                     <Switch>
                         <Route exact path={'/auth/login'} component={() => renderLogin(pending, signIn)}/>
-                        <Route path={'/auth/signup'} component={() => renderSignUp(pending, signUp)}/>
+                        <Route path={'/auth/signup'} component={() => renderSignUp(pending, onSignUp)}/>
                         <Route exact path={'/auth/domain'} component={() => renderDomain(updateDomain, checkDomain, domain, basePending)}/>
                         <Route exact path={'/auth/forgot'} component={() => renderForgot(forgotPassword, pending)}/>
                     </Switch>
@@ -108,7 +112,8 @@ export const mapStateToProps = (state) => {
       pending: state.auth.pending,
       basePending: state.base.progress,
       auth: state.firebase.auth,
-      domain: state.domain.domainId
+      domain: state.domain.domainId,
+      countryCode: state.core.countryCode
     }
 }
   

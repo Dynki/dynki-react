@@ -100,11 +100,39 @@ const TotalLabel = styles(Text)`
     font-size: 16px;
 `;
 
+const SummaryInfo = styles(Text)`
+    font-size: 14px;
+    margin-top: 20px;
+`;
+
 const TotalsCard = styles(Card)`
     width: 100%;
 `;
 
-const PaymentMethodForm = ({ elements, onAttachPaymentMethod, onSetVisible, onSetInProgress, stripe, triggerSubmit, resetSubmitTrigger }) => {
+const PaymentMethodForm = ({ 
+    elements,
+    createPaymentIntent,
+    nextPayment,
+    onAttachPaymentMethod,
+    onSetVisible,
+    onSetInProgress,
+    stripe,
+    subscription,
+    triggerSubmit,
+    resetSubmitTrigger 
+}) => {
+
+    console.log('PMF Subscription', subscription);
+
+    const { latest_invoice } = subscription;
+    let { amount_remaining, currency, tax, tax_percent } = latest_invoice;
+
+    amount_remaining = amount_remaining / 100;    
+    currency = currency === 'gbp' ? '£' : '$';
+
+    if (tax && tax_percent) {
+        tax = tax / 100;
+    }
 
     const [formData, setFormData] = useState({ 
         name: '',
@@ -143,7 +171,13 @@ const PaymentMethodForm = ({ elements, onAttachPaymentMethod, onSetVisible, onSe
             .then(async ({ paymentMethod }) => {
                 const intentClientSecret = await onAttachPaymentMethod(paymentMethod.id);
                 
-                await stripe.handleCardSetup(intentClientSecret);
+                if (createPaymentIntent) {
+                    await stripe.handleCardPayment(intentClientSecret, {
+                        payment_method: paymentMethod.id
+                    });
+                } else {
+                    await stripe.handleCardSetup(intentClientSecret);
+                }
 
                 onSetInProgress(false);
                 onSetVisible(false);
@@ -209,15 +243,29 @@ const PaymentMethodForm = ({ elements, onAttachPaymentMethod, onSetVisible, onSe
                     <TotalsCard title="Payment Summary">
                         <TotalsRow>
                             <TotalsDesc>
-                                <TotalLabel>Business plan x 1 user</TotalLabel>
-                                <TotalLabel>VAT</TotalLabel>
-                                <TotalLabel strong>Total (Per month)</TotalLabel>
+                                {/* <TotalLabel>Business plan</TotalLabel>
+                                <TotalLabel>VAT</TotalLabel> */}
+                                <TotalLabel strong>Business Plan {createPaymentIntent ? '' : '(Per month/user)'}</TotalLabel>
                             </TotalsDesc>
                             <TotalsNumbers>
-                                <TotalLabel>£5.99</TotalLabel>
-                                <TotalLabel>£1.20</TotalLabel>
-                                <TotalLabel strong>£7.19</TotalLabel>
+                                <TotalLabel strong>{`${currency}${amount_remaining}`}</TotalLabel>
+                                {/* <TotalLabel>£1.20</TotalLabel>
+                                <TotalLabel strong>£7.19</TotalLabel> */}
                             </TotalsNumbers>
+                        </TotalsRow>
+                        {nextPayment ?
+                            <TotalsRow>
+                                <TotalsDesc>
+                                    <SummaryInfo>{nextPayment}</SummaryInfo>
+                                </TotalsDesc>
+                            </TotalsRow>
+                            :
+                            null
+                        }
+                        <TotalsRow>
+                            <TotalsDesc>
+                                <SummaryInfo>No refunds. Additional users will be billed for separately.</SummaryInfo>
+                            </TotalsDesc>
                         </TotalsRow>
                     </TotalsCard>
                 </Totals>

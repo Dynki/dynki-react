@@ -14,7 +14,7 @@ const StyledIcon = styles(Icon)`
 
 
 
-const PaymentMethods = ({ subscription, handleDelete, handleSetDefault }) => {
+const PaymentMethods = ({ createPaymentIntent, subscription, handleDelete, handleSetDefault }) => {
 
     console.log('PM Subscription data', subscription);
 
@@ -82,7 +82,13 @@ const PaymentMethods = ({ subscription, handleDelete, handleSetDefault }) => {
     return (
         <StyledCard 
             title="Payment Methods"
-            extra={<PaymentMethodModal label="Add payment method"/>}
+            extra={<PaymentMethodModal
+                createPaymentIntent={createPaymentIntent} 
+                subscription={subscription.data} 
+                buttonText="Add Payment Method" 
+                label="Add payment method" 
+                title="Add Payment Method for Business Plan"
+            />}
         >
             <Table loading={subscription.loading} columns={columns} dataSource={data} size="small"/>
         </StyledCard>

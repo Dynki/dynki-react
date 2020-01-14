@@ -6,12 +6,13 @@ const plans = {
 }
 
 const subscriptionStatus = {
-    active: { name: 'Active', plan: plans.business, allowUpgrade: false, configurePayment: true },
-    trialing: { name: 'Business Trial', plan: plans.business, allowUpgrade: true, configurePayment: true },
-    past_due: { name: 'Payment Overdue', plan: plans.business, allowUpgrade: false, configurePayment: true },
-    unpaid: { name: 'Payment Overdue', plan: plans.business, allowUpgrade: false, configurePayment: true },
-    incomplete: { name: 'Expired', plan: plans.personal, allowUpgrade: true, configurePayment: false },
-    incomplete_expired: { name: 'Expired', plan: plans.personal, allowUpgrade: true, configurePayment: false }
+    active: { name: 'Active', plan: plans.business, allowUpgrade: false, configurePayment: true, paymentIntent: false },
+    trialing: { name: 'Business Trial', plan: plans.business, allowUpgrade: true, configurePayment: true, paymentIntent: false },
+    past_due: { name: 'Payment Overdue', plan: plans.business, allowUpgrade: false, configurePayment: true, paymentIntent: true },
+    unpaid: { name: 'Payment Overdue', plan: plans.business, allowUpgrade: false, configurePayment: true, paymentIntent: true },
+    incomplete: { name: 'Payment Overdue', plan: plans.business, allowUpgrade: false, configurePayment: true, paymentIntent: true },
+    incomplete_expired: { name: 'Payment Overdue', plan: plans.business, allowUpgrade: false, configurePayment: true, paymentIntent: true },
+    cancelled: { name: 'Expired', plan: plans.personal, allowUpgrade: true, configurePayment: false, paymentIntent: true }
 }
 
 export class Subscriptions {
@@ -57,13 +58,13 @@ export class Subscriptions {
      * Adds a new subscription for this user.
      * 
      */
-    async add(packageName) {
+    async add(packageName, countryCode) {
         const url = `${this.baseUrl}`;
 
         try {
             const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
             const uid = this.firebase.auth().currentUser.uid;
-            const newSubscription = await axios.post(url, { plan: packageName }, { headers: { uid, token, authorization: token } });
+            const newSubscription = await axios.post(url, { plan: packageName, countryCode }, { headers: { uid, token, authorization: token } });
 
             return newSubscription;
         } catch (error) {
@@ -199,5 +200,19 @@ export class Subscriptions {
     paymentRequired = status => {
         console.log('Payment required check', status);
         return status === 'past_due' || status === 'unpaid';
+    }
+
+    getTrialEndDate = (status, unixDate) => {
+        console.log('UnixDate', unixDate);
+
+        if (status === 'trialing') {
+            return unixDate !== null && unixDate !== undefined ? new Date(unixDate * 1000).toDateString() : '';
+        } else {
+            return '';
+        }
+    }
+
+    createPaymentIntent = status => {
+        return subscriptionStatus[status] ? subscriptionStatus[status].paymentIntent : false;
     }
 }

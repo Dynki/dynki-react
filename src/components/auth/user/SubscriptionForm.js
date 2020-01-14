@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { Card, Form, Button, Icon, Popconfirm, Row, Col, Statistic, Skeleton } from 'antd';
 import styles from 'styled-components';
 
-import { getSubscriptionDetails, detachPaymentMethod, setDefaultPaymentMethod } from '../../../store/actions/subscriptionActions';
+import { getSubscriptionDetails, detachPaymentMethod, setDefaultPaymentMethod, createSetupIntent } from '../../../store/actions/subscriptionActions';
 import { updateUserProfile, deleteAccount } from '../../../store/actions/authActions';
 import { Subscriptions } from '../../../store/model/Subscriptions';
-import CheckoutModal from './CheckoutModal';
+import PaymentMethodModal from './PaymentMethodModal';
 import PaymentMethods from './PaymentMethods';
 import InvoiceHistory from './InvoiceHistory';
 
@@ -68,9 +68,29 @@ class SubscriptionForm extends React.Component {
     }
 
     renderPaymentButton = label => {
+        const { subscription } = this.props;
+        const { status } = subscription;
+        const { trial_end } = subscription.data;
+
+        const trialEndDate = this.subsHelper.getTrialEndDate(status, trial_end);
+        let nextPayment = undefined;
+
+        const createPaymentIntent = this.subsHelper.createPaymentIntent(status);
+
+        if (trialEndDate !== '') {
+            nextPayment = `First payment due: ${trialEndDate}`
+        }
+
         return (
             <StyledPaymentButton>
-                <CheckoutModal label={label} teamName={this.props.team}/>
+                <PaymentMethodModal 
+                    subscription={subscription.data}
+                    buttonText="Submit Purchase" 
+                    label={label} 
+                    nextPayment={nextPayment}
+                    title="Purchase Business Plan"
+                    createPaymentIntent={createPaymentIntent}
+                />
             </StyledPaymentButton>
         );
     }
@@ -94,12 +114,15 @@ class SubscriptionForm extends React.Component {
 
     renderPaymentMethodsContent = () => {
         const { detachPaymentMethod, setDefaultPaymentMethod, subscription } = this.props;
+        const { status } = subscription;
+        const createPaymentIntent = this.subsHelper.createPaymentIntent(status);
 
         return (
             <PaymentMethods 
                 subscription={subscription}
                 handleDelete={detachPaymentMethod}
                 handleSetDefault={setDefaultPaymentMethod}
+                createPaymentIntent={createPaymentIntent}
             />
         );
     }
@@ -164,7 +187,17 @@ class SubscriptionForm extends React.Component {
 
     renderPlanDetails() {
         const { status } = this.props.subscription;
+        const { trial_end } = this.props.subscription.data;
+        const trialEndDate = this.subsHelper.getTrialEndDate(status, trial_end);
 
+        let expires = '';
+
+        if (trialEndDate) {
+            expires = `Expires: ${trialEndDate}`;
+        }
+
+        console.log('renderPlanDetails', this.props.subscription.data);
+        
         return (
             <Card title="Subscription Details">
                 <Row gutter={16}>
@@ -173,6 +206,7 @@ class SubscriptionForm extends React.Component {
                     </Col>
                     <Col span={12}>
                         <StyledStatistic title="Subscription Status" value={this.getPlanStatus(status)} />
+                        {expires}
                         {this.renderUpgrade(status)}
                     </Col>
                 </Row>
@@ -182,8 +216,6 @@ class SubscriptionForm extends React.Component {
 
     render() {
         const { status, data } = this.props.subscription;
-
-        console.log(this.props.subscription.data);
 
         return (
             data ? 
