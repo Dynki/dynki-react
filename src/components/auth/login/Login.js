@@ -66,7 +66,7 @@ const LoginForm = ({ form, pending, signIn }) => {
                             { type: 'email', message: 'Not a valid email address!' }
                         ],
                     })(
-                        <Input size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
+                        <Input autoFocus size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
                     )}
                 </FormItem>
                 <FormItem>

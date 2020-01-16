@@ -31,6 +31,7 @@ const DomainForm = ({ form, onUpdateDomain, pending, validateFeedback, validateS
                 })(
                     <Input 
                         size="large"
+                        autoFocus
                         prefix={<Icon type="team"
                         style={{ color: 'rgba(0,0,0,.25)' }} />}
                         placeholder="Enter your team name"

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Card, Form, Button, Icon, Popconfirm, Row, Col, Statistic, Skeleton } from 'antd';
 import styles from 'styled-components';
 
-import { getSubscriptionDetails, detachPaymentMethod, setDefaultPaymentMethod, createSetupIntent } from '../../../store/actions/subscriptionActions';
+import { cancelSubscription, getSubscriptionDetails, detachPaymentMethod, setDefaultPaymentMethod } from '../../../store/actions/subscriptionActions';
 import { updateUserProfile, deleteAccount } from '../../../store/actions/authActions';
 import { Subscriptions } from '../../../store/model/Subscriptions';
 import PaymentMethodModal from './PaymentMethodModal';
@@ -30,6 +30,13 @@ const StyledStatistic = styles(Statistic)`
     }
 `;
 
+const CostStatistic = styles(Statistic)`
+
+    .ant-statistic-content-value {
+        font-size: 20px;
+    }
+`;
+
 class SubscriptionForm extends React.Component {
 
     subsHelper = null;
@@ -48,7 +55,7 @@ class SubscriptionForm extends React.Component {
     }
 
     renderDowngrade = status => {
-        return this.subsHelper.allowDowngrade(status) ? this.renderCancelSubscriptionButton() : null;
+        return this.subsHelper.allowDowngrade(status) ? this.renderCancelSubscriptionButton(status) : null;
     }
 
     renderUpgrade = status => {
@@ -64,7 +71,7 @@ class SubscriptionForm extends React.Component {
     }
 
     renderUpgradeButton = () => {
-        return <Button type="primary" size="large">Upgrade to Business Plan</Button>
+        return <Button disabled={this.props.progress} type="primary" size="large">Upgrade to Business Plan</Button>
     }
 
     renderPaymentButton = label => {
@@ -90,23 +97,29 @@ class SubscriptionForm extends React.Component {
                     nextPayment={nextPayment}
                     title="Purchase Business Plan"
                     createPaymentIntent={createPaymentIntent}
+                    afterClose={() => this.props.getSubscriptionDetails()}
                 />
             </StyledPaymentButton>
         );
     }
 
-    renderCancelSubscriptionButton = () => {
+    renderCancelSubscriptionButton = (status) => {
+
+        const title = status === 'trialing' ? 'Cancel Free Trial' : 'Downgrade to Personal Plan';
+        const confTitle = status === 'trialing' ? 'Are you sure you want to cancel your free trial?' : 'Are you sure you want to downgrade to personal plan?';
+        const okText = status === 'trialing' ? 'Yes cancel my trial' : 'Yes cancel my subscription';
+
         return (
-            <StyledAccountCard title="Downgrade to Personal Plan">
+            <StyledAccountCard title={title}>
                 <Popconfirm 
-                    title="Are you sure you want to downgrade to personal plan?" 
-                    okText="Yes cancel my subscription"
+                    title={confTitle} 
+                    okText={okText}
                     okType="danger"
                     cancelText="No, keep it like this!!"
-                    onConfirm={this.props.deleteAccount}
+                    onConfirm={this.props.cancelSubscription}
                     icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
                 >
-                    <DowngradeButton icon="arrow-down" id="btnCancelSubscription" type="danger" size="large">Downgrade To Personal Plan</DowngradeButton>
+                    <DowngradeButton disabled={this.props.progress} icon="arrow-down" id="btnCancelSubscription" type="danger" size="large">{title}</DowngradeButton>
                 </Popconfirm>
             </StyledAccountCard>
         );
@@ -123,28 +136,13 @@ class SubscriptionForm extends React.Component {
                 handleDelete={detachPaymentMethod}
                 handleSetDefault={setDefaultPaymentMethod}
                 createPaymentIntent={createPaymentIntent}
+                afterClose={() => this.props.getSubscriptionDetails()}
             />
         );
     }
 
     renderInvoiceHistory = () => {
         return <InvoiceHistory subscription={this.props.subscription}/>
-    }
-
-    renderCancelTrialButton = () => {
-        return (
-            <Popconfirm 
-                className="userprofile__removeac-btn"
-                title="Are you sure you want to downgrade to personal plan?" 
-                okText="Yes cancel my trial"
-                okType="danger"
-                cancelText="No, keep it like this!!"
-                onConfirm={this.props.deleteAccount}
-                icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
-            >
-                <DowngradeButton id="btnCancelSubscriotion" type="danger" size="large">Cancel My Trial</DowngradeButton>
-            </Popconfirm>
-        );
     }
 
     renderDeleteAccount() {
@@ -157,7 +155,7 @@ class SubscriptionForm extends React.Component {
                 cancelText: "No way, I want to stay!!",
                 onConfirm: this.props.deleteAccount,
                 icon: <Icon type="question-circle-o" style={{ color: 'red' }} />,
-                children: <Button id="btnRemoveAccount" icon="delete" type="danger" size="large">Remove My Account Forever</Button> 
+                children: <Button disabled={this.props.progress} id="btnRemoveAccount" icon="delete" type="danger" size="large">Remove My Account Forever</Button> 
             })}
         </StyledAccountCard>
     }
@@ -185,9 +183,14 @@ class SubscriptionForm extends React.Component {
         return this.subsHelper.getPlanStatus(status);
     }
 
+    getPlanCost = subscription => {
+        return this.subsHelper.getPlanCost(subscription);
+    }
+
     renderPlanDetails() {
-        const { status } = this.props.subscription;
-        const { trial_end } = this.props.subscription.data;
+        const { subscription } = this.props;
+        const { status } = subscription;
+        const { trial_end } = subscription.data;
         const trialEndDate = this.subsHelper.getTrialEndDate(status, trial_end);
 
         let expires = '';
@@ -196,7 +199,7 @@ class SubscriptionForm extends React.Component {
             expires = `Expires: ${trialEndDate}`;
         }
 
-        console.log('renderPlanDetails', this.props.subscription.data);
+        console.log('renderPlanDetails', subscription.data);
         
         return (
             <Card title="Subscription Details">
@@ -205,9 +208,14 @@ class SubscriptionForm extends React.Component {
                         <Statistic title="Current Plan" value={this.getPlanName(status)} />
                     </Col>
                     <Col span={12}>
-                        <StyledStatistic title="Subscription Status" value={this.getPlanStatus(status)} />
+                        <StyledStatistic title="Business Plan Subscription Status" value={this.getPlanStatus(status)} />
                         {expires}
                         {this.renderUpgrade(status)}
+                    </Col>
+                </Row>
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <CostStatistic title="Subscription Cost" value={this.getPlanCost(subscription.data)} />
                     </Col>
                 </Row>
             </Card>
@@ -235,10 +243,12 @@ class SubscriptionForm extends React.Component {
 const WrappedSubscriptionForm = Form.create({ 
     name: 'subscription',
     mapPropsToFields(props) {
+        const subscriptionStatus = props.subscription ? props.subscription.status.toLocaleUpperCase() : '';
+
         return {
           subscription: Form.createFormField({
-            ...props.subscription.status.toLocaleUpperCase(),
-            value: props.subscription.status.toLocaleUpperCase(),
+            ...subscriptionStatus,
+            value: subscriptionStatus,
           })
         };
     }
@@ -247,7 +257,8 @@ const WrappedSubscriptionForm = Form.create({
 export const mapStateToProps = (state) => {
     return{
       subscription: state.subscription,
-      team: state.domain.name
+      team: state.domain.name,
+      progress: state.base.progress
     }
   }
   
@@ -256,6 +267,7 @@ export const mapDispatchToProps = (dispatch) => {
         deleteAccount: () => dispatch(deleteAccount()),
         detachPaymentMethod: paymentMethodId => dispatch(detachPaymentMethod(paymentMethodId)),
         getSubscriptionDetails: () => dispatch(getSubscriptionDetails()),
+        cancelSubscription: () => dispatch(cancelSubscription()),
         setDefaultPaymentMethod: paymentMethodId => dispatch(setDefaultPaymentMethod(paymentMethodId)),
         updateUserProfile: (updatedValues) => dispatch(updateUserProfile(updatedValues)),
     }

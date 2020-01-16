@@ -49,7 +49,7 @@ const StyledPicture = styles.img`
     height: 600px;
 `;
 
-const Auth = ({ auth, basePending, countryCode, updateDomain, checkDomain, domain, location, pending, signIn, signUp, signUpInProgress }) => {
+const Auth = ({ auth, basePending, countryCode, countryCodes, updateDomain, checkDomain, domain, location, pending, signIn, signUp, signUpInProgress }) => {
 
     if (auth && auth.uid && !signUpInProgress) {
         if (!domain && location.pathname !== '/auth/domain') {
@@ -62,7 +62,7 @@ const Auth = ({ auth, basePending, countryCode, updateDomain, checkDomain, domai
     );
 
     const renderSignUp = (pending, signUp) => (
-        <SignUp pending={pending} signUp={signUp}/>
+        <SignUp countryCodes={countryCodes} pending={pending} signUp={signUp}/>
     );
 
     const renderDomain = (updateDomain, checkDomain, domain, pending) => (
@@ -73,8 +73,10 @@ const Auth = ({ auth, basePending, countryCode, updateDomain, checkDomain, domai
         <Forgot forgotPassword={forgotPassword} pending={pending}/>
     );
 
-    const onSignUp = (creds, packageName) => {
-        signUp(creds, packageName, countryCode)
+    const onSignUp = (creds, packageName, country, VATNumber) => {
+        country = country === undefined ? countryCode : country;
+
+        signUp(creds, packageName, country, VATNumber)
     }
 
     return (
@@ -113,7 +115,8 @@ export const mapStateToProps = (state) => {
       basePending: state.base.progress,
       auth: state.firebase.auth,
       domain: state.domain.domainId,
-      countryCode: state.core.countryCode
+      countryCode: state.core.countryCode,
+      countryCodes: state.core.countryCodes
     }
 }
   
@@ -123,7 +126,7 @@ export const mapDispatchToProps = (dispatch) => {
         updateDomain: (name) => dispatch(updateDomain(name)),
         forgotPassword: (creds) => dispatch(forgotPassword(creds)),
         signIn: (creds) => dispatch(signIn(creds)),
-        signUp: (creds, packageName) => dispatch(signUp(creds, packageName))
+        signUp: (creds, packageName, countryCode, VATNumber) => dispatch(signUp(creds, packageName, countryCode, VATNumber))
     }
 }
 

@@ -6,13 +6,69 @@ const plans = {
 }
 
 const subscriptionStatus = {
-    active: { name: 'Active', plan: plans.business, allowUpgrade: false, configurePayment: true, paymentIntent: false },
-    trialing: { name: 'Business Trial', plan: plans.business, allowUpgrade: true, configurePayment: true, paymentIntent: false },
-    past_due: { name: 'Payment Overdue', plan: plans.business, allowUpgrade: false, configurePayment: true, paymentIntent: true },
-    unpaid: { name: 'Payment Overdue', plan: plans.business, allowUpgrade: false, configurePayment: true, paymentIntent: true },
-    incomplete: { name: 'Payment Overdue', plan: plans.business, allowUpgrade: false, configurePayment: true, paymentIntent: true },
-    incomplete_expired: { name: 'Payment Overdue', plan: plans.business, allowUpgrade: false, configurePayment: true, paymentIntent: true },
-    cancelled: { name: 'Expired', plan: plans.personal, allowUpgrade: true, configurePayment: false, paymentIntent: true }
+    active: { 
+        name: 'Active', 
+        plan: plans.business, 
+        allowUpgrade: false, 
+        allowDowngrade: true,
+        configurePayment: true, 
+        paymentIntent: false, 
+        hasCost: true 
+    },
+    trialing: { 
+        name: 'Business Trial', 
+        plan: plans.business, 
+        allowUpgrade: true, 
+        allowDowngrade: true,
+        configurePayment: true, 
+        paymentIntent: false, 
+        hasCost: true
+    },
+    past_due: { 
+        name: 'Payment Overdue', 
+        plan: plans.business, 
+        allowUpgrade: false, 
+        allowDowngrade: true,
+        configurePayment: true, 
+        paymentIntent: true, 
+        hasCost: true 
+    },
+    unpaid: { 
+        name: 'Payment Overdue', 
+        plan: plans.business, 
+        allowUpgrade: false, 
+        allowDowngrade: true,
+        configurePayment: true, 
+        paymentIntent: true, 
+        hasCost: true 
+    },
+    incomplete: { 
+        name: 'Payment Overdue', 
+        plan: plans.business, 
+        allowUpgrade: false, 
+        allowDowngrade: true,
+        configurePayment: true, 
+        paymentIntent: true, 
+        hasCost: true 
+    },
+    incomplete_expired: { 
+        name: 'Payment Overdue', 
+        plan: plans.business, 
+        allowUpgrade: false, 
+        allowDowngrade: true,
+        configurePayment: true, 
+        paymentIntent: true, 
+        hasCost: true 
+    },
+    canceled: { 
+        name: 'Expired', 
+        plan: plans.personal, 
+        allowUpgrade: true, 
+        allowDowngrade: false,
+        configurePayment: false, 
+        paymentIntent: true, 
+        hasCost: false 
+    }
 }
 
 export class Subscriptions {
@@ -58,15 +114,17 @@ export class Subscriptions {
      * Adds a new subscription for this user.
      * 
      */
-    async add(packageName, countryCode) {
+    async add(packageName, countryCode, VATNumber) {
         const url = `${this.baseUrl}`;
 
         try {
             const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
             const uid = this.firebase.auth().currentUser.uid;
-            const newSubscription = await axios.post(url, { plan: packageName, countryCode }, { headers: { uid, token, authorization: token } });
+            const newSubscription = await axios.post(url, { plan: packageName, countryCode, VATNumber }, { headers: { uid, token, authorization: token } });
 
-            return newSubscription;
+            console.log('Subscription :: newSubscription', newSubscription);
+
+            return newSubscription.data;
         } catch (error) {
             console.log('Error adding subscription', error);
             return error;
@@ -78,22 +136,18 @@ export class Subscriptions {
      * 
      * 
     */
-    delete() {
-        return new Promise(async (resolve, reject) => {
-            const url = `${this.baseUrl}`;
+    async delete() {
+        const url = `${this.baseUrl}/account`;
 
-            try {
-                const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
-                const uid = this.firebase.auth().currentUser.uid;
-                const newSubscription = await axios.delete(url, { headers: { uid, token, authorization: token } });
-
-                resolve(newSubscription);
-
-            } catch (error) {
-                console.log('Error removing subscription', error);
-                reject(error);
-            }
-        });
+        try {
+            const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
+            const uid = this.firebase.auth().currentUser.uid;
+            const response = await axios.delete(url, { headers: { uid, token, authorization: token } });
+            return response;
+        } catch (error) {
+            console.log('Error removing subscription', error);
+            return error;
+        }
     }
 
     /**
@@ -186,7 +240,7 @@ export class Subscriptions {
     }
 
     allowDowngrade(status) {
-        return subscriptionStatus[status] ? subscriptionStatus[status].allowUpgrade === false : false;
+        return subscriptionStatus[status].allowDowngrade;
     }
 
     getPlanName = status => {
@@ -214,5 +268,19 @@ export class Subscriptions {
 
     createPaymentIntent = status => {
         return subscriptionStatus[status] ? subscriptionStatus[status].paymentIntent : false;
+    }
+
+    getPlanCost = subscription => {
+        const cost = subscription.cost / 100;
+        const quantity = subscription.quantity
+        const currency = subscription.currency === 'gbp' ? '£' : '$';
+        const tax = subscription.cost_tax && subscription.cost_tax !== 0 ? subscription.cost_tax / 100 : 0;
+        const total = cost + tax;
+        const incVat = tax > 0 ? '(inc VAT)' : ''
+        const users = quantity === 1 ? 'user' : 'users';
+
+
+        return subscriptionStatus[subscription.status].hasCost ?
+             `${currency}${total} Per Month ${incVat} - (${quantity} ${users})` : 'Free';
     }
 }

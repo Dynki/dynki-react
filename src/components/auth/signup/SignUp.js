@@ -1,13 +1,19 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { checkVAT, countries } from 'jsvat';
+import { Form, Icon, Input, Button, Checkbox, Select } from 'antd';
 import styles from 'styled-components';
 
 import Terms from '../Terms';
 import Privacy from '../Privacy';
 
 const FormItem = Form.Item;
+const { Option } = Select;
+
+const PasswordCriteria = styles.div`
+    padding-left: 15px;
+`;
 
 const StyledForm = styles.div`
     display: flex;
@@ -48,16 +54,18 @@ const StyledForm = styles.div`
     }
 `;
 
+const StyledSelect = styles(Select)`
+    margin-top: 20px;
+`;
+
 function hasErrors(fieldsError) {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
 
-const SignUpForm = ({ form, location, pending, signUp }) => {
 
-    useEffect(() => {
-        // Update the document title using the browser API
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+const SignUpForm = ({ countryCodes, form, location, pending, signUp }) => {
+
+    const countriesDOM = countryCodes.map(c => <Option key={c['alpha-2']}>{c.name}</Option>)
 
     const splitPackageName = location.pathname.split('/')[3];
     const packageName = splitPackageName ? splitPackageName : 'personal';
@@ -66,6 +74,7 @@ const SignUpForm = ({ form, location, pending, signUp }) => {
     const [mixedSuccess, setMixedSuccess] = useState('red');
     const [specialSuccess, setSpecialSuccess] = useState('red');
     const [agreeFailed, setAgreeFailed] = useState(false);
+    const [selectedCountry, setSelectedCountry] = useState('');
     
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -74,10 +83,15 @@ const SignUpForm = ({ form, location, pending, signUp }) => {
                 setAgreeFailed(true);
             } else {
                 if (!err) {
-                    await signUp(values, packageName);
+                    await signUp(values, packageName, values.country, values.VATNumber);
                 }
             }
         });
+    }
+
+    const onSetCountry = value => {
+        const country = countryCodes.find(c => c['alpha-2'] === value);
+        setSelectedCountry(country);
     }
 
     const validatePassword = (rule, value, callback) => {
@@ -114,6 +128,15 @@ const SignUpForm = ({ form, location, pending, signUp }) => {
         }
     } 
 
+    const validateVATNumber = (rule, value, callback) => {
+        if (value === undefined || value === null || value === '') {
+            callback();
+        } else {
+            const check = checkVAT(value, countries);
+            check.valid ? callback() : callback('Not a valid VAT number');
+        }
+    }
+
     const { getFieldDecorator, getFieldsError } = form;
 
     return (
@@ -128,7 +151,7 @@ const SignUpForm = ({ form, location, pending, signUp }) => {
                                 { type: 'email', message: 'Not a valid email address!' }
                         ],
                         })(
-                            <Input size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
+                            <Input autoFocus size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
                         )}
                         
                     </FormItem>
@@ -142,9 +165,46 @@ const SignUpForm = ({ form, location, pending, signUp }) => {
                             <Input size="large" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
                         )}
                     </FormItem>
-                    <div><Icon type="check" style={{ color: numberSuccess }}/> Contains a number</div>
-                    <div><Icon type="check" style={{ color: mixedSuccess }}/> Contains upper case and lower case</div>
-                    <div><Icon type="check" style={{ color: specialSuccess }}/> Contains a special character</div>
+                    <PasswordCriteria><Icon type="check" style={{ color: numberSuccess }}/> Contains a number</PasswordCriteria>
+                    <PasswordCriteria><Icon type="check" style={{ color: mixedSuccess }}/> Contains upper case and lower case</PasswordCriteria>
+                    <PasswordCriteria><Icon type="check" style={{ color: specialSuccess }}/> Contains a special character</PasswordCriteria>
+                    <FormItem>
+                        {getFieldDecorator('country', {
+                            valuePropName: 'country',
+                            initialValue: '',
+                            rules: [
+                                { required: true, message: 'Please select a country' },
+                            ],
+                        })(
+                            <StyledSelect
+                                showSearch
+                                size="large"
+                                placeholder="Select a country"
+                                optionFilterProp="children"
+                                onChange={onSetCountry}
+                                filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
+                            >
+                                {countriesDOM}
+                            </StyledSelect>
+                        )}
+                    </FormItem>
+                    {selectedCountry && selectedCountry.region === 'Europe' ?
+                        <FormItem>
+                            {getFieldDecorator('VATNumber', {
+                                rules: [
+                                    { validator: (rule, value, callback) => validateVATNumber(rule, value, callback) }
+                                ],
+                            })(
+                                <Input autoFocus size="large" prefix={<Icon type="audit" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="VAT Number (Optional)" />
+                            )}
+                            
+                        </FormItem>
+                        : null
+                    }
+
+
                     <FormItem>
                         {getFieldDecorator('agree', {
                             valuePropName: 'checked',
@@ -165,6 +225,7 @@ const SignUpForm = ({ form, location, pending, signUp }) => {
                         </Button>
                         Or <Link id="backToLogin" to="/auth/login">go to login</Link>
                     </FormItem>
+
                 </Form>
             </StyledForm>
         </Fragment>

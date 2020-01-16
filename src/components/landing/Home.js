@@ -87,6 +87,11 @@ const GettingStartedButton = styles.button`
     }
 `;
 
+const ButtonSubtext = styles.div`
+    margin-bottom: 0px;
+    color: #ffffff;
+    font-size: 14px;
+`;
 
 const Home = props => {
 
@@ -97,16 +102,20 @@ const Home = props => {
                     <h1>An elegant way to manage your work load</h1>
                     <h2 className="home__h2">Whether its planning work or tracking orders</h2>
                     <Link to="/Pricing" id="register">
-                        <GettingStartedButton>Get Started For Free</GettingStartedButton>
+                        <GettingStartedButton
+                        >
+                            Click Here to Get Started<ButtonSubtext>No credit card required</ButtonSubtext>
+                        </GettingStartedButton>
+                        
                     </Link>
                     
                     <img alt="sample" src="./assets/img/sample.png"></img>
                 </SampleSection>
             </Hero>
             <div className="home__section2">
-                <div className="home__section2__h1">Free Project Tracking Software</div>
-                <p className="home__section2__h2">Track everything, use for work or for personal life. Dynki tracking software is effortless and beautiful to use.</p>
-                <p className="home__section2__h2">Create custom boards that allow you to track things your way. With numerous column types you can easily keep track of everything of importance.</p>
+                <div className="home__section2__h1">Free Task Management Software</div>
+                <p className="home__section2__h2">Track everything, use for work or for personal life. Dynki task management software is effortless and beautiful to use.</p>
+                <p className="home__section2__h2">Create custom boards that allow you to track things your way. With numerous column types you can easily manage of everything of importance.</p>
             </div>
             <div className="home__section3">
                 <div className="home__section3__container">
@@ -127,7 +136,7 @@ const Home = props => {
                     </div>
                 </div>
                 <Link to="/Pricing">
-                    <div className="home__button">Sign Up For Free</div>
+                    <div className="home__button">Sign Up For Free <ButtonSubtext>No credit card required</ButtonSubtext></div>
                 </Link>
             </div>
         </StyledContent>

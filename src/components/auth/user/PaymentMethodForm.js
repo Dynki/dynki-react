@@ -109,32 +109,49 @@ const TotalsCard = styles(Card)`
     width: 100%;
 `;
 
-const PaymentMethodForm = ({ 
+const PaymentMethodForm = ({
     elements,
     createPaymentIntent,
+    getSubscriptionDetails,
     nextPayment,
     onAttachPaymentMethod,
     onSetVisible,
     onSetInProgress,
+    resetSubmitTrigger,
     stripe,
     subscription,
-    triggerSubmit,
-    resetSubmitTrigger 
+    triggerSubmit
 }) => {
 
     console.log('PMF Subscription', subscription);
 
-    const { latest_invoice } = subscription;
-    let { amount_remaining, currency, tax, tax_percent } = latest_invoice;
-
-    amount_remaining = amount_remaining / 100;    
+    const { latest_invoice, cost, cost_tax } = subscription;
+    let { amount_remaining, currency, tax } = latest_invoice;
     currency = currency === 'gbp' ? '£' : '$';
 
-    if (tax && tax_percent) {
-        tax = tax / 100;
+    let costToDisplay = 0;
+    let taxToDisplay = 0;
+    let totalToDisplay = 0;
+
+    if (latest_invoice.billing_reason === 'subscription_create') {
+        costToDisplay = (cost / 100).toFixed(2);
+
+        if (cost_tax && cost_tax !== 0) {
+            taxToDisplay = (cost_tax / 100).toFixed(2);
+        }
+
+        totalToDisplay = ((cost + cost_tax) / 100).toFixed(2);
+    } else {
+        costToDisplay = (amount_remaining / 100).toFixed(2);
+
+        if (tax && tax !== 0) {
+            taxToDisplay = (tax / 100).toFixed(2);
+        }
+
+        totalToDisplay = ((amount_remaining + tax) / 100).toFixed(2);
     }
 
-    const [formData, setFormData] = useState({ 
+    const [formData, setFormData] = useState({
         name: '',
         email: '',
         line1: '',
@@ -158,7 +175,7 @@ const PaymentMethodForm = ({
             await stripe.createPaymentMethod({
                 type: 'card',
                 card: cardElement,
-                billing_details: { 
+                billing_details: {
                     name: formData.name,
                     email: formData.email,
                     address: {
@@ -168,38 +185,54 @@ const PaymentMethodForm = ({
                     }
                 },
             })
-            .then(async ({ paymentMethod }) => {
-                const intentClientSecret = await onAttachPaymentMethod(paymentMethod.id);
-                
-                if (createPaymentIntent) {
-                    await stripe.handleCardPayment(intentClientSecret, {
-                        payment_method: paymentMethod.id
+                .then(async ({ paymentMethod }) => {
+                    console.log('A');
+
+                    const intentClientSecret = await onAttachPaymentMethod(paymentMethod.id);
+
+                    console.log('B');
+
+                    if (createPaymentIntent) {
+                        console.log('C');
+
+                        await stripe.confirmCardPayment(intentClientSecret, {
+                            payment_method: paymentMethod.id
+                        });
+
+                        console.log('D');
+
+                    } else {
+                        console.log('E');
+
+                        await stripe.confirmCardSetup(intentClientSecret, {
+                            payment_method: paymentMethod.id
+                        });
+
+                        console.log('F');
+                    }
+
+                    notification['success']({
+                        message: 'Payment method',
+                        description:
+                            'Your payment was successfully processed!',
                     });
-                } else {
-                    await stripe.handleCardSetup(intentClientSecret);
-                }
 
-                onSetInProgress(false);
-                onSetVisible(false);
+                    getSubscriptionDetails();
 
-                notification['success']({
-                    message: 'Payment method',
-                    description:
-                      'Your payment method was addedd successfully',
+                    onSetInProgress(false);
+                    onSetVisible(false);
+
                 });
 
-
-            });
-        
         } catch (error) {
             onSetInProgress(false);
             console.log('Payment Setup Error', error);
         }
     }
 
-    if(triggerSubmit) {
-        addPaymentMethod();
+    if (triggerSubmit) {
         resetSubmitTrigger();
+        addPaymentMethod();
     }
 
     return (
@@ -209,12 +242,12 @@ const PaymentMethodForm = ({
                     <FormGroup>
                         <FormItem>
                             <Label>Name on card</Label>
-                            <StyledInput size="large" placeholder="Name on card" onChange={e => setData('name', e.target.value)}/>
+                            <StyledInput size="large" placeholder="Name on card" onChange={e => setData('name', e.target.value)} />
                         </FormItem>
                         <FormItem>
                             <CardLabel>Card Number</CardLabel>
                             <StyledCardElement>
-                                <CardElement 
+                                <CardElement
                                     hidePostalCode={true}
                                     style={{
                                         base: {
@@ -226,16 +259,16 @@ const PaymentMethodForm = ({
                         </FormItem>
                         <FormItem>
                             <Label>Email</Label>
-                            <StyledInput size="large" placeholder="Email Address" onChange={e => setData('email', e.target.value)}/>
+                            <StyledInput size="large" placeholder="Email Address" onChange={e => setData('email', e.target.value)} />
                         </FormItem>
                         <FormItem>
                             <Label>Billing Address</Label>
-                            <StyledInput size="large" placeholder="Address Line 1" onChange={e => setData('line1', e.target.value)}/>
-                            <StyledInput size="large" placeholder="City" onChange={e => setData('city', e.target.value)}/>
+                            <StyledInput size="large" placeholder="Address Line 1" onChange={e => setData('line1', e.target.value)} />
+                            <StyledInput size="large" placeholder="City" onChange={e => setData('city', e.target.value)} />
                         </FormItem>
                         <FormItem>
                             <Label>Postal Code</Label>
-                            <StyledInput size="large" placeholder="Postal Code" onChange={e => setData('postal_code', e.target.value)}/>
+                            <StyledInput size="large" placeholder="Postal Code" onChange={e => setData('postal_code', e.target.value)} />
                         </FormItem>
                     </FormGroup>
                 </FormColumn>
@@ -243,14 +276,14 @@ const PaymentMethodForm = ({
                     <TotalsCard title="Payment Summary">
                         <TotalsRow>
                             <TotalsDesc>
-                                {/* <TotalLabel>Business plan</TotalLabel>
-                                <TotalLabel>VAT</TotalLabel> */}
-                                <TotalLabel strong>Business Plan {createPaymentIntent ? '' : '(Per month/user)'}</TotalLabel>
+                                <TotalLabel strong>Business Plan</TotalLabel>
+                                {taxToDisplay > 0 ? <TotalLabel>VAT</TotalLabel> : null}
+                                <TotalLabel>Total {createPaymentIntent ? '' : '(Per month/user)'}</TotalLabel>
                             </TotalsDesc>
                             <TotalsNumbers>
-                                <TotalLabel strong>{`${currency}${amount_remaining}`}</TotalLabel>
-                                {/* <TotalLabel>£1.20</TotalLabel>
-                                <TotalLabel strong>£7.19</TotalLabel> */}
+                                <TotalLabel strong>{`${currency}${costToDisplay}`}</TotalLabel>
+                                {taxToDisplay > 0 ? <TotalLabel>{`${currency}${taxToDisplay}`}</TotalLabel> : null}
+                                <TotalLabel strong>{`${currency}${totalToDisplay}`}</TotalLabel>
                             </TotalsNumbers>
                         </TotalsRow>
                         {nextPayment ?

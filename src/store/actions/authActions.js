@@ -45,7 +45,7 @@ export const signIn = (credentials) => {
   }
 }
 
-export const signUp = (credentials, packageName, countryCode) => {
+export const signUp = (credentials, packageName, countryCode, VATNumber) => {
   return async (dispatch, getState, { getFirebase }) => {
     try {
       const firebase = getFirebase();
@@ -62,20 +62,20 @@ export const signUp = (credentials, packageName, countryCode) => {
       const domainsHelper = new Domains(getFirebase());
       const newDomain = await domainsHelper.add('Your Team');
 
-      const idTokenResult = await firebase.auth().currentUser.getIdTokenResult(true)
+      const idTokenResult = await firebase.auth().currentUser.getIdTokenResult(true);
       const currentUser = { ...firebase.auth().currentUser, claims: idTokenResult.claims }
 
       dispatch({ type: 'SET_DOMAIN', payload: newDomain.id });
       dispatch({ type: 'SET_DOMAIN_DETAILS', payload: newDomain });
 
       const subsHelper = new Subscriptions(getFirebase(), newDomain.id);
-      const newSub = await subsHelper.add(packageName, countryCode);
+      const newSub = await subsHelper.add(packageName, countryCode, VATNumber);
 
       dispatch({ type: 'SET_SUBSCRIPTION_STATUS', payload: newSub.status });
       dispatch({ type: 'SIGNUP_SUCCESS', payload: currentUser });
     } catch (error) {
       dispatch({ type: 'SIGNUP_ERROR', error });
-      notifiy({ type: 'warning', message: 'Sign up Failure', description: error.message })
+      notifiy({ type: 'warning', message: 'Sign up Failure', description: error.message });
     }
   }
 }
@@ -231,4 +231,3 @@ export const deleteAccount = () => {
     }
   }
 }
-

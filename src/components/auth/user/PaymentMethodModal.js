@@ -5,7 +5,7 @@ import styles from 'styled-components';
 import { Button, Icon, Modal, Typography } from 'antd';
 import PaymentMethodForm from './PaymentMethodForm';
 
-import { attachPaymentMethod, createSetupIntent } from '../../../store/actions/subscriptionActions';
+import { attachPaymentMethod, createSetupIntent, getSubscriptionDetails } from '../../../store/actions/subscriptionActions';
 
 const { Text, Title } = Typography;
 
@@ -42,7 +42,17 @@ const ShopIcon = styles(Icon)`
     }
 `;
 
-const PaymentMethodModal = ({ attachPaymentMethod, buttonText, createSetupIntent, label, nextPayment, title, createPaymentIntent, subscription }) => {
+const PaymentMethodModal = ({ 
+    attachPaymentMethod, 
+    buttonText, 
+    createPaymentIntent, 
+    createSetupIntent, 
+    getSubscriptionDetails,
+    label, 
+    nextPayment, 
+    subscription,
+    title
+}) => {
     label = label ? label : 'Make a payment';
 
     console.log('Create payment intent flag', createPaymentIntent);
@@ -109,6 +119,7 @@ const PaymentMethodModal = ({ attachPaymentMethod, buttonText, createSetupIntent
                                 nextPayment={nextPayment}
                                 subscription={subscription}
                                 createPaymentIntent={createPaymentIntent}
+                                getSubscriptionDetails={getSubscriptionDetails}
                             />
                         </Elements>
                     </StripeProvider>
@@ -122,7 +133,8 @@ const PaymentMethodModal = ({ attachPaymentMethod, buttonText, createSetupIntent
 const mapDispatchToProps = dispatch => {
     return {
         attachPaymentMethod: paymentMethodId => dispatch(attachPaymentMethod(paymentMethodId)),        
-        createSetupIntent: paymentMethodId => dispatch(createSetupIntent(paymentMethodId))
+        createSetupIntent: paymentMethodId => dispatch(createSetupIntent(paymentMethodId)),
+        getSubscriptionDetails: () => dispatch(getSubscriptionDetails())
     }
 }
 
