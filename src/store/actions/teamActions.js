@@ -156,6 +156,31 @@ export const updateTeamMember = (id, updatedMember) => {
     }
 }
 
+// Delete an individual team member by id.
+export const deleteTeamMember = (id) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        try {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+
+            const teamsHelper = new Teams(getFirebase(), getState().domain.domainId);
+            const response = await teamsHelper.deleteMember(getState().teams.currentTeam.id, id);
+
+            if (response.status === 200) {
+                notifiy({ type: 'success', message: 'Member deleted', description: 'The member has been deleted from this team', duration: 0 });
+            } else {
+                notifiy({ type: 'warning', message: 'Failed to delete member', description: 'There was an error deleting this member', duration: 0 });
+                console.log(response.error);
+            }
+
+        } catch (error) {
+            console.log(error, 'delete member error');
+            notifiy({ type: 'error', message: 'Delete failure', description: error, duration: 0 });
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+        }
+    }
+}
+
 // Update an individual team by id.
 export const inviteTeamMember = (emails) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {

@@ -10,6 +10,7 @@ import {
     getTeam, 
     addTeamGroup, 
     deleteTeamGroup, 
+    deleteTeamMember,
     updateTeamGroup, 
     updateTeamMember, 
     inviteTeamMember 
@@ -175,8 +176,10 @@ class Teams extends React.Component {
                                 members={team.members} 
                                 groups={team.groups}
                                 handleSave={this.saveMemberUpdate}
+                                handleDelete={this.props.deleteTeamMember} 
                                 setDrawerVisibility={this.setDrawerVisibility}
                                 hasRole={hasRole}
+                                loading={this.props.progress}
                             />
                         </div>
                     </div>
@@ -198,6 +201,7 @@ export const mapDispatchToProps = (dispatch) => {
         getTeam: (id) => dispatch(getTeam(id)),
         addTeamGroup: (id) => dispatch(addTeamGroup(id)),
         deleteTeamGroup: (id) => dispatch(deleteTeamGroup(id)),
+        deleteTeamMember: (id) => dispatch(deleteTeamMember(id)),
         updateTeamGroup: (id,  updatedGroup) => dispatch(updateTeamGroup(id, updatedGroup)),
         updateTeamMember: (id,  updatedMember) => dispatch(updateTeamMember(id, updatedMember)),
         inviteMember: (emails) => dispatch(inviteTeamMember(emails))

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Form, Input, Icon, Select, Table, Tag } from 'antd';
+import { Button, Form, Input, Icon, Select, Popconfirm, Table, Tag } from 'antd';
 import Highlighter from 'react-highlight-words';
 
 const { Option } = Select;
@@ -241,6 +241,21 @@ const TeamMembers = (props) => {
             onFilter: (value, record) => record.tags.includes(value),
 
         },
+        {
+          title: 'Action',
+          dataIndex: 'id',
+          id: 'deleteMember',
+          key: 'id',
+          width: 84,
+          align: 'center',
+          render: (text, record) =>
+            ['ADMINISTRATORS', 'BOARD_USERS', 'BOARD_CREATORS'].indexOf(record.name) < 0 && hasRole('ADMINISTRATORS') ? (
+              <Popconfirm placement="left" title="Delete really?" onConfirm={() => handleDelete(record.id)} okText="Yes delete member">
+                  <Icon data-testid={`delete-group-${record.email}`} type="delete" style={{'color': 'red'}}/>
+              </Popconfirm>
+            ) : null,
+        },
+
     ];
 
 
@@ -251,21 +266,27 @@ const TeamMembers = (props) => {
         },
       };
 
+    const handleDelete = (id) => {
+      props.handleDelete(id);
+    }
+  
     return (
     <React.Fragment>
         <EditableContext.Provider value={props.form}>
-            <Table 
-            className="member-table"
-            rowKey={record => record.id}
-            footer={() => <div>
-            <Button disabled={!hasRole('ADMINISTRATORS')} key="1fdfdfd" type="default" onClick={() => props.setDrawerVisibility(true)}>
-                Invite a team member
-            </Button>
-            </div>}
-            rowClassName={() => 'editable-row'}
-            components={components} columns={columns} dataSource={props.members} 
-            handleSave={props.handleSave}
-        />
+          <Table 
+              className="member-table"
+              rowKey={record => record.id}
+              footer={() => <div>
+              <Button disabled={!hasRole('ADMINISTRATORS')} key="1fdfdfd" type="default" onClick={() => props.setDrawerVisibility(true)}>
+                  Invite a team member
+              </Button>
+              </div>}
+              rowClassName={() => 'editable-row'}
+              components={components} columns={columns} dataSource={props.members} 
+              handleDelete={handleDelete}
+              handleSave={props.handleSave}
+              loading={props.loading}
+          />
         </EditableContext.Provider>
     </React.Fragment>)
 }

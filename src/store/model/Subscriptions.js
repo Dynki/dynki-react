@@ -6,68 +6,75 @@ const plans = {
 }
 
 const subscriptionStatus = {
-    active: { 
-        name: 'Active', 
-        plan: plans.business, 
-        allowUpgrade: false, 
+    active: {
+        name: 'Active',
+        plan: plans.business,
+        allowUpgrade: false,
         allowDowngrade: true,
-        configurePayment: true, 
-        paymentIntent: false, 
-        hasCost: true 
-    },
-    trialing: { 
-        name: 'Business Trial', 
-        plan: plans.business, 
-        allowUpgrade: true, 
-        allowDowngrade: true,
-        configurePayment: true, 
-        paymentIntent: false, 
+        allowReactivate: true,
+        configurePayment: true,
+        paymentIntent: false,
         hasCost: true
     },
-    past_due: { 
-        name: 'Payment Overdue', 
-        plan: plans.business, 
-        allowUpgrade: false, 
+    trialing: {
+        name: 'Business Trial',
+        plan: plans.business,
+        allowUpgrade: false,
         allowDowngrade: true,
-        configurePayment: true, 
-        paymentIntent: true, 
-        hasCost: true 
+        allowReactivate: false,
+        configurePayment: true,
+        paymentIntent: false,
+        hasCost: true
     },
-    unpaid: { 
-        name: 'Payment Overdue', 
-        plan: plans.business, 
-        allowUpgrade: false, 
+    past_due: {
+        name: 'Payment Overdue',
+        plan: plans.business,
+        allowUpgrade: false,
         allowDowngrade: true,
-        configurePayment: true, 
-        paymentIntent: true, 
-        hasCost: true 
+        allowReactivate: false,
+        configurePayment: true,
+        paymentIntent: true,
+        hasCost: true
     },
-    incomplete: { 
-        name: 'Payment Overdue', 
-        plan: plans.business, 
-        allowUpgrade: false, 
+    unpaid: {
+        name: 'Payment Overdue',
+        plan: plans.business,
+        allowUpgrade: false,
         allowDowngrade: true,
-        configurePayment: true, 
-        paymentIntent: true, 
-        hasCost: true 
+        allowReactivate: false,
+        configurePayment: true,
+        paymentIntent: true,
+        hasCost: true
     },
-    incomplete_expired: { 
-        name: 'Payment Overdue', 
-        plan: plans.business, 
-        allowUpgrade: false, 
+    incomplete: {
+        name: 'Payment Overdue',
+        plan: plans.business,
+        allowUpgrade: false,
         allowDowngrade: true,
-        configurePayment: true, 
-        paymentIntent: true, 
-        hasCost: true 
+        allowReactivate: false,
+        configurePayment: true,
+        paymentIntent: true,
+        hasCost: true
     },
-    canceled: { 
-        name: 'Expired', 
-        plan: plans.personal, 
-        allowUpgrade: true, 
+    incomplete_expired: {
+        name: 'Payment Overdue',
+        plan: plans.business,
+        allowUpgrade: false,
+        allowDowngrade: true,
+        allowReactivate: false,
+        configurePayment: true,
+        paymentIntent: true,
+        hasCost: true
+    },
+    canceled: {
+        name: 'Expired',
+        plan: plans.personal,
+        allowUpgrade: true,
         allowDowngrade: false,
-        configurePayment: false, 
-        paymentIntent: true, 
-        hasCost: false 
+        allowReactivate: false,
+        configurePayment: false,
+        paymentIntent: true,
+        hasCost: false
     }
 }
 
@@ -81,7 +88,7 @@ export class Subscriptions {
             this.baseUrl = `https://us-central1-dynki-c5141.cloudfunctions.net/subscriptions`;
             this.pmUrl = `https://us-central1-dynki-c5141.cloudfunctions.net/paymentMethods`;
             this.siUrl = `https://us-central1-dynki-c5141.cloudfunctions.net/setupIntents`;
-            
+
         } else {
             this.baseUrl = `https://us-central1-dynki-prod.cloudfunctions.net/subscriptions`;
             this.pmUrl = `https://us-central1-dynki-prod.cloudfunctions.net/paymentMethods`;
@@ -171,6 +178,26 @@ export class Subscriptions {
         });
     }
 
+
+    /**
+     * Reactivate a users subscription. Can occur when a subscription is canceled but at the end of the current period.
+     * 
+    */
+    async reactivate() {
+        const url = `${this.baseUrl}/account`;
+
+        try {
+            const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
+            const uid = this.firebase.auth().currentUser.uid;
+            const response = await axios.put(url, { action: 'reactivate' }, { headers: { uid, token, authorization: token } });
+
+            return response;
+        } catch (error) {
+            console.log('Error reactivating subscription', error);
+            return error;
+        }
+    }
+
     async createSetupIntent(paymentMethodId) {
         const url = `${this.siUrl}`;
 
@@ -239,8 +266,14 @@ export class Subscriptions {
         return subscriptionStatus[status] ? subscriptionStatus[status].allowUpgrade : false;
     }
 
-    allowDowngrade(status) {
-        return subscriptionStatus[status].allowDowngrade;
+    allowDowngrade(status, subscription) {
+        const cancelInProgress = subscription.cancel_at_period_end === true || subscription.cancel_at !== null;
+        return subscriptionStatus[status].allowDowngrade && !cancelInProgress;
+    }
+
+    allowReactivate(status, subscription) {
+        const cancelInProgress = subscription.cancel_at_period_end === true || subscription.cancel_at !== null;
+        return subscriptionStatus[status].allowReactivate && cancelInProgress;
     }
 
     getPlanName = status => {
@@ -257,9 +290,15 @@ export class Subscriptions {
     }
 
     getTrialEndDate = (status, unixDate) => {
-        console.log('UnixDate', unixDate);
-
         if (status === 'trialing') {
+            return unixDate !== null && unixDate !== undefined ? new Date(unixDate * 1000).toDateString() : '';
+        } else {
+            return '';
+        }
+    }
+
+    getCancelAtDate = (status, unixDate) => {
+        if (status === 'active') {
             return unixDate !== null && unixDate !== undefined ? new Date(unixDate * 1000).toDateString() : '';
         } else {
             return '';
@@ -281,6 +320,6 @@ export class Subscriptions {
 
 
         return subscriptionStatus[subscription.status].hasCost ?
-             `${currency}${total} Per Month ${incVat} - (${quantity} ${users})` : 'Free';
+            `${currency}${total} Per Month ${incVat} - (${quantity} ${users})` : 'Free';
     }
 }

@@ -113,6 +113,7 @@ const PaymentMethodForm = ({
     elements,
     createPaymentIntent,
     getSubscriptionDetails,
+    successText,
     nextPayment,
     onAttachPaymentMethod,
     onSetVisible,
@@ -212,9 +213,9 @@ const PaymentMethodForm = ({
                     }
 
                     notification['success']({
-                        message: 'Payment method',
-                        description:
-                            'Your payment was successfully processed!',
+                        message: 'Payment Notification',
+                        description: successText,
+                        duration: 0
                     });
 
                     getSubscriptionDetails();

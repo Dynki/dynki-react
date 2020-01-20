@@ -183,6 +183,26 @@ export class Teams {
     }
 
     /**
+     * Delete a team member.
+     * 
+     */
+    async deleteMember(teamId, memberId) {
+        try {
+            const url = `${this.baseUrl}/${teamId}/members/${memberId}`;
+            const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
+            const uid = this.firebase.auth().currentUser.uid;
+
+            const response = await axios.delete(url, { headers: { uid, token, authorization: token } });
+
+            return response;
+        } catch (error) {
+            const response = error.response
+            return response;
+        }
+    }
+
+
+    /**
      * Adds a new team.
      * 
      */

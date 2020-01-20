@@ -14,7 +14,7 @@ const StyledIcon = styles(Icon)`
 
 
 
-const PaymentMethods = ({ createPaymentIntent, subscription, handleDelete, handleSetDefault }) => {
+const PaymentMethods = ({ createPaymentIntent, subscription, handleDelete, handleSetDefault, reactivateAllowed }) => {
 
     console.log('PM Subscription data', subscription);
 
@@ -82,12 +82,13 @@ const PaymentMethods = ({ createPaymentIntent, subscription, handleDelete, handl
     return (
         <StyledCard 
             title="Payment Methods"
-            extra={<PaymentMethodModal
+            extra={reactivateAllowed ? null : <PaymentMethodModal
                 createPaymentIntent={createPaymentIntent} 
                 subscription={subscription.data} 
                 buttonText="Add Payment Method" 
                 label="Add payment method" 
                 title="Add Payment Method for Business Plan"
+                successText="Your payment method was successfully attached"
             />}
         >
             <Table loading={subscription.loading} columns={columns} dataSource={data} size="small"/>

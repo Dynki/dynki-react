@@ -3,12 +3,20 @@ import { connect } from 'react-redux';
 import { Card, Form, Button, Icon, Popconfirm, Row, Col, Statistic, Skeleton } from 'antd';
 import styles from 'styled-components';
 
-import { cancelSubscription, getSubscriptionDetails, detachPaymentMethod, setDefaultPaymentMethod } from '../../../store/actions/subscriptionActions';
 import { updateUserProfile, deleteAccount } from '../../../store/actions/authActions';
 import { Subscriptions } from '../../../store/model/Subscriptions';
 import PaymentMethodModal from './PaymentMethodModal';
 import PaymentMethods from './PaymentMethods';
 import InvoiceHistory from './InvoiceHistory';
+
+import { 
+    cancelSubscription, 
+    detachPaymentMethod, 
+    getSubscriptionDetails, 
+    reactivateAccount,
+    setDefaultPaymentMethod 
+} from '../../../store/actions/subscriptionActions';
+
 
 const DowngradeButton = styles(Button)`
     background-color: #F5A113;
@@ -37,6 +45,16 @@ const CostStatistic = styles(Statistic)`
     }
 `;
 
+const ExiredDetails = styles.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+`;
+
+const Reactivate = styles(Button)`
+    margin-top: 20px;
+`;
+
 class SubscriptionForm extends React.Component {
 
     subsHelper = null;
@@ -54,12 +72,16 @@ class SubscriptionForm extends React.Component {
         this.props.detachPaymentMethod(paymentMethodId)
     }
 
-    renderDowngrade = status => {
-        return this.subsHelper.allowDowngrade(status) ? this.renderCancelSubscriptionButton(status) : null;
+    renderDowngrade = (status, subscription) => {
+        return this.subsHelper.allowDowngrade(status, subscription) ? this.renderCancelSubscriptionButton(status) : null;
     }
 
     renderUpgrade = status => {
         return this.subsHelper.allowUpgrade(status) ? this.renderPaymentButton('Upgrade to business plan') : null;
+    }
+
+    renderReactivate = (status, subscription) => {
+        return this.subsHelper.allowReactivate(status, subscription) ? this.renderReactivateButton() : null;
     }
 
     renderPaymentMethods = (status, paymentMethods) => {
@@ -70,8 +92,16 @@ class SubscriptionForm extends React.Component {
         return this.renderInvoiceHistory();
     }
 
-    renderUpgradeButton = () => {
-        return <Button disabled={this.props.progress} type="primary" size="large">Upgrade to Business Plan</Button>
+    renderReactivateButton = () => {
+        return <Reactivate 
+                    icon="redo"
+                    disabled={this.props.progress}
+                    type="primary"
+                    size="large"
+                    onClick={() => this.props.reactivateAccount()}
+                >
+                    Reactivate Business Plan
+                </Reactivate>
     }
 
     renderPaymentButton = label => {
@@ -98,6 +128,7 @@ class SubscriptionForm extends React.Component {
                     title="Purchase Business Plan"
                     createPaymentIntent={createPaymentIntent}
                     afterClose={() => this.props.getSubscriptionDetails()}
+                    successText="Your payment was succesfully processed"
                 />
             </StyledPaymentButton>
         );
@@ -133,6 +164,7 @@ class SubscriptionForm extends React.Component {
         return (
             <PaymentMethods 
                 subscription={subscription}
+                reactivateAllowed={this.subsHelper.allowReactivate(status, subscription.data)}
                 handleDelete={detachPaymentMethod}
                 handleSetDefault={setDefaultPaymentMethod}
                 createPaymentIntent={createPaymentIntent}
@@ -190,13 +222,18 @@ class SubscriptionForm extends React.Component {
     renderPlanDetails() {
         const { subscription } = this.props;
         const { status } = subscription;
-        const { trial_end } = subscription.data;
+        const { trial_end, cancel_at } = subscription.data;
         const trialEndDate = this.subsHelper.getTrialEndDate(status, trial_end);
+        const cancelAtDate = this.subsHelper.getCancelAtDate(status, cancel_at);
 
         let expires = '';
 
         if (trialEndDate) {
             expires = `Expires: ${trialEndDate}`;
+        }
+
+        if (cancelAtDate) {
+            expires = `Expires: ${cancelAtDate}`;
         }
 
         console.log('renderPlanDetails', subscription.data);
@@ -209,8 +246,11 @@ class SubscriptionForm extends React.Component {
                     </Col>
                     <Col span={12}>
                         <StyledStatistic title="Business Plan Subscription Status" value={this.getPlanStatus(status)} />
-                        {expires}
-                        {this.renderUpgrade(status)}
+                        <ExiredDetails>
+                            {expires}
+                            {this.renderUpgrade(status)}
+                            {this.renderReactivate(status, subscription.data)}
+                        </ExiredDetails>
                     </Col>
                 </Row>
                 <Row gutter={16}>
@@ -231,7 +271,7 @@ class SubscriptionForm extends React.Component {
                     {this.renderPlanDetails()}
                     {this.renderPaymentMethods(status, data.PaymentMethods)}
                     {this.renderInvoices()}
-                    {this.renderDowngrade(status)}
+                    {this.renderDowngrade(status, data)}
                     {this.renderDeleteAccount()}
                 </React.Fragment>
                 :
@@ -264,10 +304,11 @@ export const mapStateToProps = (state) => {
   
 export const mapDispatchToProps = (dispatch) => {
     return {
+        cancelSubscription: () => dispatch(cancelSubscription()),
         deleteAccount: () => dispatch(deleteAccount()),
         detachPaymentMethod: paymentMethodId => dispatch(detachPaymentMethod(paymentMethodId)),
         getSubscriptionDetails: () => dispatch(getSubscriptionDetails()),
-        cancelSubscription: () => dispatch(cancelSubscription()),
+        reactivateAccount: () => dispatch(reactivateAccount()),
         setDefaultPaymentMethod: paymentMethodId => dispatch(setDefaultPaymentMethod(paymentMethodId)),
         updateUserProfile: (updatedValues) => dispatch(updateUserProfile(updatedValues)),
     }

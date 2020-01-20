@@ -45,12 +45,14 @@ const ShopIcon = styles(Icon)`
 const PaymentMethodModal = ({ 
     attachPaymentMethod, 
     buttonText, 
+    
     createPaymentIntent, 
     createSetupIntent, 
     getSubscriptionDetails,
     label, 
     nextPayment, 
     subscription,
+    successText,
     title
 }) => {
     label = label ? label : 'Make a payment';
@@ -120,6 +122,7 @@ const PaymentMethodModal = ({
                                 subscription={subscription}
                                 createPaymentIntent={createPaymentIntent}
                                 getSubscriptionDetails={getSubscriptionDetails}
+                                successText={successText}
                             />
                         </Elements>
                     </StripeProvider>
