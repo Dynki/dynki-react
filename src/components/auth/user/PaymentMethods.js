@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Dropdown, Icon, Menu, Popconfirm, Table, Tag } from 'antd';
+import { Card, Dropdown, Icon, Menu, Popconfirm, Table } from 'antd';
 import styles from 'styled-components';
 
 import PaymentMethodModal from './PaymentMethodModal';
@@ -12,10 +12,24 @@ const StyledIcon = styles(Icon)`
     margin-right: 15px;
 `;
 
+const StyledLink = styles.button`
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline;
+    margin: 0;
+    padding: 0;
+  
+    :hover {
+        text-decoration: none;
+    }
 
+    :focus {
+        text-decoration: none;
+    }
+`;
 
 const PaymentMethods = ({ createPaymentIntent, subscription, handleDelete, handleSetDefault, reactivateAllowed }) => {
-
     console.log('PM Subscription data', subscription);
 
     const data = subscription && subscription.data ? subscription.data.paymentMethods : [];
@@ -24,16 +38,16 @@ const PaymentMethods = ({ createPaymentIntent, subscription, handleDelete, handl
         <Menu>
           <Menu.Item>
                 <Popconfirm placement="left" title="Remove really?" onConfirm={() => handleDelete(record.id)} okText="Yes remove">
-                    <a className="ant-dropdown-link" href="#">
+                    <StyledLink className="ant-dropdown-link">
                         <StyledIcon type="delete"/> Remove
-                    </a>
+                    </StyledLink>
                 </Popconfirm>
           </Menu.Item>
           {record && record.default !== 'Default' ? 
             <Menu.Item>
-                    <a className="ant-dropdown-link" href="#" onClick={() => handleSetDefault(record.id)}>
+                    <StyledLink className="ant-dropdown-link" onClick={() => handleSetDefault(record.id)}>
                         <StyledIcon type="pushpin" /> Set Default
-                    </a>
+                    </StyledLink>
             </Menu.Item>
             :
             null
@@ -70,9 +84,9 @@ const PaymentMethods = ({ createPaymentIntent, subscription, handleDelete, handl
             key: 'id',
             render: (text, record) => (
                 <Dropdown overlay={menu(record)}>
-                    <a className="ant-dropdown-link" href="#">
+                    <StyledLink className="ant-dropdown-link">
                         <Icon type="dash" />
-                    </a>
+                    </StyledLink>
                 </Dropdown>
             )
     

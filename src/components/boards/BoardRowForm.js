@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Input } from 'antd';
-import * as _ from 'lodash';
 
 const FormItem = Form.Item;
 

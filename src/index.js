@@ -16,7 +16,7 @@ import rootReducer from './store/reducers/rootReducers';
 
 firebase.initializeApp(fbConfig)
 firebase.firestore();
-firebase.firestore().settings({timestampsInSnapshots: true});
+// firebase.firestore().settings({timestampsInSnapshots: true});
 
 // react-redux-firebase options
 const config = {

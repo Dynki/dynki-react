@@ -1,13 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Tree,  Menu, Icon, Button, Tooltip, Typography } from 'antd';
+import { Tree,  Menu, Icon, Button, Tooltip } from 'antd';
 
 import { addNewFolder } from '../../../store/actions/boardActions';
 import FolderMenu from './FolderMenu';
 import authWrapper from '../../auth/AuthWrapper';
 
 const { TreeNode, DirectoryTree } = Tree;
-const { Text } = Typography;
 
 class DynSubMenu extends React.Component {
 

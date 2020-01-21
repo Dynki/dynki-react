@@ -1,9 +1,28 @@
 import React, { useState } from 'react';
 import { Button, Form, Input, Icon, Select, Popconfirm, Table, Tag } from 'antd';
 import Highlighter from 'react-highlight-words';
+import styles from 'styled-components';
 
 const { Option } = Select;
 const EditableContext = React.createContext();
+
+const StyledLink = styles.button`
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    display: inline;
+    margin: 0;
+    padding: 0;
+  
+    :hover {
+        text-decoration: none;
+    }
+
+    :focus {
+        text-decoration: none;
+    }
+`;
 
 
 const EditableRow = ({ form, index, ...props }) => (
@@ -51,7 +70,7 @@ class EditableCell extends React.Component {
         const selectChildren = [];
 
         values.map(v => {
-          selectChildren.push(<Option key={v.id}>{v.name}</Option>);
+          return selectChildren.push(<Option key={v.id}>{v.name}</Option>);
         })
 
         return editing ? (
@@ -185,7 +204,7 @@ const TeamMembers = (props) => {
             title: 'Team Member',
             dataIndex: 'email',
             key: 'email',
-            render: text => <a>{text}</a>,
+            render: text => <StyledLink>{text}</StyledLink>,
             ...getColumnSearchProps('email')
         },
         {
@@ -277,7 +296,11 @@ const TeamMembers = (props) => {
               className="member-table"
               rowKey={record => record.id}
               footer={() => <div>
-              <Button disabled={!hasRole('ADMINISTRATORS')} key="1fdfdfd" type="default" onClick={() => props.setDrawerVisibility(true)}>
+              <Button 
+                disabled={!hasRole('ADMINISTRATORS')}
+                key="1fdfdfd"
+                type="default"
+                onClick={() => props.setDrawerVisibility(true)}>
                   Invite a team member
               </Button>
               </div>}

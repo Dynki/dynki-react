@@ -16,7 +16,6 @@ import {
     inviteTeamMember 
 } from '../../store/actions/teamActions';
 
-const { Title } = Typography;
 const { Paragraph } = Typography;
 
 // Container for teams components.
@@ -94,17 +93,6 @@ class Teams extends React.Component {
                 </Row>
             </div>
         );
-    
-        const routes = [
-            {
-                path: 'team',
-                breadcrumbName: 'Team',
-            },
-            {
-                path: 'first',
-                breadcrumbName: this.props.team ? this.props.team.display_name : 'Your Team',
-            }
-        ];
     
         const Content = ({ children, extraContent }) => {
             return (

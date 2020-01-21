@@ -44,11 +44,6 @@ const StyledForm = styles.div`
 
 const Domain = ({ checkDomain, updateDomain, domain, pending }) => {
 
-    // Call logic to determine this this domain name is valid and unique.
-    const onCheckDomain = name => {
-        checkDomain(name);
-    }
-
     // Fire logic to persist the new domain name.
     const onUpdateDomain = name => {
         updateDomain(name);

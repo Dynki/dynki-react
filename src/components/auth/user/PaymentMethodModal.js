@@ -7,19 +7,13 @@ import PaymentMethodForm from './PaymentMethodForm';
 
 import { attachPaymentMethod, createSetupIntent, getSubscriptionDetails } from '../../../store/actions/subscriptionActions';
 
-const { Text, Title } = Typography;
+const { Title } = Typography;
 
 const Heading = styles.div`
     display: flex;
     flex-direction: row;
     justify-items: center;
     align-items: flex-end;
-`;
-
-const StyledText = styles(Text)`
-    margin-bottom: 17px;
-    font-size: 20px;
-    margin-left: 10px;
 `;
 
 const SupportedPayments = styles.div`
@@ -70,8 +64,8 @@ const PaymentMethodModal = ({
     const onAttachPaymentMethod = async paymentMethodId => {
         try {
             await attachPaymentMethod(paymentMethodId);
-            const clientSecret = await createSetupIntent(paymentMethodId);
-            return clientSecret.client_secret;
+            const response = await createSetupIntent(paymentMethodId);
+            return response;
         } catch (error) {
             return error;
         }

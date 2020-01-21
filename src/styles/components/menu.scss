@@ -242,7 +242,7 @@ dyn-sub-menu {
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: start;
+            justify-content: flex-start;
             align-content: center;
         }
     }
@@ -383,7 +383,7 @@ dyn-sub-menu {
     span {
         display: flex;
         flex-direction: row;
-        justify-content: start;
+        justify-content: flex-start;
         align-items: center;
         overflow: hidden;
         text-overflow: ellipsis;

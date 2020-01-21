@@ -4,7 +4,6 @@ import BoardRowForm from './BoardRowForm';
 import BoardRowMenu from './BoardRowMenu';
 import { Tooltip, Icon } from 'antd';
 import SelectCellModal from './cellTypes/Select/SelectCellModal';
-import * as _ from 'lodash';
 import DateCell from './cellTypes/Date/DateCell';
 import DateDueCell from './cellTypes/Date/DateDueCell';
 

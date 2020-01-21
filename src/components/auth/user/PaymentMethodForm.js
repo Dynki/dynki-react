@@ -3,8 +3,7 @@ import { CardElement, injectStripe } from 'react-stripe-elements';
 import { Card, Input, Typography, notification } from 'antd';
 import styles from 'styled-components';
 
-
-const { Text, Title } = Typography;
+const { Text } = Typography;
 
 const StyledCardElement = styles.div`
     border: 1px solid #d9d9d9;
@@ -186,44 +185,51 @@ const PaymentMethodForm = ({
                     }
                 },
             })
-                .then(async ({ paymentMethod }) => {
-                    console.log('A');
+            .then(async ({ paymentMethod }) => {
+                const pmResult = await onAttachPaymentMethod(paymentMethod.id);
 
-                    const intentClientSecret = await onAttachPaymentMethod(paymentMethod.id);
+                console.log('PM Result', pmResult);
 
-                    console.log('B');
+                const latestSub = pmResult.subscription;
+                const { client_secret } = pmResult;
+                const { latest_invoice } = latestSub;
+                const { payment_intent } = latest_invoice;
 
-                    if (createPaymentIntent) {
-                        console.log('C');
+                let result;
 
-                        await stripe.confirmCardPayment(intentClientSecret, {
+                console.log('Payment intent:', payment_intent)
+
+                if (payment_intent) {
+                    const { client_secret, status } = payment_intent;
+
+                    console.log('Confirm card payment', client_secret);
+
+                    if (status === 'requires_action') {
+                        result = await stripe.confirmCardPayment(client_secret, {
                             payment_method: paymentMethod.id
                         });
-
-                        console.log('D');
-
-                    } else {
-                        console.log('E');
-
-                        await stripe.confirmCardSetup(intentClientSecret, {
-                            payment_method: paymentMethod.id
-                        });
-
-                        console.log('F');
                     }
 
-                    notification['success']({
-                        message: 'Payment Notification',
-                        description: successText,
-                        duration: 0
+                } else {
+                    console.log('Confirm card setup', client_secret);
+
+                    result = await stripe.confirmCardSetup(client_secret, {
+                        payment_method: paymentMethod.id
                     });
+                }
 
-                    getSubscriptionDetails();
+                console.log('result', result);
 
-                    onSetInProgress(false);
-                    onSetVisible(false);
+                if (result && result.error) {
+                    notification['error']({ message: 'Payment Failure', description: result.error.message, duration: 0 });
+                } else {
+                    notification['success']({ message: 'Payment Notification', description: successText, duration: 0 });
+                }
 
-                });
+                getSubscriptionDetails();
+                onSetInProgress(false);
+                onSetVisible(false);
+            });
 
         } catch (error) {
             onSetInProgress(false);

@@ -49,13 +49,14 @@ export class Teams {
             try {
                 const snapshot = await this.firebase.firestore().collection('user-domains')
                 .where('users', 'array-contains', this.firebase.auth().currentUser.uid)
+                .where('subscriptionInfo.status', 'in' , ['active', 'trialing'])
                 .get();
                 resolve(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     
             } catch (error) {
                 console.log('Error getting teams', error);
                 const response = error.response
-                reject(response.data.error);
+                reject(response ? response.error : error);
             }
         });
     }

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { Domains } from '../model/Domains';
 
 export const checkDomain = (name) => {
@@ -19,6 +18,7 @@ export const checkDomain = (name) => {
             return false;
         }
 
+        
         const re = RegExp('^[0-9a-zA-Z \b]+$');
         if (value.length > 0 && !re.test(value)) {
             dispatch({ type: 'DOMAIN_INVALID_CHARS' })

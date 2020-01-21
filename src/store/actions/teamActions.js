@@ -1,5 +1,4 @@
 import axios from 'axios';
-import * as _ from 'lodash';
 import { Teams } from '../model/Teams';
 import notifiy from '../../components/notifications/Notification';
 
@@ -35,12 +34,12 @@ export const getTeams = () => {
             const teamsHelper = new Teams(getFirebase(), getState().domain.domainId);
             const teams = await teamsHelper.list();
     
-            if (!teams || teams.length < 1) {
-                dispatch({ type: 'NO_TEAMS' });
-            } else {
+            // if (!teams || teams.length < 1) {
+            //     dispatch({ type: 'NO_TEAMS' });
+            // } else {
                 dispatch(getTeam(getState().domain.domainId));
                 dispatch({ type: 'REFRESH_TEAMS', payload: teams });
-            }
+            // }
             
         } catch (error) {
             console.log(error, 'Get teams error');
@@ -221,7 +220,7 @@ export const acceptInvite = (inviteId) => {
             const uid = firebase.auth().currentUser.uid;
 
             await axios.post(url, {}, { headers: { token, uid } })
-            notifiy({ type: 'success', message: 'Way to go!', description: 'You are now part of this team, please log out and log back in to see you new team', duration: 0 });
+            notifiy({ type: 'success', message: 'Way to go!', description: 'You are now part of this team, check the team menu to see your new team', duration: 0 });
             dispatch(getTeams());        
     
         } catch (error) {

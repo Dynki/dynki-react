@@ -1,5 +1,23 @@
 import React from 'react';
 import { Table, Form, Input, Button, Popconfirm, Icon } from 'antd';
+import styles from 'styled-components';
+
+const StyledLink = styles.button`
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline;
+    margin: 0;
+    padding: 0;
+  
+    :hover {
+        text-decoration: none;
+    }
+
+    :focus {
+        text-decoration: none;
+    }
+`;
 
 const EditableContext = React.createContext();
 
@@ -111,7 +129,7 @@ class TeamGroups extends React.Component {
           title: 'Team Groups',
           dataIndex: 'name',
           key: 'name',
-          render: text => <a data-testid={`group-${text.replace(' ', '-')}`}>{text}</a>,
+          render: text => <StyledLink data-testid={`group-${text.replace(' ', '-')}`}>{text}</StyledLink>,
           editable: true,
           onCell: record => ({
               record,
