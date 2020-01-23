@@ -1,9 +1,16 @@
 import React from 'react';
-import { Card, Table } from 'antd';
+import { Card, Icon, Table, Typography, Tooltip } from 'antd';
 import styles from 'styled-components';
+
+const { Text } = Typography;
 
 const StyledCard = styles(Card)`
     margin-top: 20px;
+`;
+
+const StyledFooter = styles(Text)`
+  color: #3095DE;
+  margin: 10px;
 `;
 
 const columns = [
@@ -32,18 +39,47 @@ const columns = [
     {
         title: 'Status',
         dataIndex: 'status'
+    },
+    {
+      title: 'View',
+      dataIndex: 'hosted_invoice_url',
+      render: (text) => {
+        return (
+          <Tooltip
+            title="View Invoice"
+            placement="left"            
+          >
+            <a href={text} target="blank"><Icon type="file-pdf" /></a>
+          </Tooltip>
+        )
+      }
     }
 ];
 
 const InvoiceHistory = ({ subscription }) => {
 
     const data = subscription && subscription.data ? subscription.data.invoices : [];
+    const showNextInvoiceDate = subscription.data.next_invoice_due;
+
+    const nextInvoice = (
+      showNextInvoiceDate ? 
+        <StyledFooter strong>
+          {`Next invoice due: ${new Date(subscription.data.next_invoice_due * 1000).toDateString()}`}
+        </StyledFooter>
+        :
+        null
+    );
 
     return (
         <StyledCard 
             title="Invoices"
         >
-            <Table columns={columns} dataSource={data} size="small"/>
+            <Table
+              columns={columns}
+              rowKey="id" 
+              dataSource={data} size="small"
+              footer={() => nextInvoice}
+            />
         </StyledCard>
     );
 }
