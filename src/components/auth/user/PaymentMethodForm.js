@@ -108,6 +108,14 @@ const TotalsCard = styles(Card)`
     width: 100%;
 `;
 
+const PoweredByStripe = styles.img`
+
+    height: 36px;
+    width: 150px;
+    margin-top: 20px;
+
+`;
+
 const PaymentMethodForm = ({
     elements,
     createPaymentIntent,
@@ -204,7 +212,7 @@ const PaymentMethodForm = ({
 
                     console.log('Confirm card payment', client_secret);
 
-                    if (status === 'requires_action') {
+                    if (status === 'requires_action' || status === 'requires_payment_method') {
                         result = await stripe.confirmCardPayment(client_secret, {
                             payment_method: paymentMethod.id
                         });
@@ -280,12 +288,12 @@ const PaymentMethodForm = ({
                     </FormGroup>
                 </FormColumn>
                 <Totals>
-                    <TotalsCard title="Payment Summary">
+                    <TotalsCard title="Monthly Payment Summary">
                         <TotalsRow>
                             <TotalsDesc>
                                 <TotalLabel strong>Business Plan</TotalLabel>
                                 {taxToDisplay > 0 ? <TotalLabel>VAT</TotalLabel> : null}
-                                <TotalLabel>Total {createPaymentIntent ? '' : '(Per month/user)'}</TotalLabel>
+                                <TotalLabel>Total {createPaymentIntent ? '' : '(Per month)'}</TotalLabel>
                             </TotalsDesc>
                             <TotalsNumbers>
                                 <TotalLabel strong>{`${currency}${costToDisplay}`}</TotalLabel>
@@ -308,6 +316,7 @@ const PaymentMethodForm = ({
                             </TotalsDesc>
                         </TotalsRow>
                     </TotalsCard>
+                    <PoweredByStripe alt="Powered By Stripe" src="assets/img/powered_by_stripe.svg"></PoweredByStripe>
                 </Totals>
             </FormRow>
         </StyledForm>
