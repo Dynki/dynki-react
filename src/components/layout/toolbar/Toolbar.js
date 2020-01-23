@@ -24,7 +24,7 @@ const StyledToolbar = styled.div`
     position: fixed;
     width: 100%;
     height: 65px;
-    z-index: 1;
+    z-index: 10;
 
     @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
         padding-left: 12px;

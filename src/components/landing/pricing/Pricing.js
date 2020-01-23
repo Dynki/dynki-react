@@ -6,10 +6,13 @@ import styles from 'styled-components';
 import ProductOfferings from './ProductOfferings';
 import Product from './Product';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const StyledContent = styles.div`
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 100vw;
     min-height: 740px;
     background-color: #BDB9B8;
@@ -68,7 +71,15 @@ const Products = styles.div`
     }
 `;
 
-const Pricing = props => {
+const StyledText = styles(Text)`
+    margin: 10px;
+`;
+
+const Pricing = ({ country, countryCode }) => {
+
+    if (!country) {
+        return null;
+    }
 
     const products = Object.freeze({ personal: 'Personal', business: 'Business', enterprise: 'Enterprise' });
 
@@ -112,7 +123,17 @@ const Pricing = props => {
         }
     ];
 
-    const businessPrice = props.countryCode === 'GB' ? '£5.99 (Excl VAT)' : '$5.99';
+    const getPrice = (country) => {
+        const price = '3.99';
+        const currency = country.country_code === 'GB' ? '£' : country.continent_code === 'EU' ? '€' : '$';
+        const suffix = currency === '$' ? '' : '*';
+
+        return `${currency}${price}${suffix}`;
+    }
+
+    console.log('Country', country);
+
+    const businessPrice = getPrice(country);
 
     const packages = [
         {
@@ -122,7 +143,7 @@ const Pricing = props => {
             features: features.filter(f => f.products.includes(products.personal)),
             billingBasis: 'Free user/month',
             billingFrequency: 'Free forever',
-            link: `/auth/signup/personal?country=${props.countryCode}`,
+            link: `/auth/signup/personal?country=${countryCode}`,
             imageSource: '/assets/img/personal.jpg',
             mainPackage: true,
             name: 'Personal'
@@ -133,7 +154,7 @@ const Pricing = props => {
             features: features.filter(f => f.products.includes(products.business)),
             billingBasis: 'Per user/month',
             billingFrequency: 'Billed monthly',
-            link: `/auth/signup/business?country=${props.countryCode}`,
+            link: `/auth/signup/business?country=${countryCode}`,
             cost: businessPrice,
             mainPackage: false,
             buttonText: 'Start free trial'
@@ -179,6 +200,10 @@ const Pricing = props => {
                         })}
                     </Products>
                 </ProductOfferings>
+                {country && country.continent_code === 'EU' ? 
+                    <StyledText strong>*All prices exclude VAT</StyledText>
+                    : null
+                }
             </StyledContent>
         </React.Fragment>
     )
@@ -186,7 +211,8 @@ const Pricing = props => {
 
 export const mapStateToProps = (state) => {
     return {
-        countryCode: state.core.countryCode
+        countryCode: state.core.countryCode,
+        country: state.core.country
     }
 }
 

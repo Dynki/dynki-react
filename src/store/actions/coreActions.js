@@ -16,6 +16,7 @@ export const obtainCountryCode = () => {
       console.log('Setting country code:', countryCode);
 
       dispatch({ type: 'SET_COUNTRY_CODE', payload: countryCode })
+      dispatch({ type: 'SET_COUNTRY', payload: data })
     }).catch((error) => {
         console.log(error);
     });

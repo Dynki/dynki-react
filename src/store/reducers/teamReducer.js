@@ -53,7 +53,7 @@ const teamReducer = (state = initialState, action) => {
     
                 return {
                     ...state,
-                    currentTeam: {...state.currentTeam, groups: groupsUpdated}
+                    currentTeam: {...state.currentTeam, groups: groupsUpdated }
                 }
         case 'UPDATED_TEAM_MEMBER':
             const membersUpdated = state.currentTeam.members.map(m => {
@@ -66,9 +66,17 @@ const teamReducer = (state = initialState, action) => {
 
             return {
                 ...state,
-                currentTeam: {...state.currentTeam, members: membersUpdated}
+                currentTeam: {...state.currentTeam, members: membersUpdated }
             }
-            
+
+        case 'SET_TEAM_MEMBERS':
+            console.log('SET TEAM MEMBERS', action.payload);
+
+            return {
+                ...state,
+                currentTeam: {...state.currentTeam, members: action.payload }
+            }
+                
         default:
             return state;
     }

@@ -3,6 +3,7 @@ import CountryCodes from '../model/countries.json';
 const initialState = {
     folderDrawerVisible: false,
     countryCode: 'UNKNOWN',
+    country: null,
     countryCodes: CountryCodes
 }
 
@@ -19,6 +20,11 @@ const coreReducer = (state = initialState, action) => {
             return {
                 ...state,
                 countryCode: action.payload,
+            }
+        case 'SET_COUNTRY':
+            return {
+                ...state,
+                country: action.payload,
             }
         default:
             return state;

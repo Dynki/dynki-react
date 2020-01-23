@@ -24,14 +24,34 @@ export class Teams {
      * 
      * Returns: A team class instance
      */
-    get(id) {
-        return new Promise(async (resolve, reject) => {
+    get(id, dispatch) {
+        return new Promise((resolve, reject) => {
             try {
-                const snapshot = await this.firebase.firestore().collection('user-domains')
+                const sub = this.firebase.firestore().collection('user-domains')
                 .where('users', 'array-contains', this.firebase.auth().currentUser.uid)
-                .get();
-                resolve(snapshot.docs.filter(doc => doc.id === id).map(doc => ({ id: doc.id, ...doc.data() }))[0] );
+                .where(this.firebase.firestore.FieldPath.documentId(), '==', id)
+                .onSnapshot(function(querySnapshot) {
 
+                    console.log('Query Snap Shot', querySnapshot);
+
+                    if (querySnapshot && querySnapshot.docs && querySnapshot.docs.length > 0) {
+                        const team = { id: querySnapshot.docs[0].id , ...querySnapshot.docs[0].data() };
+        
+                        // Add the subscription to the current board so we can kill it later.
+                        if (team) {
+                            team.unsubscribe = sub;
+    
+                            if (dispatch) {
+                                dispatch({ type: 'SET_CURRENT_TEAM', payload: team });
+                                console.log('Team updated', resolve);
+                            }
+    
+                            resolve(team);
+                        }
+                    } else {
+                        reject('Could not locate team');
+                    }
+                }, (err) => reject(err));
             } catch (error) {
                 console.log('Error getting team', error);
                 reject(error);
@@ -52,6 +72,34 @@ export class Teams {
                 .where('subscriptionInfo.status', 'in' , ['active', 'trialing'])
                 .get();
                 resolve(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    
+            } catch (error) {
+                console.log('Error getting teams', error);
+                const response = error.response
+                reject(response ? response.error : error);
+            }
+        });
+    }
+
+        /**
+     * Get all teams for this domain.
+     * 
+     * Returns: A firebase snapshot instance containing the teams
+     */
+    listMembers(domainId) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const snapshot = await this.firebase.firestore().collection('user-domains')
+                .where('users', 'array-contains', this.firebase.auth().currentUser.uid)
+                .where('subscriptionInfo.status', 'in' , ['active', 'trialing'])
+                .where(this.firebase.firestore.FieldPath.documentId(), '==', domainId)
+                .get();
+
+                if (snapshot && snapshot.docs.length > 0) {
+                    resolve(snapshot.docs[0].data().members);
+                } else {
+                    reject('Error getting team members');
+                }
     
             } catch (error) {
                 console.log('Error getting teams', error);

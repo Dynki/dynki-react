@@ -105,7 +105,7 @@ const PaymentMethods = ({ createPaymentIntent, subscription, handleDelete, handl
                 successText="Your payment method was successfully attached"
             />}
         >
-            <Table loading={subscription.loading} columns={columns} dataSource={data} size="small"/>
+            <Table rowKey="id" loading={subscription.loading} columns={columns} dataSource={data} size="small"/>
         </StyledCard>
     );
 }

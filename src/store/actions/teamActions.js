@@ -65,9 +65,9 @@ export const getTeam = (id) => {
             }
     
             const teamsHelper = new Teams(getFirebase(), getState().domain.domainId);
-            const team = await teamsHelper.get(id);
+            await teamsHelper.get(id, dispatch);
     
-            dispatch({ type: 'SET_CURRENT_TEAM', payload: team });
+            // dispatch({ type: 'SET_CURRENT_TEAM', payload: team });
         } catch (error) {
             console.log(error, 'Get team error');
             notifiy({ type: 'error', message: 'Team retrieval failure', description: error.message });
