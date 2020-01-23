@@ -93,7 +93,7 @@ const SelectDrawer = (props) => {
                 visible={visible}
                 style={{
                     overflow: 'auto',
-                    height: 'calc(100% - 108px)',
+                    height: '100%',
                     paddingBottom: '108px',
                 }}
             >
