@@ -78,12 +78,13 @@ const SignUpForm = ({ countryCodes, form, location, pending, signUp }) => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
+
         form.validateFields(async (err, values) => {
             if (!values.agree) {
                 setAgreeFailed(true);
             } else {
                 if (!err) {
-                    await signUp(values, packageName, values.country, values.VATNumber);
+                    signUp(values, packageName, values.country, values.VATNumber);
                 }
             }
         });
@@ -151,7 +152,7 @@ const SignUpForm = ({ countryCodes, form, location, pending, signUp }) => {
                                 { type: 'email', message: 'Not a valid email address!' }
                         ],
                         })(
-                            <Input autoFocus size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
+                            <Input disabled={pending} autoFocus size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
                         )}
                         
                     </FormItem>
@@ -162,7 +163,7 @@ const SignUpForm = ({ countryCodes, form, location, pending, signUp }) => {
                                 { validator: (rule, value, callback) => validatePassword(rule, value, callback) }
                             ],
                         })(
-                            <Input size="large" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+                            <Input disabled={pending} size="large" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
                         )}
                     </FormItem>
                     <PasswordCriteria><Icon type="check" style={{ color: numberSuccess }}/> Contains a number</PasswordCriteria>
@@ -178,6 +179,7 @@ const SignUpForm = ({ countryCodes, form, location, pending, signUp }) => {
                         })(
                             <StyledSelect
                                 showSearch
+                                disabled={pending}
                                 size="large"
                                 placeholder="Select a country"
                                 optionFilterProp="children"
@@ -197,7 +199,7 @@ const SignUpForm = ({ countryCodes, form, location, pending, signUp }) => {
                                     { validator: (rule, value, callback) => validateVATNumber(rule, value, callback) }
                                 ],
                             })(
-                                <Input autoFocus size="large" prefix={<Icon type="audit" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="VAT Number (Optional)" />
+                                <Input disabled={pending} autoFocus size="large" prefix={<Icon type="audit" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="VAT Number (Optional)" />
                             )}
                             
                         </FormItem>
@@ -213,7 +215,7 @@ const SignUpForm = ({ countryCodes, form, location, pending, signUp }) => {
                                 { required: true, message: 'Please agree terms!' },
                             ],
                         })(
-                            <Checkbox className={agreeFailed ? 'signup-agree--failed': ''}>{agreeFailed ? 'Please agree to ' : 'I agree to the '}
+                            <Checkbox disabled={pending} className={agreeFailed ? 'signup-agree--failed': ''}>{agreeFailed ? 'Please agree to ' : 'I agree to the '}
                                 <Terms/>
                                 <span> and </span>
                                 <Privacy/>

@@ -66,7 +66,7 @@ const LoginForm = ({ form, pending, signIn }) => {
                             { type: 'email', message: 'Not a valid email address!' }
                         ],
                     })(
-                        <Input autoFocus size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
+                        <Input disabled={pending} autoFocus size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
                     )}
                 </FormItem>
                 <FormItem>
@@ -75,7 +75,7 @@ const LoginForm = ({ form, pending, signIn }) => {
                             { required: true, message: 'Please input your Password!' }
                         ],
                     })(
-                        <Input id="password" size="large" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+                        <Input disabled={pending} id="password" size="large" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
                     )}
                 </FormItem>
                 <FormItem>
@@ -83,7 +83,7 @@ const LoginForm = ({ form, pending, signIn }) => {
                         valuePropName: 'checked',
                         initialValue: true,
                     })(
-                        <Checkbox>Remember me</Checkbox>
+                        <Checkbox disabled={pending}>Remember me</Checkbox>
                     )}
                     <Link id="forgotPassword" className="login-form-forgot" to='/auth/forgot'>Forgot password</Link>
                     <Button id="loginbtn" type="dashed" htmlType="submit" className="button" loading={pending}>
