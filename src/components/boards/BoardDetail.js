@@ -9,7 +9,7 @@ const BoardDetail = (props) => {
         <React.Fragment>
             {groups.map((group, groupKey)  => 
                 <BoardGroup 
-                    key={groupKey}
+                    key={group.id}
                     group={group}
                     groupKey={groupKey}
                     board={board}

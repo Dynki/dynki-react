@@ -21,12 +21,12 @@ const BoardTable = (props) => {
                     >
                         
                         {!group.collapsed && group.entities ? group.entities.map((r, idx) => (
-                            <Draggable key={idx} draggableId={r.id} index={idx}>
+                            <Draggable key={r.id} draggableId={r.id} index={idx}>
                                 {provided => (
                                     <tr ref={provided.innerRef} {...provided.draggableProps} className="table__rc"
                                     >                    
                                         <BoardRow 
-                                            key={idx}
+                                            key={r.id}
                                             onUpdateBoard={props.onUpdateBoard}
                                             rowIdx={idx}
                                             rowId={r.id}
