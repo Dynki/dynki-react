@@ -121,13 +121,13 @@ export class Subscriptions {
      * Adds a new subscription for this user.
      * 
      */
-    async add(packageName, countryCode, VATNumber) {
+    async add(packageName, countryCode, region, VATNumber) {
         const url = `${this.baseUrl}`;
 
         try {
             const token = await this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
             const uid = this.firebase.auth().currentUser.uid;
-            const newSubscription = await axios.post(url, { plan: packageName, countryCode, VATNumber }, { headers: { uid, token, authorization: token } });
+            const newSubscription = await axios.post(url, { plan: packageName, countryCode, region, VATNumber }, { headers: { uid, token, authorization: token } });
 
             console.log('Subscription :: newSubscription', newSubscription);
 
@@ -180,7 +180,7 @@ export class Subscriptions {
 
 
     /**
-     * Reactivate a users subscription. Can occur when a subscription is canceled but at the end of the current period.
+     * Reactivate a users subscription. Can occur when a subscription is cancelled but at the end of the current period.
      * 
     */
     async reactivate() {
@@ -314,8 +314,8 @@ export class Subscriptions {
         const quantity = subscription.quantity
         const currency = subscription.currency === 'gbp' ? '£' : '$';
         const tax = subscription.cost_tax && subscription.cost_tax !== 0 ? subscription.cost_tax / 100 : 0;
-        const total = cost + tax;
-        const incVat = tax > 0 ? '(inc VAT)' : ''
+        const total = cost;
+        const incVat = tax > 0 ? '(excl VAT)' : ''
         const users = quantity === 1 ? 'user' : 'users';
 
 

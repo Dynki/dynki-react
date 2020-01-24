@@ -2,41 +2,38 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import { setDomain } from './store/actions/authActions';
+import { setInvite } from './store/actions/baseActions';
 import { obtainCountryCode } from './store/actions/coreActions';
 
 import './App.scss';
 import { SecuredRoute, PostAuthShell } from './components';
 import MainErrorBoundary from './components/core/MainErrorBoundry';
-import AppContext from './context/appContext';
 
 export class App extends Component {
 
-  constructor(props) {
-    super(props)
-
-    const params = new URLSearchParams(this.props.location.search);
-    const invite = params.get('invite');
-    const inviteName = params.get('invitename');
-
-    this.state = {
-      domainLoaded: false,
-      invite,
-      inviteName
-    }
-  }
-
   componentDidMount() {
+    this.onSetInvite();
     this.onSetDomain();
     this.props.ObtainCountryCode();
   }
 
+  onSetInvite() {
+    const params = new URLSearchParams(this.props.location.search);
+    const inviteId = params.get('invite');
+    const inviteName = params.get('invitename');
+
+    if (inviteId) {
+      this.props.setInvite({ inviteId, inviteName });
+    }
+  }
+
   onSetDomain() {
     this.props.SetDomain();
-    this.setState({ domainLoaded: true })
+    this.setState({ domainLoaded: true });
   }
 
   resetInvite = () => {
-    this.setState({ invite: undefined, inviteName: undefined });
+    this.setState({ inviteId: undefined, inviteName: undefined });
   }
 
   render() {
@@ -45,11 +42,6 @@ export class App extends Component {
       return (
           <MainErrorBoundary>
             <div className="App">
-              <AppContext.Provider value={{ 
-                invite: this.state.invite,
-                inviteName: this.state.inviteName,
-                resetInvite: this.resetInvite
-              }}>
               <SecuredRoute
                   path="/"
                   location={location}
@@ -59,7 +51,6 @@ export class App extends Component {
                   domainChecked={domainChecked}
                   signUpInProgress={signUpInProgress}
               />
-                </AppContext.Provider>
             </div>
           </MainErrorBoundary> 
       );
@@ -78,6 +69,7 @@ export const mapStateToProps = (state) => {
 export const mapDispatchToProps = (dispatch) => {
   return {
       SetDomain: () => dispatch(setDomain()),
+      setInvite: value => dispatch(setInvite(value)),
       ObtainCountryCode: () => dispatch(obtainCountryCode())
   }
 }

@@ -15,8 +15,9 @@ const StyledContent = styles.section`
     align-items: flex-start;
 
     @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
-        justify-content: center;
-        align-items: center;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
     }
 `;
 

@@ -86,8 +86,8 @@ const Pricing = ({ country, countryCode }) => {
     const features = [
         { 
             name: '30 days Business Trial', 
-            description: 'Create as many task boards as you like',
-            products: [products.personal]
+            description: 'Free trial of the business plan',
+            products: [products.personal, products.business]
         }, { 
             name: 'Unlimited Boards', 
             description: 'Create as many task boards as you like',
@@ -99,7 +99,7 @@ const Pricing = ({ country, countryCode }) => {
         }, {
             name: 'Advanced Column Types',
             description: 'E.g. Due By, Percentage, Timer',
-            products: [products.business, products.enterprise]
+            products: [products.enterprise]
         }, {
             name: 'Team Management',
             description: 'Create/manage teams of users',
@@ -125,8 +125,8 @@ const Pricing = ({ country, countryCode }) => {
 
     const getPrice = (country) => {
         const price = '3.99';
-        const currency = country.country_code === 'GB' ? '£' : country.continent_code === 'EU' ? '€' : '$';
-        const suffix = currency === '$' ? '' : '*';
+        const currency = country.country_code === 'GB' ? '£' : '$';
+        const suffix = country.continent_code === 'EU' ? '*' : '';
 
         return `${currency}${price}${suffix}`;
     }

@@ -33,7 +33,7 @@ export const cancelSubscription = () => {
                 const currentSubscription = await subsHelper.get();
                 dispatch({ type: 'SET_SUBSCRIPTION_DATA', payload: currentSubscription });
                 dispatch({ type: 'SET_SUBSCRIPTION_STATUS', payload: currentSubscription.status });
-                notifiy({ type: 'success', message: 'Subscripton canceled', description: 'Your subscription has been downgraded to personal plan', duration: 0 });
+                notifiy({ type: 'success', message: 'Subscripton cancelled', description: 'Your subscription has been downgraded to personal plan', duration: 0 });
 
             } else {
                 notifiy({ type: 'warning', message: 'Failed to cancel your subscription', description: 'There was an error canceling your subscription', duration: 0 });
@@ -59,7 +59,7 @@ export const reactivateAccount = () => {
                 const currentSubscription = await subsHelper.get();
                 dispatch({ type: 'SET_SUBSCRIPTION_DATA', payload: currentSubscription });
                 dispatch({ type: 'SET_SUBSCRIPTION_STATUS', payload: currentSubscription.status });
-                notifiy({ type: 'success', message: 'Subscripton canceled', description: 'Your Business Plan subscription has reactivated', duration: 0 });
+                notifiy({ type: 'success', message: 'Subscripton cancelled', description: 'Your Business Plan subscription has reactivated', duration: 0 });
 
             } else {
                 notifiy({ type: 'warning', message: 'Failed to cancel your subscription', description: 'There was an error reactivating your subscription', duration: 0 });

@@ -84,7 +84,7 @@ const SignUpForm = ({ countryCodes, form, location, pending, signUp }) => {
                 setAgreeFailed(true);
             } else {
                 if (!err) {
-                    signUp(values, packageName, values.country, values.VATNumber);
+                    signUp(values, packageName, values.country, selectedCountry.region, values.VATNumber);
                 }
             }
         });
@@ -130,11 +130,27 @@ const SignUpForm = ({ countryCodes, form, location, pending, signUp }) => {
     } 
 
     const validateVATNumber = (rule, value, callback) => {
+        const hasSpaces = value => {
+            return new RegExp(/[ ]/).test(value);
+        }
+
+        const hasValidFirstTwoCharacters = value => {
+            return new RegExp(/[A-z,a-z]{2}/).test(value);
+        }
+
+        if (hasSpaces(value)) {
+            callback('Cannot contain spaces');
+        }
+
+        if (!hasValidFirstTwoCharacters(value)) {
+            callback('Must contain a valid VAT number prefix, e.g. GB');
+        }
+
         if (value === undefined || value === null || value === '') {
             callback();
         } else {
             const check = checkVAT(value, countries);
-            check.valid ? callback() : callback('Not a valid VAT number');
+            check.isValid ? callback() : callback('Not a valid VAT number');
         }
     }
 

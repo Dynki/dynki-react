@@ -45,7 +45,7 @@ export const signIn = (credentials) => {
   }
 }
 
-export const signUp = (credentials, packageName, countryCode, VATNumber) => {
+export const signUp = (credentials, packageName, countryCode, region, VATNumber) => {
   return async (dispatch, getState, { getFirebase }) => {
     try {
       const firebase = getFirebase();
@@ -69,7 +69,7 @@ export const signUp = (credentials, packageName, countryCode, VATNumber) => {
       dispatch({ type: 'SET_DOMAIN_DETAILS', payload: newDomain });
 
       const subsHelper = new Subscriptions(getFirebase(), newDomain.id);
-      const newSub = await subsHelper.add(packageName, countryCode, VATNumber);
+      const newSub = await subsHelper.add(packageName, countryCode, region, VATNumber);
 
       dispatch({ type: 'SET_SUBSCRIPTION_STATUS', payload: newSub.status });
       dispatch({ type: 'SIGNUP_SUCCESS', payload: currentUser });

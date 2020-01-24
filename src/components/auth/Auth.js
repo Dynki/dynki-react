@@ -73,10 +73,10 @@ const Auth = ({ auth, basePending, countryCode, countryCodes, updateDomain, chec
         <Forgot forgotPassword={forgotPassword} pending={pending}/>
     );
 
-    const onSignUp = (creds, packageName, country, VATNumber) => {
+    const onSignUp = (creds, packageName, country, region, VATNumber) => {
         country = country === undefined ? countryCode : country;
 
-        signUp(creds, packageName, country, VATNumber)
+        signUp(creds, packageName, country, region, VATNumber)
     }
 
     return (
@@ -126,7 +126,7 @@ export const mapDispatchToProps = (dispatch) => {
         updateDomain: (name) => dispatch(updateDomain(name)),
         forgotPassword: (creds) => dispatch(forgotPassword(creds)),
         signIn: (creds) => dispatch(signIn(creds)),
-        signUp: (creds, packageName, countryCode, VATNumber) => dispatch(signUp(creds, packageName, countryCode, VATNumber))
+        signUp: (creds, packageName, countryCode, region, VATNumber) => dispatch(signUp(creds, packageName, countryCode, region, VATNumber))
     }
 }
 

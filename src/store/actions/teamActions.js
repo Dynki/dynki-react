@@ -190,7 +190,7 @@ export const inviteTeamMember = (emails) => {
         try {
             await teamsHelper.inviteMember(emails, getState().teams.currentTeam.id, getState().teams.currentTeam.display_name);
             dispatch({ type: 'INVITED_TEAM_MEMBER' });
-            notifiy({ type: 'success', message: 'Invite Success', description: 'Successfully invited team member' });
+            notifiy({ type: 'success', message: 'Invite Success', description: 'Successfully invited team member', duration: 0 });
         } catch (error) {
             console.log('Failed to invite user', error);
             notifiy({ type: 'error', message: 'Invite failure', description: error, duration: 0 });
@@ -224,10 +224,10 @@ export const acceptInvite = (inviteId) => {
             dispatch(getTeams());        
     
         } catch (error) {
-            notifiy({ type: 'error', message: 'Acceptance failure', description: error });
+            const msg = 'There was an error accepting you to this team';
+            notifiy({ type: 'error', message: 'Acceptance failure', description: msg, duration: 0 });
         } finally {
             dispatch({ type: 'SET_PROGRESS', payload: false });
         }
     }    
 }
-

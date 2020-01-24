@@ -16,8 +16,6 @@ import Teams from '../../teams/teams';
 import TeamAccept from '../../teams/TeamAccept';
 import AccountOverview from '../../auth/user/AccountOverview';
 
-import AppContext from '../../../context/appContext';
-
 const StyledSideNav = styled.div`
     grid-area: sidenav;
 
@@ -27,13 +25,12 @@ const StyledSideNav = styled.div`
 `;
 
 class PostAuthShell extends React.Component {
-    static contextType = AppContext;
 
     componentWillMount() {
         this.props.getTeams();
 
-        if (this.context.invite) {
-            this.props.history.push(`/invite/${this.context.invite}`);
+        if (this.props.inviteData.inviteId) {
+            this.props.history.push(`/invite/${this.props.inviteData.inviteId}`);
         }
     }
 
@@ -104,7 +101,10 @@ class PostAuthShell extends React.Component {
     }
 
     render() {
-        const { boards, boardsChecked, currentUser, domain, firstLoad, location, noBoards, progress, signOut } = this.props;
+        const { boards, boardsChecked, currentUser, domain, firstLoad, inviteData, location, noBoards, progress, signOut } = this.props;
+
+        console.log("Invite:", inviteData.inviteId);
+        console.log("Pathname:", location.pathname);
 
         if (domain.domainId) {
             return <div className="post-auth__content">
@@ -114,8 +114,14 @@ class PostAuthShell extends React.Component {
                     <SideNav hideHome={true}/>
                 </StyledSideNav>
                 <main>
-                    {!this.context.invite && noBoards && boardsChecked && location.pathname !== '/empty-boards' &&
+                    {!inviteData.inviteId && noBoards && boardsChecked && location.pathname !== '/empty-boards' &&
                         <Redirect exact from='/' to={`/empty-boards`}/>
+                    }
+                    {!inviteData.inviteId && location.pathname.split('/')[1] === 'invite' && boards && boards.length > 0 &&
+                        <React.Fragment>
+                            {this.onDispatchBoardAction(boards[0].id)}
+                            <Redirect exact from='/' to={`/board/${boards[0].id}`}/>
+                        </React.Fragment>
                     }
                     {location.pathname === '/' && boards && boards.length > 0 &&
                         <React.Fragment>
@@ -129,7 +135,7 @@ class PostAuthShell extends React.Component {
                             <Redirect exact from='/empty-boards' to={`/board/${boards[0].id}`}/>
                         </React.Fragment>
                     }
-                    {!this.context.invite && !firstLoad && location.pathname === '/empty-boards' && !noBoards && boards && boards.length > 0 &&
+                    {!inviteData.inviteId && !firstLoad && location.pathname === '/empty-boards' && !noBoards && boards && boards.length > 0 &&
                         <Redirect exact from='/empty-boards' to={`/board/${boards[0].id}`}/>
                     }
                     <Switch>
@@ -150,14 +156,15 @@ class PostAuthShell extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        domain: state.domain,
-        currentUser: state.auth.currentUser,
-        progress: state.base.progress,
-        boards: state.boards.boards,
         board: state.boards.currentBoard,
-        noBoards: state.boards.noBoards,
+        boards: state.boards.boards,
+        boardsChecked: state.boards.boardsChecked,
+        currentUser: state.auth.currentUser,
+        domain: state.domain,
         firstLoad: state.boards.firstLoad,
-        boardsChecked: state.boards.boardsChecked
+        inviteData: state.base.inviteData,
+        noBoards: state.boards.noBoards,
+        progress: state.base.progress
     }
 }
 
