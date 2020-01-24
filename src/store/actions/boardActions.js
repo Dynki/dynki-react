@@ -107,8 +107,6 @@ export const getBoard = (id) => {
             const board = await boardsHelper.get(id, dispatch, getState);
             board.roles = await boardsHelper.getBoardRoles(id);
     
-            console.log('GOT BOARD', board);
-            
             dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
             
         } catch (error) {
@@ -129,8 +127,6 @@ export const getBoardRoles = (id) => {
             const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
             const boardRoles = await boardsHelper.getBoardRoles(id);
     
-            console.log('GOT BOARD ROLES', boardRoles);
-            
             dispatch({ type: 'SET_CURRENT_BOARD_ROLES', payload: boardRoles });
             
         } catch (error) {

@@ -60,7 +60,6 @@ const authReducer = (state = initialState, action) => {
                 ...initialState
             }
         case 'SET_CURRENT_USER':
-            console.log('Setting current user', action.payload);
             return {
                 ...state,
                 currentUser: { ...initialState.currentUser, ...action.payload }

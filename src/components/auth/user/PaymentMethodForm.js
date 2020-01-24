@@ -131,8 +131,6 @@ const PaymentMethodForm = ({
     triggerSubmit
 }) => {
 
-    console.log('PMF Subscription', subscription);
-
     const { latest_invoice, cost, cost_tax } = subscription;
     let { amount_remaining, currency, tax } = latest_invoice;
     currency = currency === 'gbp' ? '£' : '$';
@@ -176,8 +174,6 @@ const PaymentMethodForm = ({
         try {
             onSetInProgress(true);
 
-            console.log('Payment Method Form Data::', formData);
-
             const cardElement = elements.getElement('card');
 
             await stripe.createPaymentMethod({
@@ -196,8 +192,6 @@ const PaymentMethodForm = ({
             .then(async ({ paymentMethod }) => {
                 const pmResult = await onAttachPaymentMethod(paymentMethod.id);
 
-                console.log('PM Result', pmResult);
-
                 const latestSub = pmResult.subscription;
                 const { client_secret } = pmResult;
                 const { latest_invoice } = latestSub;
@@ -205,12 +199,8 @@ const PaymentMethodForm = ({
 
                 let result;
 
-                console.log('Payment intent:', payment_intent)
-
                 if (payment_intent) {
                     const { client_secret, status } = payment_intent;
-
-                    console.log('Confirm card payment', client_secret);
 
                     if (status === 'requires_action' || status === 'requires_payment_method') {
                         result = await stripe.confirmCardPayment(client_secret, {
@@ -219,14 +209,10 @@ const PaymentMethodForm = ({
                     }
 
                 } else {
-                    console.log('Confirm card setup', client_secret);
-
                     result = await stripe.confirmCardSetup(client_secret, {
                         payment_method: paymentMethod.id
                     });
                 }
-
-                console.log('result', result);
 
                 if (result && result.error) {
                     notification['error']({ message: 'Payment Failure', description: result.error.message, duration: 0 });

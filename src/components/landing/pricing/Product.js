@@ -17,7 +17,7 @@ const StyledPicture = styles.img`
 const StyledWrapper = styles.div`
     display: flex;
     flex-direction: column;
-    margin: 15px;
+    margin: 10px;
 `;
 
 const ProductName = styles.div`
@@ -40,7 +40,7 @@ const StyledContent = styles.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 500px;
+    min-height: 520px;
     min-width: 300px;
     margin-bottom: 20px;
 
@@ -78,6 +78,28 @@ const StyledButtonLink = styles.div`
     }
 `;
 
+const StyledButtonAnchor = styles.a`
+    margin-top:auto;
+    width: 100%;
+    border: solid 2px #3095de;
+    color: ${props => props.main ? '#ffffff' : '#3095de'}
+    background-color: ${props => props.main ? '#3095de' : '#ffffff'}
+    position: absolute;
+    bottom:  50px;
+    padding: 20px;
+    text-align: center;
+    font-size: 20px;
+    margin-top:auto;
+
+    :hover {
+        cursor: pointer;
+        background-color: #3095de!important;
+        color: #ffffff;
+    }
+`;
+
+
+
 const StyledFeatures = styles.div`
     margin-top: 25px;
     margin-bottom: 25px;
@@ -89,6 +111,7 @@ const StyledFeature = styles.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-bottom: 5px;
 
     i {
         margin-right: 10px;
@@ -112,13 +135,18 @@ const StyledText = styles(Text)`
 
 const HelpIcon = styles(Icon)`
     cursor: pointer;
+    font-size: 16px;
 
     svg {
         fill: #A5A4A4!important;
     }
 `;
 
-const Product = ({ billingBasis, billingFrequency, blurb, buttonText, color, cost, description, free, imageSource, main, redirectLink, title }) => {
+const CheckIcon = styles(Icon)`
+    font-size: 16px;
+`;
+
+const Product = ({ billingBasis, billingFrequency, blurb, buttonText, color, cost, description, free, href, imageSource, main, redirectLink, title }) => {
     return (
         <StyledWrapper>
             <ProductName bgColor={color}>
@@ -135,7 +163,7 @@ const Product = ({ billingBasis, billingFrequency, blurb, buttonText, color, cos
                 <StyledFeatures>
                 {blurb.map((feature,i) => {
                     return <StyledFeature key={i}>
-                        <Icon type="check-circle" theme="filled" />
+                        <CheckIcon type="check-circle" theme="filled" />
                         <StyledText>{feature.name}</StyledText>
                         <Tooltip title={feature.description}>
                             <HelpIcon type="question-circle" />
@@ -143,9 +171,13 @@ const Product = ({ billingBasis, billingFrequency, blurb, buttonText, color, cos
                     </StyledFeature>
                 })}
                 </StyledFeatures>
-                <StyledLink to={redirectLink}>
-                    <StyledButtonLink main={main}>{buttonText}</StyledButtonLink>
-                </StyledLink>
+                {href ? 
+                    <StyledButtonAnchor href={href}>{buttonText}</StyledButtonAnchor>
+                    :
+                    <StyledLink to={redirectLink}>
+                        <StyledButtonLink main={main}>{buttonText}</StyledButtonLink>
+                    </StyledLink>
+                }
             </StyledContent>
         </StyledWrapper>
     );

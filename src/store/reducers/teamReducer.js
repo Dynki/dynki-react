@@ -11,7 +11,6 @@ const teamReducer = (state = initialState, action) => {
                 teams: action.payload
             }
         case 'SET_CURRENT_TEAM':
-            console.log('Setting current team', action.payload);
 
             return {
                 ...state,
@@ -19,9 +18,6 @@ const teamReducer = (state = initialState, action) => {
             }
         case 'ADDED_TEAM_GROUP':
             const updatedGroups = [...state.currentTeam.groups, action.payload];
-
-            console.log(action.payload, 'payload');
-            console.log(updatedGroups, 'updatedGRoups');
 
             return {
                 ...state,
@@ -34,9 +30,6 @@ const teamReducer = (state = initialState, action) => {
                     m.memberOf = m.memberOf.filter(grp => grp !== action.payload);
                     return m;
                 });
-    
-                console.log(action.payload, 'payload');
-                console.log(groups, 'updatedGRoups');
     
                 return {
                     ...state,
@@ -70,8 +63,6 @@ const teamReducer = (state = initialState, action) => {
             }
 
         case 'SET_TEAM_MEMBERS':
-            console.log('SET TEAM MEMBERS', action.payload);
-
             return {
                 ...state,
                 currentTeam: {...state.currentTeam, members: action.payload }

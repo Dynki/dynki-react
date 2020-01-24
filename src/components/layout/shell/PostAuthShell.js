@@ -103,9 +103,6 @@ class PostAuthShell extends React.Component {
     render() {
         const { boards, boardsChecked, currentUser, domain, firstLoad, inviteData, location, noBoards, progress, signOut } = this.props;
 
-        console.log("Invite:", inviteData.inviteId);
-        console.log("Pathname:", location.pathname);
-
         if (domain.domainId) {
             return <div className="post-auth__content">
             <DragDropContext onDragEnd={this.onDragEnd}>
@@ -119,19 +116,19 @@ class PostAuthShell extends React.Component {
                     }
                     {!inviteData.inviteId && location.pathname.split('/')[1] === 'invite' && boards && boards.length > 0 &&
                         <React.Fragment>
-                            {this.onDispatchBoardAction(boards[0].id)}
+                            {/* {this.onDispatchBoardAction(boards[0].id)} */}
                             <Redirect exact from='/' to={`/board/${boards[0].id}`}/>
                         </React.Fragment>
                     }
                     {location.pathname === '/' && boards && boards.length > 0 &&
                         <React.Fragment>
-                            {this.onDispatchBoardAction(boards[0].id)}
+                            {/* {this.onDispatchBoardAction(boards[0].id)} */}
                             <Redirect exact from='/' to={`/board/${boards[0].id}`}/>
                         </React.Fragment>
                     }
                     {location.pathname === '/empty-boards' && boards && boards.length > 0 &&
                         <React.Fragment>
-                            {this.onDispatchBoardAction(boards[0].id)}
+                            {/* {this.onDispatchBoardAction(boards[0].id)} */}
                             <Redirect exact from='/empty-boards' to={`/board/${boards[0].id}`}/>
                         </React.Fragment>
                     }

@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Icon, Spin, Typography } from 'antd';
+import { Spin, Typography } from 'antd';
 
 const { Text } = Typography;
 

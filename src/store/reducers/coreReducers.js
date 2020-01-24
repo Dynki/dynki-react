@@ -7,8 +7,6 @@ const initialState = {
     countryCodes: CountryCodes
 }
 
-console.log('core::', initialState);
-
 const coreReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'TOGGLE_FOLDER_DRAWER':

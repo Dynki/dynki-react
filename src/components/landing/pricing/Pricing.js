@@ -118,7 +118,7 @@ const Pricing = ({ country, countryCode }) => {
             products: [products.enterprise]
         }, {
             name: 'Flow Types',
-            description: 'Create workflows that are tailored to your needs',
+            description: 'Create workflows and forms that are tailored to your needs',
             products: [products.enterprise]
         }
     ];
@@ -130,8 +130,6 @@ const Pricing = ({ country, countryCode }) => {
 
         return `${currency}${price}${suffix}`;
     }
-
-    console.log('Country', country);
 
     const businessPrice = getPrice(country);
 
@@ -169,7 +167,8 @@ const Pricing = ({ country, countryCode }) => {
             imageSource: '/assets/img/enterprise.jpg',
             cost: 'Contact us',
             mainPackage: false,
-            buttonText: 'Contact us'
+            buttonText: 'Contact us',
+            href: 'mailto:enquiries@dynki.com'
         }
     ]
 
@@ -181,7 +180,7 @@ const Pricing = ({ country, countryCode }) => {
                     <StyledH2>No credit card required</StyledH2>
 
                     <Products>
-                        {packages.map(({ billingBasis, billingFrequency, buttonText, color, cost, description, features, free, imageSource ,link, mainPackage, name }, i) => {
+                        {packages.map(({ billingBasis, billingFrequency, buttonText, color, cost, description, features, free, href, imageSource ,link, mainPackage, name }, i) => {
                             return <Product
                                 key={i}
                                 billingBasis={billingBasis}
@@ -192,6 +191,7 @@ const Pricing = ({ country, countryCode }) => {
                                 cost={cost}
                                 description={description}
                                 free={free}
+                                href={href}
                                 imageSource={imageSource}
                                 main={mainPackage}
                                 redirectLink={link}

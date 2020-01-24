@@ -39,10 +39,6 @@ class DynSubMenu extends React.Component {
         return false;
     }
 
-    onDrop = info => {
-        // console.log(info);
-    }
-
     render() {
         const { isActiveSubscriber, itemClicked, btnClicked, addFolder, title, icon , items, act, selectedKeys, currentBoard, loadingBoards, progress, hasRole, ...other} = this.props;
 

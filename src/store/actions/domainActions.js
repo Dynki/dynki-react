@@ -19,6 +19,7 @@ export const checkDomain = (name) => {
         }
 
         
+        // eslint-disable-next-line no-control-regex
         const re = RegExp('^[0-9a-zA-Z \b]+$');
         if (value.length > 0 && !re.test(value)) {
             dispatch({ type: 'DOMAIN_INVALID_CHARS' })
@@ -47,8 +48,6 @@ export const updateDomain = (name) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });
 
         try {
-            console.log('Domain actions: domain', getState().domain);
-
             const domainId = getState().domain.hiddenId
             const domainsHelper = new Domains(getFirebase());
             await domainsHelper.update(domainId, name);

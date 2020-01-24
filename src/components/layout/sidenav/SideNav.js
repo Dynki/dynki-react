@@ -72,7 +72,6 @@ class SideNav extends React.Component {
     }
 
     loadBoard = (id) => {
-        console.log('LOAD BOARD::', id);
         this.props.history.push('/board/' + id);
         this.props.getBoard(id);
     }

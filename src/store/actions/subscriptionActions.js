@@ -27,8 +27,6 @@ export const cancelSubscription = () => {
             const subsHelper = new Subscriptions(getFirebase());
             const response = await subsHelper.delete();
 
-            console.log('Cancel Response', response);
-
             if (response.status === 200) {
                 const currentSubscription = await subsHelper.get();
                 dispatch({ type: 'SET_SUBSCRIPTION_DATA', payload: currentSubscription });

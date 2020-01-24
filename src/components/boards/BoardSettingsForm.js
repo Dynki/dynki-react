@@ -15,7 +15,6 @@ class BoardSettingsForm extends React.Component {
     handleSubmit = (e) => {
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                console.log('Roles:::', values);
                 this.props.updateBoardRoles(this.props.board.id, values);
             }
         });

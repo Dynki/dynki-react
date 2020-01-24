@@ -236,8 +236,6 @@ class SubscriptionForm extends React.Component {
             expires = `Expires: ${cancelAtDate}`;
         }
 
-        console.log('renderPlanDetails', subscription.data);
-        
         return (
             <Card title="Subscription Details">
                 <Row gutter={16}>

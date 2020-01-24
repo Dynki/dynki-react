@@ -51,8 +51,6 @@ const PaymentMethodModal = ({
 }) => {
     label = label ? label : 'Make a payment';
 
-    console.log('Create payment intent flag', createPaymentIntent);
-
     const [isVisible, setIsVisible] = useState(false);
     const [triggerSubmit, setTriggerSubmit] = useState(false);
     const [inProgress, setInProgress] = useState(false);

@@ -1,11 +1,30 @@
 import React from 'react';
 import { Icon, Popconfirm, Dropdown, Menu } from 'antd';
 import { connect } from 'react-redux';
+import styles from 'styled-components';
 
 import BoardRowHeaderForm from './BoardRowHeaderForm';
 import BoardRowHeaderGroupForm from './BoardRowHeaderGroupForm';
 import BoardRowHeaderMenu from './BoardRowHeaderMenu';
 import { removeColumn, addGroup, removeGroup, collapseGroup } from '../../store/actions/boardActions';
+
+const StyledLink = styles.button`
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline;
+    margin: 0;
+    padding: 0;
+    text-align: start;
+  
+    :hover {
+        text-decoration: none;
+    }
+
+    :focus {
+        text-decoration: none;
+    }
+`;
 
 class BoardRowHeader extends React.Component {
     
@@ -34,12 +53,12 @@ class BoardRowHeader extends React.Component {
         const menu = (
             <Menu>
                 <Menu.Item>
-                <a target="_blank" rel="noopener noreferrer" onClick={() => this.addGroup()}>
+                <StyledLink onClick={() => this.addGroup()}>
                     <div className="table__group__menu__row">
                         <Icon className="table__group__menu__icon" type="plus-circle" />
                         <div>New Group</div>
                     </div>
-                </a>
+                </StyledLink>
                 </Menu.Item>
                 {this.props.board.groups.length > 1 ? 
                     <Menu.Item>
@@ -50,19 +69,19 @@ class BoardRowHeader extends React.Component {
                             placement="bottomLeft"
                             onConfirm={this.handleConfirm.bind(this)}
                         >
-                            <a target="_blank" rel="noopener noreferrer">
+                            <StyledLink>
                                 <div className="table__group__menu__row">
                                     <Icon className="table__group__menu__icon" type="delete" />
                                     <div>Remove Group</div>
                                 </div>
-                            </a>
+                            </StyledLink>
                         </Popconfirm>
                     </Menu.Item>
                     :
                     null
                 }
                 <Menu.Item>
-                    <a target="_blank" rel="noopener noreferrer" onClick={() => this.collapseGroup()}>
+                    <StyledLink onClick={() => this.collapseGroup()}>
                         <div className="table__group__menu__row">
                         {collapsed ? 
                             <React.Fragment>
@@ -76,7 +95,7 @@ class BoardRowHeader extends React.Component {
                             </React.Fragment>
                         }
                         </div>
-                    </a>
+                    </StyledLink>
                 </Menu.Item>
             </Menu>
         );
@@ -84,13 +103,13 @@ class BoardRowHeader extends React.Component {
         return <tr className="table__header"> 
         <th>
             <Dropdown overlay={menu}>
-                <a className="ant-dropdown-link">
+                <StyledLink>
                     {collapsed ? 
                         <Icon style={{ color: this.groupColor }} className="table__group__menu__icon--main" type="caret-up" />
                     :
                         <Icon style={{ color: this.groupColor }} className="table__group__menu__icon--main" type="caret-down" />
                     }                    
-                </a>
+                </StyledLink>
             </Dropdown>
         </th>
         <th

@@ -40,7 +40,6 @@ export class Boards {
                             // This is required to stop firestore creating multiple subscriptions, which then spam the system.
                             if (currentBoard && currentBoard.id === board.id) {
                                 dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
-                                console.log('Board updated', resolve);
                             }
                         }
 
@@ -170,8 +169,6 @@ export class Boards {
     
             await this.firebase.firestore().runTransaction(async transaction => {
                 const appBoardsDoc = await transaction.get(appBoardsRef);
-    
-                console.log('AppBoardDoc', appBoardsDoc);
     
                 let existingBoards = appBoardsDoc.data() && appBoardsDoc.data().boards ? appBoardsDoc.data().boards : [];
                 existingBoards.push({ id: newBoardRef.id, title: 'Scratch' });

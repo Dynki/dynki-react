@@ -32,8 +32,6 @@ export class Teams {
                 .where(this.firebase.firestore.FieldPath.documentId(), '==', id)
                 .onSnapshot(function(querySnapshot) {
 
-                    console.log('Query Snap Shot', querySnapshot);
-
                     if (querySnapshot && querySnapshot.docs && querySnapshot.docs.length > 0) {
                         const team = { id: querySnapshot.docs[0].id , ...querySnapshot.docs[0].data() };
         
@@ -43,7 +41,6 @@ export class Teams {
     
                             if (dispatch) {
                                 dispatch({ type: 'SET_CURRENT_TEAM', payload: team });
-                                console.log('Team updated', resolve);
                             }
     
                             resolve(team);

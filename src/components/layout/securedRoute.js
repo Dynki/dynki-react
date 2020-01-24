@@ -23,7 +23,11 @@ export default function SecuredRoute ({
             : null
           )
         ) : (
-          signUpInProgress ? null : <Redirect to="/home" />
+          null
+          // signUpInProgress ? 
+          //   null 
+          //   : 
+            // location.pathname !== '/home' ? <Redirect to="/home" /> : null
         )
       }
     />

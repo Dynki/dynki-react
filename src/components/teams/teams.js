@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import styles from 'styled-components';
 
 import { PageHeader, Button, Tag, Typography, Row, Skeleton } from 'antd';
 import TeamGroups from './teams-group';
@@ -18,6 +19,24 @@ import {
 
 const { Paragraph } = Typography;
 
+const StyledLink = styles.div`
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline;
+    margin: 0;
+    padding: 0;
+    text-align: start;
+  
+    :hover {
+        text-decoration: none;
+    }
+
+    :focus {
+        text-decoration: none;
+    }
+`;
+
 // Container for teams components.
 class Teams extends React.Component {
 
@@ -34,7 +53,6 @@ class Teams extends React.Component {
     }
 
     saveGroupUpdate = (record) => {
-        console.log('Calling update group', record);
         this.props.updateTeamGroup(record.id, record);
     }
 
@@ -54,7 +72,7 @@ class Teams extends React.Component {
         }
 
         const IconLink = ({ src, text }) => (
-            <a
+            <StyledLink
                 style={{
                     marginRight: 16,
                     display: 'flex',
@@ -69,7 +87,7 @@ class Teams extends React.Component {
                     alt="start"
                 />
                 {text}
-            </a>
+            </StyledLink>
         );
 
         const content = (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
+import { Route, Router } from 'react-router-dom';
 import { PreAuthShell } from './components';
 import App from './App';
 

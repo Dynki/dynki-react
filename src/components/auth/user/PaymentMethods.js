@@ -30,8 +30,6 @@ const StyledLink = styles.button`
 `;
 
 const PaymentMethods = ({ createPaymentIntent, subscription, handleDelete, handleSetDefault, reactivateAllowed }) => {
-    console.log('PM Subscription data', subscription);
-
     const data = subscription && subscription.data ? subscription.data.paymentMethods : [];
 
     const menu = (record) => (

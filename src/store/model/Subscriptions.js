@@ -129,8 +129,6 @@ export class Subscriptions {
             const uid = this.firebase.auth().currentUser.uid;
             const newSubscription = await axios.post(url, { plan: packageName, countryCode, region, VATNumber }, { headers: { uid, token, authorization: token } });
 
-            console.log('Subscription :: newSubscription', newSubscription);
-
             return newSubscription.data;
         } catch (error) {
             console.log('Error adding subscription', error);
@@ -285,7 +283,6 @@ export class Subscriptions {
     }
 
     paymentRequired = status => {
-        console.log('Payment required check', status);
         return status === 'past_due' || status === 'unpaid';
     }
 
