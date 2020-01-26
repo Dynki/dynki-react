@@ -12,6 +12,18 @@ const NewRowButton = styles(Button)`
     :hover {
         color: #ffffff;
     }
+
+    :disabled{
+        background-color: #ffffff;
+        cursor: not-allowed!important;
+    }
+`;
+
+const StyledInput = styles(Input)`
+    :disabled{
+        background-color: #ffffff;
+        cursor: not-allowed!important;
+    }
 `;
 
 const FormItem = Form.Item;
@@ -34,9 +46,10 @@ const BNRForm = Form.create({})((props) => {
             <FormItem >
                 <div className="new-row">
                     {getFieldDecorator('newValue', { })(
-                        <Input placeholder="+ Create new row"/>
+                        <StyledInput disabled={!props.allowWrite} placeholder="+ Create new row"/>
                     )}
                     <NewRowButton 
+                        disabled={!props.allowWrite}
                         htmlType="submit"
                         style={{ backgroundColor: '#' + props.group.color }}
                     >

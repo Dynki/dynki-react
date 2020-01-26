@@ -68,7 +68,7 @@ const CheckoutModal = ({ label, teamName }) => {
                         <PaymentType alt="Visa" src="./assets/pay/icons/1.png"/>
                         <PaymentType alt="MasterCard" src="./assets/pay/icons/2.png"/>
                     </SupportedPayments>
-                    <StripeProvider apiKey="pk_test_0HSo1Ghogz1ii6PLLIetNHMU">
+                    <StripeProvider apiKey="pk_live_JlKqMJTF3VfjAmxIQ2KG4VYc">
                         <Elements>
                             <CheckoutForm/>
                         </Elements>

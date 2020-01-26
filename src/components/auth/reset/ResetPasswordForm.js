@@ -9,6 +9,10 @@ const StyledForm = styles(Form)`
     display: flex;
     flex-direction: column;
     width: 500px;
+
+    @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
+        width: 100%;
+    }
 `;
 
 class ResetPasswordForm extends React.Component {

@@ -22,6 +22,7 @@ const BForm = Form.create({
     // }
 })((props) => {
     const { getFieldDecorator } = props.form;
+    const { allowWrite } = props;
 
     const handleSubmit = (e) => {
         if (e) e.preventDefault();
@@ -46,7 +47,8 @@ const BForm = Form.create({
                     })(
                         <Input 
                             className="text__large--no-border board__form__description"
-                            size="large" 
+                            size="large"
+                            disabled={!allowWrite} 
                             placeholder="Board title goes here" 
                             autoComplete="no way" 
                             onBlur={() => handleBlur()}
@@ -60,6 +62,7 @@ const BForm = Form.create({
                         <Input 
                             className="text--no-border description"
                             placeholder="Add a board descripton"
+                            disabled={!allowWrite} 
                             autoComplete="false"
                             onBlur={() => handleBlur()}
                         />
@@ -91,7 +94,7 @@ const BoardForm = (props) => {
 
     return (
         <div>
-            <BForm {...fields} onChange={handleFormChange} />
+            <BForm {...fields} onChange={handleFormChange} allowWrite={props.allowWrite}/>
         </div>
     );
 }

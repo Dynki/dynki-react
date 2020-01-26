@@ -239,10 +239,10 @@ class SubscriptionForm extends React.Component {
         return (
             <Card title="Subscription Details">
                 <Row gutter={16}>
-                    <Col span={12}>
+                    <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                         <Statistic title="Current Plan" value={this.getPlanName(status)} />
                     </Col>
-                    <Col span={12}>
+                    <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                         <StyledStatistic title="Business Plan Subscription Status" value={this.getPlanStatus(status)} />
                         <ExiredDetails>
                             {expires}
@@ -252,7 +252,7 @@ class SubscriptionForm extends React.Component {
                     </Col>
                 </Row>
                 <Row gutter={16}>
-                    <Col span={12}>
+                    <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                         <CostStatistic title="Subscription Cost" value={this.getPlanCost(subscription.data)} />
                     </Col>
                 </Row>

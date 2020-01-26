@@ -27,7 +27,7 @@ class BoardRow extends React.Component {
     }
 
     renderSwitch = (col, idx) => {
-        const {...restProps} = this.props;
+        const {allowWrite, ...restProps} = this.props;
 
         const rowValue = this.props.board.groups[this.props.groupKey].entities[this.props.rowIdx] 
                         ? this.props.board.groups[this.props.groupKey].entities[this.props.rowIdx][col.model] 
@@ -36,6 +36,7 @@ class BoardRow extends React.Component {
         switch(col.class) {
             case 'text': 
              return <BoardRowForm
+                    allowWrite={allowWrite}
                     onUpdateBoard={this.props.onUpdateBoard}
                     board={this.props.board}
                     rowIdx={this.props.rowIdx}
@@ -48,6 +49,7 @@ class BoardRow extends React.Component {
 
             case 'date': 
             return <DateCell
+                allowWrite={allowWrite}
                 onUpdateBoard={this.props.onUpdateBoard}
                 board={this.props.board}
                 rowIdx={this.props.rowIdx}
@@ -60,6 +62,7 @@ class BoardRow extends React.Component {
             </DateCell>;
             case 'datedue': 
             return <DateDueCell
+                allowWrite={allowWrite}
                 onUpdateBoard={this.props.onUpdateBoard}
                 board={this.props.board}
                 rowIdx={this.props.rowIdx}
@@ -74,6 +77,7 @@ class BoardRow extends React.Component {
             case 'select':
                 return <div className="table__row__cell__container--nopadding">
                     <SelectCellModal 
+                        allowWrite={allowWrite}
                         col={col}
                         rowId={this.props.rowId}
                         rowValue={rowValue}
@@ -98,7 +102,7 @@ class BoardRow extends React.Component {
                         onMouseEnter={this.mouseEnter.bind(this)}
                         onMouseLeave={this.mouseLeave.bind(this)}
                     >
-                    {isFirst ? <BoardRowMenu hovering={this.state.hovering} rowIdx={this.props.rowIdx} groupKey={this.props.groupKey}></BoardRowMenu> : null }
+                    {isFirst ? <BoardRowMenu allowWrite={this.props.allowWrite} hovering={this.state.hovering} rowIdx={this.props.rowIdx} groupKey={this.props.groupKey}></BoardRowMenu> : null }
                     {isFirst ?
                                 <div
                                     {...this.props.provided.dragHandleProps}

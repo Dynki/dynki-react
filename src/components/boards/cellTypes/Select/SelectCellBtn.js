@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'antd';
 
 const SelectCellBtn = (props) => {
-    const { color, column, rowId } = props;
+    const { allowWrite, color, column, rowId } = props;
 
     let fgColor = 'ffffff';
     if (color.fgColor) {
@@ -11,6 +11,7 @@ const SelectCellBtn = (props) => {
 
     return <Button 
         // key={key}
+        disabled={!allowWrite}
         className="select__option"
         style={{backgroundColor: `#${color.color}`, color: `#${fgColor}`}}
         onClick={() => props.onSelectOption(color.key, column.model, rowId)}

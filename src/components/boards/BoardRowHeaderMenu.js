@@ -48,7 +48,7 @@ class BoardRowHeaderMenu extends React.Component {
 
     render() {
         return <th className="table__header__menu__container">
-            <Dropdown overlay={this.menu} className="table__header__menu__container__dropdown">
+            <Dropdown disabled={!this.props.allowWrite} overlay={this.menu} className="table__header__menu__container__dropdown">
                 <Icon type="plus-circle" />
             </Dropdown>
         </th>

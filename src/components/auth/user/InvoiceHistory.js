@@ -76,7 +76,8 @@ const InvoiceHistory = ({ subscription }) => {
         >
             <Table
               columns={columns}
-              rowKey="id" 
+              rowKey="id"
+              scroll={{ x: true }} 
               dataSource={data} size="small"
               footer={() => nextInvoice}
             />

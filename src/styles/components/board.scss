@@ -173,11 +173,21 @@
             // margin-top: 5px;
             margin-left: 2px;
             color: #3095DE!important;
+
+            &:disabled{
+                background-color: #ffffff;
+                cursor: not-allowed!important;
+            }
         }
 
         .description {
             margin-top: 4px;
             margin-left: 3px;
+
+            &:disabled{
+                background-color: #ffffff;
+                cursor: not-allowed!important;
+            }
         }
 
         .ant-form-item {

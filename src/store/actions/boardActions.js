@@ -106,9 +106,8 @@ export const getBoard = (id) => {
             const boardsHelper = new Boards(getFirebase(), getState().domain.domainId);
             const board = await boardsHelper.get(id, dispatch, getState);
             board.roles = await boardsHelper.getBoardRoles(id);
-    
+
             dispatch({ type: 'SET_CURRENT_BOARD', payload: board });
-            
         } catch (error) {
             notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to get the board' });
         } finally {

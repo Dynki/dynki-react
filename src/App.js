@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import { setDomain } from './store/actions/authActions';
@@ -9,7 +9,7 @@ import './App.scss';
 import { SecuredRoute, PostAuthShell } from './components';
 import MainErrorBoundary from './components/core/MainErrorBoundry';
 
-export class App extends Component {
+export class App extends PureComponent {
 
   componentDidMount() {
     this.onSetInvite();

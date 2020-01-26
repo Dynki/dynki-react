@@ -67,6 +67,11 @@ const FormRow = styles.div`
     display: flex;
     flex-direction: row;
     width: 100%;
+
+    @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
+        flex-direction: column;
+    }
+
 `;
 
 const Totals = styles(FormColumn)`
@@ -76,6 +81,10 @@ const Totals = styles(FormColumn)`
     margin: 10px;
     margin-top: 27px;
     margin-left: 26px;
+
+    @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
+        margin-left: 0px;
+    }
 `;
 
 const TotalsDesc = styles(FormGroup)`

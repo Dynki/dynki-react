@@ -1,4 +1,5 @@
 import React from 'react';
+import Media from 'react-media';
 import { Card, Dropdown, Icon, Menu, Popconfirm, Table } from 'antd';
 import styles from 'styled-components';
 
@@ -92,19 +93,34 @@ const PaymentMethods = ({ createPaymentIntent, subscription, handleDelete, handl
     ];
     
     return (
-        <StyledCard 
-            title="Payment Methods"
-            extra={reactivateAllowed ? null : <PaymentMethodModal
-                createPaymentIntent={createPaymentIntent} 
-                subscription={subscription.data} 
-                buttonText="Add Payment Method" 
-                label="Add payment method" 
-                title="Add Payment Method for Business Plan"
-                successText="Your payment method was successfully attached"
-            />}
-        >
-            <Table rowKey="id" loading={subscription.loading} columns={columns} dataSource={data} size="small"/>
-        </StyledCard>
+        <Media queries={{
+            small: "(max-width: 599px)",
+            medium: "(min-width: 600px) and (max-width: 1199px)",
+            large: "(min-width: 1200px)"
+            }}>
+            {matches => (
+                <StyledCard 
+                    title={matches.small ? "" : "Payment Methods"}
+                    extra={reactivateAllowed ? null : <PaymentMethodModal
+                        createPaymentIntent={createPaymentIntent} 
+                        subscription={subscription.data} 
+                        buttonText="Add Payment Method" 
+                        label="Add payment method" 
+                        title="Add Payment Method for Business Plan"
+                        successText="Your payment method was successfully attached"
+                    />}
+                >
+                    <Table
+                        scroll={{ x: true }} 
+                        rowKey="id" 
+                        loading={subscription.loading} 
+                        columns={columns} 
+                        dataSource={data} 
+                        size="small"
+                    />
+                </StyledCard>
+            )}
+        </Media>
     );
 }
 

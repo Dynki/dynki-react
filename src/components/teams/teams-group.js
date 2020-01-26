@@ -174,6 +174,7 @@ class TeamGroups extends React.Component {
         components={components} 
         columns={this.columns} 
         id="groups"
+        scroll={{ x: true }}
         dataSource={groups}
         handleDelete={handleDelete}
         handleSave={handleSave}

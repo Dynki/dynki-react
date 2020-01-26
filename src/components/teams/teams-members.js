@@ -305,6 +305,7 @@ const TeamMembers = (props) => {
               </Button>
               </div>}
               rowClassName={() => 'editable-row'}
+              scroll={{ x: true }}
               components={components} columns={columns} dataSource={props.members} 
               handleDelete={handleDelete}
               handleSave={props.handleSave}

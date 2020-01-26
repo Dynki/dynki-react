@@ -36,6 +36,14 @@ const ShopIcon = styles(Icon)`
     }
 `;
 
+const StyledModal = styles(Modal)`
+    min-width: 800px;
+
+    @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
+        min-width: 100%;
+    }
+`;
+
 const PaymentMethodModal = ({ 
     attachPaymentMethod, 
     buttonText, 
@@ -80,8 +88,7 @@ const PaymentMethodModal = ({
     return (
         <div>
             <Button icon="shopping" size="large" type="primary" onClick={() => setIsVisible(true)}>{label}</Button>
-            <Modal
-                style={{ minWidth: '800px' }}
+            <StyledModal
                 visible={isVisible}
                 onCancel={() => setIsVisible(false)}
                 okText={buttonText}
@@ -102,7 +109,7 @@ const PaymentMethodModal = ({
                         <PaymentType alt="Visa" src="./assets/pay/icons/1.png"/>
                         <PaymentType alt="MasterCard" src="./assets/pay/icons/2.png"/>
                     </SupportedPayments>
-                    <StripeProvider apiKey="pk_test_0HSo1Ghogz1ii6PLLIetNHMU">
+                    <StripeProvider apiKey="pk_live_JlKqMJTF3VfjAmxIQ2KG4VYc">
                         <Elements>
                             <PaymentMethodForm 
                                 triggerSubmit={triggerSubmit}
@@ -119,7 +126,7 @@ const PaymentMethodModal = ({
                         </Elements>
                     </StripeProvider>
                 </div>
-            </Modal>
+            </StyledModal>
             
         </div>
     );

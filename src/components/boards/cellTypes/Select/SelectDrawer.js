@@ -82,7 +82,7 @@ const SelectDrawer = (props) => {
 
     return (
         <React.Fragment>
-            <Button onClick={showDrawer} type="dashed" size="small">
+            <Button disabled={!props.allowWrite} onClick={showDrawer} type="dashed" size="small">
                 <Icon type="edit"/> Edit Labels
             </Button>
 

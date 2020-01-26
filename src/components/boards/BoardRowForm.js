@@ -18,14 +18,14 @@ const BRForm = Form.create({
     }
 })((props) => {
     const { getFieldDecorator } = props.form;
-    const { colIdx, progress } = props;
+    const { allowWrite, colIdx, progress } = props;
     
     return (
         <Form className="table__row__cell__container" autoComplete="off">
             <FormItem >
                 {getFieldDecorator('columnValue', {})(
                     <Input 
-                        disabled={progress}
+                        disabled={progress || !allowWrite}
                         placeholder={colIdx === 0 ? "Enter some text here..." : ""}
                         className="table__header__input text--no-border"
                     />

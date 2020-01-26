@@ -3,7 +3,7 @@ import BoardGroup from './BoardGroup';
 
 const BoardDetail = (props) => {
 
-    const {onNewRow, onUpdateBoard, progress, board, groups} = props;
+    const {allowWrite, onNewRow, onUpdateBoard, progress, board, groups} = props;
 
     return (
         <React.Fragment>
@@ -16,6 +16,7 @@ const BoardDetail = (props) => {
                     onNewRow={onNewRow}
                     progress={progress}
                     onUpdateBoard={onUpdateBoard}
+                    allowWrite={allowWrite}
                 ></BoardGroup>
             )}
         </React.Fragment>

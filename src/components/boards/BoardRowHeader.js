@@ -102,7 +102,7 @@ class BoardRowHeader extends React.Component {
     
         return <tr className="table__header"> 
         <th>
-            <Dropdown overlay={menu}>
+            <Dropdown overlay={menu} disabled={!this.props.allowWrite}>
                 <StyledLink>
                     {collapsed ? 
                         <Icon style={{ color: this.groupColor }} className="table__group__menu__icon--main" type="caret-up" />
@@ -115,7 +115,8 @@ class BoardRowHeader extends React.Component {
         <th
             className="table__header__columns table__header__columns--first"
         >
-            <BoardRowHeaderGroupForm 
+            <BoardRowHeaderGroupForm
+                allowWrite={this.props.allowWrite}
                 onUpdateBoard={this.props.onUpdateBoard}
                 board={this.props.board}
                 groupKey={this.props.groupKey}>
@@ -130,6 +131,7 @@ class BoardRowHeader extends React.Component {
                 <div key={idx} className="table__header__columns__container">
                     {idx > 0 ? (
                         <Popconfirm title="Are you sure delete this?" 
+                            disabled={!this.props.allowWrite}
                             okText="Yes"
                             cancelText="Nada"
                             trigger="click"
@@ -137,7 +139,8 @@ class BoardRowHeader extends React.Component {
                             <Icon type="close-square" />
                         </Popconfirm>) : null
                     }
-                    <BoardRowHeaderForm 
+                    <BoardRowHeaderForm
+                        allowWrite={this.props.allowWrite}
                         onUpdateBoard={this.props.onUpdateBoard}
                         board={this.props.board}
                         colIdx={idx}>
@@ -145,7 +148,7 @@ class BoardRowHeader extends React.Component {
                 </div>
             </th>
             })}
-            <BoardRowHeaderMenu></BoardRowHeaderMenu>
+            <BoardRowHeaderMenu allowWrite={this.props.allowWrite}/>
         </tr>
     }
 }
@@ -158,6 +161,5 @@ const mapDispatchToProps = (dispatch) => {
       removeGroup: (groupId) => dispatch(removeGroup(groupId))
     }
 }
-
 
 export default connect(null, mapDispatchToProps)(BoardRowHeader);

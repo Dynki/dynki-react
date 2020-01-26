@@ -20,6 +20,7 @@ class SelectCellModal extends React.Component {
     overlay = () => {
         return (
             <SelectCell
+                allowWrite={this.props.allowWrite}
                 rowValue={this.props.rowValue}
                 rowIdx={this.props.rowIdx}
                 rowId={this.props.rowId}

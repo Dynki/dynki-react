@@ -37,6 +37,51 @@ const StyledLink = styles.div`
     }
 `;
 
+const TeamContent = styles.div`
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+
+    @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
+        flex-direction: column;
+    }
+`;
+
+const StyledTeamGroups = styles.div`
+    width: 40%;
+    margin: 10px;
+
+    .ant-table-thead > tr {
+        
+        & th {
+            color: #ffffff;
+            background: #696969;
+        }
+    }
+
+    @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
+        width: 100%;
+        margin: 0px;
+    }
+`;
+
+const StyledTeamMembers = styles.div`
+    width: 100%;
+    margin: 10px;
+
+    .ant-table-thead > tr {
+        
+        & th {
+            background: #696969;
+            color: #ffffff;
+        }
+    }
+
+    @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
+        margin: 0px;
+    }
+`;
+
 // Container for teams components.
 class Teams extends React.Component {
 
@@ -167,8 +212,8 @@ class Teams extends React.Component {
                         </Content>
                     </PageHeader>
 
-                    <div className="teams__content">
-                        <div className="teams__groups">
+                    <TeamContent>
+                        <StyledTeamGroups>
                             <TeamGroups 
                                 groups={team.groups} 
                                 addGroup={this.addGroup} 
@@ -176,8 +221,8 @@ class Teams extends React.Component {
                                 handleSave={this.saveGroupUpdate}
                                 hasRole={hasRole}
                             />
-                        </div>
-                        <div className="teams__members">
+                        </StyledTeamGroups>
+                        <StyledTeamMembers>
                             <TeamMembers 
                                 members={team.members} 
                                 groups={team.groups}
@@ -187,8 +232,8 @@ class Teams extends React.Component {
                                 hasRole={hasRole}
                                 loading={this.props.progress}
                             />
-                        </div>
-                    </div>
+                        </StyledTeamMembers>
+                    </TeamContent>
                 </div>
             </React.Fragment> : null
     };

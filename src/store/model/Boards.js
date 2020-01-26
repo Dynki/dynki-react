@@ -50,23 +50,21 @@ export class Boards {
     }
 
     async getBoardRoles(id) {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const document = await this.firebase.firestore()
-                    .collection('domains')
-                    .doc(this.domainId)
-                    .collection('boards')
-                    .doc(id)
-                    .collection('roles')
-                    .doc('permissions')
-                    .get();
-                
-                resolve(document.data().data);
-                
-            } catch (error) {
-                reject(error);
-            }
-        });
+        try {
+            const document = await this.firebase.firestore()
+                .collection('domains')
+                .doc(this.domainId)
+                .collection('boards')
+                .doc(id)
+                .collection('roles')
+                .doc('permissions')
+                .get();
+            
+            return document.data().data;
+            
+        } catch (error) {
+            return error;
+        }
     }
 
     updateBoardRoles(boardId, roles) {
