@@ -1,4 +1,6 @@
 import notifiy from '../../components/notifications/Notification';
+import { Subscriptions } from '../model/Subscriptions';
+import { Domains } from '../model/Domains';
 
 export const signIn = (credentials) => {
   return async (dispatch, getState, { getFirebase }) => {
@@ -7,13 +9,13 @@ export const signIn = (credentials) => {
       const firebase = getFirebase();
   
       dispatch({ type: 'ATTEMPT_LOGIN' })
-  
+
       await firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password);
-  
-      dispatch({ type: 'SET_CURRENT_USER', payload: firebase.auth().currentUser });
-  
       const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
-  
+
+      const currentUser = { ...firebase.auth().currentUser, claims: idTokenResult.claims }
+      dispatch({ type: 'SET_CURRENT_USER', payload: currentUser });
+
       // Confirm the user is an Admin.
       if (idTokenResult.claims.domainId) {
   
@@ -25,6 +27,7 @@ export const signIn = (credentials) => {
 
             if (data) {
               dispatch({ type: 'SET_DOMAIN_NAME', payload: data.display_name });
+              dispatch({ type: 'SET_SUBSCRIPTION_STATUS', payload: data.status });
             }
           });
 
@@ -39,30 +42,41 @@ export const signIn = (credentials) => {
       dispatch({ type: 'LOGIN_ERROR', error });
       notifiy({ type: 'warning', message: 'Login Failure', description: error.message })
     }
-
-
   }
 }
 
-export const signUp = (credentials) => {
-  return (dispatch, getState, { getFirebase }) => {
-    const firebase = getFirebase();
-
-    dispatch({ type: 'ATTEMPT_SIGNUP' })
+export const signUp = (credentials, packageName, countryCode, region, VATNumber) => {
+  return async (dispatch, getState, { getFirebase }) => {
+    try {
+      const firebase = getFirebase();
   
-    firebase.auth().createUserWithEmailAndPassword(
-      credentials.userName,
-      credentials.password
-    ).then(() => {
+      dispatch({ type: 'ATTEMPT_SIGNUP' });
   
+      await firebase.auth().createUserWithEmailAndPassword(
+          credentials.userName,
+          credentials.password
+      );  
+          
       firebase.auth().currentUser.reload();
-      dispatch({ type: 'SIGNUP_SUCCESS', payload: firebase.auth().currentUser });
 
-    }).catch((err) => {
-      dispatch({ type: 'SIGNUP_ERROR', err });
-      notifiy({ type: 'warning', message: 'Sign up Failure', description: err.message })
-    });
+      const domainsHelper = new Domains(getFirebase());
+      const newDomain = await domainsHelper.add('Your Team');
 
+      const idTokenResult = await firebase.auth().currentUser.getIdTokenResult(true);
+      const currentUser = { ...firebase.auth().currentUser, claims: idTokenResult.claims }
+
+      dispatch({ type: 'SET_DOMAIN', payload: newDomain.id });
+      dispatch({ type: 'SET_DOMAIN_DETAILS', payload: newDomain });
+
+      const subsHelper = new Subscriptions(getFirebase(), newDomain.id);
+      const newSub = await subsHelper.add(packageName, countryCode, region, VATNumber);
+
+      dispatch({ type: 'SET_SUBSCRIPTION_STATUS', payload: newSub.status });
+      dispatch({ type: 'SIGNUP_SUCCESS', payload: currentUser });
+    } catch (error) {
+      dispatch({ type: 'SIGNUP_ERROR', error });
+      notifiy({ type: 'warning', message: 'Sign up Failure', description: error.message });
+    }
   }
 }
 
@@ -77,45 +91,48 @@ export const signOut = () => {
   }
 }
 
-export const setDomain = () => {
+export const setDomain = (domainId) => {
   return async (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
 
+    dispatch({ type: 'SET_PROGRESS', payload: true });
+
     try {
-      await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+      await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
+      const idTokenResult = await firebase.auth().currentUser.getIdTokenResult(true);
 
-      dispatch({ type: 'SET_CURRENT_USER', payload: firebase.auth().currentUser });
+      const currentUser = { ...firebase.auth().currentUser, claims: idTokenResult.claims }
+      dispatch({ type: 'SET_CURRENT_USER', payload: currentUser });
 
-      firebase.auth().currentUser.getIdTokenResult()
-        .then(async (idTokenResult) => {
-          // Confirm the user is an Admin.
-          if (idTokenResult.claims.domainId) {
+      const domainToSet = domainId ? domainId : idTokenResult.claims.domainId;
 
-            await firebase.firestore()
-              .collection('domains')
-              .doc(idTokenResult.claims.domainId)
-              .onSnapshot({}, function (doc) {
-                const data = doc.data();
+      // Confirm the user is an Admin.
+      if (domainToSet) {
 
-                if (data) {
-                  dispatch({ type: 'SET_DOMAIN_NAME', payload: data.display_name });
-                }
-              });
+        await firebase.firestore()
+          .collection('domains')
+          .doc(domainToSet)
+          .onSnapshot({}, function (doc) {
+            const data = doc.data();
 
-            dispatch({ type: 'SET_DOMAIN', payload: idTokenResult.claims.domainId });
-          } else {
-            dispatch({ type: 'NO_DOMAIN' });
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+            if (data) {
+              dispatch({ type: 'SET_DOMAIN_NAME', payload: data.display_name });
+              dispatch({ type: 'SET_SUBSCRIPTION_STATUS', payload: data.status });
+            }
+          }, (err) => console.log('Error with domain', err));
+
+        dispatch({ type: 'SET_DOMAIN', payload: domainToSet });
+      } else {
+        dispatch({ type: 'NO_DOMAIN' });
+      }
     } catch (error) {
       firebase.auth().signOut().then(() => {
         dispatch({ type: 'NO_DOMAIN' });
         dispatch({ type: 'SIGNOUT_SUCCESS' });
       })
 
+    } finally {
+      dispatch({ type: 'SET_PROGRESS', payload: false });
     }
   }
 }
@@ -210,4 +227,3 @@ export const deleteAccount = () => {
     }
   }
 }
-

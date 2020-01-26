@@ -1,5 +1,10 @@
+import CountryCodes from '../model/countries.json';
+
 const initialState = {
-    folderDrawerVisible: false
+    folderDrawerVisible: false,
+    countryCode: 'UNKNOWN',
+    country: null,
+    countryCodes: CountryCodes
 }
 
 const coreReducer = (state = initialState, action) => {
@@ -8,6 +13,16 @@ const coreReducer = (state = initialState, action) => {
             return {
                 ...state,
                 folderDrawerVisible: !state.folderDrawerVisible
+            }
+        case 'SET_COUNTRY_CODE':
+            return {
+                ...state,
+                countryCode: action.payload,
+            }
+        case 'SET_COUNTRY':
+            return {
+                ...state,
+                country: action.payload,
             }
         default:
             return state;

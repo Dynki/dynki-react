@@ -28,6 +28,7 @@ class GroupForm extends React.Component {
                 <FormItem>
                     {getFieldDecorator(id, { validateTrigger: 'onBlur' })(
                         <Input 
+                            disabled={!this.props.allowWrite}
                             style={{ color: this.props.groupColor }} 
                             className="table__header__input__group-title text--no-border"
                             onBlur={() => this.handleBlur()}
@@ -70,7 +71,7 @@ const BoardRowHeaderGroupForm = (props) => {
     const groupColor = props.board.groups[props.groupKey].color ? '#' + props.board.groups[props.groupKey].color : '#000000a6';
 
     return (
-        <BRHGroupForm {...fields} groupColor={groupColor} onChange={handleFormChange} />
+        <BRHGroupForm allowWrite={props.allowWrite} {...fields} groupColor={groupColor} onChange={handleFormChange} />
     );
 }
 

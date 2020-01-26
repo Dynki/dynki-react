@@ -4,6 +4,7 @@ import { Tree,  Menu, Icon, Button, Tooltip } from 'antd';
 
 import { addNewFolder } from '../../../store/actions/boardActions';
 import FolderMenu from './FolderMenu';
+import authWrapper from '../../auth/AuthWrapper';
 
 const { TreeNode, DirectoryTree } = Tree;
 
@@ -38,12 +39,8 @@ class DynSubMenu extends React.Component {
         return false;
     }
 
-    onDrop = info => {
-        // console.log(info);
-    }
-
     render() {
-        const {itemClicked, btnClicked, addFolder, title, icon , items, act, selectedKeys, currentBoard, ...other} = this.props;
+        const { isActiveSubscriber, itemClicked, btnClicked, addFolder, title, icon , items, act, selectedKeys, currentBoard, loadingBoards, progress, hasRole, ...other} = this.props;
 
         return (
             <React.Fragment>
@@ -57,7 +54,7 @@ class DynSubMenu extends React.Component {
                         onDrop={this.onDrop}
                         className="firstitem"
                     >
-                        <TreeNode  title="Boards" key={'000001'} icon={<Icon type="schedule" />}>
+                        <TreeNode title="Boards" key={'000001'} icon={<Icon type="schedule" />}>
                             { items.map((i, idx) => {
 
                                 return i.isFolder ?
@@ -71,11 +68,10 @@ class DynSubMenu extends React.Component {
                                         <TreeNode className="subitemnoicon" title={i.title} key={i.id} icon={<div className="noicon"></div>}/>
                                 }) 
                             }            
-                            {/* <TreeNode title={'Add new folder'} key={'New'} isLeaf icon={<Icon type="folder-add" />}/> */}
                         </TreeNode>
                     </DirectoryTree>
                     <Tooltip placement="right" title="New Board">
-                        <Button id={'btn' + title} className="btn-add-board" onClick={(e) => this.handleBtnClick(e, act)}  type="dashed" shape="circle" icon="plus"></Button>
+                        <Button id={'btn' + title} disabled={progress || !hasRole('BOARD_CREATORS')} className="btn-add-board" onClick={(e) => this.handleBtnClick(e, act)}  type="dashed" shape="circle" icon="plus"></Button>
                     </Tooltip>
                 </div>
             ): (
@@ -98,8 +94,9 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
     return {
-        currentBoard: state.boards.currentBoard
+        currentBoard: state.boards.currentBoard,
+        progress: state.base.progress
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DynSubMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(authWrapper(DynSubMenu));

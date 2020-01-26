@@ -1,4 +1,2 @@
-export { default as Login } from './Login';
-export { default as SignUp } from './SignUp';
-export { default as Domain } from './Domain';
-export { default as Forgot } from './Forgot';
+export { default as Auth } from './Auth';
+export { default as AuthWrapper } from './AuthWrapper';

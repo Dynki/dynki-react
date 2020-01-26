@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Input } from 'antd';
-import * as _ from 'lodash';
 
 const FormItem = Form.Item;
 
@@ -33,13 +32,15 @@ const BRForm = Form.create({
     const handleBlur = () => {
         handleSubmit();
     }
+    const { allowWrite, colIdx, progress } = props;
     
     return (
         <Form className="table__row__cell__container" autoComplete="off">
             <FormItem >
                 {getFieldDecorator('columnValue', {})(
                     <Input 
-                        placeholder={props.colIdx === 0 ? "Enter some text here..." : ""}
+                        disabled={progress || !allowWrite}
+                        placeholder={colIdx === 0 ? "Enter some text here..." : ""}
                         className="table__header__input text--no-border"
                         onBlur={() => handleBlur()}
                     />

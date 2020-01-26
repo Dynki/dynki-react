@@ -82,7 +82,7 @@ const SelectDrawer = (props) => {
 
     return (
         <React.Fragment>
-            <Button onClick={showDrawer} type="dashed" size="small">
+            <Button disabled={!props.allowWrite} onClick={showDrawer} type="dashed" size="small">
                 <Icon type="edit"/> Edit Labels
             </Button>
 
@@ -93,7 +93,7 @@ const SelectDrawer = (props) => {
                 visible={visible}
                 style={{
                     overflow: 'auto',
-                    height: 'calc(100% - 108px)',
+                    height: '100%',
                     paddingBottom: '108px',
                 }}
             >

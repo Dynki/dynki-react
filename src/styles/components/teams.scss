@@ -1,0 +1,66 @@
+.teams {
+    &__content {
+        display: flex;
+        flex-direction: row;
+        
+
+        margin: 10px;
+    }
+
+    &__groups {
+        width: 40%;
+        margin: 10px;
+
+        .ant-table-thead > tr {
+            
+            & th {
+                color: #ffffff;
+                background: #696969;
+            }
+        }
+
+        .ant-table-footer {
+            background: #FFF8E4;
+        }
+    }
+
+    &__members {
+        width: 100%;
+        margin: 10px;
+
+        .ant-table-thead > tr {
+            
+            & th {
+                background: #696969;
+                color: #ffffff;
+            }
+        }
+
+        .ant-table-footer {
+            background: #FFF8E4;
+        }
+    }
+
+    &__skeleton {
+        padding: 25px;
+        padding-top: 8px;
+    }
+}
+
+.ant-page-header-title-view {
+    margin-top: 20px!important;
+}
+
+.ant-page-header {
+
+    padding-bottom: 0px!important;
+
+    .contentLink {
+        margin-top: 30px!important;
+    }
+
+    .content {
+        padding-bottom: 2px;
+    }
+}
+

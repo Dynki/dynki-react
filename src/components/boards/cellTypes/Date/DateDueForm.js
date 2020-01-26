@@ -19,6 +19,7 @@ const DateDueForm = Form.create({
     }
 })((props) => {
     const { getFieldDecorator } = props.form;
+    const { allowWrite } = props;
 
     const [ open, setOpen ] = useState(false);
 
@@ -47,10 +48,16 @@ const DateDueForm = Form.create({
             
         return color;
     }
+
+    const openPicker = () => {
+        if (allowWrite) {
+            setOpen(true);
+        }
+    }
     
     return (
         <div className="table__row__cell__container datedue__container">
-            <div className="datedue" style={{ 'backgroundColor': determineColour() }} onClick={() => setOpen(true)}>
+            <div className="datedue" style={{ 'backgroundColor': determineColour() }} onClick={() => openPicker()}>
                 <div className="datedue__placeholder" >
                     {isNaN(days) ? 'Select date' : (days < 0 ? `+ ${Math.abs(days)} ${daysText}` : `${days} ${daysText}`) } 
                 </div>  
@@ -58,7 +65,7 @@ const DateDueForm = Form.create({
             <Form className="datedue__form" autoComplete="off" style={{visibility: 'hidden', zIndex: 1}}>
                 <FormItem className="datedue__date-cell">
                     {getFieldDecorator('columnValue', {})(
-                        <DatePicker format="DD-MMM-YYYY" open={open} onChange={() => setOpen(false)} onOpenChange={datePickerStatus}/>
+                        <DatePicker disabled={!allowWrite} format="DD-MMM-YYYY" open={open} onChange={() => setOpen(false)} onOpenChange={datePickerStatus}/>
                     )}
                 </FormItem>
             </Form>

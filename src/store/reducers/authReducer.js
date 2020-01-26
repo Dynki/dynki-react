@@ -1,6 +1,7 @@
 const initialState = {
     authError: null,
     pending: false,
+    signUpInProgress: false,
     currentUser: {
         email: '',
         displayName: ''
@@ -17,13 +18,15 @@ const authReducer = (state = initialState, action) => {
         case 'ATTEMPT_SIGNUP':
             return {
                 ...state,
-                pending: true
+                pending: true,
+                signUpInProgress: true
             }
         case 'SIGNUP_ERROR':
             return {
                 ...state,
                 authError: 'Sign Up Failed',
-                pending: false
+                pending: false,
+                signUpInProgress: false
             }
         case 'LOGIN_ERROR':
             return {
@@ -47,8 +50,9 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 authError: null,
-                currentUser: action.payload,
-                pending: false
+                currentUser: { ...initialState.currentUser, ...action.payload },
+                pending: false,
+                signUpInProgress: false
             }
         case 'SIGNOUT_SUCCESS':
             return {
@@ -58,7 +62,7 @@ const authReducer = (state = initialState, action) => {
         case 'SET_CURRENT_USER':
             return {
                 ...state,
-                currentUser: action.payload
+                currentUser: { ...initialState.currentUser, ...action.payload }
             }
 
         default:

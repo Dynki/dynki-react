@@ -1,3 +1,4 @@
 {
-  "projectId": "bgjoxg"
+  "projectId": "bgjoxg",
+  "defaultCommandTimeout": 20000
 }

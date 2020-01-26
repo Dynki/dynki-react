@@ -2,11 +2,11 @@ import React from 'react';
 import BoardForm from './BoardForm';
 import BoardHeaderMenu from './BoardHeaderMenu';
 
-const BoardHeader = (props) => {
+const BoardHeader = ({ allowWrite, board, onUpdateBoard }) => {
     return (
         <section className="board__header">
-            <BoardForm onUpdateBoard={props.onUpdateBoard} board={props.board}></BoardForm>
-            <BoardHeaderMenu boardId={props.board.id}></BoardHeaderMenu>
+            <BoardForm allowWrite={allowWrite} onUpdateBoard={onUpdateBoard} board={board}></BoardForm>
+            <BoardHeaderMenu allowWrite={allowWrite} boardId={board.id}></BoardHeaderMenu>
         </section>
     )
 }

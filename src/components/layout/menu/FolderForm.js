@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { Button, Form, Icon, Input, Popconfirm } from 'antd';
 import { updateBoardTitle, removeFolder } from '../../../store/actions/boardActions';
 
-const FormItem = Form.Item;
-
 const BForm = Form.create({
     mapPropsToFields(props) {
         return {

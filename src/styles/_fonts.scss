@@ -1,5 +1,18 @@
-@import url(https://fonts.googleapis.com/css?family=Raleway);
-@import url(https://fonts.googleapis.com/css?family=Roboto&text=0123456789);
+@import url(https://fonts.googleapis.com/css?family=Nunito&text=0123456789);
 
-$font-family: 'Raleway', 'Roboto';
-$font-variant-numeric: lining-nums!important;
+/* nunito-regular - latin */
+@font-face {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./styles/fonts/nunito-v12-latin-regular.eot'); /* IE9 Compat Modes */
+    src: local('Nunito Regular'), local('Nunito-Regular'),
+         url('./styles/fonts/nunito-v12-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('./styles/fonts/nunito-v12-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('./styles/fonts/nunito-v12-latin-regular.woff') format('woff'), /* Modern Browsers */
+         url('./styles/fonts/nunito-v12-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('./styles/fonts/nunito-v12-latin-regular.svg#Nunito') format('svg'); /* Legacy iOS */
+  }
+$font-family: 'Nunito', 'Raleway', sans-serif;
+// $font-variant-numeric: lining-nums!important;
+

@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { Drawer, Icon } from 'antd';
+import styled from 'styled-components';
+
 import SideNav from './SideNav';
+
+const StyledDrawer = styled(Drawer)`
+    .ant-drawer-body {
+        padding: 0px;
+    }
+`;
 
 const SidenavDrawer = (props) => {
 
@@ -18,7 +26,7 @@ const SidenavDrawer = (props) => {
         <React.Fragment>
             <Icon type="bars" onClick={showDrawer} className="sidenav-drawer__burger"/>
 
-            <Drawer
+            <StyledDrawer
                 title="Main menu"
                 width={250}
                 onClose={onClose}
@@ -27,16 +35,14 @@ const SidenavDrawer = (props) => {
                 placement="left"
                 style={{
                     overflow: 'auto',
-                    height: 'calc(100% - 108px)',
+                    height: '100%',
                     paddingBottom: '108px',
                     'paddingTop': '0px',
                     'zIndex': '20000'
                 }}
             >
-                <div>
-                    <SideNav domainName={props.domain.displayName}></SideNav>
-                </div>
-            </Drawer>
+                <SideNav hideHome={true} domainName={props.domain.displayName}></SideNav>
+            </StyledDrawer>
         </React.Fragment>
     );
 }

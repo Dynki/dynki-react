@@ -5,6 +5,7 @@ const initialState = {
     domainChecked: false,
     noDomain: false,
     domainId: null,
+    hiddenId: null,
     pending: false,
     name: ''
 }
@@ -63,6 +64,7 @@ const domainReducer = (state = initialState, action) => {
                 ...state,
                 noDomain: false,
                 domainId: action.payload,
+                hiddenId: action.payload,
                 domainValid: true,
                 pending: false,
                 domainChecked: true
@@ -78,6 +80,7 @@ const domainReducer = (state = initialState, action) => {
                 noDomain: true,
                 pending: false,
                 domainId: null,
+                hiddenId: null,
                 domainValid: false,
                 domainChecked: true
             }
