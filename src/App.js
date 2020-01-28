@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import { setDomain } from './store/actions/authActions';
@@ -6,10 +6,10 @@ import { setInvite } from './store/actions/baseActions';
 import { obtainCountryCode } from './store/actions/coreActions';
 
 import './App.scss';
-import { SecuredRoute, PostAuthShell } from './components';
+import { SecuredRoute, PostAuthShell, PreAuthShell } from './components';
 import MainErrorBoundary from './components/core/MainErrorBoundry';
 
-export class App extends PureComponent {
+export class App extends Component {
 
   componentDidMount() {
     this.onSetInvite();
@@ -46,6 +46,7 @@ export class App extends PureComponent {
                   path="/"
                   location={location}
                   component={PostAuthShell}
+                  preAuthComponent={PreAuthShell}
                   authenticated={auth}
                   domain={domain}
                   domainChecked={domainChecked}

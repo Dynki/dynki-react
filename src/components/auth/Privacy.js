@@ -1,11 +1,9 @@
 import React from 'react';
+import PdfViewer from '../core/PdfViewer';
 
 const Privacy = (props) => {
-
     return (
-        <React.Fragment>
-            <a href="/privacy-policy.pdf" target="_blank">privacy policy</a>
-        </React.Fragment>
+        <PdfViewer url="http://localhost:3000/assets/privacy-policy.pdf"/>
     )
 }
 

@@ -62,6 +62,7 @@ const StyledLink = styles(Link)`
 
 const StyledButtonLink = styles.div`
     border: solid 2px #3095de;
+    border-radius: 3px;
     color: ${props => props.main ? '#ffffff' : '#3095de'}
     background-color: ${props => props.main ? '#3095de' : '#ffffff'}
     position: absolute;
@@ -79,6 +80,7 @@ const StyledButtonLink = styles.div`
 `;
 
 const StyledButtonAnchor = styles.a`
+    border-radius: 3px;
     margin-top:auto;
     width: 100%;
     border: solid 2px #3095de;

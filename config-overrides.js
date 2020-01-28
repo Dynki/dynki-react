@@ -5,5 +5,8 @@ module.exports = function override(config, env) {
         ['import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }],
         config,
     );
+    config.output.globalObject = 'this'
+    config.module.rules[0].parser.requireEnsure = true
+  
     return config;
 };

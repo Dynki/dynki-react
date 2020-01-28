@@ -32,14 +32,14 @@ const BRForm = Form.create({
     const handleBlur = () => {
         handleSubmit();
     }
-    const { allowWrite, colIdx, progress } = props;
+    const { allowWrite, colIdx } = props;
     
     return (
         <Form className="table__row__cell__container" autoComplete="off">
             <FormItem >
                 {getFieldDecorator('columnValue', {})(
                     <Input 
-                        disabled={progress || !allowWrite}
+                        disabled={!allowWrite}
                         placeholder={colIdx === 0 ? "Enter some text here..." : ""}
                         className="table__header__input text--no-border"
                         onBlur={() => handleBlur()}

@@ -40,7 +40,7 @@ export class Board extends React.Component {
             if (this.props.boards && this.props.boards.length > 0) {
                 this.props.getBoard(this.props.boards[0].id);
             } else {
-                this.props.getBoards();
+                this.props.getBoards(true);
             }
         }
     }
@@ -71,7 +71,7 @@ export class Board extends React.Component {
         const { board, hasRole } = this.props;
         let allowWrite = false;
 
-        if (board && board.roles) {
+        if (board && board.roles && board.roles.write && board.roles.write.length > 0) {
             let writeRoles = board.roles.write;
 
             writeRoles.map(role => {
@@ -137,7 +137,7 @@ export const mapStateToProps = (state) => {
 export const mapDispatchToProps = (dispatch) => {
     return{
       getBoard: (id) => dispatch(getBoard(id)),
-      getBoards: () => dispatch(getBoards()),
+      getBoards: (loadFirst) => dispatch(getBoards(loadFirst)),
       updateBoard: (board) => dispatch(updateBoard(board)),
       newRow: (rowObj, groupKey) => dispatch(newRow(rowObj, groupKey))
     }

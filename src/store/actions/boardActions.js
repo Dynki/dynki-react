@@ -5,7 +5,7 @@ import { Boards } from '../model/Boards';
 import notifiy from '../../components/notifications/Notification';
 
 // Get all boards within this user's domain/team.
-export const getBoards = () => {
+export const getBoards = (loadFirst) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
 
         try {
@@ -17,6 +17,9 @@ export const getBoards = () => {
             if (!boards || boards.length < 1) {
                 dispatch({ type: 'NO_BOARDS' });
             } else {
+                if (loadFirst) {
+                    dispatch(getBoard(boards[0].id));        
+                }
                 dispatch({ type: 'REFRESH_BOARDS', payload: boards });
             }
         } catch (error) {

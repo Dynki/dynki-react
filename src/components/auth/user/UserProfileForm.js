@@ -45,7 +45,7 @@ class UserProfileForm extends React.Component {
             <Card
                 title="User Profile Information"
                 actions={[
-                    <Button type="primary" size="large" icon="save" htmlType="submit">Apply Changes</Button>
+                    <Button type="primary" size="large" icon="save" onClick={this.handleSubmit}>Apply Changes</Button>
                 ]}
             >
 

@@ -82,7 +82,27 @@ const RightSection = styles.div`
     align-items: flex-start;
 `;
 
-const StyledLink = styles.a`
+const StyledLinkDiv = styles.a`
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline;
+    color: rgba(0, 0, 0, 0.65);
+    margin: 0;
+    margin-bottom: 10px;
+    padding: 0;
+  
+    :hover {
+        text-decoration: none;
+    }
+
+    :focus {
+        text-decoration: none;
+        outline: none;
+    }
+`;
+
+const StyledLink = styles(Link)`
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -123,13 +143,13 @@ const Footer = props => {
             </LeftSection>
             <RightSection>
                 <StyledText strong>Help</StyledText>
-                <StyledLink href="mailto:support@dynki.com">Contact us</StyledLink>
+                <StyledLinkDiv href="mailto:support@dynki.com">Contact us</StyledLinkDiv>
                 <StyledText>Email: support@dynki.com</StyledText>
             </RightSection>
             <RightSection>
                 <StyledText strong>Legal</StyledText>
-                <StyledLink href="/terms-of-service.pdf">Terms of service</StyledLink>
-                <StyledLink href="/privacy-policy.pdf">Privacy policy</StyledLink>
+                <StyledLink id="privacy" to="/terms">Terms of service</StyledLink>
+                <StyledLink id="privacy" to="/privacy">Privacy policy</StyledLink>
             </RightSection>
         </StyledContent>
     )

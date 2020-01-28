@@ -29,6 +29,7 @@ const SampleSection = styles.div`
     padding-top: 25px;
 
     img {
+        border-radius: 3px;
         width: 85%;
         box-shadow: -2px 1px 17px 1px rgba(0,0,0,0.25);
         -webkit-box-shadow: -2px 1px 17px 1px rgba(0,0,0,0.25);
@@ -73,6 +74,8 @@ const SampleSection = styles.div`
 `;
 
 const GettingStartedButton = styles.button`
+    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+    border-radius: 3px;
     background-color: #2E84C2;
     border: none;
     padding: 15px;
@@ -136,7 +139,7 @@ const Home = props => {
                     </div>
                 </div>
                 <Link to="/Pricing">
-                    <div className="home__button">Sign Up For Free <ButtonSubtext>No credit card required</ButtonSubtext></div>
+                    <GettingStartedButton>Sign Up For Free <ButtonSubtext>No credit card required</ButtonSubtext></GettingStartedButton>
                 </Link>
             </div>
         </StyledContent>

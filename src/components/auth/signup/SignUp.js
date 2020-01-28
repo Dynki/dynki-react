@@ -5,9 +5,6 @@ import { checkVAT, countries } from 'jsvat';
 import { Form, Icon, Input, Button, Checkbox, Select } from 'antd';
 import styles from 'styled-components';
 
-import Terms from '../Terms';
-import Privacy from '../Privacy';
-
 const FormItem = Form.Item;
 const { Option } = Select;
 
@@ -232,9 +229,9 @@ const SignUpForm = ({ countryCodes, form, location, pending, signUp }) => {
                             ],
                         })(
                             <Checkbox disabled={pending} className={agreeFailed ? 'signup-agree--failed': ''}>{agreeFailed ? 'Please agree to ' : 'I agree to the '}
-                                <Terms/>
+                                <Link id="privacy" to="/terms">Terms of service</Link>
                                 <span> and </span>
-                                <Privacy/>
+                                <Link id="privacy" to="/privacy">Privacy policy</Link>
                             </Checkbox>
                         )}
                         <Button id="btnRegister" disabled={hasErrors(getFieldsError())} type="dashed" htmlType="submit" className="button" loading={pending}>

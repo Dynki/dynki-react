@@ -11,7 +11,7 @@ export const signIn = (credentials) => {
       dispatch({ type: 'ATTEMPT_LOGIN' })
 
       await firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password);
-      const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
+      const idTokenResult = await firebase.auth().currentUser.getIdTokenResult(true);
 
       const currentUser = { ...firebase.auth().currentUser, claims: idTokenResult.claims }
       dispatch({ type: 'SET_CURRENT_USER', payload: currentUser });
@@ -144,14 +144,18 @@ export const updateUserProfile = (updatedValues) => {
 
     if (currentUser.email !== updatedValues.email) {
       firebase.auth().currentUser.updateEmail(updatedValues.email)
-        .then(() => notifiy({ type: 'warning', message: 'Success', description: 'Email Updated :)' })
-        )
+        .then(() => notifiy({ type: 'warning', message: 'Success', description: 'Email Updated :)' }))
         .catch(err => notifiy({ type: 'warning', message: 'Failure', description: err.message }));
     }
 
     if (currentUser.displayName !== updatedValues.displayName) {
       firebase.auth().currentUser.updateProfile({ displayName: updatedValues.displayName })
-        .then(() => notifiy({ type: 'success', message: 'Success', description: 'Display Name Updated :)' }))
+        .then(async () => {
+          const idTokenResult = await firebase.auth().currentUser.getIdTokenResult(true);
+          const currentUser = { ...firebase.auth().currentUser, claims: idTokenResult.claims }
+            dispatch({ type: 'SET_CURRENT_USER', payload: currentUser });
+          notifiy({ type: 'success', message: 'Success', description: 'Display Name Updated :)' })
+        })
         .catch(err => notifiy({ type: 'warning', message: 'Failure', description: err.message }));
     }
 

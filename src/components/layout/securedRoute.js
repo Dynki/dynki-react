@@ -1,16 +1,23 @@
 import * as React from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 
-const redirect = (pathname) => {
+const redirect = (pathname, Component) => {
   const urlPart = pathname.split('/')[1] ? pathname.split('/')[1].toLocaleLowerCase() : '';
-  const noRedirect = ['home', 'pricing', 'auth'];
+  const noRedirect = ['home', 'pricing', 'auth', 'terms', 'privacy', 'assets'];
   const redirectionAllowed = noRedirect.indexOf(urlPart) === -1;
+
+  if (urlPart === 'privacy' || urlPart === 'terms') {
+    return (
+      Component
+    )
+  }
 
   return redirectionAllowed ? <Redirect to="/home" /> : null;
 }
 
 export default function SecuredRoute ({
   component: Component,
+  preAuthComponent: PreAuthComponent,
   authenticated,
   domain,
   domainChecked,
@@ -34,7 +41,7 @@ export default function SecuredRoute ({
           signUpInProgress ? 
             null 
             : 
-            redirect(location.pathname)
+            redirect(location.pathname, <PreAuthComponent {...props} {...rest} />)
         )
       }
     />
