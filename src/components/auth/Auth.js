@@ -49,10 +49,10 @@ const StyledPicture = styles.img`
     height: 600px;
 `;
 
-const Auth = ({ auth, basePending, countryCode, countryCodes, updateDomain, checkDomain, domain, location, pending, signIn, signUp, signUpInProgress }) => {
+const Auth = ({ auth, basePending, countryCode, countryCodes, updateDomain, checkDomain, domain, domainChecked, location, pending, signIn, signUp, signUpInProgress }) => {
 
     if (auth && auth.uid && !signUpInProgress) {
-        if (!domain && location.pathname !== '/auth/domain') {
+        if (!domain && domainChecked && location.pathname !== '/auth/domain') {
             return <Redirect to='/auth/domain'/>
         }
     }
@@ -115,6 +115,7 @@ export const mapStateToProps = (state) => {
       basePending: state.base.progress,
       auth: state.firebase.auth,
       domain: state.domain.domainId,
+      domainChecked: state.domain.domainChecked,
       countryCode: state.core.countryCode,
       countryCodes: state.core.countryCodes
     }

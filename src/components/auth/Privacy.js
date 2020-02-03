@@ -3,7 +3,7 @@ import PdfViewer from '../core/PdfViewer';
 
 const Privacy = (props) => {
     return (
-        <PdfViewer url="http://localhost:3000/assets/privacy-policy.pdf"/>
+        <PdfViewer url="https://dynki.com/assets/privacy-policy.pdf"/>
     )
 }
 
