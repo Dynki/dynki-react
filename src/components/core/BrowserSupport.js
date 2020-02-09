@@ -11,29 +11,26 @@ const Container = styles.div`
 `;
 
 const determineBrowserSupport = (browser) => {
-    const supported = {
-        chrome: '4.10',
-        edge: '6',
-        'edge-chromium': "81.0.403",
-        firefox: '19.5',
-        ie: '14',
-        opera: '10.0',
-        safari: '10.2',
+    const unSupported = {
+        ie: '11'
     }
 
     if (!browser) {
         return false;
     }
     else {
-        if (!supported[browser.name]) {
-            return false;
-        } else {
-            let browserVersion = supported[browser.name];
-            if (cmp(browser.version, browserVersion) < 0) {
+        let browserVersion = unSupported[browser.name];
+
+        if (browserVersion !== undefined) {
+            console.log('Browser Version', browserVersion)
+            console.log('Browser.version', browser)
+            if (cmp(browser.version, browserVersion) === 1) {
                 return false;
             } else {
                 return true;
             }
+        } else {
+            return true;
         }
     }
 }
