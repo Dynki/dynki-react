@@ -7,6 +7,7 @@ import BoardRowHeaderForm from './BoardRowHeaderForm';
 import BoardRowHeaderGroupForm from './BoardRowHeaderGroupForm';
 import BoardRowHeaderMenu from './BoardRowHeaderMenu';
 import { removeColumn, addGroup, removeGroup, collapseGroup } from '../../store/actions/boardActions';
+import BoardColumnMenu from './BoardColumnMenu';
 
 const StyledLink = styles.button`
     background-color: transparent;
@@ -24,6 +25,23 @@ const StyledLink = styles.button`
     :focus {
         text-decoration: none;
     }
+`;
+
+const Column = styles.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+`;
+
+const ColumnTh = styles.th`
+    align-items: center;
+    display: flex;
+    flex: 0;
+    flex-direction: row;
+    justify-content: flex-start;
+    min-width: 174px;
+    width: 100%;
 `;
 
 class BoardRowHeader extends React.Component {
@@ -123,30 +141,32 @@ class BoardRowHeader extends React.Component {
             </BoardRowHeaderGroupForm>
         </th>
         {this.props.board.columns.map((c, idx) => {
-            return idx === 0 ? null : <th 
+            return idx === 0 ? null : <ColumnTh 
                     key={idx} 
                     id={'column'+idx}
-                    className="table__header__columns"
+                    // className="table__header__columns"
                 >
-                <div key={idx} className="table__header__columns__container">
-                    {idx > 0 ? (
-                        <Popconfirm title="Are you sure delete this?" 
-                            disabled={!this.props.allowWrite}
-                            okText="Yes"
-                            cancelText="Nada"
-                            trigger="click"
-                            onConfirm={() => this.removeColumn(c.model)}>
-                            <Icon type="close-square" />
-                        </Popconfirm>) : null
-                    }
+                <Column key={idx}>
                     <BoardRowHeaderForm
                         allowWrite={this.props.allowWrite}
                         onUpdateBoard={this.props.onUpdateBoard}
                         board={this.props.board}
                         colIdx={idx}>
                     </BoardRowHeaderForm>
-                </div>
-            </th>
+                    {idx > 0 ? 
+                        <BoardColumnMenu/>
+                        // <Popconfirm title="Are you sure delete this?" 
+                        //     disabled={!this.props.allowWrite}
+                        //     okText="Yes"
+                        //     cancelText="Nada"
+                        //     trigger="click"
+                        //     onConfirm={() => this.removeColumn(c.model)}>
+                        //     <Icon type="close-square" />
+                        // </Popconfirm>) : null
+                        : null
+                    }
+                </Column>
+            </ColumnTh>
             })}
             <BoardRowHeaderMenu allowWrite={this.props.allowWrite}/>
         </tr>
