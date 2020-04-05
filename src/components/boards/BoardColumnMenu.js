@@ -1,20 +1,12 @@
 import React from 'react';
-import { Dropdown, Icon, Menu, Popconfirm, Tooltip } from 'antd';
+import { Dropdown, Icon, Menu, Popconfirm } from 'antd';
 import styles from 'styled-components';
 import authWrapper from '../auth/AuthWrapper';
 
-const ColumnMenu = styles.div`
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-`;
-
-const Item = styles.div`
-
-`;
+import ReorderDrawer from './ReorderDrawer';
 
 const MenuIcon = styles(Icon)`
-    color: ${props => props.hover ? '#3095DE' : '#595959'};
+    color: ${props => props.hovering === 'true' ? '#3095DE' : '#595959'};
     cursor: pointer;
     width: 7px;
     height: 10px;
@@ -27,13 +19,16 @@ const MenuIcon = styles(Icon)`
 
 `;
 
-const BoardColumnMenu = ({ allowWrite, column, hasRole, onRemoveColumn, user }) => {
+const BoardColumnMenu = ({ allowWrite, column, columns, hasRole, onRemoveColumn, user }) => {
 
-    const [hover, setHover] = React.useState(false);
+    const [hover, setHover] = React.useState("false");
 
-    const menuClicked = () => {
-        console.log('menu clicked');
-    }
+    const handleClick = object => {
+        console.log('click ', object.key);
+        // this.setState({
+        //   current: e.key,
+        // });
+    };
 
     const renderMenu = () =>  {
         if (!user) {
@@ -41,11 +36,11 @@ const BoardColumnMenu = ({ allowWrite, column, hasRole, onRemoveColumn, user }) 
         }
 
         return (
-            <Menu>
+            <Menu
+                onClick={handleClick}
+            >
                 <Menu.Item disabled={!hasRole('BOARD_CREATORS')}>
-                    <Tooltip title="Reorder Columns">
-                        <a href="no-ref"><Icon type="swap" style={{ paddingRight: '10px' }}/>Reorder Columns</a>
-                    </Tooltip>
+                    <ReorderDrawer hovering={hover} columns={columns} disabled={!hasRole('BOARD_CREATORS')}/>
                 </Menu.Item>
                 <Menu.Item disabled={!hasRole('BOARD_CREATORS')}>
                     <Popconfirm title="Are you sure delete this column?"
@@ -63,26 +58,9 @@ const BoardColumnMenu = ({ allowWrite, column, hasRole, onRemoveColumn, user }) 
     };
 
     return (
-        <Dropdown overlay={renderMenu()} placement="bottomRight" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-            <MenuIcon type="ellipsis" hover={hover}/>
+        <Dropdown overlay={renderMenu()} placement="bottomRight" onMouseEnter={() => setHover("true")} onMouseLeave={() => setHover("false")}>
+            <MenuIcon type="ellipsis" hovering={hover}/>
         </Dropdown>
-        /* <Item onClick={menuClicked}>
-                <Tooltip title="Reorder Columns">
-                    <MenuIcon type="swap" />
-                </Tooltip>
-            </Item>            
-            <Item>
-                <Popconfirm 
-                    title="Are you sure delete this?" 
-                    disabled={!allowWrite}
-                    okText="Yes"
-                    cancelText="Nada"
-                    trigger="click"
-                    onConfirm={() => onRemoveColumn(column.model)}
-                >
-                    <MenuIcon type="close-square" />
-                </Popconfirm>
-            </Item> */
     )
 }
 

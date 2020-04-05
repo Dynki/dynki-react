@@ -61,7 +61,7 @@ class SideNav extends React.Component {
         }
 
         const menuItems = [
-            { key: 1, title: 'Inbox', icon: 'mail', live: false },
+            { key: 1, title: 'Channels', icon: 'message', live: false },
             { key: 2, title: 'Boards', icon: 'schedule', action: newBoard(), live:true, 
                 items: items },
             { key: 3, title: 'Projects', icon: 'rocket', live: false },

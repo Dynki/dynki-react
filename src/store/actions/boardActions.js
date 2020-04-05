@@ -735,3 +735,90 @@ export const updateBoardTitle = (boardId, updateBoardTitle) => {
         }
     }
 }
+
+export const updateColumnOrder = (data) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        const firebase = getFirebase();
+        const domainId = getState().domain.domainId;
+        const currentBoard = getState().boards.currentBoard;
+
+        // Helper function for drag drop reordering or board columns.
+        const reorder = (list, startIndex, endIndex) => {
+            const result = Array.from(list);
+            const [removed] = result.splice(startIndex, 1);
+            result.splice(endIndex, 0, removed);
+
+            return result;
+        };
+
+        // currentBoard.columns = currentBoard.columns.map(c => {
+        //     if (c.model === data.destination.droppableId) {
+        //         c.values = reorder(c.values, data.source.index, data.destination.index);
+        //     }
+        //     return c;
+        // });
+
+        currentBoard.columns = reorder(currentBoard.columns, data.source.index, data.destination.index);
+
+        console.log('setting current board', currentBoard);
+
+        dispatch({ type: 'SET_CURRENT_BOARD', payload: currentBoard });
+
+        delete currentBoard['unsubscribe'];
+
+        await firebase.firestore()
+        .collection('domains')
+        .doc(domainId)
+        .collection('boards')
+        .doc(currentBoard.id)
+        .set(currentBoard);
+
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+    }
+}
+
+export const updateGroupOrder = (data) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        const firebase = getFirebase();
+        const domainId = getState().domain.domainId;
+        const currentBoard = getState().boards.currentBoard;
+
+        // Helper function for drag drop reordering or board columns.
+        const reorder = (list, startIndex, endIndex) => {
+            const result = Array.from(list);
+            const [removed] = result.splice(startIndex, 1);
+            result.splice(endIndex, 0, removed);
+
+            return result;
+        };
+
+        // currentBoard.columns = currentBoard.columns.map(c => {
+        //     if (c.model === data.destination.droppableId) {
+        //         c.values = reorder(c.values, data.source.index, data.destination.index);
+        //     }
+        //     return c;
+        // });
+
+        currentBoard.groups = reorder(currentBoard.groups, data.source.index, data.destination.index);
+
+        console.log('setting current board', currentBoard);
+
+        dispatch({ type: 'SET_CURRENT_BOARD', payload: currentBoard });
+
+        delete currentBoard['unsubscribe'];
+
+        await firebase.firestore()
+        .collection('domains')
+        .doc(domainId)
+        .collection('boards')
+        .doc(currentBoard.id)
+        .set(currentBoard);
+
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+    }
+}
+

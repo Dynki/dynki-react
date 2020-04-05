@@ -8,6 +8,7 @@ import BoardRowHeaderGroupForm from './BoardRowHeaderGroupForm';
 import BoardRowHeaderMenu from './BoardRowHeaderMenu';
 import { removeColumn, addGroup, removeGroup, collapseGroup } from '../../store/actions/boardActions';
 import BoardColumnMenu from './BoardColumnMenu';
+import ReorderGroupDrawer from './ReorderGroupDrawer';
 
 const StyledLink = styles.button`
     background-color: transparent;
@@ -98,6 +99,13 @@ class BoardRowHeader extends React.Component {
                     :
                     null
                 }
+                {this.props.board.groups.length > 1 ? 
+                    <Menu.Item>
+                        <ReorderGroupDrawer/>
+                    </Menu.Item>
+                    :
+                    null
+                }
                 <Menu.Item>
                     <StyledLink onClick={() => this.collapseGroup()}>
                         <div className="table__group__menu__row">
@@ -154,15 +162,7 @@ class BoardRowHeader extends React.Component {
                         colIdx={idx}>
                     </BoardRowHeaderForm>
                     {idx > 0 ? 
-                        <BoardColumnMenu/>
-                        // <Popconfirm title="Are you sure delete this?" 
-                        //     disabled={!this.props.allowWrite}
-                        //     okText="Yes"
-                        //     cancelText="Nada"
-                        //     trigger="click"
-                        //     onConfirm={() => this.removeColumn(c.model)}>
-                        //     <Icon type="close-square" />
-                        // </Popconfirm>) : null
+                        <BoardColumnMenu columns={this.props.board.columns}/>
                         : null
                     }
                 </Column>

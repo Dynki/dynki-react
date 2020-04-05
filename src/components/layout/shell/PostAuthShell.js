@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { signOut } from '../../../store/actions/authActions';
 import { getBoard } from '../../../store/actions/boardActions';
 import { getTeams } from '../../../store/actions/teamActions';
-import { updateBoard, updateColumnValueOrder } from '../../../store/actions/boardActions';
+import { updateBoard, updateColumnValueOrder, updateColumnOrder, updateGroupOrder } from '../../../store/actions/boardActions';
 
 import Board from '../../boards/Board';
 import EmptyBoards from '../../boards/EmptyBoards';
@@ -57,6 +57,19 @@ class PostAuthShell extends React.Component {
     onDragEnd = (result) => {
         // dropped outside the list
         if (!result.destination) {
+            return;
+        }
+
+        console.log('result', result);
+        if (result.type === 'reorder-column') {
+            console.log('Cell recordered');
+            this.props.updateColumnOrder(result);
+            return;
+        }
+
+        if (result.type === 'reorder-group') {
+            console.log('Group recordered');
+            this.props.updateGroupOrder(result);
             return;
         }
 
@@ -171,6 +184,8 @@ const mapDispatchToProps = (dispatch) => {
         getTeams: () => dispatch(getTeams()),
         updateBoard: (board) => dispatch(updateBoard(board)),
         updateColumnValueOrder: (data) => dispatch(updateColumnValueOrder(data)),
+        updateColumnOrder: (data) => dispatch(updateColumnOrder(data)),
+        updateGroupOrder: (data) => dispatch(updateGroupOrder(data)),
         signOut: () => dispatch(signOut())
       }
 }
