@@ -40,7 +40,7 @@ class DynSubMenu extends React.Component {
     }
 
     render() {
-        const { isActiveSubscriber, itemClicked, btnClicked, addFolder, title, icon , items, act, selectedKeys, currentBoard, loadingBoards, progress, hasRole, ...other} = this.props;
+        const { isActiveSubscriber, itemClicked, btnClicked, addFolder, title, icon , items, act, selectedKeys, currentBoard, loadingBoards, progress, hasRole, tooltip, ...other} = this.props;
 
         return (
             <React.Fragment>
@@ -54,7 +54,7 @@ class DynSubMenu extends React.Component {
                         onDrop={this.onDrop}
                         className="firstitem"
                     >
-                        <TreeNode title="Boards" key={'000001'} icon={<Icon type="schedule" />}>
+                        <TreeNode title={title} key={'000001'} icon={<Icon type={icon} />}>
                             { items.map((i, idx) => {
 
                                 return i.isFolder ?
@@ -70,7 +70,7 @@ class DynSubMenu extends React.Component {
                             }            
                         </TreeNode>
                     </DirectoryTree>
-                    <Tooltip placement="right" title="New Board">
+                    <Tooltip placement="right" title={tooltip}>
                         <Button id={'btn' + title} disabled={progress || !hasRole('BOARD_CREATORS')} className="btn-add-board" onClick={(e) => this.handleBtnClick(e, act)}  type="dashed" shape="circle" icon="plus"></Button>
                     </Tooltip>
                 </div>

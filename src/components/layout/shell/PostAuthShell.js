@@ -11,6 +11,7 @@ import { getTeams } from '../../../store/actions/teamActions';
 import { updateBoard, updateColumnValueOrder, updateColumnOrder, updateGroupOrder } from '../../../store/actions/boardActions';
 
 import Board from '../../boards/Board';
+import Channel from '../../channels/Channel';
 import EmptyBoards from '../../boards/EmptyBoards';
 import Teams from '../../teams/teams';
 import TeamAccept from '../../teams/TeamAccept';
@@ -150,6 +151,7 @@ class PostAuthShell extends React.Component {
                     }
                     <Switch>
                         <Route path={'/board/:id'} component={Board}></Route>
+                        <Route path={'/channel/:id'} component={Channel}></Route>
                         <Route path={'/team/:id'} component={Teams}></Route>
                         <Route path={'/account'} component={AccountOverview}></Route>
                         <Route path={'/empty-boards'} component={EmptyBoards}></Route>
