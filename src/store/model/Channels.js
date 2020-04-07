@@ -187,4 +187,31 @@ export class Channels {
             }
         });
     }
+
+    addMessage(channel, message) {
+        return new Promise(async (resolve, reject) => {
+
+            try {
+                const batch = this.firebase.firestore().batch();
+        
+                const channelsRef = this.firebase.firestore()
+                                    .collection('domains')
+                                    .doc(this.domainId)
+                                    .collection('channels')
+                                    .doc(channel.id);
+    
+                channel.messages = Array.isArray(channel.messages) ? channel.messages : [];
+                channel.messages.push(message);                    
+                delete channel['unsubscribe'];
+        
+                batch.set(channelsRef, channel);
+                await batch.commit();
+                
+                resolve();
+
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
 }

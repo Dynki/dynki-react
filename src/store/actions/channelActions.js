@@ -107,3 +107,21 @@ export const updateChannel = (channel) => {
     }
 }
 
+export const addMessage = (channel, message) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        
+        try {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+            dispatch({ type: 'ATTEMPT_ADD_MESSAGE', payload: { channel, message } });
+    
+            const channelHelper = new Channels(getFirebase(), getState().domain.domainId);
+            await channelHelper.addMessage(channel, message);
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+            
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Channel Failure', description: error.message });
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+        }
+    }
+}
