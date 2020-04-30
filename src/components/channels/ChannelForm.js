@@ -6,6 +6,7 @@ const FormItem = Form.Item;
 
 const Container = styles.div`
     padding: 10px;
+    padding-bottom: 0px;
 
     .description {
         margin-top: 4px;

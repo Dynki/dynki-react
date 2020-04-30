@@ -1,11 +1,65 @@
 import moment from 'moment';
 import newGuid from '../utils/guid';
+import { ContentState, convertToRaw, EditorState } from 'draft-js';
+
 
 export class Channels {
 
     constructor(firebase, domainId) {
         this.firebase = firebase;
         this.domainId = domainId;
+    }
+
+    /**
+     * Get all messages for an individual channel.
+     * 
+     * Parameter: channelId {string} - The id (guid) of the channel to get messages for.
+     * 
+     * Returns: An array of messages
+     */
+    getMessages(channelId, dispatch, getState, lastDocument) {
+        return new Promise((resolve, reject) => {
+            this.firebase.firestore()
+            .collection('domains')
+            .doc(this.domainId)
+            .collection('channels')
+            .doc(channelId)
+            .collection('messages')
+            .orderBy('timestamp', 'desc')
+            .limit(1)
+            .onSnapshot({}, documentSnapshots => {
+
+                const last = documentSnapshots.docs[documentSnapshots.docs.length-1];
+                const pageSize = getState().channel.pageSize;
+
+                console.log('last', last.data())
+
+                const sub = this.firebase.firestore()
+                    .collection('domains')
+                    .doc(this.domainId)
+                    .collection('channels')
+                    .doc(channelId)
+                    .collection('messages')
+                    .orderBy('timestamp', 'desc')
+                    .startAt(last)
+                    .limit(pageSize)
+                    .onSnapshot({}, function (querySnapshot) {
+                        const returnData = [];
+                        querySnapshot.forEach(function(doc) {
+                            // doc.data() is never undefined for query doc snapshots
+                            returnData.push({ id: doc.id, ...doc.data() });
+                        });
+
+                        returnData.reverse();
+        
+                        if (dispatch && getState) {
+                            dispatch({ type: 'SET_CURRENT_CHANNEL_MESSAGES', payload: returnData });
+                        }
+        
+                        resolve(sub);
+                    }, (err) => reject(err));
+            })
+        });
     }
 
     /**
@@ -23,7 +77,7 @@ export class Channels {
                 .doc(this.domainId)
                 .collection('channels')
                 .doc(id)
-                .onSnapshot({}, function (doc) {
+                .onSnapshot({}, async (doc) => {
                     const channel = doc.data();
     
                     // Add the subscription to the current channel so we can kill it later.
@@ -37,6 +91,8 @@ export class Channels {
                             if (currentchannel && currentchannel.id === channel.id) {
                                 dispatch({ type: 'SET_CURRENT_CHANNEL', payload: channel });
                             }
+
+                            channel.messageUnsubscribe = await this.getMessages(channel.id, dispatch, getState);
                         }
 
                         resolve(channel);
@@ -83,17 +139,22 @@ export class Channels {
      */
     async add() {
         try {
-            
+            const name = this.firebase.auth().currentUser.displayName ? this.firebase.auth().currentUser.displayName :
+            this.firebase.auth().currentUser.email;
+
+            const content = EditorState.createWithContent(ContentState.createFromText(name + ' Joined the channel'));
+            const newMessage = convertToRaw(content.getCurrentContent());
+
             const newChannel = {
                 id: newGuid(),
                 createdBy: this.firebase.auth().currentUser.uid,
                 createdDate: moment().toDate(),
                 description: '',
-                title: 'Sub',
                 isFolder: false,
-                messages: [{ id: 0, description: '', timestamp: moment.now() }],
+                messageCount: 0,
+                title: 'Sub',
             }
-    
+
             // Firebase requires the data to be parsed this way!!.
             const data = JSON.parse(JSON.stringify(newChannel));
     
@@ -113,13 +174,16 @@ export class Channels {
     
                 // Update app channels document which drives the menu
                 transaction.set(appChannelsRef, { channels: existingChannels });
-    
+
                 // Add the new channel document
                 transaction.set(newChannelRef, data);
             });
     
+            await this.addMessage(newChannel, newMessage);
+    
             return Promise.resolve({ id: newChannelRef.id, ...newChannel });
         } catch (error) {
+            console.log('ERROR', error);
             return Promise.reject(error);            
         }
     }
@@ -192,19 +256,86 @@ export class Channels {
         return new Promise(async (resolve, reject) => {
 
             try {
-                const batch = this.firebase.firestore().batch();
+                const name = this.firebase.auth().currentUser.displayName ? this.firebase.auth().currentUser.displayName :
+                                this.firebase.auth().currentUser.email;
         
-                const channelsRef = this.firebase.firestore()
+                const msgContent = {
+                    id: newGuid(),
+                    timestamp: moment.now(),
+                    content: message,
+                    reactions: [],
+                    user: { id: this.firebase.auth().currentUser.uid, name }
+                }
+
+                // Create the new message document.
+                const newMessageRef = await this.firebase.firestore()
+                    .collection('domains')
+                    .doc(this.domainId)
+                    .collection('channels')
+                    .doc(channel.id)
+                    .collection('messages')
+                    .doc(msgContent.id);
+
+                delete channel['unsubscribe'];
+
+                channel.messageCount = channel.messageCount + 1;
+
+                const channelRef = this.firebase.firestore()
                                     .collection('domains')
                                     .doc(this.domainId)
                                     .collection('channels')
                                     .doc(channel.id);
-    
-                channel.messages = Array.isArray(channel.messages) ? channel.messages : [];
-                channel.messages.push(message);                    
-                delete channel['unsubscribe'];
+
+                                    
+                await this.firebase.firestore().runTransaction(async transaction => {
+                    const channelDoc = await transaction.get(channelRef);
         
-                batch.set(channelsRef, channel);
+                    let data = channelDoc.data();
+                    data.messageCount = data.messageCount + 1;
+        
+                    // Update the message count on the channel.
+                    transaction.set(channelRef, data);
+    
+                    // Add the new message document.
+                    transaction.set(newMessageRef, msgContent);
+                });
+                
+                resolve();
+
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    addReaction(channel, message, reaction) {
+        return new Promise(async (resolve, reject) => {
+
+            try {
+                const name = this.firebase.auth().currentUser.displayName ? this.firebase.auth().currentUser.displayName :
+                                this.firebase.auth().currentUser.email;
+
+                const batch = this.firebase.firestore().batch();
+        
+                const messageRef = this.firebase.firestore()
+                                    .collection('domains')
+                                    .doc(this.domainId)
+                                    .collection('channels')
+                                    .doc(channel.id)
+                                    .collection('messages')
+                                    .doc(message.id);
+    
+                const reactionContent = {
+                    id: newGuid(),
+                    timestamp: moment.now(),
+                    reaction,
+                    user: { id: this.firebase.auth().currentUser.uid, name }
+                }
+                message.reactions = Array.isArray(message.reactions) ? message.reactions : [];
+                message.reactions.push(reactionContent);                    
+                delete message['unsubscribe'];
+        
+                batch.set(messageRef, message);
                 await batch.commit();
                 
                 resolve();
@@ -214,4 +345,5 @@ export class Channels {
             }
         });
     }
+
 }

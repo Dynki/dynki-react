@@ -2,6 +2,25 @@ import { Channels } from '../model/Channels';
 import notifiy from '../../components/notifications/Notification';
 
 // Get all channels within this user's domain/team.
+export const loadMoreMessages = () => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+
+        try {
+            dispatch({ type: 'LOAD_MORE_MESSAGES' });
+
+            const channelsHelper = new Channels(getFirebase(), getState().domain.domainId);
+            await channelsHelper.getMessages(getState().channel.current.id, dispatch, getState);
+    
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Channel Failure', description: 'Failed to get the channel messages' });
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+        }
+    }
+}
+
+
+// Get all channels within this user's domain/team.
 export const getChannels = (loadFirst) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
 
@@ -39,6 +58,7 @@ export const getChannel = (id) => {
             // This is required to stop firestore creating multiple subscriptions, which then spam the system.
             if (currentChannel && currentChannel.unsubscribe) {
                 currentChannel.unsubscribe();
+                currentChannel.messageUnsubscribe();
             }
     
             const channelHelper = new Channels(getFirebase(), getState().domain.domainId);
@@ -65,6 +85,7 @@ export const newChannel = () => {
             // This is required to stop firestore creating multiple subscriptions, which then spam the system.
             if (currentChannel && currentChannel.unsubscribe) {
                 currentChannel.unsubscribe();
+                currentChannel.messageUnsubscribe();
             }
             
             const channelHelper = new Channels(getFirebase(), getState().domain.domainId);
@@ -116,6 +137,25 @@ export const addMessage = (channel, message) => {
     
             const channelHelper = new Channels(getFirebase(), getState().domain.domainId);
             await channelHelper.addMessage(channel, message);
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+            
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Channel Failure', description: error.message });
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+        }
+    }
+}
+
+export const addReaction = (channel, reaction) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        
+        try {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+            dispatch({ type: 'ATTEMPT_ADD_REACTION', payload: { channel, reaction } });
+    
+            const channelHelper = new Channels(getFirebase(), getState().domain.domainId);
+            await channelHelper.addReaction(channel, reaction);
             dispatch({ type: 'SET_PROGRESS', payload: false });
             
         } catch (error) {
