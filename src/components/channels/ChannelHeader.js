@@ -20,10 +20,10 @@ const Header = styles.section`
 `
 
 function ChannelHeader() {
-    const {channel} = useChannelContext()
+    const {channel, onUpdateChannel} = useChannelContext()
     return (
         <Header>
-            <ChannelForm allowWrite={true} channel={channel}/>
+            <ChannelForm allowWrite={true} channel={channel} onUpdateChannel={onUpdateChannel}/>
             {/* <ChannelHeaderMenu allowWrite={allowWrite} channelId={channel.id}/> */}
         </Header>
     )

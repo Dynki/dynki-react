@@ -105,7 +105,7 @@ const ChannelForm = (props) => {
     const handleFormChange = (changedFields) => {
         if (changedFields.title !== props.channel.title || changedFields.description !== props.channel.description) {
             const updatedChannel = { ...props.channel, ...changedFields }
-            props.onUpdate(updatedChannel);
+            props.onUpdateChannel(updatedChannel);
         }
     }
 

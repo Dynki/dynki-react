@@ -111,9 +111,12 @@ class SideNav extends React.Component {
 
         this.setState({ loadingTeam: true });
 
+        console.log('load new team')
+
         await setDomain(e.key);
         await getTeam(e.key);
         await getBoards();
+        this.props.getChannels();
         this.setState({ loadingTeam: false });
 
         if (this.props.boards && this.props.boards.length > 0) {
@@ -127,7 +130,7 @@ class SideNav extends React.Component {
 
     render() {
 
-        const { boards, hideHome, isActiveSubscriber, selectedKeys, teams } = this.props;
+        const { boards, channels, hideHome, isActiveSubscriber, selectedKeys, teams } = this.props;
         const teamName = this.props.team ? this.props.team.display_name : '';
         const loading = !this.props.team || this.state.loadingTeam ? true : false;
 
@@ -143,7 +146,7 @@ class SideNav extends React.Component {
                     isActiveSubscriber={isActiveSubscriber}
                 />
                 <Divider dashed={true} style={{ margin: '0px', marginTop: '4px' }}/>
-                { boards ?
+                { boards && channels ?
                     <DynMenu 
                         loadingBoards={loading}
                         menu={this.initialiseMenuItems()}

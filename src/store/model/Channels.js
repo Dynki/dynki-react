@@ -19,46 +19,55 @@ export class Channels {
      */
     getMessages(channelId, dispatch, getState, lastDocument) {
         return new Promise((resolve, reject) => {
-            this.firebase.firestore()
-            .collection('domains')
-            .doc(this.domainId)
-            .collection('channels')
-            .doc(channelId)
-            .collection('messages')
-            .orderBy('timestamp', 'desc')
-            .limit(1)
-            .onSnapshot({}, documentSnapshots => {
 
-                const last = documentSnapshots.docs[documentSnapshots.docs.length-1];
-                const pageSize = getState().channel.pageSize;
+            const channel = getState().channel.current
+            const currentMessages = getState().channel.currentMessages
+            const msgCount = currentMessages ? currentMessages.length : 0
 
-                console.log('last', last.data())
+            if (!channel || channel.messageCount > msgCount) {
 
-                const sub = this.firebase.firestore()
-                    .collection('domains')
-                    .doc(this.domainId)
-                    .collection('channels')
-                    .doc(channelId)
-                    .collection('messages')
-                    .orderBy('timestamp', 'desc')
-                    .startAt(last)
-                    .limit(pageSize)
-                    .onSnapshot({}, function (querySnapshot) {
-                        const returnData = [];
-                        querySnapshot.forEach(function(doc) {
-                            // doc.data() is never undefined for query doc snapshots
-                            returnData.push({ id: doc.id, ...doc.data() });
-                        });
+                this.firebase.firestore()
+                .collection('domains')
+                .doc(this.domainId)
+                .collection('channels')
+                .doc(channelId)
+                .collection('messages')
+                .orderBy('timestamp', 'desc')
+                .limit(1)
+                .onSnapshot({}, documentSnapshots => {
+    
+                    const last = documentSnapshots.docs[documentSnapshots.docs.length-1];
+                    const pageSize = getState().channel.pageSize;
+    
+                    const sub = this.firebase.firestore()
+                        .collection('domains')
+                        .doc(this.domainId)
+                        .collection('channels')
+                        .doc(channelId)
+                        .collection('messages')
+                        .orderBy('timestamp', 'desc')
+                        .startAt(last)
+                        .limit(pageSize)
+                        .onSnapshot({}, function (querySnapshot) {
+                            const returnData = [];
+                            querySnapshot.forEach(function(doc) {
+                                // doc.data() is never undefined for query doc snapshots
+                                returnData.push({ id: doc.id, ...doc.data() });
+                            });
+    
+                            // returnData.reverse();
+            
+                            if (dispatch && getState) {
+                                dispatch({ type: 'SET_CURRENT_CHANNEL_MESSAGES', payload: returnData });
+                            }
+            
+                            resolve(sub);
+                        }, (err) => reject(err));
+                })
+            } else {
+                resolve();
+            }
 
-                        returnData.reverse();
-        
-                        if (dispatch && getState) {
-                            dispatch({ type: 'SET_CURRENT_CHANNEL_MESSAGES', payload: returnData });
-                        }
-        
-                        resolve(sub);
-                    }, (err) => reject(err));
-            })
         });
     }
 
@@ -108,6 +117,8 @@ export class Channels {
      * Returns: A firebase snapshot instance containing the channels
      */
     list(dispatch) {
+
+        console.log('Get channels for domain id', this.domainId)            
 
         return new Promise((resolve, reject) => {
             this.firebase.firestore()
@@ -239,7 +250,8 @@ export class Channels {
                     channels[channelIdx].title = channel.title;
                     batch.set(appChannelsRef, { channels });
                 }
-                delete channel['unsubscribe'];
+                delete channel['unsubscribe']
+                delete channel['messageUnsubscribe']
         
                 batch.set(channelsRef, channel);
                 await batch.commit();
@@ -248,6 +260,7 @@ export class Channels {
 
             } catch (error) {
                 reject(error);
+                console.log('Error:', error)
             }
         });
     }
