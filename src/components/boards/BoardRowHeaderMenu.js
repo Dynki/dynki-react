@@ -2,6 +2,26 @@ import React from 'react';
 import { Icon, Dropdown, Menu } from 'antd';
 import { connect } from 'react-redux';
 import { addColumn } from '../../store/actions/boardActions';
+import styles from 'styled-components';
+
+const StyledLink = styles.button`
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline;
+    margin: 0;
+    padding: 0;
+    text-align: start;
+  
+    :hover {
+        text-decoration: none;
+    }
+
+    :focus {
+        text-decoration: none;
+    }
+`;
+
 
 class BoardRowHeaderMenu extends React.Component {
 
@@ -12,23 +32,23 @@ class BoardRowHeaderMenu extends React.Component {
     menu = (
         <Menu onClick={this.onClick} className="table__header__menu">
           <Menu.Item key="text">
-            <a className="table_menu__link"><Icon type="form" />Text</a>
+            <StyledLink className="table_menu__link"><Icon type="form" />Text</StyledLink>
           </Menu.Item>
           <Menu.Item key="select">
-            <a className="table_menu__link"><Icon type="arrow-down" />Select</a>
+            <StyledLink className="table_menu__link"><Icon type="arrow-down" />Select</StyledLink>
           </Menu.Item>
           <Menu.Item key="date">
-            <a className="table_menu__link"><Icon type="calendar" />Date</a>
+            <StyledLink className="table_menu__link"><Icon type="calendar" />Date</StyledLink>
           </Menu.Item>
           <Menu.Item key="datedue">
-            <a className="table_menu__link"><Icon type="calendar" />Date Due</a>
+            <StyledLink className="table_menu__link"><Icon type="calendar" />Date Due</StyledLink>
           </Menu.Item>
         </Menu>
     );
 
     render() {
         return <th className="table__header__menu__container">
-            <Dropdown overlay={this.menu} className="table__header__menu__container__dropdown">
+            <Dropdown disabled={!this.props.allowWrite} overlay={this.menu} className="table__header__menu__container__dropdown">
                 <Icon type="plus-circle" />
             </Dropdown>
         </th>

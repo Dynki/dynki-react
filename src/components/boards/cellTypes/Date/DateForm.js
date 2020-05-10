@@ -19,13 +19,13 @@ const DRForm = Form.create({
     }
 })((props) => {
     const { getFieldDecorator } = props.form;
-
+    const { allowWrite } = props;
     
     return (
         <Form className="table__row__cell__container" autoComplete="off">
             <FormItem className="date-cell">
                 {getFieldDecorator('columnValue', {})(
-                    <DatePicker format="DD-MMM-YYYY" allowClear={true}/>
+                    <DatePicker disabled={!allowWrite} format="DD-MMM-YYYY" allowClear={true}/>
                 )}
             </FormItem>
         </Form>

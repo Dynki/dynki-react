@@ -1,15 +1,39 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Toolbar, SideNav } from '..';
+import { SideNav, Toolbar } from '..';
 import { Route, withRouter, Switch, Redirect } from 'react-router-dom';
 import { DragDropContext } from 'react-beautiful-dnd';
+import styled from 'styled-components';
+
+import { signOut } from '../../../store/actions/authActions';
+import { getBoard } from '../../../store/actions/boardActions';
+import { getTeams } from '../../../store/actions/teamActions';
+import { updateBoard, updateColumnValueOrder, updateColumnOrder, updateGroupOrder } from '../../../store/actions/boardActions';
 
 import Board from '../../boards/Board';
+import Channel from '../../channels/Channel';
 import EmptyBoards from '../../boards/EmptyBoards';
-import { getBoard } from '../../../store/actions/boardActions';
-import { updateBoard, updateColumnValueOrder } from '../../../store/actions/boardActions';
+import Teams from '../../teams/teams';
+import TeamAccept from '../../teams/TeamAccept';
+import AccountOverview from '../../auth/user/AccountOverview';
+
+const StyledSideNav = styled.div`
+    grid-area: sidenav;
+
+    @media all and (min-device-width : 0px) and (max-device-width : 680px) {
+        display: none;
+    }
+`;
 
 class PostAuthShell extends React.Component {
+
+    componentWillMount() {
+        this.props.getTeams();
+
+        if (this.props.inviteData.inviteId) {
+            this.props.history.push(`/invite/${this.props.inviteData.inviteId}`);
+        }
+    }
 
     onDispatchBoardAction(id) {
         this.props.getBoard(id);
@@ -34,6 +58,19 @@ class PostAuthShell extends React.Component {
     onDragEnd = (result) => {
         // dropped outside the list
         if (!result.destination) {
+            return;
+        }
+
+        console.log('result', result);
+        if (result.type === 'reorder-column') {
+            console.log('Cell recordered');
+            this.props.updateColumnOrder(result);
+            return;
+        }
+
+        if (result.type === 'reorder-group') {
+            console.log('Group recordered');
+            this.props.updateGroupOrder(result);
             return;
         }
 
@@ -78,37 +115,47 @@ class PostAuthShell extends React.Component {
     }
 
     render() {
-        const { firstLoad, board, boards, noBoards, boardsChecked, location } = this.props;
+        const { boards, boardsChecked, currentUser, domain, firstLoad, inviteData, location, noBoards, progress, signOut } = this.props;
 
-        const sessionBoard = sessionStorage.getItem('dynki-currentboard');
-
-        if (this.props.domain.domainId) {
+        if (domain.domainId) {
             return <div className="post-auth__content">
             <DragDropContext onDragEnd={this.onDragEnd}>
-                <Toolbar progress={this.props.progress}></Toolbar>
-                <SideNav domainName={this.props.domain.displayName}></SideNav>
+                <Toolbar progress={progress} domain={domain} currentUser={currentUser} signOut={signOut}/>
+                <StyledSideNav>
+                    <SideNav hideHome={true}/>
+                </StyledSideNav>
                 <main>
-                    {noBoards && boardsChecked &&
+                    {!inviteData.inviteId && noBoards && boardsChecked && location.pathname !== '/empty-boards' &&
                         <Redirect exact from='/' to={`/empty-boards`}/>
+                    }
+                    {!inviteData.inviteId && location.pathname.split('/')[1] === 'invite' && boards && boards.length > 0 &&
+                        <React.Fragment>
+                            {/* {this.onDispatchBoardAction(boards[0].id)} */}
+                            <Redirect exact from='/' to={`/board/${boards[0].id}`}/>
+                        </React.Fragment>
                     }
                     {location.pathname === '/' && boards && boards.length > 0 &&
                         <React.Fragment>
-                            {this.onDispatchBoardAction(boards[0].id)}
-                            <Redirect exact from='/' to={`/board`}/>
+                            {/* {this.onDispatchBoardAction(boards[0].id)} */}
+                            <Redirect exact from='/' to={`/board/${boards[0].id}`}/>
                         </React.Fragment>
                     }
-                    {location.pathname === '/board' && !board && boards.length > 0 &&
+                    {location.pathname === '/empty-boards' && boards && boards.length > 0 &&
                         <React.Fragment>
-                            {sessionBoard ? this.onDispatchBoardAction(sessionBoard) : this.onDispatchBoardAction(boards[0].id)}
-                            {/* <Redirect exact from='/' to={`/board`}/> */}
+                            {/* {this.onDispatchBoardAction(boards[0].id)} */}
+                            <Redirect exact from='/empty-boards' to={`/board/${boards[0].id}`}/>
                         </React.Fragment>
                     }
-                    {!firstLoad && location.pathname === '/empty-boards' && !noBoards && boards && boards.length > 0 &&
-                        <Redirect exact from='/empty-boards' to={`/board`}/>
+                    {!inviteData.inviteId && !firstLoad && location.pathname === '/empty-boards' && !noBoards && boards && boards.length > 0 &&
+                        <Redirect exact from='/empty-boards' to={`/board/${boards[0].id}`}/>
                     }
                     <Switch>
-                        <Route path={'/board'} component={Board}></Route>
+                        <Route path={'/board/:id'} component={Board}></Route>
+                        <Route path={'/channel/:id'} component={Channel}></Route>
+                        <Route path={'/team/:id'} component={Teams}></Route>
+                        <Route path={'/account'} component={AccountOverview}></Route>
                         <Route path={'/empty-boards'} component={EmptyBoards}></Route>
+                        <Route path={'/invite/:inviteId'} component={TeamAccept}></Route>
                     </Switch>
                 </main>
             </DragDropContext>
@@ -121,21 +168,27 @@ class PostAuthShell extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        domain: state.domain,
-        progress: state.base.progress,
-        boards: state.boards.boards,
         board: state.boards.currentBoard,
-        noBoards: state.boards.noBoards,
+        boards: state.boards.boards,
+        boardsChecked: state.boards.boardsChecked,
+        currentUser: state.auth.currentUser,
+        domain: state.domain,
         firstLoad: state.boards.firstLoad,
-        boardsChecked: state.boards.boardsChecked
+        inviteData: state.base.inviteData,
+        noBoards: state.boards.noBoards,
+        progress: state.base.progress
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         getBoard: (id) => dispatch(getBoard(id)),
+        getTeams: () => dispatch(getTeams()),
         updateBoard: (board) => dispatch(updateBoard(board)),
         updateColumnValueOrder: (data) => dispatch(updateColumnValueOrder(data)),
+        updateColumnOrder: (data) => dispatch(updateColumnOrder(data)),
+        updateGroupOrder: (data) => dispatch(updateGroupOrder(data)),
+        signOut: () => dispatch(signOut())
       }
 }
 

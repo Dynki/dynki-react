@@ -1,0 +1,1496 @@
+[
+    {
+        "name": "United Kingdom",
+        "alpha-2": "GB",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:GB"
+    },
+    {
+        "name": "United States of America",
+        "alpha-2": "US",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:US"
+    },
+    {
+        "name": "Afghanistan",
+        "alpha-2": "AF",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:AF"
+    },
+    {
+        "name": "Åland Islands",
+        "alpha-2": "AX",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:AX"
+    },
+    {
+        "name": "Albania",
+        "alpha-2": "AL",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:AL"
+    },
+    {
+        "name": "Algeria",
+        "alpha-2": "DZ",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:DZ"
+    },
+    {
+        "name": "American Samoa",
+        "alpha-2": "AS",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:AS"
+    },
+    {
+        "name": "Andorra",
+        "alpha-2": "AD",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:AD"
+    },
+    {
+        "name": "Angola",
+        "alpha-2": "AO",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:AO"
+    },
+    {
+        "name": "Anguilla",
+        "alpha-2": "AI",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:AI"
+    },
+    {
+        "name": "Antarctica",
+        "alpha-2": "AQ",
+        "region": "",
+        "iso_3166-2": "ISO 3166-2:AQ"
+    },
+    {
+        "name": "Antigua and Barbuda",
+        "alpha-2": "AG",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:AG"
+    },
+    {
+        "name": "Argentina",
+        "alpha-2": "AR",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:AR"
+    },
+    {
+        "name": "Armenia",
+        "alpha-2": "AM",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:AM"
+    },
+    {
+        "name": "Aruba",
+        "alpha-2": "AW",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:AW"
+    },
+    {
+        "name": "Australia",
+        "alpha-2": "AU",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:AU"
+    },
+    {
+        "name": "Austria",
+        "alpha-2": "AT",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:AT"
+    },
+    {
+        "name": "Azerbaijan",
+        "alpha-2": "AZ",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:AZ"
+    },
+    {
+        "name": "Bahamas",
+        "alpha-2": "BS",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:BS"
+    },
+    {
+        "name": "Bahrain",
+        "alpha-2": "BH",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:BH"
+    },
+    {
+        "name": "Bangladesh",
+        "alpha-2": "BD",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:BD"
+    },
+    {
+        "name": "Barbados",
+        "alpha-2": "BB",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:BB"
+    },
+    {
+        "name": "Belarus",
+        "alpha-2": "BY",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:BY"
+    },
+    {
+        "name": "Belgium",
+        "alpha-2": "BE",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:BE"
+    },
+    {
+        "name": "Belize",
+        "alpha-2": "BZ",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:BZ"
+    },
+    {
+        "name": "Benin",
+        "alpha-2": "BJ",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:BJ"
+    },
+    {
+        "name": "Bermuda",
+        "alpha-2": "BM",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:BM"
+    },
+    {
+        "name": "Bhutan",
+        "alpha-2": "BT",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:BT"
+    },
+    {
+        "name": "Bolivia (Plurinational State of)",
+        "alpha-2": "BO",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:BO"
+    },
+    {
+        "name": "Bonaire, Sint Eustatius and Saba",
+        "alpha-2": "BQ",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:BQ"
+    },
+    {
+        "name": "Bosnia and Herzegovina",
+        "alpha-2": "BA",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:BA"
+    },
+    {
+        "name": "Botswana",
+        "alpha-2": "BW",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:BW"
+    },
+    {
+        "name": "Bouvet Island",
+        "alpha-2": "BV",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:BV"
+    },
+    {
+        "name": "Brazil",
+        "alpha-2": "BR",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:BR"
+    },
+    {
+        "name": "British Indian Ocean Territory",
+        "alpha-2": "IO",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:IO"
+    },
+    {
+        "name": "Brunei Darussalam",
+        "alpha-2": "BN",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:BN"
+    },
+    {
+        "name": "Bulgaria",
+        "alpha-2": "BG",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:BG"
+    },
+    {
+        "name": "Burkina Faso",
+        "alpha-2": "BF",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:BF"
+    },
+    {
+        "name": "Burundi",
+        "alpha-2": "BI",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:BI"
+    },
+    {
+        "name": "Cabo Verde",
+        "alpha-2": "CV",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:CV"
+    },
+    {
+        "name": "Cambodia",
+        "alpha-2": "KH",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:KH"
+    },
+    {
+        "name": "Cameroon",
+        "alpha-2": "CM",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:CM"
+    },
+    {
+        "name": "Canada",
+        "alpha-2": "CA",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:CA"
+    },
+    {
+        "name": "Cayman Islands",
+        "alpha-2": "KY",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:KY"
+    },
+    {
+        "name": "Central African Republic",
+        "alpha-2": "CF",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:CF"
+    },
+    {
+        "name": "Chad",
+        "alpha-2": "TD",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:TD"
+    },
+    {
+        "name": "Chile",
+        "alpha-2": "CL",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:CL"
+    },
+    {
+        "name": "China",
+        "alpha-2": "CN",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:CN"
+    },
+    {
+        "name": "Christmas Island",
+        "alpha-2": "CX",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:CX"
+    },
+    {
+        "name": "Cocos (Keeling) Islands",
+        "alpha-2": "CC",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:CC"
+    },
+    {
+        "name": "Colombia",
+        "alpha-2": "CO",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:CO"
+    },
+    {
+        "name": "Comoros",
+        "alpha-2": "KM",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:KM"
+    },
+    {
+        "name": "Congo",
+        "alpha-2": "CG",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:CG"
+    },
+    {
+        "name": "Congo, Democratic Republic of the",
+        "alpha-2": "CD",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:CD"
+    },
+    {
+        "name": "Cook Islands",
+        "alpha-2": "CK",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:CK"
+    },
+    {
+        "name": "Costa Rica",
+        "alpha-2": "CR",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:CR"
+    },
+    {
+        "name": "Côte d'Ivoire",
+        "alpha-2": "CI",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:CI"
+    },
+    {
+        "name": "Croatia",
+        "alpha-2": "HR",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:HR"
+    },
+    {
+        "name": "Cuba",
+        "alpha-2": "CU",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:CU"
+    },
+    {
+        "name": "Curaçao",
+        "alpha-2": "CW",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:CW"
+    },
+    {
+        "name": "Cyprus",
+        "alpha-2": "CY",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:CY"
+    },
+    {
+        "name": "Czechia",
+        "alpha-2": "CZ",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:CZ"
+    },
+    {
+        "name": "Denmark",
+        "alpha-2": "DK",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:DK"
+    },
+    {
+        "name": "Djibouti",
+        "alpha-2": "DJ",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:DJ"
+    },
+    {
+        "name": "Dominica",
+        "alpha-2": "DM",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:DM"
+    },
+    {
+        "name": "Dominican Republic",
+        "alpha-2": "DO",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:DO"
+    },
+    {
+        "name": "Ecuador",
+        "alpha-2": "EC",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:EC"
+    },
+    {
+        "name": "Egypt",
+        "alpha-2": "EG",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:EG"
+    },
+    {
+        "name": "El Salvador",
+        "alpha-2": "SV",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:SV"
+    },
+    {
+        "name": "Equatorial Guinea",
+        "alpha-2": "GQ",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:GQ"
+    },
+    {
+        "name": "Eritrea",
+        "alpha-2": "ER",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:ER"
+    },
+    {
+        "name": "Estonia",
+        "alpha-2": "EE",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:EE"
+    },
+    {
+        "name": "Eswatini",
+        "alpha-2": "SZ",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:SZ"
+    },
+    {
+        "name": "Ethiopia",
+        "alpha-2": "ET",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:ET"
+    },
+    {
+        "name": "Falkland Islands (Malvinas)",
+        "alpha-2": "FK",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:FK"
+    },
+    {
+        "name": "Faroe Islands",
+        "alpha-2": "FO",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:FO"
+    },
+    {
+        "name": "Fiji",
+        "alpha-2": "FJ",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:FJ"
+    },
+    {
+        "name": "Finland",
+        "alpha-2": "FI",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:FI"
+    },
+    {
+        "name": "France",
+        "alpha-2": "FR",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:FR"
+    },
+    {
+        "name": "French Guiana",
+        "alpha-2": "GF",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:GF"
+    },
+    {
+        "name": "French Polynesia",
+        "alpha-2": "PF",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:PF"
+    },
+    {
+        "name": "French Southern Territories",
+        "alpha-2": "TF",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:TF"
+    },
+    {
+        "name": "Gabon",
+        "alpha-2": "GA",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:GA"
+    },
+    {
+        "name": "Gambia",
+        "alpha-2": "GM",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:GM"
+    },
+    {
+        "name": "Georgia",
+        "alpha-2": "GE",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:GE"
+    },
+    {
+        "name": "Germany",
+        "alpha-2": "DE",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:DE"
+    },
+    {
+        "name": "Ghana",
+        "alpha-2": "GH",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:GH"
+    },
+    {
+        "name": "Gibraltar",
+        "alpha-2": "GI",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:GI"
+    },
+    {
+        "name": "Greece",
+        "alpha-2": "GR",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:GR"
+    },
+    {
+        "name": "Greenland",
+        "alpha-2": "GL",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:GL"
+    },
+    {
+        "name": "Grenada",
+        "alpha-2": "GD",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:GD"
+    },
+    {
+        "name": "Guadeloupe",
+        "alpha-2": "GP",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:GP"
+    },
+    {
+        "name": "Guam",
+        "alpha-2": "GU",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:GU"
+    },
+    {
+        "name": "Guatemala",
+        "alpha-2": "GT",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:GT"
+    },
+    {
+        "name": "Guernsey",
+        "alpha-2": "GG",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:GG"
+    },
+    {
+        "name": "Guinea",
+        "alpha-2": "GN",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:GN"
+    },
+    {
+        "name": "Guinea-Bissau",
+        "alpha-2": "GW",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:GW"
+    },
+    {
+        "name": "Guyana",
+        "alpha-2": "GY",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:GY"
+    },
+    {
+        "name": "Haiti",
+        "alpha-2": "HT",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:HT"
+    },
+    {
+        "name": "Heard Island and McDonald Islands",
+        "alpha-2": "HM",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:HM"
+    },
+    {
+        "name": "Holy See",
+        "alpha-2": "VA",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:VA"
+    },
+    {
+        "name": "Honduras",
+        "alpha-2": "HN",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:HN"
+    },
+    {
+        "name": "Hong Kong",
+        "alpha-2": "HK",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:HK"
+    },
+    {
+        "name": "Hungary",
+        "alpha-2": "HU",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:HU"
+    },
+    {
+        "name": "Iceland",
+        "alpha-2": "IS",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:IS"
+    },
+    {
+        "name": "India",
+        "alpha-2": "IN",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:IN"
+    },
+    {
+        "name": "Indonesia",
+        "alpha-2": "ID",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:ID"
+    },
+    {
+        "name": "Iran (Islamic Republic of)",
+        "alpha-2": "IR",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:IR"
+    },
+    {
+        "name": "Iraq",
+        "alpha-2": "IQ",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:IQ"
+    },
+    {
+        "name": "Ireland",
+        "alpha-2": "IE",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:IE"
+    },
+    {
+        "name": "Isle of Man",
+        "alpha-2": "IM",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:IM"
+    },
+    {
+        "name": "Israel",
+        "alpha-2": "IL",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:IL"
+    },
+    {
+        "name": "Italy",
+        "alpha-2": "IT",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:IT"
+    },
+    {
+        "name": "Jamaica",
+        "alpha-2": "JM",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:JM"
+    },
+    {
+        "name": "Japan",
+        "alpha-2": "JP",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:JP"
+    },
+    {
+        "name": "Jersey",
+        "alpha-2": "JE",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:JE"
+    },
+    {
+        "name": "Jordan",
+        "alpha-2": "JO",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:JO"
+    },
+    {
+        "name": "Kazakhstan",
+        "alpha-2": "KZ",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:KZ"
+    },
+    {
+        "name": "Kenya",
+        "alpha-2": "KE",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:KE"
+    },
+    {
+        "name": "Kiribati",
+        "alpha-2": "KI",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:KI"
+    },
+    {
+        "name": "Korea (Democratic People's Republic of)",
+        "alpha-2": "KP",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:KP"
+    },
+    {
+        "name": "Korea, Republic of",
+        "alpha-2": "KR",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:KR"
+    },
+    {
+        "name": "Kuwait",
+        "alpha-2": "KW",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:KW"
+    },
+    {
+        "name": "Kyrgyzstan",
+        "alpha-2": "KG",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:KG"
+    },
+    {
+        "name": "Lao People's Democratic Republic",
+        "alpha-2": "LA",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:LA"
+    },
+    {
+        "name": "Latvia",
+        "alpha-2": "LV",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:LV"
+    },
+    {
+        "name": "Lebanon",
+        "alpha-2": "LB",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:LB"
+    },
+    {
+        "name": "Lesotho",
+        "alpha-2": "LS",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:LS"
+    },
+    {
+        "name": "Liberia",
+        "alpha-2": "LR",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:LR"
+    },
+    {
+        "name": "Libya",
+        "alpha-2": "LY",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:LY"
+    },
+    {
+        "name": "Liechtenstein",
+        "alpha-2": "LI",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:LI"
+    },
+    {
+        "name": "Lithuania",
+        "alpha-2": "LT",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:LT"
+    },
+    {
+        "name": "Luxembourg",
+        "alpha-2": "LU",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:LU"
+    },
+    {
+        "name": "Macao",
+        "alpha-2": "MO",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:MO"
+    },
+    {
+        "name": "Madagascar",
+        "alpha-2": "MG",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:MG"
+    },
+    {
+        "name": "Malawi",
+        "alpha-2": "MW",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:MW"
+    },
+    {
+        "name": "Malaysia",
+        "alpha-2": "MY",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:MY"
+    },
+    {
+        "name": "Maldives",
+        "alpha-2": "MV",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:MV"
+    },
+    {
+        "name": "Mali",
+        "alpha-2": "ML",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:ML"
+    },
+    {
+        "name": "Malta",
+        "alpha-2": "MT",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:MT"
+    },
+    {
+        "name": "Marshall Islands",
+        "alpha-2": "MH",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:MH"
+    },
+    {
+        "name": "Martinique",
+        "alpha-2": "MQ",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:MQ"
+    },
+    {
+        "name": "Mauritania",
+        "alpha-2": "MR",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:MR"
+    },
+    {
+        "name": "Mauritius",
+        "alpha-2": "MU",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:MU"
+    },
+    {
+        "name": "Mayotte",
+        "alpha-2": "YT",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:YT"
+    },
+    {
+        "name": "Mexico",
+        "alpha-2": "MX",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:MX"
+    },
+    {
+        "name": "Micronesia (Federated States of)",
+        "alpha-2": "FM",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:FM"
+    },
+    {
+        "name": "Moldova, Republic of",
+        "alpha-2": "MD",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:MD"
+    },
+    {
+        "name": "Monaco",
+        "alpha-2": "MC",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:MC"
+    },
+    {
+        "name": "Mongolia",
+        "alpha-2": "MN",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:MN"
+    },
+    {
+        "name": "Montenegro",
+        "alpha-2": "ME",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:ME"
+    },
+    {
+        "name": "Montserrat",
+        "alpha-2": "MS",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:MS"
+    },
+    {
+        "name": "Morocco",
+        "alpha-2": "MA",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:MA"
+    },
+    {
+        "name": "Mozambique",
+        "alpha-2": "MZ",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:MZ"
+    },
+    {
+        "name": "Myanmar",
+        "alpha-2": "MM",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:MM"
+    },
+    {
+        "name": "Namibia",
+        "alpha-2": "NA",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:NA"
+    },
+    {
+        "name": "Nauru",
+        "alpha-2": "NR",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:NR"
+    },
+    {
+        "name": "Nepal",
+        "alpha-2": "NP",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:NP"
+    },
+    {
+        "name": "Netherlands",
+        "alpha-2": "NL",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:NL"
+    },
+    {
+        "name": "New Caledonia",
+        "alpha-2": "NC",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:NC"
+    },
+    {
+        "name": "New Zealand",
+        "alpha-2": "NZ",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:NZ"
+    },
+    {
+        "name": "Nicaragua",
+        "alpha-2": "NI",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:NI"
+    },
+    {
+        "name": "Niger",
+        "alpha-2": "NE",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:NE"
+    },
+    {
+        "name": "Nigeria",
+        "alpha-2": "NG",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:NG"
+    },
+    {
+        "name": "Niue",
+        "alpha-2": "NU",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:NU"
+    },
+    {
+        "name": "Norfolk Island",
+        "alpha-2": "NF",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:NF"
+    },
+    {
+        "name": "North Macedonia",
+        "alpha-2": "MK",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:MK"
+    },
+    {
+        "name": "Northern Mariana Islands",
+        "alpha-2": "MP",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:MP"
+    },
+    {
+        "name": "Norway",
+        "alpha-2": "NO",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:NO"
+    },
+    {
+        "name": "Oman",
+        "alpha-2": "OM",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:OM"
+    },
+    {
+        "name": "Pakistan",
+        "alpha-2": "PK",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:PK"
+    },
+    {
+        "name": "Palau",
+        "alpha-2": "PW",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:PW"
+    },
+    {
+        "name": "Palestine, State of",
+        "alpha-2": "PS",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:PS"
+    },
+    {
+        "name": "Panama",
+        "alpha-2": "PA",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:PA"
+    },
+    {
+        "name": "Papua New Guinea",
+        "alpha-2": "PG",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:PG"
+    },
+    {
+        "name": "Paraguay",
+        "alpha-2": "PY",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:PY"
+    },
+    {
+        "name": "Peru",
+        "alpha-2": "PE",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:PE"
+    },
+    {
+        "name": "Philippines",
+        "alpha-2": "PH",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:PH"
+    },
+    {
+        "name": "Pitcairn",
+        "alpha-2": "PN",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:PN"
+    },
+    {
+        "name": "Poland",
+        "alpha-2": "PL",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:PL"
+    },
+    {
+        "name": "Portugal",
+        "alpha-2": "PT",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:PT"
+    },
+    {
+        "name": "Puerto Rico",
+        "alpha-2": "PR",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:PR"
+    },
+    {
+        "name": "Qatar",
+        "alpha-2": "QA",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:QA"
+    },
+    {
+        "name": "Réunion",
+        "alpha-2": "RE",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:RE"
+    },
+    {
+        "name": "Romania",
+        "alpha-2": "RO",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:RO"
+    },
+    {
+        "name": "Russian Federation",
+        "alpha-2": "RU",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:RU"
+    },
+    {
+        "name": "Rwanda",
+        "alpha-2": "RW",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:RW"
+    },
+    {
+        "name": "Saint Barthélemy",
+        "alpha-2": "BL",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:BL"
+    },
+    {
+        "name": "Saint Helena, Ascension and Tristan da Cunha",
+        "alpha-2": "SH",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:SH"
+    },
+    {
+        "name": "Saint Kitts and Nevis",
+        "alpha-2": "KN",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:KN"
+    },
+    {
+        "name": "Saint Lucia",
+        "alpha-2": "LC",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:LC"
+    },
+    {
+        "name": "Saint Martin (French part)",
+        "alpha-2": "MF",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:MF"
+    },
+    {
+        "name": "Saint Pierre and Miquelon",
+        "alpha-2": "PM",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:PM"
+    },
+    {
+        "name": "Saint Vincent and the Grenadines",
+        "alpha-2": "VC",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:VC"
+    },
+    {
+        "name": "Samoa",
+        "alpha-2": "WS",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:WS"
+    },
+    {
+        "name": "San Marino",
+        "alpha-2": "SM",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:SM"
+    },
+    {
+        "name": "Sao Tome and Principe",
+        "alpha-2": "ST",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:ST"
+    },
+    {
+        "name": "Saudi Arabia",
+        "alpha-2": "SA",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:SA"
+    },
+    {
+        "name": "Senegal",
+        "alpha-2": "SN",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:SN"
+    },
+    {
+        "name": "Serbia",
+        "alpha-2": "RS",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:RS"
+    },
+    {
+        "name": "Seychelles",
+        "alpha-2": "SC",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:SC"
+    },
+    {
+        "name": "Sierra Leone",
+        "alpha-2": "SL",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:SL"
+    },
+    {
+        "name": "Singapore",
+        "alpha-2": "SG",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:SG"
+    },
+    {
+        "name": "Sint Maarten (Dutch part)",
+        "alpha-2": "SX",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:SX"
+    },
+    {
+        "name": "Slovakia",
+        "alpha-2": "SK",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:SK"
+    },
+    {
+        "name": "Slovenia",
+        "alpha-2": "SI",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:SI"
+    },
+    {
+        "name": "Solomon Islands",
+        "alpha-2": "SB",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:SB"
+    },
+    {
+        "name": "Somalia",
+        "alpha-2": "SO",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:SO"
+    },
+    {
+        "name": "South Africa",
+        "alpha-2": "ZA",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:ZA"
+    },
+    {
+        "name": "South Georgia and the South Sandwich Islands",
+        "alpha-2": "GS",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:GS"
+    },
+    {
+        "name": "South Sudan",
+        "alpha-2": "SS",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:SS"
+    },
+    {
+        "name": "Spain",
+        "alpha-2": "ES",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:ES"
+    },
+    {
+        "name": "Sri Lanka",
+        "alpha-2": "LK",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:LK"
+    },
+    {
+        "name": "Sudan",
+        "alpha-2": "SD",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:SD"
+    },
+    {
+        "name": "Suriname",
+        "alpha-2": "SR",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:SR"
+    },
+    {
+        "name": "Svalbard and Jan Mayen",
+        "alpha-2": "SJ",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:SJ"
+    },
+    {
+        "name": "Sweden",
+        "alpha-2": "SE",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:SE"
+    },
+    {
+        "name": "Switzerland",
+        "alpha-2": "CH",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:CH"
+    },
+    {
+        "name": "Syrian Arab Republic",
+        "alpha-2": "SY",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:SY"
+    },
+    {
+        "name": "Taiwan, Province of China",
+        "alpha-2": "TW",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:TW"
+    },
+    {
+        "name": "Tajikistan",
+        "alpha-2": "TJ",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:TJ"
+    },
+    {
+        "name": "Tanzania, United Republic of",
+        "alpha-2": "TZ",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:TZ"
+    },
+    {
+        "name": "Thailand",
+        "alpha-2": "TH",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:TH"
+    },
+    {
+        "name": "Timor-Leste",
+        "alpha-2": "TL",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:TL"
+    },
+    {
+        "name": "Togo",
+        "alpha-2": "TG",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:TG"
+    },
+    {
+        "name": "Tokelau",
+        "alpha-2": "TK",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:TK"
+    },
+    {
+        "name": "Tonga",
+        "alpha-2": "TO",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:TO"
+    },
+    {
+        "name": "Trinidad and Tobago",
+        "alpha-2": "TT",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:TT"
+    },
+    {
+        "name": "Tunisia",
+        "alpha-2": "TN",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:TN"
+    },
+    {
+        "name": "Turkey",
+        "alpha-2": "TR",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:TR"
+    },
+    {
+        "name": "Turkmenistan",
+        "alpha-2": "TM",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:TM"
+    },
+    {
+        "name": "Turks and Caicos Islands",
+        "alpha-2": "TC",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:TC"
+    },
+    {
+        "name": "Tuvalu",
+        "alpha-2": "TV",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:TV"
+    },
+    {
+        "name": "Uganda",
+        "alpha-2": "UG",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:UG"
+    },
+    {
+        "name": "Ukraine",
+        "alpha-2": "UA",
+        "region": "Europe",
+        "iso_3166-2": "ISO 3166-2:UA"
+    },
+    {
+        "name": "United Arab Emirates",
+        "alpha-2": "AE",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:AE"
+    },
+    {
+        "name": "United States Minor Outlying Islands",
+        "alpha-2": "UM",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:UM"
+    },
+    {
+        "name": "Uruguay",
+        "alpha-2": "UY",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:UY"
+    },
+    {
+        "name": "Uzbekistan",
+        "alpha-2": "UZ",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:UZ"
+    },
+    {
+        "name": "Vanuatu",
+        "alpha-2": "VU",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:VU"
+    },
+    {
+        "name": "Venezuela (Bolivarian Republic of)",
+        "alpha-2": "VE",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:VE"
+    },
+    {
+        "name": "Viet Nam",
+        "alpha-2": "VN",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:VN"
+    },
+    {
+        "name": "Virgin Islands (British)",
+        "alpha-2": "VG",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:VG"
+    },
+    {
+        "name": "Virgin Islands (U.S.)",
+        "alpha-2": "VI",
+        "region": "Americas",
+        "iso_3166-2": "ISO 3166-2:VI"
+    },
+    {
+        "name": "Wallis and Futuna",
+        "alpha-2": "WF",
+        "region": "Oceania",
+        "iso_3166-2": "ISO 3166-2:WF"
+    },
+    {
+        "name": "Western Sahara",
+        "alpha-2": "EH",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:EH"
+    },
+    {
+        "name": "Yemen",
+        "alpha-2": "YE",
+        "region": "Asia",
+        "iso_3166-2": "ISO 3166-2:YE"
+    },
+    {
+        "name": "Zambia",
+        "alpha-2": "ZM",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:ZM"
+    },
+    {
+        "name": "Zimbabwe",
+        "alpha-2": "ZW",
+        "region": "Africa",
+        "iso_3166-2": "ISO 3166-2:ZW"
+    }
+]

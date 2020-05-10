@@ -13,7 +13,7 @@ class DateCell extends React.Component {
     render() {
         return (
             <div className="date-cell">
-                <DateRowForm {...this.props} onUpdateBoard={this.onUpdateBoard}/>
+                <DateRowForm {...this.props} allowWrite={this.props.allowWrite} onUpdateBoard={this.onUpdateBoard}/>
             </div>
         )
     }

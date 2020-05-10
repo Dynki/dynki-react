@@ -13,6 +13,7 @@ class BoardRowMenu extends React.Component {
         return <div className="row__content__menu">
             {this.props.hovering ? 
                 <Popconfirm title="Are you sure delete this row?" 
+                    disabled={!this.props.allowWrite}
                     okText="Yes"
                     cancelText="No Way"
                     trigger="click"

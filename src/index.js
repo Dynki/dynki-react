@@ -1,3 +1,6 @@
+import 'react-app-polyfill/ie11';
+import 'react-app-polyfill/stable';
+
 import React from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
@@ -16,7 +19,7 @@ import rootReducer from './store/reducers/rootReducers';
 
 firebase.initializeApp(fbConfig)
 firebase.firestore();
-firebase.firestore().settings({timestampsInSnapshots: true});
+// firebase.firestore().settings({timestampsInSnapshots: true});
 
 // react-redux-firebase options
 const config = {

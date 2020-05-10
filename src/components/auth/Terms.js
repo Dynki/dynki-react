@@ -1,11 +1,9 @@
 import React from 'react';
+import PdfViewer from '../core/PdfViewer';
 
 const Terms = (props) => {
-
     return (
-        <React.Fragment>
-            <a href="/terms-of-service.pdf" target="_blank">terms of service</a>
-        </React.Fragment>
+        <PdfViewer url="https://dynki.com/assets/terms-of-service.pdf"/>
     )
 }
 

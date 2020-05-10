@@ -1,5 +1,9 @@
 const initialState = {
-    progress: false
+    progress: false,
+    inviteData: {
+        inviteId: undefined,
+        inviteName: undefined
+    },
 }
 
 const baseReducer = (state = initialState, action) => {
@@ -8,6 +12,11 @@ const baseReducer = (state = initialState, action) => {
             return {
                 ...state,
                 progress: action.payload
+            }
+        case 'SET_INVITE':
+            return {
+                ...state,
+                inviteData: action.payload
             }
         default:
             return state;

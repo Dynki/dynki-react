@@ -1,5 +1,4 @@
 import newGuid from '../utils/guid';
-import moment from 'moment';
 
 class BaseCell {
 

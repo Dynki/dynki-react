@@ -65,6 +65,7 @@ class SelectCell extends React.Component {
                                                 null
                                                 :
                                                 <SelectCellBtn
+                                                    allowWrite={this.props.allowWrite}
                                                     onSelectOption={this.onSelectOption}
                                                     key={i}
                                                     color={c}
@@ -80,6 +81,7 @@ class SelectCell extends React.Component {
                     </Carousel>
                 </div>
                 <SelectDrawer 
+                    allowWrite={this.props.allowWrite}
                     column={col}
                     rowValue={this.props.rowValue}
                     onToggleEdit={this.onToggleEdit.bind(this)}

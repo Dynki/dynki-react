@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 const initialState = {
     boards: [],
     currentBoard: null,
+    currentBoardRoles: null,
     firstLoad: true,
     noBoards: true,
     boardsChecked: false
@@ -24,6 +25,15 @@ const boardReducer = (state = initialState, action) => {
                 boardsChecked: true,
                 noBoards: false,
                 firstLoad: false
+            }
+        case 'SET_CURRENT_BOARD_ROLES':
+
+            const updatedBoard = _.cloneDeep(state.currentBoard);
+            updatedBoard.roles = action.payload;
+
+            return {
+                ...state,
+                currentBoardRoles: _.cloneDeep(action.payload)
             }
         case 'RESET_FIRSTLOAD':
             return {

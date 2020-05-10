@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { Domains } from '../model/Domains';
 
 export const checkDomain = (name) => {
 
@@ -18,6 +18,8 @@ export const checkDomain = (name) => {
             return false;
         }
 
+        
+        // eslint-disable-next-line no-control-regex
         const re = RegExp('^[0-9a-zA-Z \b]+$');
         if (value.length > 0 && !re.test(value)) {
             dispatch({ type: 'DOMAIN_INVALID_CHARS' })
@@ -29,86 +31,33 @@ export const checkDomain = (name) => {
     }
 
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'VALIDATING_DOMAIN' })
 
         if (!domainValidForSubmission(name, dispatch)) {
             return;
         }
 
-        dispatch({ type: 'VALIDATING_DOMAIN' })
-
-        let url;
-        if (process.env.NODE_ENV !== 'production') {
-            url = `https://us-central1-dynki-c5141.cloudfunctions.net/checkdomain/${name}`;
-        } else {
-            url = `https://us-central1-dynki-prod.cloudfunctions.net/checkdomain/${name}`;
-        }
-        const firebase = getFirebase();
-
-        try {
-            const token = await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-            const uid = firebase.auth().currentUser.uid;
-
-            await axios.get(url, { headers: { token, uid } })
-            dispatch({ type: 'DOMAIN_OK' })
-
-        } catch (error) {
-            dispatch({ type: 'DOMAIN_EXISTS' })
-        }
+        dispatch({ type: 'DOMAIN_OK' })
     }
 }
 
-export const createDomain = (name) => {
+export const updateDomain = (name) => {
 
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
 
-        dispatch({ type: 'CREATING_DOMAIN' })
-
-        let url;
-
-        if (process.env.NODE_ENV !== 'production') {
-            url = `https://us-central1-dynki-c5141.cloudfunctions.net/domains/`;
-        } else {
-            url = `https://us-central1-dynki-prod.cloudfunctions.net/domains/`;
-        }
-
-        const firebase = getFirebase();
+        dispatch({ type: 'SET_PROGRESS', payload: true });
 
         try {
-            const token = await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-            const uid = firebase.auth().currentUser.uid;
+            const domainId = getState().domain.hiddenId
+            const domainsHelper = new Domains(getFirebase());
+            await domainsHelper.update(domainId, name);
 
-            await axios.post(url,
-                {
-                    uid,
-                    name: name,
-                    email: firebase.auth().currentUser.email,
-                    displayName: firebase.auth().currentUser.displayName
-                },
-                { headers: { token, uid } })
-
-            await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-            const idTokenResult = await firebase.auth().currentUser.getIdTokenResult();
-
-            // Confirm the user is an Admin.
-            if (idTokenResult.claims.domainId) {
-                await firebase.firestore()
-                    .collection('domains')
-                    .doc(idTokenResult.claims.domainId)
-                    .onSnapshot({}, function (doc) {
-                        const data = doc.data();
-
-                        if (data) {
-                            dispatch({ type: 'SET_DOMAIN_NAME', payload: data.display_name });
-                        }
-                    });
-                
-                    dispatch({ type: 'SET_DOMAIN', payload: idTokenResult.claims.domainId });
-            } else {
-                dispatch({ type: 'NO_DOMAIN' });
-            }
+            dispatch({ type: 'SET_DOMAIN', payload: domainId });
 
         } catch (error) {
-            dispatch({ type: 'DOMAIN_CREATION_ERROR' })
+           dispatch({ type: 'DOMAIN_CREATION_ERROR' })
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
         }
     }
 }

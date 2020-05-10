@@ -1,12 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Tag } from 'antd';
 import { debounce } from 'lodash';
 import { Detector } from "react-detect-offline";
+import styles from 'styled-components';
 
+import authWrapper from '../auth/AuthWrapper';
 import BoardHeader from './BoardHeader';
 import BoardDetail from './BoardDetail';
 
 import { getBoard, getBoards, updateBoard, newRow } from '../../store/actions/boardActions';
+
+const StyledTag = styles(Tag)`
+    margin: 10px;
+`;
 
 // Container for board components.
 export class Board extends React.Component {
@@ -33,7 +40,7 @@ export class Board extends React.Component {
             if (this.props.boards && this.props.boards.length > 0) {
                 this.props.getBoard(this.props.boards[0].id);
             } else {
-                this.props.getBoards();
+                this.props.getBoards(true);
             }
         }
     }
@@ -58,27 +65,58 @@ export class Board extends React.Component {
         if (online) {
             this.props.getBoard(this.props.board.id);
         }
-    }    
+    }
+    
+    checkWritePermission = () => {
+        const { board, hasRole } = this.props;
+        let allowWrite = false;
+
+        if (board && board.roles && board.roles.write && board.roles.write.length > 0) {
+            let writeRoles = board.roles.write;
+
+            writeRoles.map(role => {
+                if (hasRole(role)) {
+                    allowWrite = true;
+                }
+
+                return role;
+            });
+        } else {
+            allowWrite = true;
+        }
+
+        return allowWrite;
+    }
 
     render() {
+        const { board, progress } = this.props;
+        let allowWrite = true;
+
+        if (board) {
+            allowWrite = this.checkWritePermission();
+        }
+
         return (
             <Detector
                 onChange={this.onConnectionStatusChanged}
                 polling={false}
                 render={({ online }) => (
-                    this.props.board ?
+                    board ?
                     <section className="board">
                         <BoardHeader 
                             onUpdateBoard={this.onUpdateBoard}
-                            board={this.props.board}>
-                        </BoardHeader>
+                            board={board}
+                            allowWrite={allowWrite}
+                            />
                         <BoardDetail 
                             onNewRow={this.onNewRow}
                             onUpdateBoard={this.onUpdateBoard}
-                            progress={this.props.progress}
+                            progress={progress}
                             groups={this.state.groups}
-                            board={this.props.board}>
-                        </BoardDetail>
+                            board={board}
+                            allowWrite={allowWrite}
+                        />
+                        {!allowWrite ? <StyledTag color="magenta">Read Only</StyledTag> : null}
                     </section> 
                 :
                     null
@@ -99,11 +137,11 @@ export const mapStateToProps = (state) => {
 export const mapDispatchToProps = (dispatch) => {
     return{
       getBoard: (id) => dispatch(getBoard(id)),
-      getBoards: () => dispatch(getBoards()),
+      getBoards: (loadFirst) => dispatch(getBoards(loadFirst)),
       updateBoard: (board) => dispatch(updateBoard(board)),
       newRow: (rowObj, groupKey) => dispatch(newRow(rowObj, groupKey))
     }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Board);
+export default connect(mapStateToProps, mapDispatchToProps)(authWrapper(Board));

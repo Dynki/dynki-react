@@ -1,11 +1,49 @@
 import React from 'react';
 import { Icon, Popconfirm, Dropdown, Menu } from 'antd';
 import { connect } from 'react-redux';
+import styles from 'styled-components';
 
 import BoardRowHeaderForm from './BoardRowHeaderForm';
 import BoardRowHeaderGroupForm from './BoardRowHeaderGroupForm';
 import BoardRowHeaderMenu from './BoardRowHeaderMenu';
 import { removeColumn, addGroup, removeGroup, collapseGroup } from '../../store/actions/boardActions';
+import BoardColumnMenu from './BoardColumnMenu';
+import ReorderGroupDrawer from './ReorderGroupDrawer';
+
+const StyledLink = styles.button`
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline;
+    margin: 0;
+    padding: 0;
+    text-align: start;
+  
+    :hover {
+        text-decoration: none;
+    }
+
+    :focus {
+        text-decoration: none;
+    }
+`;
+
+const Column = styles.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+`;
+
+const ColumnTh = styles.th`
+    align-items: center;
+    display: flex;
+    flex: 0;
+    flex-direction: row;
+    justify-content: flex-start;
+    min-width: 174px;
+    width: 100%;
+`;
 
 class BoardRowHeader extends React.Component {
     
@@ -34,12 +72,12 @@ class BoardRowHeader extends React.Component {
         const menu = (
             <Menu>
                 <Menu.Item>
-                <a target="_blank" rel="noopener noreferrer" onClick={() => this.addGroup()}>
+                <StyledLink onClick={() => this.addGroup()}>
                     <div className="table__group__menu__row">
                         <Icon className="table__group__menu__icon" type="plus-circle" />
                         <div>New Group</div>
                     </div>
-                </a>
+                </StyledLink>
                 </Menu.Item>
                 {this.props.board.groups.length > 1 ? 
                     <Menu.Item>
@@ -50,19 +88,26 @@ class BoardRowHeader extends React.Component {
                             placement="bottomLeft"
                             onConfirm={this.handleConfirm.bind(this)}
                         >
-                            <a target="_blank" rel="noopener noreferrer">
+                            <StyledLink>
                                 <div className="table__group__menu__row">
                                     <Icon className="table__group__menu__icon" type="delete" />
                                     <div>Remove Group</div>
                                 </div>
-                            </a>
+                            </StyledLink>
                         </Popconfirm>
                     </Menu.Item>
                     :
                     null
                 }
+                {this.props.board.groups.length > 1 ? 
+                    <Menu.Item>
+                        <ReorderGroupDrawer/>
+                    </Menu.Item>
+                    :
+                    null
+                }
                 <Menu.Item>
-                    <a target="_blank" rel="noopener noreferrer" onClick={() => this.collapseGroup()}>
+                    <StyledLink onClick={() => this.collapseGroup()}>
                         <div className="table__group__menu__row">
                         {collapsed ? 
                             <React.Fragment>
@@ -76,57 +121,54 @@ class BoardRowHeader extends React.Component {
                             </React.Fragment>
                         }
                         </div>
-                    </a>
+                    </StyledLink>
                 </Menu.Item>
             </Menu>
         );
     
         return <tr className="table__header"> 
         <th>
-            <Dropdown overlay={menu}>
-                <a className="ant-dropdown-link">
+            <Dropdown overlay={menu} disabled={!this.props.allowWrite}>
+                <StyledLink>
                     {collapsed ? 
                         <Icon style={{ color: this.groupColor }} className="table__group__menu__icon--main" type="caret-up" />
                     :
                         <Icon style={{ color: this.groupColor }} className="table__group__menu__icon--main" type="caret-down" />
                     }                    
-                </a>
+                </StyledLink>
             </Dropdown>
         </th>
         <th
             className="table__header__columns table__header__columns--first"
         >
-            <BoardRowHeaderGroupForm 
+            <BoardRowHeaderGroupForm
+                allowWrite={this.props.allowWrite}
                 onUpdateBoard={this.props.onUpdateBoard}
                 board={this.props.board}
                 groupKey={this.props.groupKey}>
             </BoardRowHeaderGroupForm>
         </th>
         {this.props.board.columns.map((c, idx) => {
-            return idx === 0 ? null : <th 
+            return idx === 0 ? null : <ColumnTh 
                     key={idx} 
                     id={'column'+idx}
-                    className="table__header__columns"
+                    // className="table__header__columns"
                 >
-                <div key={idx} className="table__header__columns__container">
-                    {idx > 0 ? (
-                        <Popconfirm title="Are you sure delete this?" 
-                            okText="Yes"
-                            cancelText="Nada"
-                            trigger="click"
-                            onConfirm={() => this.removeColumn(c.model)}>
-                            <Icon type="close-square" />
-                        </Popconfirm>) : null
-                    }
-                    <BoardRowHeaderForm 
+                <Column key={idx}>
+                    <BoardRowHeaderForm
+                        allowWrite={this.props.allowWrite}
                         onUpdateBoard={this.props.onUpdateBoard}
                         board={this.props.board}
                         colIdx={idx}>
                     </BoardRowHeaderForm>
-                </div>
-            </th>
+                    {idx > 0 ? 
+                        <BoardColumnMenu columns={this.props.board.columns}/>
+                        : null
+                    }
+                </Column>
+            </ColumnTh>
             })}
-            <BoardRowHeaderMenu></BoardRowHeaderMenu>
+            <BoardRowHeaderMenu allowWrite={this.props.allowWrite}/>
         </tr>
     }
 }
@@ -139,6 +181,5 @@ const mapDispatchToProps = (dispatch) => {
       removeGroup: (groupId) => dispatch(removeGroup(groupId))
     }
 }
-
 
 export default connect(null, mapDispatchToProps)(BoardRowHeader);

@@ -1,57 +1,51 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { Menu, Dropdown, Icon } from 'antd';
+import styled from 'styled-components';
 
-import { signOut } from '../../../store/actions/authActions';
-import UserProfileDrawer from '../../auth/UserProfileDrawer';
 import SidenavDrawer from '../sidenav/SidenavDrawer';
+import DynkiLogo from './DynkiLogo';
+import DynkiBrand from './DynkiBrand';
+import UserProfileAvatar from './UserProfileAvatar';
 
-class Toolbar extends React.Component {
-    
-    render() {
+const StyledToolbar = styled.div`
+    background-color: #fff;
+    color: rgba(0, 0, 0, 0.87);
+    border-bottom: 1px solid #d7d7d7;
 
-        const { currentUser } = this.props;
+    grid-column-start: 1;
+    grid-column-end: span 3;
 
-        const menu = (
-            <Menu>
-              <Menu.Item>
-                  <UserProfileDrawer/>
-              </Menu.Item>
-              <Menu.Divider />
-              <Menu.Item>
-                <a id="logout" className="usermenu__item" onClick={this.props.signOut}><Icon type="logout" /> Log Out</a>
-              </Menu.Item>
-            </Menu>
-        );
-        
-        return (
-            <div className="toolbar">
-                <SidenavDrawer domain={this.props.domain}/>
-                <div id="backToHome" className={this.props.progress ? "toolbar__img--progress" : "toolbar__img"}></div>
-                <div className="toolbar__brand">Dynki</div>
-                <Dropdown overlay={menu} trigger={['click']}>
-                    <label id="userprofile-icon" className="toolbar__user-profile">
-                    {currentUser.displayName && currentUser.displayName.length > 0 ?
-                        currentUser.displayName[0] : currentUser.email[0]
-                    }
-                    </label>            
-                </Dropdown>
-            </div>
-        )
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-content: center;
+    align-items: center;
+    padding-left: 24px;
+
+    position: fixed;
+    width: 100%;
+    height: 65px;
+    z-index: 10;
+
+    @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
+        padding-left: 12px;
+
+        .anticon {
+            font-size: 26px;
+            margin-right: 10px;
+        }
     }
+`;
+
+const Toolbar = ({ currentUser, domain, progress, signOut }) => {
+
+    return (
+        <StyledToolbar>
+            <SidenavDrawer domain={domain}/>
+            <DynkiLogo progress={progress}/>
+            <DynkiBrand/>
+            <UserProfileAvatar currentUser={currentUser} signOut={signOut}/> 
+        </StyledToolbar>
+    )
 }
 
-const mapStateToProps = (state) => {
-    return {
-        domain: state.domain,
-        currentUser: state.auth.currentUser
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        signOut: () => dispatch(signOut())
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);
+export default Toolbar;

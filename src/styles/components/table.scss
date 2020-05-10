@@ -27,12 +27,29 @@ $mariner: #2b82c1;
     flex-direction: row;
     margin-top: 5px;
 
+    input {
+        cursor: pointer;
+    }
+
     &__btn {
         border-radius: 0px;
         margin-top: 1px;
         background-color: #3095DE;
         color: #fff;
         height: 40px;
+
+        &:disabled{
+            color: #ffffff!important;
+            cursor: not-allowed!important;
+        }
+
+    }
+
+    button {
+        &:disabled{
+            color: #ffffff;
+            cursor: not-allowed!important;
+        }
     }
 }
 
@@ -146,6 +163,7 @@ $mariner: #2b82c1;
         margin-top: 0px;
         display: flex;
         margin-right: 3px;
+
     }
 
     &__column--first {
@@ -198,6 +216,10 @@ $mariner: #2b82c1;
 
             &:focus {
                 background-color: lighten($mariner, 30%);
+            }
+
+            &:disabled{
+                cursor: not-allowed!important;
             }
 
             i {
@@ -261,7 +283,17 @@ $mariner: #2b82c1;
 
             &__group-title {
                 font-size: 24px;
+
+                &:disabled{
+                    background-color: #ffffff;
+                    cursor: not-allowed!important;
+                }
             }
+
+            &:disabled{
+                cursor: not-allowed!important;
+            }
+
         }
 
         &__columns {
@@ -346,6 +378,11 @@ $mariner: #2b82c1;
                 
                 input {
                     width: 100%;
+
+                    &:disabled{
+                        background-color: #ffffff;
+                        cursor: not-allowed!important;
+                    }
                 }
             }
 
@@ -538,6 +575,11 @@ $mariner: #2b82c1;
                     box-shadow: none!important;
                     border-color: $curious-blue!important;
                 }        
+
+                &:disabled{
+                    background-color: #ffffff;
+                    cursor: not-allowed!important;
+                }
             }
         }
 

@@ -242,7 +242,7 @@ dyn-sub-menu {
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: start;
+            justify-content: flex-start;
             align-content: center;
         }
     }
@@ -348,13 +348,15 @@ dyn-sub-menu {
     cursor: pointer;
 }
 
-.ant-menu {
-    height: calc(100% - 120px);
-}
-
 .ant-menu-item, .ant-menu-submenu {
     text-align: start;
     font-family: $font-family;
+    -webkit-font-feature-settings: "lnum";
+    -moz-font-feature-settings: "lnum";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'lnum' 1;
+  
 }
 
 .ant-menu-inline .ant-menu-item, .ant-menu-inline .ant-menu-submenu-title {
@@ -381,7 +383,7 @@ dyn-sub-menu {
     span {
         display: flex;
         flex-direction: row;
-        justify-content: start;
+        justify-content: flex-start;
         align-items: center;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -427,6 +429,9 @@ dyn-sub-menu {
     }
 
     .ant-tree-title {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 210px;
         padding-left: 0px!important;
     }
 }

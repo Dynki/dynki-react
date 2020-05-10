@@ -1,5 +1,31 @@
 import React from 'react';
 import { Form, Input } from 'antd';
+import styles from 'styled-components';
+
+const StyledInput = styles(Input)`
+    border: none;
+    border-radius: 1px;
+    margin-left: 3px;
+    min-width: 123px;
+    padding: 4px;
+    width: 100%;
+
+    &:focus {
+        outline-width: 0px;
+        border: dashed;
+        border-width: 1px;
+    }
+    
+    &:hover {
+        border: dashed;
+        border-width: 1px;
+        cursor: pointer;
+    }
+
+    &:disabled{
+        cursor: not-allowed!important;
+    }
+`;
 
 const FormItem = Form.Item;
 
@@ -35,7 +61,7 @@ const BRHForm = Form.create({
         <Form autoComplete="off">
             <FormItem>
                 {getFieldDecorator(id, {})(
-                    <Input className="table__header__input text--no-border" onBlur={() => handleBlur()}/>
+                    <StyledInput onBlur={() => handleBlur()}/>
                 )}
             </FormItem>
         </Form>

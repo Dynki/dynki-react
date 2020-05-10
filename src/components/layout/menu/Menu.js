@@ -20,6 +20,8 @@ const DynMenu = (props) => {
                 title={c.title}
                 icon={c.icon}
                 act={c.action}
+                tooltip={c.tooltip}
+                loadingBoards={props.loadingBoards}
                 selectedKeys={props.selectedKeys}
               />
             ))}

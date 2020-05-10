@@ -1,5 +1,30 @@
 import React from 'react';
 import { Form, Input, Button, Icon } from 'antd';
+import styles from 'styled-components';
+
+const NewRowButton = styles(Button)`
+    border-radius: 0px;
+    margin-top: 1px;
+    background-color: #3095DE;
+    color: #fff;
+    height: 40px;
+
+    :hover {
+        color: #ffffff;
+    }
+
+    :disabled{
+        background-color: #ffffff;
+        cursor: not-allowed!important;
+    }
+`;
+
+const StyledInput = styles(Input)`
+    :disabled{
+        background-color: #ffffff;
+        cursor: not-allowed!important;
+    }
+`;
 
 const FormItem = Form.Item;
 
@@ -21,16 +46,16 @@ const BNRForm = Form.create({})((props) => {
             <FormItem >
                 <div className="new-row">
                     {getFieldDecorator('newValue', { })(
-                        <Input placeholder="+ Create new row"/>
+                        <StyledInput disabled={!props.allowWrite} placeholder="+ Create new row"/>
                     )}
-                    <Button 
+                    <NewRowButton 
+                        disabled={!props.allowWrite}
                         htmlType="submit"
-                        className="new-row__btn"
                         style={{ backgroundColor: '#' + props.group.color }}
                     >
                         Create
                         {props.progress ? <Icon type="loading" /> : <Icon type="enter"/>}
-                    </Button>
+                    </NewRowButton>
                 </div>
             </FormItem>
         </Form>
