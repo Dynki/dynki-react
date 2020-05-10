@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
-import { detectBrowser } from '../core/BrowserSupport';
 
 const redirect = (pathname, Component) => {
   const urlPart = pathname.split('/')[1] ? pathname.split('/')[1].toLocaleLowerCase() : '';
@@ -41,13 +40,11 @@ export default function SecuredRoute ({
   signUpInProgress,
   ...rest
 }) {
-  const browser = detectBrowser();
   return (
 
     <Route
       {...rest}
       render={props =>
-        !browser.supported ? redirectUnsupported(location.pathname, <PreAuthComponent {...props} {...rest} />) :
         authenticated.uid && signUpInProgress === false ? (
           (domainChecked ?
             (domain 

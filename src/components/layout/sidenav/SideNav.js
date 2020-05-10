@@ -11,7 +11,7 @@ import SideNavBreadCrumb from './SideNavBreadCrumb';
 import authWrapper from '../../auth/AuthWrapper';
 
 import { getBoards, getBoard, newBoard } from '../../../store/actions/boardActions'; 
-import { getChannels, getChannel, newChannel } from '../../../store/actions/channelActions'; 
+// import { getChannels, getChannel, newChannel } from '../../../store/actions/channelActions'; 
 import { setDomain } from '../../../store/actions/authActions';
 import { getTeam } from '../../../store/actions/teamActions';
 
@@ -63,21 +63,22 @@ class SideNav extends React.Component {
             items = constructItems(this.props.boards);
         }
 
-        const constructChannelItems = (itemArr) => {
-            return itemArr.map(i => ({
-                id: i.id,
-                title: '# ' + i.title,
-                target: `/channel/${i.id}`,
-                action: () => this.loadChannel(i.id),
-            }));
-        }
-        let channelItems = [];
-        if (this.props.channels) {
-            channelItems = constructChannelItems(this.props.channels);
-        }
+        // const constructChannelItems = (itemArr) => {
+        //     return itemArr.map(i => ({
+        //         id: i.id,
+        //         title: '# ' + i.title,
+        //         target: `/channel/${i.id}`,
+        //         action: () => this.loadChannel(i.id),
+        //     }));
+        // }
+        // let channelItems = [];
+        // if (this.props.channels) {
+        //     channelItems = constructChannelItems(this.props.channels);
+        // }
 
         const menuItems = [
-            { key: 1, title: 'Channels', icon: 'message', action: newChannel(), live: true, items: channelItems, tooltip: 'New channel' },
+            { key: 1, title: 'Channels', icon: 'message', live: false },
+            // { key: 1, title: 'Channels', icon: 'message', action: newChannel(), live: true, items: channelItems, tooltip: 'New channel' },
             { key: 2, title: 'Boards', icon: 'schedule', action: newBoard(), live:true, items: items, tooltip: 'New board' },
             { key: 3, title: 'Projects', icon: 'rocket', live: false },
             { key: 4, title: 'Tags', icon: 'tags', live: false }
@@ -91,15 +92,15 @@ class SideNav extends React.Component {
         this.props.getBoard(id);
     }
 
-    loadChannel = (id) => {
-        this.props.history.push('/channel/' + id);
-        this.props.getChannel(id);
-    }
+    // loadChannel = (id) => {
+    //     this.props.history.push('/channel/' + id);
+    //     this.props.getChannel(id);
+    // }
 
     // Ensure the boards have been retrieved before rendering this component.
     componentWillMount() {
         this.props.getBoards();
-        this.props.getChannels();
+        // this.props.getChannels();
     }
 
     componentDidMount() {
@@ -116,7 +117,7 @@ class SideNav extends React.Component {
         await setDomain(e.key);
         await getTeam(e.key);
         await getBoards();
-        this.props.getChannels();
+        // this.props.getChannels();
         this.setState({ loadingTeam: false });
 
         if (this.props.boards && this.props.boards.length > 0) {
@@ -146,7 +147,7 @@ class SideNav extends React.Component {
                     isActiveSubscriber={isActiveSubscriber}
                 />
                 <Divider dashed={true} style={{ margin: '0px', marginTop: '4px' }}/>
-                { boards && channels ?
+                { boards ?
                     <DynMenu 
                         loadingBoards={loading}
                         menu={this.initialiseMenuItems()}
@@ -165,7 +166,7 @@ const mapStateToProps = (state) => {
       selectedKeys: state.boards.currentBoard ? [state.boards.currentBoard.id] : [],
       domainName: state.domain.name,
       boards: state.boards.boards,
-      channels: state.channel.channels,
+    //   channels: state.channel.channels,
       teams: state.teams.teams,
       team: state.teams.currentTeam
     }
@@ -176,8 +177,8 @@ const mapDispatchToProps = (dispatch) => {
         getTeam: (id) => dispatch(getTeam(id)),
         getBoards: () => dispatch(getBoards()),
         getBoard: (id) => dispatch(getBoard(id)),
-        getChannels: () => dispatch(getChannels()),
-        getChannel: (id) => dispatch(getChannel(id)),
+        // getChannels: () => dispatch(getChannels()),
+        // getChannel: (id) => dispatch(getChannel(id)),
         newBoard: () => dispatch(newBoard()),
         setDomain: (id) => dispatch(setDomain(id)),
     }
