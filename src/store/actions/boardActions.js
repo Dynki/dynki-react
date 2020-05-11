@@ -822,3 +822,137 @@ export const updateGroupOrder = (data) => {
     }
 }
 
+export const selectRow = rowId => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+
+        let selectedRows = getState().boards.selectedRows;
+        
+        if (selectedRows.includes(rowId)) {
+            dispatch({ type: 'SET_SELECTED_ROWS', payload: selectedRows.filter(r => r !== rowId) })
+        } else {
+            dispatch({ type: 'SET_SELECTED_ROWS', payload: [...getState().boards.selectedRows, rowId] })
+        }
+    }
+}
+
+export const clearSelectedRows = row => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+
+        dispatch({ type: 'SET_SELECTED_ROWS', payload: [] })
+
+    }
+}
+
+export const moveToGroup = destinationGroupId => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        try {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+    
+            const firebase = getFirebase();
+            const currentBoard = getState().boards.currentBoard;
+            const domainId = getState().domain.domainId;
+            const selectedRows = getState().boards.selectedRows;
+
+            const updatedBoard = _.cloneDeep(currentBoard);
+
+            // Loop through all groups and get the rows to move.
+            // Only take row if not already in destination group.
+            let rowsToMove = [];
+            updatedBoard.groups = updatedBoard.groups.map(g => {
+                if (g.id !== destinationGroupId) {
+                    // Loop through all rows in the group and add to array if selected.
+                    rowsToMove = [...rowsToMove, ...g.entities.filter(e => selectedRows.includes(e.id))]
+
+                    // Remove the row from the group if selected.
+                    g.entities = g.entities.filter(e => !selectedRows.includes(e.id))
+                }
+
+                return g
+            })
+
+            if (rowsToMove.length > 0) {
+    
+                updatedBoard.groups = updatedBoard.groups.map(g => {
+                    if (g.id === destinationGroupId) {
+                        if (!g.entities) {
+                            g.entities = [];    
+                        }
+        
+                        // Add the new row to the current board, this MUST include the columns too.
+                        rowsToMove.forEach(r => {
+                            g.entities.push(r);
+                        })
+                    }
+                    return g;
+                })
+            
+                delete updatedBoard.unsubscribe;
+    
+                const data = JSON.parse(JSON.stringify(updatedBoard));
+        
+                await firebase.firestore()
+                    .collection('domains')
+                    .doc(domainId)
+                    .collection('boards')
+                    .doc(data.id)
+                    .set(data);
+
+                    dispatch({ type: 'SET_SELECTED_ROWS', payload: [] })
+            }
+    
+        } catch (error) {
+            console.log(error)
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to move the rows' });
+            
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+        }
+
+    }
+}
+
+export const deleteSelectedRows = () => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        try {
+            
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+    
+            const firebase = getFirebase();
+            const currentBoard = getState().boards.currentBoard;
+            const domainId = getState().domain.domainId;
+            const selectedRows = getState().boards.selectedRows;
+
+            const updatedBoard = _.cloneDeep(currentBoard);
+
+            // Loop through all groups and get the rows to move.
+            // Only take row if selected.
+            updatedBoard.groups = updatedBoard.groups.map(g => {
+                // Remove the row from the group if selected.
+                g.entities = g.entities.filter(e => !selectedRows.includes(e.id))
+
+                return g
+            })
+        
+            delete updatedBoard.unsubscribe;
+
+            const data = JSON.parse(JSON.stringify(updatedBoard));
+    
+            await firebase.firestore()
+                .collection('domains')
+                .doc(domainId)
+                .collection('boards')
+                .doc(data.id)
+                .set(data);
+
+                dispatch({ type: 'SET_SELECTED_ROWS', payload: [] })
+    
+        } catch (error) {
+            console.log(error)
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to move the rows' });
+            
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+        }
+
+    }
+}

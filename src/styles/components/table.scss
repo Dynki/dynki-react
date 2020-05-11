@@ -201,12 +201,12 @@ $mariner: #2b82c1;
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             -webkit-transition: width 0.3s; /* For Safari 3.1 to 6.0 */
             transition: width 0.3s;
 
             &--active {
-                width: 20px;
+                width: 50px;
             }
 
             &:hover {

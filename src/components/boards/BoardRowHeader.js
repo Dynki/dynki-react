@@ -162,7 +162,7 @@ class BoardRowHeader extends React.Component {
                         colIdx={idx}>
                     </BoardRowHeaderForm>
                     {idx > 0 ? 
-                        <BoardColumnMenu columns={this.props.board.columns}/>
+                        <BoardColumnMenu columns={this.props.board.columns} column={c} onRemoveColumn={this.props.removeColumn}/>
                         : null
                     }
                 </Column>

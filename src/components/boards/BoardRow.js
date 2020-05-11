@@ -1,8 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
+import { connect } from 'react-redux';
+import { Checkbox, Tooltip, Icon } from 'antd';
+
 import BoardRowForm from './BoardRowForm';
 import BoardRowMenu from './BoardRowMenu';
-import { Tooltip, Icon } from 'antd';
+import { selectRow } from '../../store/actions/boardActions';
 import SelectCellModal from './cellTypes/Select/SelectCellModal';
 import DateCell from './cellTypes/Date/DateCell';
 import DateDueCell from './cellTypes/Date/DateDueCell';
@@ -106,14 +109,18 @@ class BoardRow extends React.Component {
                     {isFirst ?
                                 <div
                                     {...this.props.provided.dragHandleProps}
-                                    className={this.state.hovering ? "draghandle draghandle--active" : "draghandle"}
+                                    className={this.state.hovering || this.props.selectedRows.includes(this.props.rowId) ? "draghandle draghandle--active" : "draghandle"}
                                     style={{ backgroundColor: '#' + this.props.board.groups[this.props.groupKey].color }}
                                     tabIndex="0">
-                                    {this.state.hovering ? 
+                                    {this.state.hovering || this.props.selectedRows.includes(this.props.rowId) ? 
                                         <React.Fragment>
                                             <Tooltip title="Drag me">
                                                 <Icon type="more" />
                                             </Tooltip>
+                                            <Checkbox 
+                                                checked={this.props.selectedRows.includes(this.props.rowId)}
+                                                onChange={() => this.props.selectRow(this.props.rowId)}
+                                            />
                                         </React.Fragment>
                                         :
                                         null
@@ -134,4 +141,17 @@ class BoardRow extends React.Component {
     }
 }
 
-export default BoardRow;
+export const mapStateToProps = (state) => {
+    return{
+      board: state.boards.currentBoard,
+      selectedRows: state.boards.selectedRows
+    }
+}
+
+export const mapDispatchToProps = (dispatch) => {
+    return{
+      selectRow: rowId => dispatch(selectRow(rowId))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BoardRow);
