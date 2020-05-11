@@ -6,7 +6,8 @@ const initialState = {
     currentBoardRoles: null,
     firstLoad: true,
     noBoards: true,
-    boardsChecked: false
+    boardsChecked: false,
+    selectedRows: [] 
 }
 
 const boardReducer = (state = initialState, action) => {
@@ -24,7 +25,13 @@ const boardReducer = (state = initialState, action) => {
                 currentBoard: _.cloneDeep(action.payload),
                 boardsChecked: true,
                 noBoards: false,
-                firstLoad: false
+                firstLoad: false,
+                selectedRows: []
+            }
+        case 'SET_SELECTED_ROWS':
+            return {
+                ...state,
+                selectedRows: action.payload
             }
         case 'SET_CURRENT_BOARD_ROLES':
 
