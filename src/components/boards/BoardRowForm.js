@@ -22,10 +22,11 @@ const BRForm = Form.create({
     const handleSubmit = (e) => {
         if (e) e.preventDefault();
 
+
         props.form.validateFields((err, values) => {
-            if (!err) {
+            if (!err && values.columnValue !== undefined) {
+                props.onChange(values);
             }
-            props.onChange(values);
         });
     }
 

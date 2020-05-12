@@ -9,6 +9,7 @@ import { selectRow } from '../../store/actions/boardActions';
 import SelectCellModal from './cellTypes/Select/SelectCellModal';
 import DateCell from './cellTypes/Date/DateCell';
 import DateDueCell from './cellTypes/Date/DateDueCell';
+import NumberForm from './cellTypes/Number/NumberForm';
 
 class BoardRow extends React.Component {
 
@@ -49,9 +50,22 @@ class BoardRow extends React.Component {
                     groupKey={this.props.groupKey}
                     progress={this.props.progress}>
                 </BoardRowForm>;
+            case 'number': 
+                return <NumberForm
+                   allowWrite={allowWrite}
+                   onUpdateBoard={this.props.onUpdateBoard}
+                   board={this.props.board}
+                   rowIdx={this.props.rowIdx}
+                   rowId={this.props.rowId}
+                   colIdx={idx}
+                   col={col}
+                   modelName={col.model}
+                   groupKey={this.props.groupKey}
+                   progress={this.props.progress}>
+               </NumberForm>;
 
             case 'date': 
-            return <DateCell
+                return <DateCell
                 allowWrite={allowWrite}
                 onUpdateBoard={this.props.onUpdateBoard}
                 board={this.props.board}
@@ -64,7 +78,7 @@ class BoardRow extends React.Component {
                 >
             </DateCell>;
             case 'datedue': 
-            return <DateDueCell
+                return <DateDueCell
                 allowWrite={allowWrite}
                 onUpdateBoard={this.props.onUpdateBoard}
                 board={this.props.board}

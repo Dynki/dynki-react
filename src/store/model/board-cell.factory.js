@@ -8,6 +8,7 @@ class BaseCell {
         this.class = undefined;
         this.title = title;
         this.values = undefined;
+        this.properties = undefined;
     }
 }
 
@@ -16,6 +17,19 @@ class TextCell extends BaseCell {
         super(model, title);
         this.class = 'text';
         this.title = 'text';
+    }
+}
+
+class NumberCell extends BaseCell {
+    constructor(model, title) {
+        super(model, title);
+        this.class = 'number';
+        this.title = 'number';
+
+        this.properties = {
+            alignment: 'L',
+            unit: ''
+        }
     }
 }
 
@@ -59,6 +73,8 @@ export class CellFactory {
         switch (type) {
             case 'text':
                 return new TextCell(model, title);
+            case 'number':
+                return new NumberCell(model, title);
             case 'select':
                 return new SelectCell(model, title);
             case 'date':
