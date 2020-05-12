@@ -34,6 +34,9 @@ class BoardRowHeaderMenu extends React.Component {
           <Menu.Item key="text">
             <StyledLink className="table_menu__link"><Icon type="form" />Text</StyledLink>
           </Menu.Item>
+          <Menu.Item key="number">
+            <StyledLink className="table_menu__link"><Icon type="number" />Number</StyledLink>
+          </Menu.Item>
           <Menu.Item key="select">
             <StyledLink className="table_menu__link"><Icon type="arrow-down" />Select</StyledLink>
           </Menu.Item>
