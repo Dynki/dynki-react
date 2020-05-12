@@ -17,7 +17,7 @@ const BoardTable = (props) => {
                         <BoardRowHeader allowWrite={allowWrite} groupKey={groupKey} onUpdateBoard={props.onUpdateBoard} board={props.board}/>
                     </thead>
                     <tbody ref={provided.innerRef} {...provided.droppableProps}
-                        style={{ paddingBottom: snapshot.isDraggingOver ? '35px': '7px' }}
+                        style={{ paddingBottom: snapshot.isDraggingOver ? '35px': '0px' }}
                     >
                         
                         {!group.collapsed && group.entities ? group.entities.map((r, idx) => (

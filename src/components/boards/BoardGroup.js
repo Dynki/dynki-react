@@ -1,6 +1,7 @@
 import React from 'react';
 import BoardNewRow from './BoardNewRow';
 import BoardTable from './BoardTable';
+import BoardGroupSummary from './BoardGroupSummary';
 
 const BoardGroup = (props) => {
 
@@ -15,6 +16,11 @@ const BoardGroup = (props) => {
             groupKey={groupKey} 
             onUpdateBoard={onUpdateBoard} 
             progress={progress}
+        />
+        <BoardGroupSummary
+            board={board} 
+            group={group} 
+            groupKey={groupKey} 
         />
         {!group.collapsed ?        
             <BoardNewRow 
