@@ -59,6 +59,7 @@ class BoardRow extends React.Component {
                    rowId={this.props.rowId}
                    colIdx={idx}
                    col={col}
+                   numberProps={col.properties}
                    modelName={col.model}
                    groupKey={this.props.groupKey}
                    progress={this.props.progress}>
