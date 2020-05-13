@@ -36,12 +36,11 @@ const Container = styles.div`
     width: 100%;
 `
 
-const NumberForm = ({ allowWrite, board, col, groupKey, modelName, onUpdateBoard, rowId }) => {
+const NumberForm = ({ allowWrite, board, col, groupKey, modelName, numberProps, onUpdateBoard, rowId }) => {
     const [focussed, setFocussed] = React.useState(false)
     const [dirty, setDirty] = React.useState(false)
     const [idx, setIdx] = React.useState(undefined)
     const [value, setValue] = React.useState(undefined)
-    const [numberProps] = React.useState(col.properties)
     const containerRef = React.useRef(null)
 
     useOutsideClick(containerRef, () => {
@@ -56,8 +55,8 @@ const NumberForm = ({ allowWrite, board, col, groupKey, modelName, onUpdateBoard
 
         const colValue = board && board.groups[groupKey] 
                 && board.groups[groupKey].entities[rowIdx] 
-                && board.groups[groupKey].entities[rowIdx][modelName] ? 
-                board.groups[groupKey].entities[rowIdx][modelName] : 0
+                && board.groups[groupKey].entities[rowIdx][modelName] !== undefined ? 
+                board.groups[groupKey].entities[rowIdx][modelName] : undefined
 
         setValue(colValue)
     }, [])
@@ -70,15 +69,21 @@ const NumberForm = ({ allowWrite, board, col, groupKey, modelName, onUpdateBoard
     const handleBlur = () => {
         if (dirty) {
             setFocussed(false)
+            console.log('set value', value)
             board.groups[groupKey].entities[idx][modelName] = value
             handleSubmit()
         }
     }
 
-    const label = value ? numberProps.alignment === 'L' 
-        ? `${numberProps.unit} ${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}` 
-        : `${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${numberProps.unit} `
-        : '0'
+    const displayValue = value !== undefined && value !== null ? value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : ''
+
+    let label = numberProps.alignment === 'L' 
+        ? `${numberProps.unit === 'None' ? '' : numberProps.unit} ${displayValue}` 
+        : `${displayValue} ${numberProps.unit === 'None' ? '' : numberProps.unit}`
+
+    if (displayValue === '') {
+        label = ''
+    }
     
     return (
         <Container ref={containerRef} onClick={() => setFocussed(true)}>

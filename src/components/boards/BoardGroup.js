@@ -17,20 +17,22 @@ const BoardGroup = (props) => {
             onUpdateBoard={onUpdateBoard} 
             progress={progress}
         />
-        <BoardGroupSummary
-            board={board} 
-            group={group} 
-            groupKey={groupKey} 
-        />
         {!group.collapsed ?        
-            <BoardNewRow 
-                allowWrite={allowWrite}
-                group={group} 
-                groupKey={groupKey}
-                onUpdateBoard={onUpdateBoard} 
-                onNewRow={onNewRow} 
-                progress={progress} 
-            />
+            <React.Fragment>
+                <BoardGroupSummary
+                    board={board} 
+                    group={group} 
+                    groupKey={groupKey} 
+                />
+                <BoardNewRow 
+                    allowWrite={allowWrite}
+                    group={group} 
+                    groupKey={groupKey}
+                    onUpdateBoard={onUpdateBoard} 
+                    onNewRow={onNewRow} 
+                    progress={progress} 
+                />
+            </React.Fragment>
             : null
         }
     </React.Fragment>)

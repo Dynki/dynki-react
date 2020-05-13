@@ -462,6 +462,37 @@ export const updateColumnValue = (valueKey, newTitle, columnModel) => {
     }
 }
 
+export const updateNumberProps = (col, properties) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type: 'SET_PROGRESS', payload: true });
+
+        const firebase = getFirebase();
+        const domainId = getState().domain.domainId;
+        const currentBoard = getState().boards.currentBoard;
+
+        currentBoard.columns = currentBoard.columns.map(c => {
+            if (c.model === col.model) {
+                c.properties = properties
+            }
+            return c;
+        });
+
+        dispatch({ type: 'SET_CURRENT_BOARD', payload: currentBoard });
+
+        delete currentBoard['unsubscribe'];
+
+        await firebase.firestore()
+        .collection('domains')
+        .doc(domainId)
+        .collection('boards')
+        .doc(currentBoard.id)
+        .set(currentBoard);
+
+        dispatch({ type: 'SET_PROGRESS', payload: false });
+    }
+}
+
+
 export const updateColumn = (updatedColumn) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         dispatch({ type: 'SET_PROGRESS', payload: true });

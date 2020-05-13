@@ -28,7 +28,8 @@ class NumberCell extends BaseCell {
 
         this.properties = {
             alignment: 'L',
-            unit: ''
+            unit: 'None',
+            formula: 'Sum'
         }
     }
 }
