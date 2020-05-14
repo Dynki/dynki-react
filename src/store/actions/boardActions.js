@@ -987,3 +987,42 @@ export const deleteSelectedRows = () => {
 
     }
 }
+
+export const updateSelectedPeople = (selectedPeople, model, rowId, groupKey) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        
+        try {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+    
+            console.log('groupId',groupKey)
+
+            const firebase = getFirebase();
+            const domainId = getState().domain.domainId;
+            const currentBoard = getState().boards.currentBoard;
+    
+            currentBoard.groups[groupKey].entities = currentBoard.groups[groupKey].entities.map(e => {
+                // Is this the row we wish to update?
+                if (e.id === rowId) {
+                    e[model] = selectedPeople;
+                }
+    
+                return e;
+            });
+    
+            delete currentBoard['unsubscribe'];
+    
+            await firebase.firestore()
+            .collection('domains')
+            .doc(domainId)
+            .collection('boards')
+            .doc(currentBoard.id)
+            .set(currentBoard);
+    
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to update the board' });
+            console.log(error)
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+        }
+    }
+}

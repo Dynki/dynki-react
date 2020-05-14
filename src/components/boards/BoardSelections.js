@@ -12,6 +12,7 @@ const Container = styles.div`
     position: fixed;
     right: 1px;
     width: 500px;
+    z-index: 100;
 
     .ant-card-body {
         padding: 5px;

@@ -46,6 +46,9 @@ class BoardRowHeaderMenu extends React.Component {
           <Menu.Item key="datedue">
             <StyledLink className="table_menu__link"><Icon type="calendar" />Date Due</StyledLink>
           </Menu.Item>
+          <Menu.Item key="people">
+            <StyledLink className="table_menu__link"><Icon type="usergroup-add" />People</StyledLink>
+          </Menu.Item>
         </Menu>
     );
 
