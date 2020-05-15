@@ -5,18 +5,23 @@ import NumberModal from './cellTypes/Number/NumberModal'
 const Container = styles.div`
     display: flex;
     flex-direction: row;
-    padding-right: 49px;
-    margin-left: 1px;
+    padding-right: 2px;
+    margin-top: 4px;
+    margin-left: auto;
     width: 100%;
 `
 
 const FirstBlank = styles.div`
+    flex: 1 1;
+    min-width: 369px;
     width: 100%;
 `
 
 const Blank = styles.div`
-    min-width: 173.5px;
-    width: 173.5px;
+    min-width: 174px;
+    width: 174px;
+
+    margin-right: ${props => props.isLast ? '36px;' : '0px;'}
 `
 const Total = styles.div`
     align-items: center;
@@ -25,20 +30,27 @@ const Total = styles.div`
     border: solid;
     border-width: 1px;
     border-color: #CFD3D7;
-    border-top: none;
+
     border-right: ${props => props.hasNext ? 'none;' : 'solid;'}
     border-right-width: 1px;
     border-right-color: #CFD3D7;
 
+    border-top: solid;
+    border-top-width: 1px;
+    border-top-color: #CFD3D7;
+
     display: flex;    
+    flex: 0 1;
     flex-direction: column;
     font-weight: bold;
     justify-content: center;
     align-items: center;
     height: 44px;
-    min-width: 174.5px;
+    min-width: 174px;
+    max-width: 174px;
     padding: 5px;
-    width: 174.5px;
+    margin-right: ${props => props.isLast ? '36px;' : '0px;'}
+    width: 174px;
 `
 
 const TotalValue = styles.div`
@@ -111,6 +123,8 @@ const BoardGroupSummary = ({ board, group, groupKey }) => {
                     return <FirstBlank key={c.model}></FirstBlank>
                 }
 
+                const isLast = colIdx + 1 === board.columns.length 
+
                 let returnEl
 
                 if (c.class === 'number') {
@@ -154,7 +168,7 @@ const BoardGroupSummary = ({ board, group, groupKey }) => {
 
                     returnEl = (
                         <NumberModal numProps={c.properties} col={c} key={c.model}>
-                            <Total hasNext={hasNext}>
+                            <Total hasNext={hasNext} isLast={isLast}>
                                 <TotalValue>
                                     {label}
                                 </TotalValue>
@@ -166,7 +180,7 @@ const BoardGroupSummary = ({ board, group, groupKey }) => {
                     )
                     
                 } else {
-                    returnEl = <Blank key={c.model}/>
+                    returnEl = <Blank key={c.model} isLast={isLast}/>
                 }
 
                 return returnEl
