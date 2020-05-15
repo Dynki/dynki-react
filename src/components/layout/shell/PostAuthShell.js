@@ -61,15 +61,12 @@ class PostAuthShell extends React.Component {
             return;
         }
 
-        console.log('result', result);
         if (result.type === 'reorder-column') {
-            console.log('Cell recordered');
             this.props.updateColumnOrder(result);
             return;
         }
 
         if (result.type === 'reorder-group') {
-            console.log('Group recordered');
             this.props.updateGroupOrder(result);
             return;
         }

@@ -793,8 +793,6 @@ export const updateColumnOrder = (data) => {
 
         currentBoard.columns = reorder(currentBoard.columns, data.source.index, data.destination.index);
 
-        console.log('setting current board', currentBoard);
-
         dispatch({ type: 'SET_CURRENT_BOARD', payload: currentBoard });
 
         delete currentBoard['unsubscribe'];
@@ -835,8 +833,6 @@ export const updateGroupOrder = (data) => {
         // });
 
         currentBoard.groups = reorder(currentBoard.groups, data.source.index, data.destination.index);
-
-        console.log('setting current board', currentBoard);
 
         dispatch({ type: 'SET_CURRENT_BOARD', payload: currentBoard });
 
@@ -994,8 +990,6 @@ export const updateSelectedPeople = (selectedPeople, model, rowId, groupKey) => 
         try {
             dispatch({ type: 'SET_PROGRESS', payload: true });
     
-            console.log('groupId',groupKey)
-
             const firebase = getFirebase();
             const domainId = getState().domain.domainId;
             const currentBoard = getState().boards.currentBoard;

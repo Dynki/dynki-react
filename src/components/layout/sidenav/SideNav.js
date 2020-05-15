@@ -112,8 +112,6 @@ class SideNav extends React.Component {
 
         this.setState({ loadingTeam: true });
 
-        console.log('load new team')
-
         await setDomain(e.key);
         await getTeam(e.key);
         await getBoards();

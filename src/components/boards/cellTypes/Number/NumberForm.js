@@ -69,7 +69,6 @@ const NumberForm = ({ allowWrite, board, col, groupKey, modelName, numberProps, 
     const handleBlur = () => {
         if (dirty) {
             setFocussed(false)
-            console.log('set value', value)
             board.groups[groupKey].entities[idx][modelName] = value
             handleSubmit()
         }

@@ -10,7 +10,7 @@ const { Option } = Select
 const PeopleSelector = styles.div`
     display: flex;
     flex-direction: column;
-    min-width: 200px;
+    min-width: 300px;
     padding: 10px;
 `
 
@@ -35,8 +35,26 @@ const ChildContainer = styles.div`
     min-width: 174px;
 `
 
+const AvatarsContainer = styles.div`
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+`
+
+const InlineAvatar = styles(Avatar)`
+    background-color: ${props => props.color + ';'};
+    border: solid;
+    border-width: 1px;
+    border-color: #EFF1F3;
+
+    color: #ffffff;
+
+    margin-right: 5px;
+`
+
 const StyledAvatar = styles(Avatar)`
-    background-color: #3095DE;
+    background-color: ${props => props.color + ';'};
     border: solid;
     border-width: 1px;
     border-color: #EFF1F3;
@@ -44,10 +62,37 @@ const StyledAvatar = styles(Avatar)`
     color: #ffffff;
 
     position: relative;
-    left: ${props => props.offset === 'true' ? '-9px;' : '0px;'}
+    ${props => props.idx === 0 ? 'margin-left: auto;' : ''}
+    left: ${props => props.offset === 'true' ? `-${9 * props.idx}px;` : '0px;'}
+`
+
+const StyledOption = styles(Option)`
+    height: 100px;
+    
+    .ant-select-selection__choice__content {
+        min-height: 100px;
+    }
+`
+
+const StyledSelect = styles(Select)`
+    
+    & li {
+        height: 35px!important;
+        line-height: 31px!important;
+    }
+
+    & .ant-select-selection__placeholder {
+        margin-top: -4px!important; 
+    }
 `
 
 const PeopleModal = ({ groupKey, members, model, rowId, selectedPeople, updateSelectedPeople }) => {
+
+    const avatarColors = ['#141b41ff','#306bacff','#6f9cebff','#98b9f2ff','#ED7D3A','#4e6766ff','#5ab1bbff','#a5c882ff',
+        '#f7dd72ff','#b66d0dff','#ea526fff','#e76b74ff','#d7af70ff','#937d64ff','#585b56ff','#731dd8ff','#48a9a6ff',
+        '#e4dfdaff','#9cf6f6ff','#daa588ff','#f06543ff','#31393cff','#fdca40ff','#f79824ff','#b9d6f2ff','#246eb9ff',
+        '#4cb944ff']
+
 
     const [visible, setVisible] = React.useState(false)
     const [selected, setSelectted] = React.useState(selectedPeople ? selectedPeople : [])
@@ -73,12 +118,12 @@ const PeopleModal = ({ groupKey, members, model, rowId, selectedPeople, updateSe
     const overlay = () => {
         return (
             <PeopleSelector>
-                 <Select
+                 <StyledSelect
                     autoFocus={true}
-                    labelInValue
-                    notFoundContent={<div>Nobody here</div>}
                     filterOption={false}
+                    labelInValue
                     mode="multiple"
+                    notFoundContent={<div>Nobody here</div>}
                     onSearch={filterMembers}
                     onChange={handleChange}
                     placeholder="Search people"
@@ -86,9 +131,17 @@ const PeopleModal = ({ groupKey, members, model, rowId, selectedPeople, updateSe
                     value={value}
                 >
                     {options.map(d => (
-                        <Option key={d.uid}>{d.email}</Option>
+                        <StyledOption key={d.uid}>
+                            <InlineAvatar 
+                                size="small" 
+                                color={avatarColors[d.email.charCodeAt() - 96]}
+                            >
+                                {d.email.charAt(0).toLocaleUpperCase()}
+                            </InlineAvatar>
+                            {d.email}
+                        </StyledOption>
                     ))}
-                </Select>
+                </StyledSelect>
             </PeopleSelector>
         )
     }
@@ -101,6 +154,8 @@ const PeopleModal = ({ groupKey, members, model, rowId, selectedPeople, updateSe
         setVisible(visible)
     };
 
+    const avatarsToDisplay = selected.slice(0, 5)
+
     return (
         <Tooltip
             visible={visible}
@@ -109,14 +164,35 @@ const PeopleModal = ({ groupKey, members, model, rowId, selectedPeople, updateSe
             ref={saveTooltip}
             onVisibleChange={onVisibleChange}
             trigger="click"
-            placement="bottom"
+            placement="bottomLeft"
         >
             <ChildContainer onClick={onClick} >
-                {selected.map((p, i) => {
-                    return <Tooltip title={p.email} placement="left" key={p.uid}>
-                        <StyledAvatar offset={i > 0 ? 'true' : 'false'}>{p.email.charAt(0).toLocaleUpperCase()}</StyledAvatar>
+                <AvatarsContainer>
+                    <div style={{ 'minWidth': `${(avatarsToDisplay.length-1) * 5}px` }}/>
+                    {avatarsToDisplay.slice(0,4).map((p, i) => {
+                        return <Tooltip title={p.email} placement="left" key={p.uid}>
+                            <StyledAvatar 
+                                color={avatarColors[p.email.charCodeAt() - 96]}
+                                offset={i > 0 ? 'true' : 'false'}
+                                idx={i}
+                            >
+                                {p.email.charAt(0).toLocaleUpperCase()}
+                            </StyledAvatar>
+                        </Tooltip>
+                    })}
+                    {avatarsToDisplay.length > 4 ? 
+                        <Tooltip title="More than 4 people selected" placement="left" key="endofavatars">
+                        <StyledAvatar 
+                            color={'#CCCCCC'}
+                            offset={'true'}
+                            idx={4}
+                            size="small"
+                        >
+                            +
+                        </StyledAvatar>
                     </Tooltip>
-                })}
+                    : null}
+                </AvatarsContainer>
             </ChildContainer>
         </Tooltip>
     )
