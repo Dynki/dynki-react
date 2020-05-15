@@ -34,6 +34,14 @@ class NumberCell extends BaseCell {
     }
 }
 
+class PeopleCell extends BaseCell {
+    constructor(model, title) {
+        super(model, title);
+        this.class = 'people';
+        this.title = 'people';
+    }
+}
+
 class SelectCell extends BaseCell {
 
     constructor(model, title) {
@@ -82,6 +90,8 @@ export class CellFactory {
                 return new DateCell(model, title);
             case 'datedue':
                 return new DateDueCell(model, title);
+            case 'people':
+                return new PeopleCell(model, title);
             default:
                 return null;
         }
