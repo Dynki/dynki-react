@@ -1,8 +1,15 @@
 import React from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+import styles from 'styled-components';
 
 import BoardRowHeader from './BoardRowHeader';
 import BoardRow from './BoardRow';
+import BoardGroupSummary from './BoardGroupSummary';
+
+const TableFooter = styles.tfoot`
+    display: flex;
+    flex-direction row;
+`
 
 const BoardTable = (props) => {
 
@@ -43,6 +50,14 @@ const BoardTable = (props) => {
                         )) : null}
                         {provided.placeHolder}
                     </tbody>
+                    <TableFooter>
+                        <BoardGroupSummary
+                            board={props.board} 
+                            group={props.group} 
+                            groupKey={props.groupKey} 
+                        />
+
+                    </TableFooter>
                 </React.Fragment>
         </table>        
         )}

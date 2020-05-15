@@ -1,7 +1,6 @@
 import React from 'react';
 import BoardNewRow from './BoardNewRow';
 import BoardTable from './BoardTable';
-import BoardGroupSummary from './BoardGroupSummary';
 
 const BoardGroup = (props) => {
 
@@ -19,11 +18,6 @@ const BoardGroup = (props) => {
         />
         {!group.collapsed ?        
             <React.Fragment>
-                <BoardGroupSummary
-                    board={board} 
-                    group={group} 
-                    groupKey={groupKey} 
-                />
                 <BoardNewRow 
                     allowWrite={allowWrite}
                     group={group} 
