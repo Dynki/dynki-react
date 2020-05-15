@@ -18,9 +18,9 @@ const FirstBlank = styles.div`
 `
 
 const Blank = styles.div`
-    min-width: 174px;
-    width: 174px;
+    min-width: 175px;
 
+    width: ${props => props.isLast ? '176px;' : '174.5px;'}
     margin-right: ${props => props.isLast ? '36px;' : '0px;'}
 `
 const Total = styles.div`
