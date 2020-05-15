@@ -9,6 +9,18 @@ import BoardGroupSummary from './BoardGroupSummary';
 const TableFooter = styles.tfoot`
     display: flex;
     flex-direction row;
+
+    & tr {
+        display: flex;
+        flex-direction row;
+        width: 100%;
+    }
+
+    & td {
+        display: flex;
+        flex-direction row;
+        width: 100%;
+    }
 `
 
 const BoardTable = (props) => {
@@ -51,12 +63,15 @@ const BoardTable = (props) => {
                         {provided.placeHolder}
                     </tbody>
                     <TableFooter>
-                        <BoardGroupSummary
-                            board={props.board} 
-                            group={props.group} 
-                            groupKey={props.groupKey} 
-                        />
-
+                        <tr>
+                            <td>
+                                <BoardGroupSummary
+                                    board={props.board} 
+                                    group={props.group} 
+                                    groupKey={props.groupKey} 
+                                />
+                            </td>
+                        </tr>
                     </TableFooter>
                 </React.Fragment>
         </table>        
