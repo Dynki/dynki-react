@@ -11,6 +11,7 @@ import DateCell from './cellTypes/Date/DateCell';
 import DateDueCell from './cellTypes/Date/DateDueCell';
 import NumberForm from './cellTypes/Number/NumberForm';
 import PeopleModal from './cellTypes/People/PeopleModal';
+import TimerModal from './cellTypes/Timer/TimerModal';
 
 class BoardRow extends React.Component {
 
@@ -72,6 +73,13 @@ class BoardRow extends React.Component {
                     rowId={this.props.rowId}
                     groupKey={this.props.groupKey}
                     selectedPeople={rowValue}
+                />
+            case 'timer': 
+                return <TimerModal
+                    model={col.model}
+                    rowId={this.props.rowId}
+                    groupKey={this.props.groupKey}
+                    rowValue={rowValue}
                 />
             case 'date': 
                 return <DateCell

@@ -1,5 +1,6 @@
 import newGuid from '../utils/guid';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 import { CellFactory } from '../model/board-cell.factory';
 import { Boards } from '../model/Boards';
 import notifiy from '../../components/notifications/Notification';
@@ -311,7 +312,6 @@ export const removeRow = (rowIdxToRemove, groupId) => {
         }
     }
 }
-
 
 export const addColumn = (columnType) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
@@ -998,6 +998,128 @@ export const updateSelectedPeople = (selectedPeople, model, rowId, groupKey) => 
                 // Is this the row we wish to update?
                 if (e.id === rowId) {
                     e[model] = selectedPeople;
+                }
+    
+                return e;
+            });
+    
+            delete currentBoard['unsubscribe'];
+    
+            await firebase.firestore()
+            .collection('domains')
+            .doc(domainId)
+            .collection('boards')
+            .doc(currentBoard.id)
+            .set(currentBoard);
+    
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to update the board' });
+            console.log(error)
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+        }
+    }
+}
+
+export const startATimer = (model, rowId, groupKey) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        
+        try {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+    
+            const firebase = getFirebase();
+            const domainId = getState().domain.domainId;
+            const currentBoard = getState().boards.currentBoard;
+    
+            currentBoard.groups[groupKey].entities = currentBoard.groups[groupKey].entities.map(e => {
+                // Is this the row we wish to update?
+                if (e.id === rowId) {
+                    if (e[model] !== undefined && e[model] !== null) {
+                        if (!e[model].running) {
+
+                            const newStart = moment()
+                            // const startToLog = moment(e[model].startedAt)
+                            // const endToLog = moment()
+                            // const durationToLog = moment.duration(endToLog.diff(startToLog)).asMilliseconds()
+
+                            e[model] = {
+                                running: true,
+                                startedAt: newStart.toISOString(),
+                                timerValues: e[model].timerValues,
+                                manualEntries: e[model].manualEntries,
+                                totalDuration: e[model].totalDuration
+                            }
+                        }
+                    } else {
+                        e[model] = {
+                            running: true,
+                            startedAt: moment.now(),
+                            timerValues: [],
+                            manualEntries: [],
+                            totalDuration: 0
+                        }
+                    
+                    }
+                }
+    
+                return e;
+            });
+    
+            delete currentBoard['unsubscribe'];
+    
+            await firebase.firestore()
+            .collection('domains')
+            .doc(domainId)
+            .collection('boards')
+            .doc(currentBoard.id)
+            .set(currentBoard);
+    
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to update the board' });
+            console.log(error)
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+        }
+    }
+}
+
+export const stopATimer = (model, rowId, groupKey) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        
+        try {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+    
+            const firebase = getFirebase();
+            const domainId = getState().domain.domainId;
+            const currentBoard = getState().boards.currentBoard;
+    
+            currentBoard.groups[groupKey].entities = currentBoard.groups[groupKey].entities.map(e => {
+                // Is this the row we wish to update?
+                if (e.id === rowId) {
+                    if (e[model] !== undefined && e[model] !== null) {
+                        if (e[model].running) {
+
+                            const newStart = moment()
+                            const startToLog = moment(e[model].startedAt)
+                            const endToLog = moment()
+                            const durationToLog = moment.duration(endToLog.diff(startToLog)).asMilliseconds()
+
+                            e[model] = {
+                                running: false,
+                                startedAt: newStart.toISOString(),
+                                timerValues: [
+                                    ...e[model].timerValues, 
+                                    { 
+                                        start: startToLog.toISOString(),
+                                        end: endToLog.toISOString(),
+                                        duration: durationToLog
+                                    }
+                                ],
+                                manualEntries: e[model].manualEntries,
+                                totalDuration: e[model].totalDuration + durationToLog
+                            }
+                        }
+                    }
                 }
     
                 return e;

@@ -119,7 +119,7 @@ const PeopleModal = ({ groupKey, members, model, rowId, selectedPeople, updateSe
         return (
             <PeopleSelector>
                  <StyledSelect
-                    autoFocus={true}
+                    // autoFocus={true}
                     filterOption={false}
                     labelInValue
                     mode="multiple"

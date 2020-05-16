@@ -12,6 +12,7 @@
     "history": "^4.10.1",
     "jsvat": "^2.1.4",
     "lodash": "^4.17.11",
+    "moment": "^2.25.3",
     "node-sass": "^4.13.1",
     "react": "^16.8.3",
     "react-app-polyfill": "^1.0.6",

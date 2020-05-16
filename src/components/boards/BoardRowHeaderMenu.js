@@ -49,7 +49,10 @@ class BoardRowHeaderMenu extends React.Component {
           <Menu.Item key="people">
             <StyledLink className="table_menu__link"><Icon type="usergroup-add" />People</StyledLink>
           </Menu.Item>
-        </Menu>
+          <Menu.Item key="timer">
+            <StyledLink className="table_menu__link"><Icon type="hourglass" />Timer</StyledLink>
+          </Menu.Item>
+      </Menu>
     );
 
     render() {
