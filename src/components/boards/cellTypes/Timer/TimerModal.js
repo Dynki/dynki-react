@@ -1,11 +1,14 @@
 import React from "react"
-import { Icon, Tooltip, Typography } from 'antd'
+import { Icon, Table, Tooltip, Typography, Divider } from 'antd'
 import { connect } from 'react-redux'
 import * as moment from 'moment'
 import styles from 'styled-components'
+import * as _ from 'lodash'
 
 import { startATimer, stopATimer } from '../../../../store/actions/boardActions'
+import TimerLogs from "./TimerLogs"
 
+const { Column, } = Table;
 const { Text } = Typography
 
 const ChildContainer = styles.div`
@@ -59,6 +62,25 @@ const PauseIcon = styles(Icon)`
     }
 `
 
+const ModalContainer = styles.div`
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-bottom: 15px;
+    min-width: 374px;
+    padding: 15px;
+`
+const CurrentLog = styles.div``
+
+const PreviousLogs = styles.div`
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-bottom: 15px;
+`
+const LogLabel = styles.div``
+
 
 const TimerModal = ({ groupKey, model, rowId, rowValue, startATimer, stopATimer }) => {
 
@@ -77,7 +99,7 @@ const TimerModal = ({ groupKey, model, rowId, rowValue, startATimer, stopATimer 
 
     const overlay = () => {
         return (
-            <div>div</div>
+            <TimerLogs entries={rowValue.timerValues}/>
         )
     }
 
