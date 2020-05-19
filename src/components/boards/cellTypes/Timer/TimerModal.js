@@ -99,7 +99,10 @@ const TimerModal = ({ groupKey, model, rowId, rowValue, startATimer, stopATimer 
 
     const overlay = () => {
         return (
-            <TimerLogs entries={rowValue.timerValues}/>
+            <TimerLogs 
+                duration={`${hours ? hours+'h' : ''} ${minutes ? minutes+'m' : '0m'} ${seconds ? seconds+'s' : '0s'}`}
+                entries={rowValue ? rowValue.timerValues : null} 
+            />
         )
     }
 
@@ -146,7 +149,8 @@ const TimerModal = ({ groupKey, model, rowId, rowValue, startATimer, stopATimer 
                 setMinutes(duration.minutes())
                 setHours(duration.hours())
                 setSeconds(duration.seconds())
-            }, 1000))
+
+           }, 1000))
         } else {
             clearInterval(interval)
 
