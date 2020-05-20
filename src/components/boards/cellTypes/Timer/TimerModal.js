@@ -5,7 +5,7 @@ import * as moment from 'moment'
 import styles from 'styled-components'
 import * as _ from 'lodash'
 
-import { startATimer, stopATimer } from '../../../../store/actions/boardActions'
+import { startATimer, stopATimer, toggleShowTeamDuration } from '../../../../store/actions/boardActions'
 import TimerLogs from "./TimerLogs"
 
 const { Column, } = Table;
@@ -62,27 +62,17 @@ const PauseIcon = styles(Icon)`
     }
 `
 
-const ModalContainer = styles.div`
-    align-items: flex-start;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    margin-bottom: 15px;
-    min-width: 374px;
-    padding: 15px;
+const TeamIcon = styles(Icon)`
+    cursor: pointer;
+    font-size: 21px;
+    margin-right: 10px;
+
+    & svg {
+        fill: ${props => props.showTeamDuration ? '#00D084;' : '#CFD3D7;'
+    }
 `
-const CurrentLog = styles.div``
 
-const PreviousLogs = styles.div`
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    margin-bottom: 15px;
-`
-const LogLabel = styles.div``
-
-
-const TimerModal = ({ groupKey, model, rowId, rowValue, startATimer, stopATimer }) => {
+const TimerModal = ({ groupKey, model, rowId, rowValue, startATimer, stopATimer, toggleShowTeamDuration, user }) => {
 
     const [interval, assignInterval] = React.useState(false)
     const [visible, setVisible] = React.useState(false)
@@ -91,6 +81,7 @@ const TimerModal = ({ groupKey, model, rowId, rowValue, startATimer, stopATimer 
     const [hours, setHours] = React.useState(undefined)
     const [minutes, setMinutes] = React.useState(undefined)
     const [seconds, setSeconds] = React.useState(undefined)
+    const [showTeamDuration, setShowTeamDurtion] = React.useState(true)
 
 
     const onClick = () => {
@@ -125,7 +116,12 @@ const TimerModal = ({ groupKey, model, rowId, rowValue, startATimer, stopATimer 
         setStarted(!started)
     }
 
+    const onToggleShowTeamDuration = () => {
+        toggleShowTeamDuration(model, rowId, groupKey)
+    }
+
     React.useEffect(() => {
+        console.log('rowVal', rowValue)
         setStarted(rowValue ? rowValue.running : false)
 
         if (rowValue) {
@@ -135,6 +131,9 @@ const TimerModal = ({ groupKey, model, rowId, rowValue, startATimer, stopATimer 
                 setHours(duration.hours())
                 setSeconds(duration.seconds())
             }
+
+            console.log('rowVal', rowValue)
+            setShowTeamDurtion(rowValue.userData?.[user.uid]?.showTeamDuration || true)
         }
     }, [rowValue])
 
@@ -186,6 +185,11 @@ const TimerModal = ({ groupKey, model, rowId, rowValue, startATimer, stopATimer 
                         <Text strong>{`${hours ? hours+'h' : ''} ${minutes ? minutes+'m' : '0m'} ${seconds ? seconds+'s' : '0s'}`}</Text>
                     </TimerLabel>
                 </Tooltip>
+                <TimerControl>
+                    <Tooltip placement="topLeft" title={showTeamDuration ? 'Hide team duration' : 'Show team duration'}>
+                        <TeamIcon type="team" showTeamDuration={showTeamDuration} onClick={onToggleShowTeamDuration}/>
+                    </Tooltip>
+                </TimerControl>
             </ChildContainer>
     )
 }
@@ -193,13 +197,15 @@ const TimerModal = ({ groupKey, model, rowId, rowValue, startATimer, stopATimer 
 const mapDispatchToProps = dispatch => {
     return {
         startATimer: (model, rowId, groupKey) => dispatch(startATimer(model, rowId, groupKey)),
-        stopATimer: (model, rowId, groupKey) => dispatch(stopATimer(model, rowId, groupKey))
+        stopATimer: (model, rowId, groupKey) => dispatch(stopATimer(model, rowId, groupKey)),
+        toggleShowTeamDuration: (model, rowId, groupKey) => dispatch(toggleShowTeamDuration(model, rowId, groupKey))
     }
 }
 
 const mapStateToProps = state => {
     return{
       board: state.boards.currentBoard,
+      user: state.auth.currentUser,
     }
 }
 
