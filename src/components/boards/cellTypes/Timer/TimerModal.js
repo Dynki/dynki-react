@@ -68,7 +68,7 @@ const TeamIcon = styles(Icon)`
     margin-right: 10px;
 
     & svg {
-        fill: ${props => props.showTeamDuration ? '#00D084;' : '#CFD3D7;'
+        fill: ${props => props.showTeamDuration === 'true' ? '#00D084;' : '#CFD3D7;'
     }
 `
 
@@ -121,7 +121,6 @@ const TimerModal = ({ groupKey, model, rowId, rowValue, startATimer, stopATimer,
     }
 
     React.useEffect(() => {
-        console.log('rowVal', rowValue)
         setStarted(rowValue ? rowValue.running : false)
 
         if (rowValue) {
@@ -132,8 +131,7 @@ const TimerModal = ({ groupKey, model, rowId, rowValue, startATimer, stopATimer,
                 setSeconds(duration.seconds())
             }
 
-            console.log('rowVal', rowValue)
-            setShowTeamDurtion(rowValue.userData?.[user.uid]?.showTeamDuration || true)
+            setShowTeamDurtion(rowValue.userData?.[user.uid]?.showTeamDuration)
         }
     }, [rowValue])
 
@@ -187,7 +185,7 @@ const TimerModal = ({ groupKey, model, rowId, rowValue, startATimer, stopATimer,
                 </Tooltip>
                 <TimerControl>
                     <Tooltip placement="topLeft" title={showTeamDuration ? 'Hide team duration' : 'Show team duration'}>
-                        <TeamIcon type="team" showTeamDuration={showTeamDuration} onClick={onToggleShowTeamDuration}/>
+                        <TeamIcon type="team" showTeamDuration={showTeamDuration ? 'true' : 'false'} onClick={onToggleShowTeamDuration}/>
                     </Tooltip>
                 </TimerControl>
             </ChildContainer>
