@@ -23,7 +23,7 @@ const StyledLink = styles.button`
 `;
 
 
-class BoardRowHeaderMenu extends React.Component {
+class BoardRowHeaderMenu extends React.PureComponent {
 
     onClick = ({ key }) => {
         this.props.addColumn(key);

@@ -68,9 +68,20 @@ const TeamIcon = styles(Icon)`
     margin-right: 10px;
 
     & svg {
-        fill: ${props => props.showTeamDuration === 'true' ? '#00D084;' : '#CFD3D7;'
+        fill: #00D084;
     }
 `
+
+const IndividualIcon = styles(Icon)`
+    cursor: pointer;
+    font-size: 21px;
+    margin-right: 10px;
+
+    & svg {
+        fill: #CFD3D7;
+    }
+`
+
 
 const TimerModal = ({ groupKey, model, rowId, rowValue, startATimer, stopATimer, toggleShowTeamDuration, user }) => {
 
@@ -124,12 +135,11 @@ const TimerModal = ({ groupKey, model, rowId, rowValue, startATimer, stopATimer,
         setStarted(rowValue ? rowValue.running : false)
 
         if (rowValue) {
-            if (rowValue.running) {
-                const duration = moment.duration(rowValue.totalDuration)
-                setMinutes(duration.minutes())
-                setHours(duration.hours())
-                setSeconds(duration.seconds())
-            }
+            // const totalDuration = rowValue.timerValues.reduce((acc, curr) => acc + curr.duration, 0)
+            // const duration = moment.duration(totalDuration, 'seconds')
+            // setMinutes(duration.minutes())
+            // setHours(duration.hours())
+            // setSeconds(duration.seconds())
 
             setShowTeamDurtion(rowValue.userData?.[user.uid]?.showTeamDuration)
         }
@@ -137,22 +147,27 @@ const TimerModal = ({ groupKey, model, rowId, rowValue, startATimer, stopATimer,
 
     React.useEffect(() => {
         if (started) {
+            const record = rowValue?.timerValues?.find(t => t.user.uid === user.uid && t.running)
 
             assignInterval(setInterval(() => {
-                const currentTime = moment()
-                const startedAt = moment(rowValue.startedAt)
-                const duration = moment.duration(currentTime.diff(startedAt) + rowValue.totalDuration)
 
-                setMinutes(duration.minutes())
-                setHours(duration.hours())
-                setSeconds(duration.seconds())
+                if (record) {
+                    const currentTime = moment()
+                    const startedAt = moment(record.start)
+                    const duration = moment.duration((currentTime.diff(startedAt) / 1000) + rowValue.totalDuration, 'seconds')
+    
+                    setMinutes(duration.minutes())
+                    setHours(duration.hours())
+                    setSeconds(duration.seconds())
+                }
 
            }, 1000))
         } else {
             clearInterval(interval)
 
             if (rowValue) {
-                const duration = moment.duration(rowValue.totalDuration)
+                const totalDuration = rowValue.timerValues.reduce((acc, curr) => acc + curr.duration, 0)
+                const duration = moment.duration(totalDuration, 'seconds')
                 setMinutes(duration.minutes())
                 setHours(duration.hours())
                 setSeconds(duration.seconds())
@@ -177,15 +192,19 @@ const TimerModal = ({ groupKey, model, rowId, rowValue, startATimer, stopATimer,
                     ref={saveTooltip}
                     onVisibleChange={onVisibleChange}
                     trigger="click"
-                    placement="bottomLeft"
+                    placement="left"
                 >
                     <TimerLabel onClick={onClick}>
                         <Text strong>{`${hours ? hours+'h' : ''} ${minutes ? minutes+'m' : '0m'} ${seconds ? seconds+'s' : '0s'}`}</Text>
                     </TimerLabel>
                 </Tooltip>
                 <TimerControl>
-                    <Tooltip placement="topLeft" title={showTeamDuration ? 'Hide team duration' : 'Show team duration'}>
-                        <TeamIcon type="team" showTeamDuration={showTeamDuration ? 'true' : 'false'} onClick={onToggleShowTeamDuration}/>
+                    <Tooltip placement="left" title={showTeamDuration ? 'Hide team duration' : 'Show team duration'}>
+                        {showTeamDuration ? 
+                            <TeamIcon type="team" onClick={onToggleShowTeamDuration}/>
+                            :
+                            <IndividualIcon type="team" onClick={onToggleShowTeamDuration}/>
+                        }
                     </Tooltip>
                 </TimerControl>
             </ChildContainer>

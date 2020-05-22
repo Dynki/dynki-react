@@ -50,10 +50,10 @@ const TimerLogs = ({ entry, onDelete }) => {
     const date = moment(entry.start).format('ddd DD')
     const timeFrom = moment(entry.start).format('hh:mm:ss A')
     const timeTo = moment(entry.end).format('hh:mm:ss A')
-    const days = _.padStart(moment.duration(entry.duration).days(), 2, '0')
-    const hours = _.padStart(moment.duration(entry.duration).hours(), 2, '0')
-    const minutes = _.padStart(moment.duration(entry.duration).minutes(), 2, '0')
-    const seconds = _.padStart(moment.duration(entry.duration).seconds(), 2, '0')
+    const days = _.padStart(moment.duration(entry.duration, 'seconds').days(), 2, '0')
+    const hours = _.padStart(moment.duration(entry.duration, 'seconds').hours(), 2, '0')
+    const minutes = _.padStart(moment.duration(entry.duration, 'seconds').minutes(), 2, '0')
+    const seconds = _.padStart(moment.duration(entry.duration, 'seconds').seconds(), 2, '0')
 
     return (
         <Container>

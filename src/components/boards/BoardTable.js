@@ -1,10 +1,10 @@
-import React from 'react';
-import { Droppable, Draggable } from 'react-beautiful-dnd';
-import styles from 'styled-components';
+import React from 'react'
+import { Droppable, Draggable } from 'react-beautiful-dnd'
+import styles from 'styled-components'
 
-import BoardRowHeader from './BoardRowHeader';
-import BoardRow from './BoardRow';
-import BoardGroupSummary from './BoardGroupSummary';
+import BoardRowHeader from './BoardRowHeader'
+import BoardRow from './BoardRow'
+import BoardGroupSummary from './BoardGroupSummary'
 
 const TableFooter = styles.tfoot`
     display: flex;
@@ -25,7 +25,7 @@ const TableFooter = styles.tfoot`
 
 const BoardTable = (props) => {
 
-    const {allowWrite, group, groupKey, progress} = props;
+    const {allowWrite, group, groupKey, progress} = props
 
     return (
         <Droppable droppableId={group.id}>
@@ -80,4 +80,4 @@ const BoardTable = (props) => {
     )
 }
 
-export default BoardTable;
+export default React.memo(BoardTable)

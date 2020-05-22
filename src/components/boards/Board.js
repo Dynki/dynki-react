@@ -17,7 +17,7 @@ const StyledTag = styles(Tag)`
 `;
 
 // Container for board components.
-export class Board extends React.Component {
+export class Board extends React.PureComponent {
 
     constructor(props) {
         super(props);

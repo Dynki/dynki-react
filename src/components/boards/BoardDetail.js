@@ -1,5 +1,5 @@
-import React from 'react';
-import BoardGroup from './BoardGroup';
+import React from 'react'
+import BoardGroup from './BoardGroup'
 
 const BoardDetail = (props) => {
 
@@ -23,4 +23,4 @@ const BoardDetail = (props) => {
     )
 }
 
-export default BoardDetail;
+export default React.memo(BoardDetail)

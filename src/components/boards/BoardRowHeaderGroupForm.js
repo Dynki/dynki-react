@@ -3,7 +3,7 @@ import { Form, Input } from 'antd';
 
 const FormItem = Form.Item;
 
-class GroupForm extends React.Component {
+class GroupForm extends React.PureComponent {
 
     handleBlur() {
         this.handleSubmit();

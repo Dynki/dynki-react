@@ -1026,7 +1026,7 @@ export const startATimer = (model, rowId, groupKey) => {
         
         try {
             dispatch({ type: 'SET_PROGRESS', payload: true });
-    
+
             const firebase = getFirebase();
             const domainId = getState().domain.domainId;
             const currentBoard = getState().boards.currentBoard;
@@ -1036,41 +1036,53 @@ export const startATimer = (model, rowId, groupKey) => {
                 // Is this the row we wish to update?
                 if (e.id === rowId) {
                     if (e[model] !== undefined && e[model] !== null) {
-                        if (!e[model].running) {
-
-                            e[model] = {
-                                running: true,
-                                timerValues: [
-                                    ...e[model].timerValues, 
-                                    { 
-                                        id: newGuid(),
-                                        start: moment().toISOString(),
-                                        end: null,
-                                        duration: 0,
-                                        running: true,
-                                        user: {
-                                            uid: user.uid,
-                                            displayName: user?.displayName || user.email
-                                        }
+                        e[model] = {
+                            running: true,
+                            timerValues: [
+                                ...e[model].timerValues, 
+                                { 
+                                    id: newGuid(),
+                                    start: moment().toISOString(),
+                                    end: null,
+                                    duration: 0,
+                                    running: true,
+                                    user: {
+                                        uid: user.uid,
+                                        displayName: user?.displayName || user.email
                                     }
-                                ],
-                                manualEntries: e[model].manualEntries,
-                                totalDuration: e[model].totalDuration
-                            }
+                                }
+                            ],
+                            totalDuration: e[model].totalDuration,
+                            created: moment().toISOString(),
+                            updated: moment().toISOString(),
                         }
                     } else {
                         e[model] = {
                             running: true,
-                            timerValues: [],
-                            manualEntries: [],
+                            timerValues: [
+                                { 
+                                    id: newGuid(),
+                                    start: moment().toISOString(),
+                                    end: null,
+                                    duration: 0,
+                                    running: true,
+                                    user: {
+                                        uid: user.uid,
+                                        displayName: user?.displayName || user.email
+                                    }
+                                }
+                            ],
                             totalDuration: 0,
-                            userData: undefined
+                            userData: null,
+                            created: moment().toISOString(),
+                            updated: moment().toISOString(),
                         }
                     }
                 }
     
                 return e;
             });
+
     
             delete currentBoard['unsubscribe'];
     
@@ -1105,30 +1117,31 @@ export const stopATimer = (model, rowId, groupKey) => {
                 // Is this the row we wish to update?
                 if (e.id === rowId) {
                     if (e[model] !== undefined && e[model] !== null) {
-                        if (e[model].running) {
 
-                            const startToLog = moment(e[model].startedAt)
-                            const endToLog = moment()
-                            const durationToLog = moment.duration(endToLog.diff(startToLog)).asMilliseconds()
+                        e[model] = {
+                            timerValues: [
+                                ...e[model].timerValues.map(t => {
+                                    
+                                    if (t.user.uid === user.uid && t.end === null && t.running) {
+                                        const startToLog = moment(t.start)
+                                        const endToLog = moment()
+                                        const durationToLog = Math.floor(moment.duration(endToLog.diff(startToLog)).asSeconds())
 
-                            e[model] = {
-                                timerValues: [
-                                    ...e[model].timerValues.map(t => {
-                                        if (t.uid === user.uid && t.end === null) {
-                                            t.end = endToLog
-                                            t.duration = durationToLog
-                                        }
+                                        t.end = endToLog.toISOString()
+                                        t.duration = durationToLog
+                                        t.running = false
+                                    }
 
-                                        return t
-                                    })
-                                ],
-                                manualEntries: e[model].manualEntries,
-                                totalDuration: e[model].totalDuration + durationToLog
-                            }
-
-                            const anyRunningTimers = e[model].timerValues.find(t => t.end !== null) ? true : false
-                            e[model].running = anyRunningTimers
+                                    return t
+                                })
+                            ],
+                            created: e[model].created,
+                            updated: moment().toISOString(),
+                            totalDuration: e[model].timerValues.reduce((acc, curr) => acc + curr.duration ,0)
                         }
+
+                        const anyRunningTimers = e[model].timerValues.find(t => t.end === null) ? true : false
+                        e[model].running = anyRunningTimers
                     }
                 }
     

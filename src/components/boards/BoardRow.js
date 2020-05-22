@@ -13,7 +13,7 @@ import NumberForm from './cellTypes/Number/NumberForm';
 import PeopleModal from './cellTypes/People/PeopleModal';
 import TimerModal from './cellTypes/Timer/TimerModal';
 
-class BoardRow extends React.Component {
+class BoardRow extends React.PureComponent {
 
     constructor(props) {
         super(props);

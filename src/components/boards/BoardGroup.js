@@ -32,4 +32,4 @@ const BoardGroup = (props) => {
     </React.Fragment>)
 }
 
-export default BoardGroup;
+export default React.memo(BoardGroup);
