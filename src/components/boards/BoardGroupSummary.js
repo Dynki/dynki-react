@@ -27,7 +27,7 @@ const Blank = styles.div`
     margin-right: ${props => props.isLast ? '36px;' : '0px;'}
 `
 
-const BoardGroupSummary = ({ board, boardLastUpdated, group, groupKey }) => {
+const BoardGroupSummary = ({ board, boardLastUpdated, group }) => {
 
 
     return (

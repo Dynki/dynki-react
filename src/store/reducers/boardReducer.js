@@ -30,6 +30,11 @@ const boardReducer = (state = initialState, action) => {
                 firstLoad: false,
                 selectedRows: []
             }
+        case 'SET_BOARD_UPDATED':
+            return {
+                ...state,
+                boardLastUpdated: new Date()
+            }
         case 'SET_SELECTED_ROWS':
             return {
                 ...state,

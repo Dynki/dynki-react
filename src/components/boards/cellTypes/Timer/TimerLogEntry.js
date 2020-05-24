@@ -47,9 +47,9 @@ const TimerLogs = ({ entry, onDelete }) => {
         return null
     }
 
-    const date = moment(entry.start).format('ddd DD')
-    const timeFrom = moment(entry.start).format('hh:mm:ss A')
-    const timeTo = moment(entry.end).format('hh:mm:ss A')
+    const date = moment(entry.start).format('ddd MMM DD')
+    const timeFrom = moment(entry.start).format('h:mm:ss A')
+    const timeTo = moment(entry.end).format('h:mm:ss A')
     const days = _.padStart(moment.duration(entry.duration, 'seconds').days(), 2, '0')
     const hours = _.padStart(moment.duration(entry.duration, 'seconds').hours(), 2, '0')
     const minutes = _.padStart(moment.duration(entry.duration, 'seconds').minutes(), 2, '0')
@@ -59,18 +59,16 @@ const TimerLogs = ({ entry, onDelete }) => {
         <Container>
             <StyledAvatar size="small">A</StyledAvatar>
             <LogLabel>{date}</LogLabel>
-            <LogLabel>{`${timeFrom} - ${timeTo}`}</LogLabel>
+            <LogLabel>{`${timeFrom} - ${timeTo === 'Invalid date' ? 'Still running ' : timeTo}`}</LogLabel>
             <LogLabel>{`${days === '00' ? '' : days+':'}${hours}:${minutes}:${seconds}`}</LogLabel>
-            {entry.running ? 
-                <Tooltip title="Currently running">
-                    <ActiveIcon type="stop"/>
-                </Tooltip>
-                :
-                <Popconfirm title="Delete entry?" cancelText="Hell no!" okText="Yes please" placement="leftTop">
-                    <DeleteIcon type="close-circle"/>
-                </Popconfirm>
-            }
-
+            <Popconfirm 
+                title="Delete entry?" 
+                cancelText="Arrrg no!" 
+                okText="Yes please" 
+                placement="leftTop" 
+                onConfirm={() => onDelete(entry.id)}>
+                <DeleteIcon type="close-circle"/>
+            </Popconfirm>
         </Container>
     )
 }

@@ -53,25 +53,23 @@ const TimerSummary = ({ column, entities = [], hasNext, isLast, updated }) => {
     const [minutes, setMinutes] = React.useState(undefined)
     const [seconds, setSeconds] = React.useState(undefined)
     
-    const sumDuration = () => {
-        return entities.reduce((acc, grp) => {
-            if (grp[column.model]) {
-                return acc + grp[column.model].totalDuration
-            }
-
-            return acc
-        }, 0)
-    }
-
-    let displayValue = ''
-
     React.useEffect(() => {
-        const duration = moment.duration(sumDuration())
+        const sumDuration = () => {
+            return entities.reduce((acc, grp) => {
+                if (grp[column.model]) {
+                    return acc + grp[column.model].totalDuration
+                }
+    
+                return acc
+            }, 0)
+        }
+        const duration = moment.duration(sumDuration(), 'seconds')
     
         setMinutes(duration.minutes())
         setHours(duration.hours())
         setSeconds(duration.seconds())
-    }, [updated])
+
+    }, [updated, column.model, entities])
 
     const returnEl = entities.length > 0 ? (
         <Total hasNext={hasNext} isLast={isLast}>

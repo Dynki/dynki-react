@@ -1181,7 +1181,15 @@ export const toggleShowTeamDuration = (model, rowId, groupKey) => {
                 // Is this the row we wish to update?
                 if (e.id === rowId) {
                     if (e[model] !== undefined && e[model] !== null) {
-                        e[model].userData[user.uid].showTeamDuration = !e[model]?.userData[user.uid]?.showTeamDuration
+                        if (!e[model].userData) {
+                            e[model].userData = {
+                                [user.uid]: {
+                                    showTeamDuration: !e[model]?.userData?.[user.uid]?.showTeamDuration
+                                }
+                            }
+                        } else {
+                            e[model].userData[user.uid].showTeamDuration = !e[model]?.userData[user.uid]?.showTeamDuration
+                        }
                     } else {
                         e[model] = {
                             running: false,
@@ -1196,8 +1204,6 @@ export const toggleShowTeamDuration = (model, rowId, groupKey) => {
                         }
                     }
                 }
-
-                console.log(e)
     
                 return e;
             });
@@ -1210,7 +1216,7 @@ export const toggleShowTeamDuration = (model, rowId, groupKey) => {
             .collection('boards')
             .doc(currentBoard.id)
             .set(currentBoard);
-    
+
         } catch (error) {
             notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to update the board' });
             console.log(error)
@@ -1219,3 +1225,49 @@ export const toggleShowTeamDuration = (model, rowId, groupKey) => {
         }
     }
 }
+
+export const deleteTimerLogEntry = (entryId, model, rowId, groupKey) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        
+        try {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+    
+            const firebase = getFirebase();
+            const domainId = getState().domain.domainId;
+            const currentBoard = getState().boards.currentBoard;
+            const user = firebase.auth().currentUser;
+    
+            currentBoard.groups[groupKey].entities = currentBoard.groups[groupKey].entities.map(e => {
+                // Is this the row we wish to update?
+                if (e.id === rowId) {
+                    const filteredValues = e[model].timerValues.filter(v => v.id !== entryId)
+                    e[model].timerValues = filteredValues
+                    e[model].totalDuration = filteredValues.reduce((acc, curr) => acc + curr.duration ,0)
+                    e[model].updated = moment().toISOString()
+
+                    const anyRunningTimers = e[model].timerValues.find(t => t.end === null) ? true : false
+                    e[model].running = anyRunningTimers
+                }
+
+                return e;
+            });
+    
+            delete currentBoard['unsubscribe'];
+    
+            await firebase.firestore()
+            .collection('domains')
+            .doc(domainId)
+            .collection('boards')
+            .doc(currentBoard.id)
+            .set(currentBoard);
+
+            dispatch({ type: 'SET_BOARD_UPDATED' });
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to update the board' });
+            console.log(error)
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+        }
+    }
+}
+

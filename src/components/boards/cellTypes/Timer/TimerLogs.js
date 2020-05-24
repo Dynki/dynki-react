@@ -4,7 +4,7 @@ import styles from 'styled-components'
 
 import TimerLogEntry from './TimerLogEntry'
 
-const { Title } = Typography
+const { Text, Title } = Typography
 
 const Container = styles.div`
     align-items: center;
@@ -34,22 +34,22 @@ const PreviousLogs = styles.div`
 
 const CurrentTime = styles(Title)`
     margin-bottom: 0px!important;
-    margin-top: 0px!important;
+    margin-top: 5px!important;
 `
 
-const TimerLogs = ({ duration, entries }) => {
+const TimerLogs = ({ duration, entries, onDeleteEntry }) => {
 
     return (
         <Container>
             <CurrentLog>
-                <Title level={4}>Total duration</Title>
+                <Text>Total duration</Text>
                 <CurrentTime level={4}>{duration}</CurrentTime>
             </CurrentLog>
             <Divider/>
             <Button type="dashed" icon="plus">Add entry</Button>
             <PreviousLogs>
                 {entries ? entries.map(e => (
-                    <TimerLogEntry key={e.id} entry={e}/>
+                    <TimerLogEntry key={e.id} entry={e} onDelete={onDeleteEntry}/>
                 )) : null}
             </PreviousLogs>
         </Container>

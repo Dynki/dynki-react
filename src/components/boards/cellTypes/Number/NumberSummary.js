@@ -77,7 +77,7 @@ const NumberSummary = ({ column, entities = [], hasNext, isLast }) => {
     const mapValuesToArr = () => {
         let arr = []
 
-        entities.map(grp => {
+        entities.forEach(grp => {
             if (grp[column.model]!== undefined && grp[column.model] !== null && grp[column.model] !== '') {
                 arr.push(grp[column.model])
             }

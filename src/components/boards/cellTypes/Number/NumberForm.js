@@ -1,7 +1,6 @@
 import React from 'react'
 import { InputNumber } from 'antd'
 import styles from 'styled-components'
-import useOutsideClick from '../../../../hooks/ClickOutside'
 
 const StyledInputNumber = styles(InputNumber)`
     border-radius: 0px;
@@ -46,10 +45,6 @@ const NumberForm = ({ allowWrite, board, col, groupKey, modelName, numberProps, 
     const [value, setValue] = React.useState(undefined)
     const inputRef = React.useRef(null)
 
-    // useOutsideClick(containerRef, () => {
-    //     setFocussed(false)
-    // })
-
     const handleSubmit = () => onUpdateBoard(board)
 
     React.useEffect(() => {
@@ -62,7 +57,7 @@ const NumberForm = ({ allowWrite, board, col, groupKey, modelName, numberProps, 
                 board.groups[groupKey].entities[rowIdx][modelName] : undefined
 
         setValue(colValue)
-    }, [])
+    }, [board, groupKey, modelName, rowId])
 
     React.useEffect(() => {
         if (focussed && inputRef?.current) {
