@@ -997,7 +997,11 @@ export const updateSelectedPeople = (selectedPeople, model, rowId, groupKey) => 
             currentBoard.groups[groupKey].entities = currentBoard.groups[groupKey].entities.map(e => {
                 // Is this the row we wish to update?
                 if (e.id === rowId) {
-                    e[model] = selectedPeople;
+                    if (!e[model]) {
+                        e[model] = {}
+                    }
+                    e[model].selectedPeople = selectedPeople
+                    e[model].updated = moment().toISOString()
                 }
     
                 return e;
@@ -1053,6 +1057,7 @@ export const startATimer = (model, rowId, groupKey) => {
                                 }
                             ],
                             totalDuration: e[model].totalDuration,
+                            userData: e[model].userData,
                             created: moment().toISOString(),
                             updated: moment().toISOString(),
                         }
@@ -1073,7 +1078,11 @@ export const startATimer = (model, rowId, groupKey) => {
                                 }
                             ],
                             totalDuration: 0,
-                            userData: null,
+                            userData: {
+                                [user.uid]: {
+                                    showTeamDuration: false
+                                }
+                            },
                             created: moment().toISOString(),
                             updated: moment().toISOString(),
                         }
@@ -1137,6 +1146,7 @@ export const stopATimer = (model, rowId, groupKey) => {
                             ],
                             created: e[model].created,
                             updated: moment().toISOString(),
+                            userData: e[model].userData,
                             totalDuration: e[model].timerValues.reduce((acc, curr) => acc + curr.duration ,0)
                         }
 
@@ -1188,13 +1198,15 @@ export const toggleShowTeamDuration = (model, rowId, groupKey) => {
                                 }
                             }
                         } else {
+                            if (!e[model].userData[user.uid]) {
+                                e[model].userData[user.uid] = {}
+                            }
                             e[model].userData[user.uid].showTeamDuration = !e[model]?.userData[user.uid]?.showTeamDuration
                         }
                     } else {
                         e[model] = {
                             running: false,
                             timerValues: [],
-                            manualEntries: [],
                             totalDuration: 0,
                             userData: {
                                 [user.uid]: {
@@ -1247,6 +1259,46 @@ export const deleteTimerLogEntry = (entryId, model, rowId, groupKey) => {
 
                     const anyRunningTimers = e[model].timerValues.find(t => t.end === null) ? true : false
                     e[model].running = anyRunningTimers
+                }
+
+                return e;
+            });
+    
+            delete currentBoard['unsubscribe'];
+    
+            await firebase.firestore()
+            .collection('domains')
+            .doc(domainId)
+            .collection('boards')
+            .doc(currentBoard.id)
+            .set(currentBoard);
+
+            dispatch({ type: 'SET_BOARD_UPDATED' });
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Board Failure', description: 'Failed to update the board' });
+            console.log(error)
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false });
+        }
+    }
+}
+
+export const deleteAllTimerLogEntries = (model, rowId, groupKey) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        
+        try {
+            dispatch({ type: 'SET_PROGRESS', payload: true });
+    
+            const firebase = getFirebase();
+            const domainId = getState().domain.domainId;
+            const currentBoard = getState().boards.currentBoard;
+    
+            currentBoard.groups[groupKey].entities = currentBoard.groups[groupKey].entities.map(e => {
+                // Is this the row we wish to update?
+                if (e.id === rowId) {
+                    e[model].timerValues = []
+                    e[model].running = false
+                    e[model].totalDuration = 0
                 }
 
                 return e;

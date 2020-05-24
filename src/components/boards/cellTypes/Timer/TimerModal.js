@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import * as moment from 'moment'
 import styles from 'styled-components'
 
-import { deleteTimerLogEntry, startATimer, stopATimer, toggleShowTeamDuration } from '../../../../store/actions/boardActions'
+import { deleteTimerLogEntry, deleteAllTimerLogEntries, startATimer, stopATimer, toggleShowTeamDuration } from '../../../../store/actions/boardActions'
 import TimerLogs from "./TimerLogs"
 
 const { Text } = Typography
@@ -81,15 +81,17 @@ const IndividualIcon = styles(Icon)`
 `
 
 
-const TimerModal = ({ deleteTimerLogEntry, groupKey, model, rowId, rowValue, startATimer, stopATimer, toggleShowTeamDuration, user }) => {
+const TimerModal = ({ deleteAllTimerLogEntries, deleteTimerLogEntry, 
+    groupKey, model, rowId, rowValue, startATimer, stopATimer, toggleShowTeamDuration, user }) => {
 
     const [interval, assignInterval] = React.useState(false)
     const [visible, setVisible] = React.useState(false)
     const [started, setStarted] = React.useState(undefined)
     const [tooltip, setTooltip] = React.useState(undefined)
-    const [hours, setHours] = React.useState(undefined)
-    const [minutes, setMinutes] = React.useState(undefined)
-    const [seconds, setSeconds] = React.useState(undefined)
+    const [hours, setHours] = React.useState(0)
+    const [minutes, setMinutes] = React.useState(0)
+    const [seconds, setSeconds] = React.useState(0)
+    const [displaySeconds, setDisplaySeconds] = React.useState(undefined)
     const [showTeamDuration, setShowTeamDurtion] = React.useState(true)
 
 
@@ -100,6 +102,7 @@ const TimerModal = ({ deleteTimerLogEntry, groupKey, model, rowId, rowValue, sta
     const overlay = () => {
         return (
             <TimerLogs
+                onDeleteAll={onDeleteAllTimerLogEntries}
                 onDeleteEntry={onDeleteTimerLogEntry} 
                 duration={`${hours ? hours+'h' : ''} ${minutes ? minutes+'m' : '0m'} ${seconds ? seconds+'s' : '0s'}`}
                 entries={rowValue ? rowValue.timerValues : null} 
@@ -134,21 +137,42 @@ const TimerModal = ({ deleteTimerLogEntry, groupKey, model, rowId, rowValue, sta
         deleteTimerLogEntry(id, model, rowId, groupKey)
     }
 
+    const onDeleteAllTimerLogEntries = () => {
+        deleteAllTimerLogEntries(model, rowId, groupKey)
+    }
+    
     React.useEffect(() => {
-        setStarted(rowValue ? rowValue.running : false)
-
+        
+        
         if (rowValue) {
+            const useTeamDuration = rowValue?.userData?.[user.uid]?.showTeamDuration
+            setShowTeamDurtion(useTeamDuration)
             let totalDuration
 
-            if (!rowValue.running) {
-                totalDuration = rowValue.timerValues.reduce((acc, curr) => acc + curr.duration, 0)
-            } else {
-                const record = rowValue?.timerValues?.find(t => t.user.uid === user.uid && t.running)
+            const record = rowValue?.timerValues?.find(t => t.user.uid === user.uid && t.running)
+            setStarted(record ? true : false)
 
-                if (record) {
-                    const currentTime = moment()
-                    const startedAt = moment(record.start)
+            if (record) {
+                const currentTime = moment()
+                const startedAt = moment(record.start)
+                if (useTeamDuration) {
                     totalDuration = moment.duration((currentTime.diff(startedAt) / 1000) + rowValue.totalDuration, 'seconds')
+                } else {
+                    totalDuration = rowValue.timerValues
+                    .filter(r => r.user.uid === user.uid)
+                    .reduce((acc, curr) => acc + curr.duration, 0)                
+
+                    totalDuration = moment.duration((currentTime.diff(startedAt) / 1000) + totalDuration, 'seconds')
+                }
+
+            } else {
+
+                if (useTeamDuration) {
+                    totalDuration = rowValue.timerValues.reduce((acc, curr) => acc + curr.duration, 0)
+                } else {
+                    totalDuration = rowValue.timerValues
+                    .filter(r => r.user.uid === user.uid)
+                    .reduce((acc, curr) => acc + curr.duration, 0)                
                 }
             }
 
@@ -157,20 +181,31 @@ const TimerModal = ({ deleteTimerLogEntry, groupKey, model, rowId, rowValue, sta
             setHours(duration.hours())
             setSeconds(duration.seconds())
 
-            setShowTeamDurtion(rowValue.userData?.[user.uid]?.showTeamDuration)
         }
     }, [rowValue, user.uid])
 
     React.useEffect(() => {
+
         if (started) {
             const record = rowValue?.timerValues?.find(t => t.user.uid === user.uid && t.running)
 
             assignInterval(setInterval(() => {
 
                 if (record) {
+                    const useTeamDuration = rowValue?.userData?.[user.uid]?.showTeamDuration
                     const currentTime = moment()
                     const startedAt = moment(record.start)
-                    const duration = moment.duration((currentTime.diff(startedAt) / 1000) + rowValue.totalDuration, 'seconds')
+
+                    let duration
+                    if (useTeamDuration) {
+                        duration = moment.duration((currentTime.diff(startedAt) / 1000) + rowValue.totalDuration, 'seconds')
+                    } else {
+                        duration = rowValue.timerValues
+                        .filter(r => r.user.uid === user.uid)
+                        .reduce((acc, curr) => acc + curr.duration, 0)                
+    
+                        duration = moment.duration((currentTime.diff(startedAt) / 1000) + duration, 'seconds')
+                    }
     
                     setMinutes(duration.minutes())
                     setHours(duration.hours())
@@ -182,8 +217,19 @@ const TimerModal = ({ deleteTimerLogEntry, groupKey, model, rowId, rowValue, sta
             clearInterval(interval)
 
             if (rowValue) {
-                const totalDuration = rowValue.timerValues.reduce((acc, curr) => acc + curr.duration, 0)
+                const useTeamDuration = rowValue?.userData?.[user.uid]?.showTeamDuration
+
+                let totalDuration
+
+                if (useTeamDuration) {
+                    totalDuration = rowValue.timerValues.reduce((acc, curr) => acc + curr.duration, 0)
+                } else {
+                    totalDuration = rowValue.timerValues
+                    .filter(r => r.user.uid === user.uid)
+                    .reduce((acc, curr) => acc + curr.duration, 0)                
+                }
                 const duration = moment.duration(totalDuration, 'seconds')
+
                 setMinutes(duration.minutes())
                 setHours(duration.hours())
                 setSeconds(duration.seconds())
@@ -211,11 +257,11 @@ const TimerModal = ({ deleteTimerLogEntry, groupKey, model, rowId, rowValue, sta
                     placement="left"
                 >
                     <TimerLabel onClick={onClick}>
-                        <Text strong>{`${hours ? hours+'h' : ''} ${minutes ? minutes+'m' : '0m'} ${seconds ? seconds+'s' : '0s'}`}</Text>
+                        <Text strong>{`${hours > 0 ? hours+'h' : ''} ${minutes+'m'} ${seconds+'s'}`}</Text>
                     </TimerLabel>
                 </Tooltip>
                 <TimerControl>
-                    <Tooltip placement="left" title={showTeamDuration ? 'Hide team duration' : 'Show team duration'}>
+                    <Tooltip placement="bottom" title={showTeamDuration ? 'Hide team duration' : 'Show team duration'}>
                         {showTeamDuration ? 
                             <TeamIcon type="team" onClick={onToggleShowTeamDuration}/>
                             :
@@ -233,6 +279,7 @@ const mapDispatchToProps = dispatch => {
         stopATimer: (model, rowId, groupKey) => dispatch(stopATimer(model, rowId, groupKey)),
         toggleShowTeamDuration: (model, rowId, groupKey) => dispatch(toggleShowTeamDuration(model, rowId, groupKey)),
         deleteTimerLogEntry: (entryId, model, rowId, groupKey) => dispatch(deleteTimerLogEntry(entryId, model, rowId, groupKey)),
+        deleteAllTimerLogEntries: (model, rowId, groupKey) => dispatch(deleteAllTimerLogEntries(model, rowId, groupKey)),
     }
 }
 

@@ -19,7 +19,7 @@ const LogLabel = styles(Text)`
 `
 
 const StyledAvatar = styles(Avatar)`
-    // margin-right: 10px;
+    background-color: ${props => props.color + ';'};
 `
 
 const DeleteIcon = styles(Icon)`
@@ -47,6 +47,12 @@ const TimerLogs = ({ entry, onDelete }) => {
         return null
     }
 
+    const avatarColors = ['#141b41ff','#306bacff','#6f9cebff','#98b9f2ff','#ED7D3A','#4e6766ff','#5ab1bbff','#a5c882ff',
+    '#f7dd72ff','#b66d0dff','#ea526fff','#e76b74ff','#d7af70ff','#937d64ff','#585b56ff','#731dd8ff','#48a9a6ff',
+    '#e4dfdaff','#9cf6f6ff','#daa588ff','#f06543ff','#31393cff','#fdca40ff','#f79824ff','#b9d6f2ff','#246eb9ff',
+    '#4cb944ff']
+
+    const user = entry.user.displayName
     const date = moment(entry.start).format('ddd MMM DD')
     const timeFrom = moment(entry.start).format('h:mm:ss A')
     const timeTo = moment(entry.end).format('h:mm:ss A')
@@ -57,7 +63,12 @@ const TimerLogs = ({ entry, onDelete }) => {
 
     return (
         <Container>
-            <StyledAvatar size="small">A</StyledAvatar>
+            <StyledAvatar 
+                size="small"
+                color={avatarColors[user.charCodeAt() - 96]}
+            >
+                {user.charAt(0).toLocaleUpperCase()}
+            </StyledAvatar>
             <LogLabel>{date}</LogLabel>
             <LogLabel>{`${timeFrom} - ${timeTo === 'Invalid date' ? 'Still running ' : timeTo}`}</LogLabel>
             <LogLabel>{`${days === '00' ? '' : days+':'}${hours}:${minutes}:${seconds}`}</LogLabel>

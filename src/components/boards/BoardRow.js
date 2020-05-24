@@ -72,7 +72,8 @@ class BoardRow extends React.PureComponent {
                     model={col.model}
                     rowId={this.props.rowId}
                     groupKey={this.props.groupKey}
-                    selectedPeople={rowValue}
+                    selectedPeople={rowValue?.selectedPeople}
+                    progress={this.props.progress}
                 />
             case 'timer': 
                 return <TimerModal

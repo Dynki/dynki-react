@@ -95,15 +95,20 @@ const PeopleModal = ({ groupKey, members, model, rowId, selectedPeople, updateSe
 
 
     const [visible, setVisible] = React.useState(false)
-    const [selected, setSelectted] = React.useState(selectedPeople ? selectedPeople : [])
+    const [selected, setSelected] = React.useState(selectedPeople ? selectedPeople : [])
     const [options, setOptions] = React.useState(members)
     const [value, setValue] = React.useState(selectedPeople ? selectedPeople.map(s => ({ key: s.uid, label: s.email })) : undefined)
     const [tooltip, setTooltip] = React.useState(undefined)
 
+    React.useEffect(() => {
+        setSelected(selectedPeople ? selectedPeople : [])
+        setValue(selectedPeople ? selectedPeople.map(s => ({ key: s.uid, label: s.email })) : undefined)
+    }, [selectedPeople])
+
     const handleChange = values => {
         setValue(values)
         const valuesSelected = members.filter(m => values.map(v => v.key).includes(m.uid))
-        setSelectted(valuesSelected)
+        setSelected(valuesSelected)
         updateSelectedPeople(valuesSelected, model, rowId, groupKey)
     }
 

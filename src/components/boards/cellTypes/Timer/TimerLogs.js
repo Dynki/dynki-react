@@ -1,11 +1,14 @@
 import React from "react"
-import { Button, Divider, Typography } from 'antd'
+import { Button, Divider, Popconfirm, Typography } from 'antd'
 import styles from 'styled-components'
 
 import TimerLogEntry from './TimerLogEntry'
 
 const { Text, Title } = Typography
 
+const StyledPopconfirm = styles(Popconfirm)`
+    margin-left: auto;
+`
 const Container = styles.div`
     align-items: center;
     display: flex;
@@ -37,10 +40,13 @@ const CurrentTime = styles(Title)`
     margin-top: 5px!important;
 `
 
-const TimerLogs = ({ duration, entries, onDeleteEntry }) => {
+const TimerLogs = ({ duration, entries, onDeleteAll, onDeleteEntry }) => {
 
     return (
         <Container>
+            <StyledPopconfirm title="Clear all logs for all users?" okText="Yes please" onConfirm={onDeleteAll}>
+                <Button type="link">Clear All</Button>
+            </StyledPopconfirm>
             <CurrentLog>
                 <Text>Total duration</Text>
                 <CurrentTime level={4}>{duration}</CurrentTime>
