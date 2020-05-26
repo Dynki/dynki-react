@@ -235,6 +235,7 @@ const TimerModal = ({ deleteAllTimerLogEntries, deleteTimerLogEntry,
                 setSeconds(duration.seconds())
             }
         }
+        return () => clearInterval(interval)
       }, [started]);
 
     return (

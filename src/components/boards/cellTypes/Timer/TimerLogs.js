@@ -1,5 +1,5 @@
-import React from "react"
-import { Button, Divider, Popconfirm, Typography } from 'antd'
+import React, { useCallback, useEffect } from "react"
+import { Button, Divider, Pagination, Popconfirm, Typography } from 'antd'
 import styles from 'styled-components'
 
 import TimerLogEntry from './TimerLogEntry'
@@ -33,6 +33,7 @@ const PreviousLogs = styles.div`
     padding: 10px;
     margin-bottom: 15px;
     margin-top: 15px;
+    max-height: ${props => (props.pageSize * 45 )+'px;'}
 `
 
 const CurrentTime = styles(Title)`
@@ -41,6 +42,20 @@ const CurrentTime = styles(Title)`
 `
 
 const TimerLogs = ({ duration, entries, onDeleteAll, onDeleteEntry }) => {
+
+    const [page, setPage] = React.useState(1)
+    const [pageSize, setPageSize] = React.useState(5)
+    const [total, setTotal] = React.useState(entries.length)
+
+    useEffect(() => { 
+        setTotal(entries.length)
+    }, [entries])
+
+    const onPageChange = useCallback((page, pageSize) => setPage(page))
+    const onPageSizeChange = useCallback((current, size) => {
+        setPageSize(size)
+        setPage(1)
+    })
 
     return (
         <Container>
@@ -53,11 +68,21 @@ const TimerLogs = ({ duration, entries, onDeleteAll, onDeleteEntry }) => {
             </CurrentLog>
             <Divider/>
             <Button type="dashed" icon="plus">Add entry</Button>
-            <PreviousLogs>
-                {entries ? entries.map(e => (
+            <PreviousLogs pageSize={pageSize}>
+                {entries ? entries.slice((page-1) * pageSize, page * pageSize).map(e => (
                     <TimerLogEntry key={e.id} entry={e} onDelete={onDeleteEntry}/>
                 )) : null}
             </PreviousLogs>
+            <Pagination 
+                current={page}
+                defaultPageSize={5}
+                onChange={onPageChange}
+                onShowSizeChange={onPageSizeChange}
+                pageSizeOptions={[5, 10, 25, 50]}
+                showSizeChanger 
+                size="small" 
+                total={total} 
+            />
         </Container>
     )
 }
