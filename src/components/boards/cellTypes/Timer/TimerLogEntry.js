@@ -20,6 +20,7 @@ const LogLabel = styles(Text)`
 
 const StyledAvatar = styles(Avatar)`
     background-color: ${props => props.color + ';'};
+    cursor: pointer;
 `
 
 const DeleteIcon = styles(Icon)`
@@ -63,12 +64,14 @@ const TimerLogs = ({ entry, onDelete }) => {
 
     return (
         <Container>
-            <StyledAvatar 
-                size="small"
-                color={avatarColors[user.charCodeAt() - 96]}
-            >
-                {user.charAt(0).toLocaleUpperCase()}
-            </StyledAvatar>
+            <Tooltip title={user}>
+                <StyledAvatar 
+                    size="small"
+                    color={avatarColors[user.charCodeAt() - 96]}
+                >
+                    {user.charAt(0).toLocaleUpperCase()}
+                </StyledAvatar>
+            </Tooltip>
             <LogLabel>{date}</LogLabel>
             <LogLabel>{`${timeFrom} - ${timeTo === 'Invalid date' ? 'Still running ' : timeTo}`}</LogLabel>
             <LogLabel>{`${days === '00' ? '' : days+':'}${hours}:${minutes}:${seconds}`}</LogLabel>

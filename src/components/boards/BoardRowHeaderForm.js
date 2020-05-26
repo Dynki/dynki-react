@@ -78,7 +78,7 @@ const BoardRowHeaderForm = (props) => {
 
     const fields = {
         headerValue: {
-        value: props.board ? props.board.columns[props.colIdx].title : '',
+        value: props?.board?.columns?.[props.colIdx]?.title ? props.board.columns[props.colIdx].title : '',
         }
     };
 

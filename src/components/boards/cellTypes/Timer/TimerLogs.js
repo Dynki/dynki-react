@@ -67,7 +67,7 @@ const TimerLogs = ({ duration, entries, onDeleteAll, onDeleteEntry }) => {
                 <CurrentTime level={4}>{duration}</CurrentTime>
             </CurrentLog>
             <Divider/>
-            <Button type="dashed" icon="plus">Add entry</Button>
+            {/* <Button type="dashed" icon="plus">Add entry</Button> */}
             <PreviousLogs pageSize={pageSize}>
                 {entries ? entries.slice((page-1) * pageSize, page * pageSize).map(e => (
                     <TimerLogEntry key={e.id} entry={e} onDelete={onDeleteEntry}/>
@@ -78,7 +78,7 @@ const TimerLogs = ({ duration, entries, onDeleteAll, onDeleteEntry }) => {
                 defaultPageSize={5}
                 onChange={onPageChange}
                 onShowSizeChange={onPageSizeChange}
-                pageSizeOptions={[5, 10, 25, 50]}
+                pageSizeOptions={['5', '10', '25', '50']}
                 showSizeChanger 
                 size="small" 
                 total={total} 
