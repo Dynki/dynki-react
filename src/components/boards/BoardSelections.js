@@ -172,4 +172,4 @@ const BoardSelections = ({ onDeselect, onMoveGroup, onDelete, selectedRows, grou
     )
 }
 
-export default BoardSelections;
+export default React.memo(BoardSelections);

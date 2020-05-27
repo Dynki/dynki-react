@@ -6,7 +6,7 @@ const FormItem = Form.Item;
 const BRForm = Form.create({
     mapPropsToFields(props) {
         return {
-          columnValue: Form.createFormField({
+          [props.modelName + props.rowId]: Form.createFormField({
             ...props.columnValue,
             value: props.columnValue.value,
           })
@@ -24,7 +24,7 @@ const BRForm = Form.create({
 
 
         props.form.validateFields((err, values) => {
-            if (!err && values.columnValue !== undefined) {
+            if (!err && values[props.modelName + props.rowId] !== undefined) {
                 props.onChange(values);
             }
         });
@@ -38,8 +38,9 @@ const BRForm = Form.create({
     return (
         <Form className="table__row__cell__container" autoComplete="off">
             <FormItem >
-                {getFieldDecorator('columnValue', {})(
+                {getFieldDecorator(props.modelName + props.rowId, {})(
                     <Input 
+                        id={props.modelName}
                         disabled={!allowWrite}
                         placeholder={colIdx === 0 ? "Enter some text here..." : ""}
                         className="table__header__input text--no-border"
@@ -80,7 +81,7 @@ class BoardRowForm extends React.Component {
     handleFormChange = (changedFields) => {
         const updatedBoard = this.props.board;
         
-        updatedBoard.groups[this.props.groupKey].entities[this.idx][this.props.modelName] = changedFields['columnValue'];
+        updatedBoard.groups[this.props.groupKey].entities[this.idx][this.props.modelName] = changedFields[this.props.modelName + this.props.rowId];
         this.props.onUpdateBoard(updatedBoard);
     }
 

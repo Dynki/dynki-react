@@ -42,6 +42,15 @@ class PeopleCell extends BaseCell {
     }
 }
 
+class TimerCell extends BaseCell {
+    constructor(model, title) {
+        super(model, title);
+        this.class = 'timer';
+        this.title = 'timer';
+    }
+}
+
+
 class SelectCell extends BaseCell {
 
     constructor(model, title) {
@@ -92,6 +101,8 @@ export class CellFactory {
                 return new DateDueCell(model, title);
             case 'people':
                 return new PeopleCell(model, title);
+            case 'timer':
+                return new TimerCell(model, title);
             default:
                 return null;
         }

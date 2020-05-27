@@ -1,7 +1,6 @@
 import React from 'react'
 import { InputNumber } from 'antd'
 import styles from 'styled-components'
-import useOutsideClick from '../../../../hooks/ClickOutside'
 
 const StyledInputNumber = styles(InputNumber)`
     border-radius: 0px;
@@ -13,6 +12,9 @@ const StyledInputNumber = styles(InputNumber)`
         height: 38px;
         text-align: center;
     }
+
+    visibility: ${props => props.focussed === 'true' ? 'visible;' : 'hidden;'}
+
 `
 
 const NumberLabel = styles.div`
@@ -29,23 +31,19 @@ const NumberLabel = styles.div`
     justify-content: center;
     height: 100%;
     width: 174px;
+    visibility: ${props => props.focussed === 'true' ? 'hidden;' : 'visible;'}
 `
 
 const Container = styles.div`
     height: 100%;
     width: 100%;
 `
-
 const NumberForm = ({ allowWrite, board, col, groupKey, modelName, numberProps, onUpdateBoard, rowId }) => {
     const [focussed, setFocussed] = React.useState(false)
     const [dirty, setDirty] = React.useState(false)
     const [idx, setIdx] = React.useState(undefined)
     const [value, setValue] = React.useState(undefined)
-    const containerRef = React.useRef(null)
-
-    useOutsideClick(containerRef, () => {
-        setFocussed(false)
-    })
+    const inputRef = React.useRef(null)
 
     const handleSubmit = () => onUpdateBoard(board)
 
@@ -59,7 +57,14 @@ const NumberForm = ({ allowWrite, board, col, groupKey, modelName, numberProps, 
                 board.groups[groupKey].entities[rowIdx][modelName] : undefined
 
         setValue(colValue)
-    }, [])
+    }, [board, groupKey, modelName, rowId])
+
+    React.useEffect(() => {
+        if (focussed && inputRef?.current) {
+                inputRef.current.focus()
+        }
+
+    }, [focussed])
 
     const handleChange = val => {
         setDirty(true)
@@ -67,8 +72,9 @@ const NumberForm = ({ allowWrite, board, col, groupKey, modelName, numberProps, 
     }
 
     const handleBlur = () => {
+        console.log('blur')
+        setFocussed(false)
         if (dirty) {
-            setFocussed(false)
             board.groups[groupKey].entities[idx][modelName] = value
             handleSubmit()
         }
@@ -83,11 +89,13 @@ const NumberForm = ({ allowWrite, board, col, groupKey, modelName, numberProps, 
     if (displayValue === '') {
         label = ''
     }
-    
+
     return (
-        <Container ref={containerRef} onClick={() => setFocussed(true)}>
+        <Container onClick={() => setFocussed(true)}>
             { focussed ? 
-                <StyledInputNumber 
+                <StyledInputNumber
+                    ref={inputRef}
+                    focussed={focussed ? 'true' : 'false'} 
                     disabled={!allowWrite}
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -96,7 +104,7 @@ const NumberForm = ({ allowWrite, board, col, groupKey, modelName, numberProps, 
                     value={value}
                 />
                 :
-                <NumberLabel>
+                <NumberLabel focussed={focussed ? 'true' : 'false'} >
                     {label}
                 </NumberLabel>
             }   

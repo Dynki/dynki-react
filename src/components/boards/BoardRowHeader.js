@@ -45,7 +45,7 @@ const ColumnTh = styles.th`
     width: 100%;
 `;
 
-class BoardRowHeader extends React.Component {
+class BoardRowHeader extends React.PureComponent {
     
     groupColor = '#000000a6';
     

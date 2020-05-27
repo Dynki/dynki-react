@@ -3,7 +3,7 @@ import { Icon, Popconfirm } from 'antd';
 import { connect } from 'react-redux';
 import { removeRow } from '../../store/actions/boardActions';
 
-class BoardRowMenu extends React.Component {
+class BoardRowMenu extends React.PureComponent {
 
     handleConfirm = (e) => {
         this.props.removeRow(this.props.rowIdx, this.props.groupKey);
