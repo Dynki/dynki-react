@@ -8,6 +8,10 @@ context('Forgot Password', () => {
         cy.visit('http://localhost:3000')
     })
 
+    beforeEach (() => {
+        cy.wait(3000)
+    })
+
     it('Check if valid email', () => {
         cy.contains('Log In').click()
         cy.contains('Forgot password').click()

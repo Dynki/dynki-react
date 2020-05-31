@@ -8,7 +8,10 @@ context('Create Team', () => {
       cy.visit('http://localhost:3000');
       const email = chance.email();
       cy.signup(email);
+    })
 
+    beforeEach (() => {
+        cy.wait(3000)
     })
 
     it('Validate too long team name', () => {

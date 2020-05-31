@@ -1,8 +1,8 @@
-
-/// <reference types="Cypress" />
-
 context('Team Invite', () => {
-
+    beforeEach (() => {
+        cy.wait(3000)
+    })
+  
     it('should open the invite drawer', () => {
         cy.get('[data-testid=inviteButton]').click();
         cy.contains('Invite team members');

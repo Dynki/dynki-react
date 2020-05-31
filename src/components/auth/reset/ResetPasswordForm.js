@@ -29,7 +29,10 @@ class ResetPasswordForm extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
+            console.log('err', err)
+            console.log('values', values)
             if (!err) {
+                console.log('Call function')
                 this.props.changePassword(values.password, values.newpassword);
             }
         });
@@ -98,7 +101,7 @@ class ResetPasswordForm extends React.Component {
             <Card 
                 title="Change Password"
                 actions={[
-                    <Button type="primary" size="large" icon="save" htmlType="submit">Change Password</Button>
+                    <Button type="primary" size="large" icon="save" onClick={this.handleSubmit}>Change Password</Button>
                 ]}
             >
             <StyledForm onSubmit={this.handleSubmit}>
@@ -195,7 +198,7 @@ export const mapStateToProps = (state) => {
   
 export const mapDispatchToProps = (dispatch) => {
     return {
-        changePassword: (updatedValues) => dispatch(changePassword(updatedValues))
+        changePassword: (password, newpassword) => dispatch(changePassword(password, newpassword))
     }
 }
 
