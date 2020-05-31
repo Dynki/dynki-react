@@ -55,7 +55,7 @@
     "babel-plugin-import": "^1.11.0",
     "chance": "^1.0.18",
     "customize-cra": "^0.9.1",
-    "cypress": "^3.4.0",
+    "cypress": "^4.7.0",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.9.1",
     "enzyme-to-json": "^3.3.5",

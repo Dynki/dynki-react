@@ -2,6 +2,13 @@
 /// <reference types="Cypress" />
 
 context('Boards', () => {
+    before(() => {
+        cy.visit('http://localhost:3000');
+        cy.clearLocalStorage();
+        cy.clearCookies();
+        cy.login('test@test.com', 'Test123!')
+    })
+
     it('Add board to menu', () => {
         cy.get('#btnBoards').click();
         cy.wait(1000);

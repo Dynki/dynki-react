@@ -8,6 +8,10 @@ context('Login', () => {
       cy.visit('http://localhost:3000');
     })
 
+    beforeEach (() => {
+      cy.wait(3000)
+    })
+
     it('Login Failure', () => {
         cy.contains('Log In').click();
         cy.login('fake@email.com', 'SomeFakePassword');
@@ -41,7 +45,7 @@ context('Login', () => {
       cy.contains('Log In').click();
       cy.login(email, 'F@kelonger1');
       cy.wait(500);
-      cy.contains('Inbox');
+      cy.contains('Channels');
       cy.deleteAccount();
     })
 
