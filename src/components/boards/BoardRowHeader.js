@@ -6,7 +6,7 @@ import styles from 'styled-components';
 import BoardRowHeaderForm from './BoardRowHeaderForm';
 import BoardRowHeaderGroupForm from './BoardRowHeaderGroupForm';
 import BoardRowHeaderMenu from './BoardRowHeaderMenu';
-import { removeColumn, addGroup, removeGroup, collapseGroup } from '../../store/actions/boardActions';
+import { removeColumn, addGroup, removeGroup, collapseGroup, selectAllRows, selectAllRowsInGroup } from '../../store/actions/boardActions';
 import BoardColumnMenu from './BoardColumnMenu';
 import ReorderGroupDrawer from './ReorderGroupDrawer';
 
@@ -65,6 +65,14 @@ class BoardRowHeader extends React.PureComponent {
         this.props.removeGroup(this.props.board.groups[this.props.groupKey].id);
     }
 
+    selectAll() {
+        this.props.selectAll()
+    }
+
+    selectAllInGroup() {
+        this.props.selectAllInGroup(this.props.board.groups[this.props.groupKey].id);
+    }
+
     render() {
         this.groupColor = '#' + this.props.board.groups[this.props.groupKey].color;
         const collapsed = this.props.board.groups[this.props.groupKey].collapsed;
@@ -95,6 +103,30 @@ class BoardRowHeader extends React.PureComponent {
                                 </div>
                             </StyledLink>
                         </Popconfirm>
+                    </Menu.Item>
+                    :
+                    null
+                }
+                {this.props.board.groups.length > 1 ? 
+                    <Menu.Item>
+                        <StyledLink onClick={() => this.props.selectAllRows()}>
+                            <div className="table__group__menu__row">
+                                <Icon className="table__group__menu__icon" type="delete" />
+                                <div>Select All</div>
+                            </div>
+                        </StyledLink>
+                    </Menu.Item>
+                    :
+                    null
+                }
+                {this.props.board.groups.length > 1 ? 
+                    <Menu.Item>
+                        <StyledLink onClick={() => this.props.selectAllRowsInGroup(this.props.board.groups[this.props.groupKey].id)}>
+                            <div className="table__group__menu__row">
+                                <Icon className="table__group__menu__icon" type="delete" />
+                                <div>Select All in Group</div>
+                            </div>
+                        </StyledLink>
                     </Menu.Item>
                     :
                     null
@@ -178,7 +210,9 @@ const mapDispatchToProps = (dispatch) => {
       removeColumn: (model) => dispatch(removeColumn(model)),
       collapseGroup: (groupKey) => dispatch(collapseGroup(groupKey)),
       addGroup: () => dispatch(addGroup()),
-      removeGroup: (groupId) => dispatch(removeGroup(groupId))
+      removeGroup: (groupId) => dispatch(removeGroup(groupId)),
+      selectAllRows: () => dispatch(selectAllRows()),
+      selectAllRowsInGroup: groupId => dispatch(selectAllRowsInGroup(groupId))
     }
 }
 

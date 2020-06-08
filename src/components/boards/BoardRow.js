@@ -182,7 +182,7 @@ export const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = (dispatch) => {
     return{
-      selectRow: rowId => dispatch(selectRow(rowId))
+      selectRow: rowId => dispatch(selectRow(rowId)),
     }
 }
 

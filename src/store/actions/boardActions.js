@@ -862,6 +862,36 @@ export const selectRow = rowId => {
     }
 }
 
+export const selectAllRows = () => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+
+        const board = getState().boards.currentBoard;
+        let selectedRows = []
+        board.groups.forEach(g => {
+            g.entities.forEach(e => selectedRows.push(e.id))
+        })
+        
+        dispatch({ type: 'SET_SELECTED_ROWS', payload: selectedRows })
+    }
+}
+
+export const selectAllRowsInGroup = groupId => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+
+        const board = getState().boards.currentBoard;
+        let previousSelectedRows = getState().boards.selectedRows;
+        let selectedRows = []
+        board.groups.filter(g => g.id === groupId).forEach(g => {
+            g.entities.forEach(e => selectedRows.push(e.id))
+        })
+
+        const set = new Set([...previousSelectedRows, ...selectedRows])
+
+        dispatch({ type: 'SET_SELECTED_ROWS', payload: [...set] })
+    }
+}
+
+
 export const clearSelectedRows = row => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
 
