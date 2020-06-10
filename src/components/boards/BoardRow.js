@@ -32,7 +32,7 @@ class BoardRow extends React.PureComponent {
         this.setState({ hovering: state });
     }
 
-    renderSwitch = (col, idx) => {
+    renderSwitch = (col, idx, isFirst) => {
         const {allowWrite, ...restProps} = this.props;
 
         const rowValue = this.props.board.groups[this.props.groupKey].entities[this.props.rowIdx] 
@@ -50,7 +50,8 @@ class BoardRow extends React.PureComponent {
                     colIdx={idx}
                     modelName={col.model}
                     groupKey={this.props.groupKey}
-                    progress={this.props.progress}>
+                    progress={this.props.progress}
+                    isFirst={isFirst}>
                 </BoardRowForm>;
             case 'number': 
                 return <NumberForm
@@ -159,7 +160,7 @@ class BoardRow extends React.PureComponent {
                                     }
                                 </div>
                     : null }
-                    {this.renderSwitch(c, idx)}
+                    {this.renderSwitch(c, idx, isFirst)}
                 </td>
             })}
             <td>

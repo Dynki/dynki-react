@@ -1,5 +1,32 @@
 import React from 'react';
 import { Form, Input } from 'antd';
+import BoardRowDescription from './BoardRowDescription';
+import styles from 'styled-components';
+
+const Container = styles.div`
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+`
+
+const StyledForm = styles(Form)`
+    cursor: pointer;
+    border: none;
+    border-right: ${props => props.first === 'true' ? 'none;' : 'solid;'}
+    border-right-width: 1px;
+    border-right-color: #cdd3da;
+    background-color: #eff1f3;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #D1D3D4;
+    padding: 5px;
+    width: 100%;
+    height: 40px;
+`
 
 const FormItem = Form.Item;
 
@@ -33,22 +60,25 @@ const BRForm = Form.create({
     const handleBlur = () => {
         handleSubmit();
     }
-    const { allowWrite, colIdx } = props;
+    const { allowWrite, colIdx, isFirst } = props;
     
     return (
-        <Form className="table__row__cell__container" autoComplete="off">
-            <FormItem >
-                {getFieldDecorator(props.modelName + props.rowId, {})(
-                    <Input 
-                        id={props.modelName}
-                        disabled={!allowWrite}
-                        placeholder={colIdx === 0 ? "Enter some text here..." : ""}
-                        className="table__header__input text--no-border"
-                        onBlur={() => handleBlur()}
-                    />
-                )}
-            </FormItem>
-        </Form>
+        <Container>
+            <StyledForm autoComplete="off" first={isFirst ? 'true' : 'false'}>
+                <FormItem >
+                    {getFieldDecorator(props.modelName + props.rowId, {})(
+                            <Input 
+                                id={props.modelName}
+                                disabled={!allowWrite}
+                                placeholder={colIdx === 0 ? "Enter some text here..." : ""}
+                                className="table__header__input text--no-border"
+                                onBlur={() => handleBlur()}
+                            />
+                            )}
+                </FormItem>
+            </StyledForm>
+            {isFirst && <BoardRowDescription allowWrite={allowWrite}/>}
+        </Container>
     )
 });
 

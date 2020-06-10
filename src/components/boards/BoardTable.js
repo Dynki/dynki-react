@@ -9,6 +9,7 @@ import BoardGroupSummary from './BoardGroupSummary'
 const TableFooter = styles.tfoot`
     display: flex;
     flex-direction row;
+    margin-bottom: 5px;
 
     & tr {
         display: flex;
