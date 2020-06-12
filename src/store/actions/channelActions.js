@@ -80,6 +80,51 @@ export const getChannel = (id) => {
     }
 }
 
+// Get an individual channel by id.
+export const getRowChannel = id => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+
+        
+        try {
+            dispatch({ type: 'ATTEMPT_LOADING_CHANNEL', payload: id })
+    
+            const currentChannel = getState().channel.current
+    
+            // This is required to stop firestore creating multiple subscriptions, which then spam the system.
+            if (currentChannel && currentChannel.unsubscribe) {
+                currentChannel.unsubscribe()
+
+                if (typeof currentChannel.messageUnsubscribe === "function") { 
+                    // safe to use the function
+                    currentChannel.messageUnsubscribe()
+                }
+            }
+    
+            const channelHelper = new Channels(getFirebase(), getState().domain.domainId)
+            let channel
+            console.log('called')
+            
+            try {
+                console.log('called 2')
+                channel  = await channelHelper.get(id, dispatch, getState)
+            } catch (error) {
+                console.log('called 3')
+                channel = await channelHelper.add(id)
+            }
+
+            console.log('channel', channel)
+
+            dispatch({ type: 'SET_CURRENT_CHANNEL', payload: channel })
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Channel Failure', description: 'Failed to get the channel' })
+            console.log('Error', error)
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false })
+        }
+    }
+}
+
+
 // Create a new blank channel with this user's domain/team.
 export const newChannel = () => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {

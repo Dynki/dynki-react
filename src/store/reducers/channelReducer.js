@@ -20,6 +20,7 @@ const channelReducer = (state = initialState, action) => {
             return {
                 ...state,
                 current: _.cloneDeep(action.payload),
+                currentMessages: []
             }
         case 'SET_CURRENT_CHANNEL_MESSAGES':
             return {

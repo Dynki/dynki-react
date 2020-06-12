@@ -72,7 +72,6 @@ const NumberForm = ({ allowWrite, board, col, groupKey, modelName, numberProps, 
     }
 
     const handleBlur = () => {
-        console.log('blur')
         setFocussed(false)
         if (dirty) {
             board.groups[groupKey].entities[idx][modelName] = value

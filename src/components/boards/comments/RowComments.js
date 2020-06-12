@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Drawer, Button, Icon, Tooltip } from 'antd';
 import { Editor } from 'draft-js';
-import BoardDescription from './BoardDescription';
+import Comments from './Comments';
 import styles from 'styled-components';
 
 const StyledButton = styles(Button)`
@@ -39,7 +39,7 @@ const StyledIcon = styles(Icon)`
     font-size: 18px;
 `
 
-const BoardRowDescription = props => {
+const BoardRowDescription = ({ allowWrite, rowId }) => {
 
     const [visible, setVisible] = useState(false);
 
@@ -54,7 +54,7 @@ const BoardRowDescription = props => {
     return (
         <React.Fragment>
             <Tooltip title="Comments" placement="left">
-                <StyledButton disabled={!props.allowWrite} onClick={showDrawer} type="link" size="small">
+                <StyledButton disabled={!allowWrite} onClick={showDrawer} type="link" size="small">
                     <StyledIcon type="fire" />
                 </StyledButton>
             </Tooltip>
@@ -71,7 +71,7 @@ const BoardRowDescription = props => {
                     paddingBottom: '108px',
                 }}
             >
-                <BoardDescription/>
+                {visible && <Comments rowId={rowId}/>}
             </Drawer>
         </React.Fragment>
     );

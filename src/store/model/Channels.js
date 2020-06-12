@@ -24,7 +24,7 @@ export class Channels {
             const currentMessages = getState().channel.currentMessages
             const msgCount = currentMessages ? currentMessages.length : 0
 
-            if (!channel || channel.messageCount > msgCount) {
+            if (!channel || channel.messageCount >= msgCount) {
 
                 this.firebase.firestore()
                 .collection('domains')
@@ -55,8 +55,8 @@ export class Channels {
                                 returnData.push({ id: doc.id, ...doc.data() });
                             });
     
-                            // returnData.reverse();
-            
+
+                            console.log('get channel messages')
                             if (dispatch && getState) {
                                 dispatch({ type: 'SET_CURRENT_CHANNEL_MESSAGES', payload: returnData });
                             }
@@ -80,6 +80,8 @@ export class Channels {
      */
     get(id, dispatch, getState) {
         return new Promise(async (resolve, reject) => {
+
+            dispatch({ type: 'SET_CURRENT_CHANNEL_MESSAGES', payload: undefined });
 
             const sub = this.firebase.firestore()
                 .collection('domains')
@@ -105,6 +107,8 @@ export class Channels {
                         }
 
                         resolve(channel);
+                    } else {
+                        reject()
                     }
                 }, (err) => reject(err));
         });
@@ -148,7 +152,7 @@ export class Channels {
      * Adds a new channel.
      * 
      */
-    async add() {
+    async add(id) {
         try {
             const name = this.firebase.auth().currentUser.displayName ? this.firebase.auth().currentUser.displayName :
             this.firebase.auth().currentUser.email;
@@ -157,7 +161,7 @@ export class Channels {
             const newMessage = convertToRaw(content.getCurrentContent());
 
             const newChannel = {
-                id: newGuid(),
+                id: id || newGuid(),
                 createdBy: this.firebase.auth().currentUser.uid,
                 createdDate: moment().toDate(),
                 description: '',

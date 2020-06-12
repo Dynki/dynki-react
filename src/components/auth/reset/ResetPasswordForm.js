@@ -29,10 +29,7 @@ class ResetPasswordForm extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
-            console.log('err', err)
-            console.log('values', values)
             if (!err) {
-                console.log('Call function')
                 this.props.changePassword(values.password, values.newpassword);
             }
         });

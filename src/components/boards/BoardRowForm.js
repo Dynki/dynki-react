@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input } from 'antd';
-import BoardRowDescription from './BoardRowDescription';
+import RowComments from './comments/RowComments';
 import styles from 'styled-components';
 
 const Container = styles.div`
@@ -77,7 +77,7 @@ const BRForm = Form.create({
                             )}
                 </FormItem>
             </StyledForm>
-            {isFirst && <BoardRowDescription allowWrite={allowWrite}/>}
+            {isFirst && <RowComments allowWrite={allowWrite} rowId={props.rowId}/>}
         </Container>
     )
 });

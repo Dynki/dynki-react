@@ -91,8 +91,6 @@ const NumberModal = ({ children, col, numProps, updateNumberProps }) => {
     }
 
     const overlay = () => {
-        console.log('render overlay')
-
         return (
             <NumberProperites>
                 <Text strong level={4}>Unit</Text>
