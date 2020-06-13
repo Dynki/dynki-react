@@ -118,6 +118,8 @@ const Comments = ({ addMessage, addReaction, channel, getRowChannel, loadMoreMes
     const addComment = () => {
         const raw = convertToRaw(editorState.getCurrentContent())
         onAddMessage(raw)
+        setEditorState(EditorState.createEmpty())
+        setActive(false)
     }
 
     return (

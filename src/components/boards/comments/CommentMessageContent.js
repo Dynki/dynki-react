@@ -140,8 +140,8 @@ function CommentMessageContent() {
                 <Tooltip title="Start thread">
                     <IconButton type="message" />
                 </Tooltip>
-                <Tooltip title="Share message">
-                    <IconButton type="share-alt" />
+                <Tooltip title="Like">
+                    <IconButton type="like" />
                 </Tooltip>
             </Reactions>
         )
@@ -152,9 +152,9 @@ function CommentMessageContent() {
             {displayAvatar ? 
                 <FullMsgContainer hover={messageHover} onMouseEnter={() => onSetMessageHover('true')} onMouseLeave={() => onSetMessageHover('false')}>
                     {name ? 
-                        <StyledAvatar size="large" shape="square">{name.charAt(0).toLocaleUpperCase()}</StyledAvatar>
+                        <StyledAvatar size="large" shape="circle">{name.charAt(0).toLocaleUpperCase()}</StyledAvatar>
                         :
-                        <StyledAvatar size="large" shape="square" icon="user"/>
+                        <StyledAvatar size="large" shape="circle" icon="user"/>
                     }
                     <SubContainer>
                         <UserDetails>

@@ -23,6 +23,7 @@ const InnerContainer = styles.ul`
     flex-direction: column;
     list-style-type: none;
     overflow: none;
+    overflow-y: auto;
     padding-left: 0px;
     z-index: 10;
 `
@@ -34,7 +35,6 @@ const MsgContainer = styles.li`
 function CommentFeed() {
 
     const { messages, onLoadMore } = useChannelContext()
-    const initialLoad = useRef(true)
 
     const checkLoadMore = obj => {
         if (obj.previousPosition === 'above') {
@@ -42,16 +42,6 @@ function CommentFeed() {
             onLoadMore()
         }
     }
-
-    const messagesEndRef = useCallback(node => {
-        if (node !== null && initialLoad.current) {
-            node.scrollIntoView({ behavior: 'smooth' })
-
-            setTimeout(() => {
-                initialLoad.current = false;
-            }, 1000)
-        }
-    }, [messages])
 
     if (!messages) {
         return (
@@ -65,7 +55,6 @@ function CommentFeed() {
     return (
         <Container>
             <InnerContainer >
-                <div ref={messagesEndRef}></div>
                 {messages.map((m, i) => {
                     const previous = i > 0 ? messages[i - 1] : undefined
                     const firstMessage = i === 0

@@ -36,33 +36,56 @@ export class Channels {
                 .limit(1)
                 .onSnapshot({}, documentSnapshots => {
     
-                    const last = documentSnapshots.docs[documentSnapshots.docs.length-1];
-                    const pageSize = getState().channel.pageSize;
-    
-                    const sub = this.firebase.firestore()
-                        .collection('domains')
-                        .doc(this.domainId)
-                        .collection('channels')
-                        .doc(channelId)
-                        .collection('messages')
-                        .orderBy('timestamp', 'desc')
-                        .startAt(last)
-                        .limit(pageSize)
-                        .onSnapshot({}, function (querySnapshot) {
-                            const returnData = [];
-                            querySnapshot.forEach(function(doc) {
-                                // doc.data() is never undefined for query doc snapshots
-                                returnData.push({ id: doc.id, ...doc.data() });
-                            });
-    
+                    if (!documentSnapshots?.doc || documentSnapshots.docs.length < 1) {
+                        const sub = this.firebase.firestore()
+                            .collection('domains')
+                            .doc(this.domainId)
+                            .collection('channels')
+                            .doc(channelId)
+                            .collection('messages')
+                            .orderBy('timestamp', 'desc')
+                            .onSnapshot({}, function (querySnapshot) {
+                                const returnData = [];
+                                querySnapshot.forEach(function(doc) {
+                                    // doc.data() is never undefined for query doc snapshots
+                                    returnData.push({ id: doc.id, ...doc.data() });
+                                });
+        
+                                if (dispatch && getState) {
+                                    dispatch({ type: 'SET_CURRENT_CHANNEL_MESSAGES', payload: returnData });
+                                }
+                
+                                resolve(sub);
+                            }, (err) => reject(err));
 
-                            console.log('get channel messages')
-                            if (dispatch && getState) {
-                                dispatch({ type: 'SET_CURRENT_CHANNEL_MESSAGES', payload: returnData });
-                            }
-            
-                            resolve(sub);
-                        }, (err) => reject(err));
+                    } else {
+
+                        const last = documentSnapshots.docs[documentSnapshots.docs.length-1];
+                        const pageSize = getState().channel.pageSize;
+        
+                        const sub = this.firebase.firestore()
+                            .collection('domains')
+                            .doc(this.domainId)
+                            .collection('channels')
+                            .doc(channelId)
+                            .collection('messages')
+                            .orderBy('timestamp', 'desc')
+                            .startAt(last)
+                            .limit(pageSize)
+                            .onSnapshot({}, function (querySnapshot) {
+                                const returnData = [];
+                                querySnapshot.forEach(function(doc) {
+                                    // doc.data() is never undefined for query doc snapshots
+                                    returnData.push({ id: doc.id, ...doc.data() });
+                                });
+        
+                                if (dispatch && getState) {
+                                    dispatch({ type: 'SET_CURRENT_CHANNEL_MESSAGES', payload: returnData });
+                                }
+                
+                                resolve(sub);
+                            }, (err) => reject(err));
+                    }
                 })
             } else {
                 resolve();
