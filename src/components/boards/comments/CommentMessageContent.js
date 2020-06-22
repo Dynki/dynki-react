@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useReducer } from 'react'
 import { convertFromRaw, Editor, EditorState } from 'draft-js'
-import { Avatar, Icon, Popover, Tooltip } from 'antd'
+import { Avatar, Badge, Button, Icon, Popover, Tooltip } from 'antd'
 import * as moment from 'moment'
 import styles from 'styled-components'
 
-import useMessageContext from '../../../hooks/useMessageContext';
+import useMessageContext from '../../../hooks/useMessageContext'
+import useChannelContext from '../../../hooks/useChannelContext'
 import ChannelEmoji from '../../channels/ChannelEmoji'
 
 const Container = styles.div`
@@ -96,7 +97,8 @@ const Reactions = styles.div`
 
 function CommentMessageContent() {
 
-    const {disableHover, displayAvatar, message, onToggleEmojiPicker, onReactionAdded} = useMessageContext()
+    const {disableHover, displayAvatar, message, onToggleEmojiPicker, onReactionAdded, onLikeMessage} = useMessageContext()
+    const {user} = useChannelContext()
 
     const [messageHover, setMessageHover] = useState('false')    
     const [showEmojiPicker, setShowEmojiPicker] = useState(false)
@@ -124,6 +126,15 @@ function CommentMessageContent() {
         }
     }
 
+    const renderLikes = () => {
+        if (message && message.likes) {
+            console.log('message.likes', Object.keys(message.likes))
+        }
+        return (
+            message?.likes && Object.keys(message.likes).legnth > 0 && <Button icon="like" shape="circle">{Object.keys(message.likes).length}</Button>
+        )
+    }
+
     const renderReactionPicker = () => {
         return (
             <Reactions>
@@ -141,7 +152,9 @@ function CommentMessageContent() {
                     <IconButton type="message" />
                 </Tooltip>
                 <Tooltip title="Like">
-                    <IconButton type="like" />
+                    <Badge count={message?.likes ? Object.keys(message.likes).legnth : 0}>
+                        <IconButton onClick={() => onLikeMessage(message)} type="like" theme={message?.likes?.[user.uid] ? 'filled' : 'outlined'}/>
+                    </Badge>
                 </Tooltip>
             </Reactions>
         )
@@ -177,6 +190,7 @@ function CommentMessageContent() {
                     {messageHover === 'true' && renderReactionPicker()}
                 </MessageOnlyContainer>
             }
+            {renderLikes()}
         </Container>
     )
 }

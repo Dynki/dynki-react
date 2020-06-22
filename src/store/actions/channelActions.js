@@ -221,3 +221,21 @@ export const addReaction = (channel, reaction) => {
         }
     }
 }
+
+export const likeMessage = (channel, message) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        
+        try {
+            dispatch({ type: 'SET_PROGRESS', payload: true })
+    
+            const channelHelper = new Channels(getFirebase(), getState().domain.domainId)
+            await channelHelper.likeMessage(channel, message)
+            dispatch({ type: 'SET_PROGRESS', payload: false })
+            
+        } catch (error) {
+            notifiy({ type: 'error', message: 'Channel Failure', description: error.message })
+        } finally {
+            dispatch({ type: 'SET_PROGRESS', payload: false })
+        }
+    }
+}

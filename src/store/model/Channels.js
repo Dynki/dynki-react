@@ -304,6 +304,7 @@ export class Channels {
                     timestamp: moment.now(),
                     content: message,
                     reactions: [],
+                    likes: {},
                     user: { id: this.firebase.auth().currentUser.uid, name }
                 }
 
@@ -386,4 +387,35 @@ export class Channels {
         });
     }
 
+    likeMessage(channel, message) {
+        return new Promise(async (resolve, reject) => {
+
+            try {
+                const name = this.firebase.auth().currentUser.displayName ? this.firebase.auth().currentUser.displayName :
+                                this.firebase.auth().currentUser.email;
+
+                const batch = this.firebase.firestore().batch();
+        
+                const messageRef = this.firebase.firestore()
+                                    .collection('domains')
+                                    .doc(this.domainId)
+                                    .collection('channels')
+                                    .doc(channel.id)
+                                    .collection('messages')
+                                    .doc(message.id);
+                
+                message.likes = {...message.likes, ...{ [this.firebase.auth().currentUser.uid]: name }}
+    
+                delete message['unsubscribe'];
+        
+                batch.set(messageRef, message);
+                await batch.commit();
+                
+                resolve();
+
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
 }

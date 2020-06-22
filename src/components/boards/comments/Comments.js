@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { connect } from 'react-redux'
-import { Button } from 'antd'
+import { Button, message } from 'antd'
 import styles from 'styled-components'
 import { convertToRaw, Editor, EditorState, RichUtils } from 'draft-js'
 
-import { addMessage, getRowChannel, loadMoreMessages, updateChannel } from '../../../store/actions/channelActions'
+import { addMessage, getRowChannel, loadMoreMessages, likeMessage, updateChannel } from '../../../store/actions/channelActions'
 import { ChannelContext } from '../../../context/channelContext'
 
 import useOutsideClick from '../../../hooks/ClickOutside'
@@ -63,11 +63,12 @@ const CommentContainer = styles.div`
     }
 `
 
-const Comments = ({ addMessage, addReaction, channel, getRowChannel, loadMoreMessages, messages, updateChannel, rowId }) => {
+const Comments = ({ addMessage, addReaction, channel, getRowChannel, likeMessage, loadMoreMessages, messages, updateChannel, user, rowId }) => {
 
     const onReactionAdded = useCallback(() => {}, [])
     const onLoadMore = useCallback(() => loadMoreMessages(), [])
     const onAddMessage = useCallback(message => addMessage(channel, message), [channel])
+    const onLikeMessage = useCallback(message => likeMessage(channel, message), [channel])
     const onUpdateChannel = useCallback(channel => updateChannel(channel), [channel])
     const onGetRowChannel = useCallback(rowId => getRowChannel(rowId), [rowId])
 
@@ -77,8 +78,10 @@ const Comments = ({ addMessage, addReaction, channel, getRowChannel, loadMoreMes
         onAddMessage, 
         onGetRowChannel,
         onLoadMore, 
+        onLikeMessage,
         onReactionAdded, 
-        onUpdateChannel 
+        onUpdateChannel,
+        user
     }), [channel, messages])
 
     const [editorState, setEditorState] = useState(EditorState.createEmpty())
@@ -148,7 +151,8 @@ const Comments = ({ addMessage, addReaction, channel, getRowChannel, loadMoreMes
 const mapStateToProps = state => {
     return {
         channel: state.channel.current,
-        messages: state.channel.currentMessages
+        messages: state.channel.currentMessages,
+        user: state.auth.currentUser
     }
 }
 
@@ -156,6 +160,7 @@ const mapDispatchToProps = dispatch => {
     return {
         addMessage: (channel, message) => dispatch(addMessage(channel, message)),
         loadMoreMessages: () => dispatch(loadMoreMessages()),
+        likeMessage: (channel, message) => dispatch(likeMessage(channel, message)),
         updateChannel: channel => dispatch(updateChannel(channel)),
         getRowChannel: rowId => dispatch(getRowChannel(rowId))
         // addReaction: (channel, reaction) => dispatch(addReaction(channel, reaction))

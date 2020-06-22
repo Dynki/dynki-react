@@ -19,11 +19,11 @@ const Container = styles.div`
     }
 `
 
-const CommentMessage = ({ disableHover, displayAvatar, message, onReactionAdded, toggleEmojiStatus }) => {
+const CommentMessage = ({ disableHover, displayAvatar, message, onLikeMessage, onReactionAdded, toggleEmojiStatus }) => {
 
     const onToggleEmojiPicker = useCallback(message => toggleEmojiStatus(), [])
 
-    const value = useMemo(() => ({ disableHover, displayAvatar, message, onReactionAdded, onToggleEmojiPicker }), [message])
+    const value = useMemo(() => ({ disableHover, displayAvatar, message, onLikeMessage, onReactionAdded, onToggleEmojiPicker }), [message])
 
     return (
         <Container>

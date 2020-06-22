@@ -34,7 +34,7 @@ const MsgContainer = styles.li`
 
 function CommentFeed() {
 
-    const { messages, onLoadMore } = useChannelContext()
+    const { messages, onLoadMore, onLikeMessage } = useChannelContext()
 
     const checkLoadMore = obj => {
         if (obj.previousPosition === 'above') {
@@ -71,7 +71,7 @@ function CommentFeed() {
                                     <Button shape="round">{moment(m.timestamp).format('dddd Do MMMM')}</Button>
                                 </Divider>
                             }
-                            <CommentMessage message={m} displayAvatar={displayAvatar} />
+                            <CommentMessage message={m} displayAvatar={displayAvatar} onLikeMessage={onLikeMessage}/>
                             {lastMessage && <Waypoint onEnter={checkLoadMore} />}
                         </MsgContainer>
                     )
