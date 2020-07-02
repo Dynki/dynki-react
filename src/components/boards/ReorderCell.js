@@ -32,10 +32,10 @@ const MenuIcon = styles(Icon)`
     transform: rotate(90deg);
 `;
 
-const ReorderCell = ({ id, index, title }) => {
+const ReorderCell = ({ id, index, title, disabledDrag }) => {
 
     return (
-        <Draggable key={'value' + index} draggableId={'reorder-column-' + index} index={index}>
+        <Draggable key={'value' + index} draggableId={'reorder-column-' + index} index={index} isDragDisabled={disabledDrag}>
         {provided => (
             <div
                 ref={provided.innerRef} {...provided.draggableProps}

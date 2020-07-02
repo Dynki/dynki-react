@@ -44,7 +44,7 @@ const ReorderDrawer = ({ board }) => {
 
                                 return (
                                     <li key={i}>
-                                        <ReorderCell id={c.id} title={c.title} index={i}/>
+                                        <ReorderCell id={c.model} title={c.title} index={i} disabledDrag={i === 0}/>
                                     </li>
                                 )
                             })}
