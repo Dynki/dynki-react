@@ -19,7 +19,7 @@ class ResetPasswordForm extends React.Component {
     state = {
         confirmDirty: false,
         passwordValidity: undefined,
-        passwordValidityError: ''
+        passwordValidityError: '',
     };
 
     specialSuccess = 'info';
@@ -29,10 +29,7 @@ class ResetPasswordForm extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
-            console.log('err', err)
-            console.log('values', values)
             if (!err) {
-                console.log('Call function')
                 this.props.changePassword(values.password, values.newpassword);
             }
         });
@@ -40,6 +37,8 @@ class ResetPasswordForm extends React.Component {
 
     validatePassword = (rule, value, callback) => {
         const password = value;
+
+        
 
         const hasNumber = value => {
             return new RegExp(/[0-9]/).test(value);
@@ -55,9 +54,9 @@ class ResetPasswordForm extends React.Component {
         this.mixedSuccess = hasMixed(password) ? 'success' : 'info';
         this.numberSuccess = hasNumber(password) ? 'success' : 'info';
 
-        if (password.length === 0) {
+        if (!password || password.length === 0) {
             callback();
-        }if (password.length > 0 && password.length < 8) {
+        } else if (password.length > 0 && password.length < 8) {
             callback('Must be longer than 8 characters');
         } else if (hasNumber(password) && hasMixed(password) && hasSpecial(password)) {
             callback();
@@ -69,7 +68,7 @@ class ResetPasswordForm extends React.Component {
 
         } else if (!hasSpecial(password)) {
             callback('Must contain at least one special character');
-        }
+        } 
     } 
 
     handleConfirmBlur = (e) => {
@@ -95,6 +94,7 @@ class ResetPasswordForm extends React.Component {
     }
 
     render() {
+        const { form } = this.props;
         const { getFieldDecorator } = this.props.form;
 
         return (
@@ -111,8 +111,6 @@ class ResetPasswordForm extends React.Component {
                 {getFieldDecorator('password', {
                     rules: [{
                         required: true, message: 'Please enter your current password!',
-                    }, {
-                    validator: this.validateToNextPassword,
                     }],
                 })(
                     <Input 
