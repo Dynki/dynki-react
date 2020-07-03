@@ -12,21 +12,9 @@ class BoardSettingsForm extends React.Component {
         autoCompleteResult: [],
     };
 
-    handleSubmit = (e) => {
-        this.props.form.validateFieldsAndScroll((err, values) => {
-            if (!err) {
-                this.props.updateBoardRoles(this.props.board.id, values);
-            }
-        });
-    }
-
     render() {
         const { getFieldDecorator } = this.props.form;
         const { progress, team } = this.props;
-
-        const handleBlur = () => {
-            this.handleSubmit();
-        }
 
         const selectChildren = [];
 
@@ -51,7 +39,6 @@ class BoardSettingsForm extends React.Component {
                             style={{ width: '100%' }}
                             placeholder="Please select"
                             ref={node => (this.input = node)} 
-                            onBlur={() => handleBlur()}
                             >{selectChildren}</Select>
                         )}
                     </Form.Item>
@@ -67,7 +54,6 @@ class BoardSettingsForm extends React.Component {
                             style={{ width: '100%' }}
                             placeholder="Please select"
                             ref={node => (this.input = node)} 
-                            onBlur={() => handleBlur()}
                             >{selectChildren}</Select>
                         )}
                     </Form.Item>
@@ -83,7 +69,6 @@ class BoardSettingsForm extends React.Component {
                             style={{ width: '100%' }}
                             placeholder="Please select"
                             ref={node => (this.input = node)} 
-                            onBlur={() => handleBlur()}
                             >{selectChildren}</Select>
                         )}
                     </Form.Item>
@@ -111,6 +96,13 @@ const WrappedBoardSettingsForm = Form.create({
             value: props.board.roles.delete,
           })
         };
+    },
+    onValuesChange(props, changedValues, allValues) {
+        props.form.validateFieldsAndScroll((err) => {
+            if (!err) {
+                props.updateBoardRoles(props.board.id, allValues);
+            }
+        });
     }
 })(BoardSettingsForm);
 
