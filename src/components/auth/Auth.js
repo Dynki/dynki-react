@@ -49,7 +49,7 @@ const StyledPicture = styles.img`
     height: 600px;
 `;
 
-const Auth = ({ auth, basePending, countryCode, countryCodes, updateDomain, checkDomain, domain, domainChecked, location, pending, signIn, signUp, signUpInProgress }) => {
+const Auth = ({ auth, basePending, countryCode, countryCodes, forgotPassword, updateDomain, checkDomain, domain, domainChecked, location, pending, signIn, signUp, signUpInProgress }) => {
 
     if (auth && auth.uid && !signUpInProgress) {
         if (!domain && domainChecked && location.pathname !== '/auth/domain') {
