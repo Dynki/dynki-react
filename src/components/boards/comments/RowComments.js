@@ -55,7 +55,7 @@ const BoardRowDescription = ({ allowWrite, rowId }) => {
         <React.Fragment>
             <Tooltip title="Comments" placement="left">
                 <StyledButton disabled={!allowWrite} onClick={showDrawer} type="link" size="small">
-                    <StyledIcon type="fire" />
+                    <StyledIcon type="message" />
                 </StyledButton>
             </Tooltip>
 

@@ -127,9 +127,6 @@ function CommentMessageContent() {
     }
 
     const renderLikes = () => {
-        if (message && message.likes) {
-            console.log('message.likes', Object.keys(message.likes))
-        }
         return (
             message?.likes && Object.keys(message.likes).legnth > 0 && <Button icon="like" shape="circle">{Object.keys(message.likes).length}</Button>
         )
@@ -172,7 +169,7 @@ function CommentMessageContent() {
                     <SubContainer>
                         <UserDetails>
                             <Name>{name}</Name>
-                            <FullMsgTime>{moment(message.timestamp).format('HH:MM')}</FullMsgTime>
+                            <FullMsgTime>{moment(message.timestamp).format('HH:mm')}</FullMsgTime>
                         </UserDetails>
                         <Editor editorState={editorState} onChange={onChange} readOnly={true}/>
                     </SubContainer>
@@ -185,7 +182,7 @@ function CommentMessageContent() {
                     onMouseLeave={() => onSetMessageHover('false')} 
                     hover={messageHover}
                 >
-                    <Time hover={messageHover}>{moment(message.timestamp).format('HH:MM')}</Time>
+                    <Time hover={messageHover}>{moment(message.timestamp).format('HH:mm')}</Time>
                     <Editor editorState={editorState} onChange={onChange} readOnly={true}/>
                     {messageHover === 'true' && renderReactionPicker()}
                 </MessageOnlyContainer>

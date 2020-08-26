@@ -52,6 +52,8 @@ function CommentFeed() {
         )
     }
 
+    console.log('messages', messages);
+
     return (
         <Container>
             <InnerContainer >

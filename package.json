@@ -14,7 +14,7 @@
     "lodash": "^4.17.11",
     "moment": "^2.25.3",
     "node-sass": "^4.14.1",
-    "react": "^16.8.3",
+    "react": "^16.13.1",
     "react-app-polyfill": "^1.0.6",
     "react-beautiful-dnd": "^10.0.3",
     "react-detect-offline": "^2.4.0",
