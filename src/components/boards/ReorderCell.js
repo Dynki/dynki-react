@@ -1,9 +1,10 @@
-import React from 'react';
-import { Icon, Typography } from 'antd';
-import { Draggable } from 'react-beautiful-dnd';
-import styles from 'styled-components';
+import React from 'react'
+import { Typography } from 'antd'
+import { EllipsisOutlined } from '@ant-design/icons'
+import { Draggable } from 'react-beautiful-dnd'
+import styles from 'styled-components'
 
-const { Text } = Typography;
+const { Text } = Typography
 
 const Cell = styles.div`
     align-items: center;
@@ -17,9 +18,9 @@ const Cell = styles.div`
     :hover {
         border-color: #79BAEC;
     }
-`;
+`
 
-const MenuIcon = styles(Icon)`
+const MenuIcon = styles(EllipsisOutlined)`
     cursor: pointer;
     height: 10px;
     margin-bottom: 10px;
@@ -30,7 +31,7 @@ const MenuIcon = styles(Icon)`
     -ms-transform: rotate(90deg);
     -o-transform: rotate(90deg);
     transform: rotate(90deg);
-`;
+`
 
 const ReorderCell = ({ id, index, title }) => {
 
@@ -52,7 +53,6 @@ const ReorderCell = ({ id, index, title }) => {
         )}
     </Draggable>
     )
-};
+}
 
-
-export default ReorderCell;
+export default ReorderCell

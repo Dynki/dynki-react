@@ -1,7 +1,8 @@
-import React from "react"
+import React from 'react'
 import * as moment from 'moment'
 import styles from 'styled-components'
-import { Avatar, Icon, Popconfirm, Typography, Tooltip } from 'antd'
+import { Avatar, Popconfirm, Typography, Tooltip } from 'antd'
+import { DeleteOutlined } from '@ant-design/icons'
 import * as _ from 'lodash'
 
 const { Text } = Typography
@@ -23,7 +24,7 @@ const StyledAvatar = styles(Avatar)`
     cursor: pointer;
 `
 
-const DeleteIcon = styles(Icon)`
+const DeleteIcon = styles(DeleteOutlined)`
     font-size: 21px;
     margin-left: 20px;
 
@@ -31,16 +32,6 @@ const DeleteIcon = styles(Icon)`
         fill: #FF4D4F;
     }
 `
-
-const ActiveIcon = styles(Icon)`
-    font-size: 21px;
-    margin-left: 20px;
-
-    & svg {
-        fill: #CFD3D7;
-    }
-`
-
 
 const TimerLogs = ({ entry, onDelete }) => {
 

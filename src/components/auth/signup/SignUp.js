@@ -2,7 +2,10 @@ import React, { Fragment, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { checkVAT, countries } from 'jsvat';
-import { Form, Icon, Input, Button, Checkbox, Select } from 'antd';
+import { AuditOutlined, CheckOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Input, Button, Checkbox, Select } from 'antd';
 import styles from 'styled-components';
 
 const FormItem = Form.Item;
@@ -165,7 +168,7 @@ const SignUpForm = ({ countryCodes, form, location, pending, signUp }) => {
                                 { type: 'email', message: 'Not a valid email address!' }
                         ],
                         })(
-                            <Input disabled={pending} autoFocus size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
+                            <Input disabled={pending} autoFocus size="large" prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
                         )}
                         
                     </FormItem>
@@ -176,12 +179,12 @@ const SignUpForm = ({ countryCodes, form, location, pending, signUp }) => {
                                 { validator: (rule, value, callback) => validatePassword(rule, value, callback) }
                             ],
                         })(
-                            <Input disabled={pending} size="large" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+                            <Input disabled={pending} size="large" prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
                         )}
                     </FormItem>
-                    <PasswordCriteria><Icon type="check" style={{ color: numberSuccess }}/> Contains a number</PasswordCriteria>
-                    <PasswordCriteria><Icon type="check" style={{ color: mixedSuccess }}/> Contains upper case and lower case</PasswordCriteria>
-                    <PasswordCriteria><Icon type="check" style={{ color: specialSuccess }}/> Contains a special character</PasswordCriteria>
+                    <PasswordCriteria><CheckOutlined style={{ color: numberSuccess }} /> Contains a number</PasswordCriteria>
+                    <PasswordCriteria><CheckOutlined style={{ color: mixedSuccess }} /> Contains upper case and lower case</PasswordCriteria>
+                    <PasswordCriteria><CheckOutlined style={{ color: specialSuccess }} /> Contains a special character</PasswordCriteria>
                     <FormItem>
                         {getFieldDecorator('country', {
                             valuePropName: 'country',
@@ -212,7 +215,7 @@ const SignUpForm = ({ countryCodes, form, location, pending, signUp }) => {
                                     { validator: (rule, value, callback) => validateVATNumber(rule, value, callback) }
                                 ],
                             })(
-                                <Input disabled={pending} autoFocus size="large" prefix={<Icon type="audit" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="VAT Number (Optional)" />
+                                <Input disabled={pending} autoFocus size="large" prefix={<AuditOutlined style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="VAT Number (Optional)" />
                             )}
                             
                         </FormItem>
@@ -236,7 +239,7 @@ const SignUpForm = ({ countryCodes, form, location, pending, signUp }) => {
                         )}
                         <Button id="btnRegister" disabled={hasErrors(getFieldsError())} type="dashed" htmlType="submit" className="button" loading={pending}>
                             Go
-                            <Icon type="check" />
+                            <CheckOutlined />
                         </Button>
                         Or <Link id="backToLogin" to="/auth/login">go to login</Link>
                     </FormItem>

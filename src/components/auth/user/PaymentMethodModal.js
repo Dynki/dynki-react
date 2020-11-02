@@ -1,32 +1,33 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { Elements, StripeProvider } from 'react-stripe-elements';
-import styles from 'styled-components';
-import { Button, Icon, Modal, Typography } from 'antd';
-import PaymentMethodForm from './PaymentMethodForm';
+import React, { useState } from 'react'
+import { connect } from 'react-redux'
+import { Elements, StripeProvider } from 'react-stripe-elements'
+import styles from 'styled-components'
+import { ShoppingOutlined } from '@ant-design/icons'
+import { Button, Modal, Typography } from 'antd'
+import PaymentMethodForm from './PaymentMethodForm'
 
-import { attachPaymentMethod, createSetupIntent, getSubscriptionDetails } from '../../../store/actions/subscriptionActions';
+import { attachPaymentMethod, createSetupIntent, getSubscriptionDetails } from '../../../store/actions/subscriptionActions'
 
-const { Title } = Typography;
+const { Title } = Typography
 
 const Heading = styles.div`
     display: flex;
     flex-direction: row;
     justify-items: center;
     align-items: flex-end;
-`;
+`
 
 const SupportedPayments = styles.div`
     display: flex;
     flex-direction: row;
-`;
+`
 
 const PaymentType = styles.img`
     height: 48px;
     margin-right: 5px;
-`;
+`
 
-const ShopIcon = styles(Icon)`
+const ShopIcon = styles(ShoppingOutlined)`
     font-size: 33px;
     padding-bottom: 20px;
     margin-right: 20px;
@@ -34,7 +35,7 @@ const ShopIcon = styles(Icon)`
     svg {
         color: #3095DE;
     }
-`;
+`
 
 const StyledModal = styles(Modal)`
     min-width: 800px;
@@ -42,7 +43,7 @@ const StyledModal = styles(Modal)`
     @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
         min-width: 100%;
     }
-`;
+`
 
 const PaymentMethodModal = ({ 
     attachPaymentMethod, 
@@ -87,7 +88,7 @@ const PaymentMethodModal = ({
 
     return (
         <div>
-            <Button icon="shopping" size="large" type="primary" onClick={() => setIsVisible(true)}>{label}</Button>
+            <Button icon={<ShoppingOutlined />} size="large" type="primary" onClick={() => setIsVisible(true)}>{label}</Button>
             <StyledModal
                 visible={isVisible}
                 onCancel={() => setIsVisible(false)}
@@ -129,7 +130,7 @@ const PaymentMethodModal = ({
             </StyledModal>
             
         </div>
-    );
+    )
 }
 
 const mapDispatchToProps = dispatch => {
@@ -140,4 +141,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(PaymentMethodModal);
+export default connect(null, mapDispatchToProps)(PaymentMethodModal)

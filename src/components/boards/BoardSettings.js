@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Drawer, Icon, Tabs } from 'antd';
+import { LockOutlined, SettingOutlined } from '@ant-design/icons';
+import { Drawer, Tabs } from 'antd';
 import BoardSettingsForm from './BoardSettingsForm';
 import styles from 'styled-components';
 
@@ -36,7 +37,7 @@ const BoardSettingsDrawer = (props) => {
 
     return (
         <React.Fragment>
-            <StyledLink onClick={showDrawer} ><Icon type="setting" style={{ paddingRight: '10px' }}/> Board settings</StyledLink>
+            <StyledLink onClick={showDrawer} ><SettingOutlined style={{ paddingRight: '10px' }} /> Board settings</StyledLink>
 
             <Drawer
                 title="Board settings"
@@ -49,7 +50,7 @@ const BoardSettingsDrawer = (props) => {
                 }}
             >
                 <Tabs defaultActiveKey="1">
-                    <TabPane tab={<span><Icon type="lock" />Permissions</span>} key="1">
+                    <TabPane tab={<span><LockOutlined />Permissions</span>} key="1">
                         <BoardSettingsForm/>
                     </TabPane>
                 </Tabs>

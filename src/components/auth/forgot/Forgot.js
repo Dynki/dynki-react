@@ -1,7 +1,10 @@
 import React from 'react';
 import styles from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Form, Icon, Input, Button } from 'antd';
+import { EnterOutlined, UserOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Input, Button } from 'antd';
 
 const FormItem = Form.Item;
 
@@ -68,12 +71,12 @@ const ForgotForm = ({ forgotPassword, form, pending }) => {
                             { type: 'email', message: 'Not a valid email address!' }
                         ],
                     })(
-                        <Input size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
+                        <Input size="large" prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
                     )}
                 </FormItem>
                 <Button style={{'margin-bottom': 10}} id="submitbtn" type="dashed" htmlType="submit" className="button" loading={pending}>
                     Send Email
-                    <Icon type="enter"/>
+                    <EnterOutlined />
                 </Button>
                 Or <Link id="backToLogin" to="/auth/login">back to login</Link>
             </Form>

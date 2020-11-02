@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, Icon, Table, Typography, Tooltip } from 'antd';
+import { FilePdfOutlined } from '@ant-design/icons';
+import { Card, Table, Typography, Tooltip } from 'antd';
 import styles from 'styled-components';
 
 const { Text } = Typography;
@@ -49,9 +50,9 @@ const columns = [
             title="View Invoice"
             placement="left"            
           >
-            <a href={text} target="blank"><Icon type="file-pdf" /></a>
+            <a href={text} target="blank"><FilePdfOutlined /></a>
           </Tooltip>
-        )
+        );
       }
     }
 ];

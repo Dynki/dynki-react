@@ -1,7 +1,10 @@
 import React from 'react';
 import styles from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { EnterOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Input, Button, Checkbox } from 'antd';
 
 const FormItem = Form.Item;
 
@@ -66,7 +69,7 @@ const LoginForm = ({ form, pending, signIn }) => {
                             { type: 'email', message: 'Not a valid email address!' }
                         ],
                     })(
-                        <Input disabled={pending} autoFocus size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
+                        <Input disabled={pending} autoFocus size="large" prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
                     )}
                 </FormItem>
                 <FormItem>
@@ -75,7 +78,7 @@ const LoginForm = ({ form, pending, signIn }) => {
                             { required: true, message: 'Please input your Password!' }
                         ],
                     })(
-                        <Input disabled={pending} id="password" size="large" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+                        <Input disabled={pending} id="password" size="large" prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
                     )}
                 </FormItem>
                 <FormItem>
@@ -88,7 +91,7 @@ const LoginForm = ({ form, pending, signIn }) => {
                     <Link id="forgotPassword" className="login-form-forgot" to='/auth/forgot'>Forgot password</Link>
                     <Button id="loginbtn" type="dashed" htmlType="submit" className="button" loading={pending}>
                         Log In
-                        <Icon type="enter" />
+                        <EnterOutlined />
                     </Button>
                     Or <Link id="register" to="/auth/signup">register now!</Link>
                 </FormItem>

@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Select } from 'antd';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Select } from 'antd';
 
 import { updateBoardRoles } from '../../store/actions/boardActions';
 
@@ -122,7 +124,7 @@ export const mapStateToProps = (state) => {
       progress: state.base.progress
     }
   }
-  
+
 export const mapDispatchToProps = (dispatch) => {
     return {
         updateBoardRoles: (boardId, roles) => dispatch(updateBoardRoles(boardId, roles))

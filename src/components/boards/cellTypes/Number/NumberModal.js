@@ -39,7 +39,7 @@ const NumberModal = ({ children, col, numProps, updateNumberProps }) => {
 
     const [visible, setVisible] = React.useState(false)
     const [unit, setUnit] = React.useState(numProps.unit)
-    const [alignment, setAlignment] = React.useState(numProps.alignment)
+    const [undefined, setAlignment] = React.useState(numProps.alignment)
     const [customValue, setCustomValue] = React.useState(undefined)
     const [formula, setFormula] = React.useState(numProps.formula)
     const [tooltip, setTooltip] = React.useState(undefined)

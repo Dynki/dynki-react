@@ -1,6 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Card, Form, Button, Icon, Popconfirm, Row, Col, Statistic, Skeleton } from 'antd';
+import { DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Card, Button, Popconfirm, Row, Col, Statistic, Skeleton } from 'antd';
 import styles from 'styled-components';
 
 import { updateUserProfile, deleteAccount } from '../../../store/actions/authActions';
@@ -148,7 +151,7 @@ class SubscriptionForm extends React.Component {
                     okType="danger"
                     cancelText="No, keep it like this!!"
                     onConfirm={this.props.cancelSubscription}
-                    icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
+                    icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
                 >
                     <DowngradeButton disabled={this.props.progress} icon="arrow-down" id="btnCancelSubscription" type="danger" size="large">{title}</DowngradeButton>
                 </Popconfirm>
@@ -178,18 +181,20 @@ class SubscriptionForm extends React.Component {
     }
 
     renderDeleteAccount() {
-        return <StyledAccountCard title="Permanently Delete Account">
+        return (
+            <StyledAccountCard title="Permanently Delete Account">
 
-            {this.renderPopConfirm({
-                title: "Are you sure？There is no going back once you confirm",
-                okText: "Yes Remove My Account",
-                okType: "danger",
-                cancelText: "No way, I want to stay!!",
-                onConfirm: this.props.deleteAccount,
-                icon: <Icon type="question-circle-o" style={{ color: 'red' }} />,
-                children: <Button disabled={this.props.progress} id="btnRemoveAccount" icon="delete" type="danger" size="large">Remove My Account Forever</Button> 
-            })}
-        </StyledAccountCard>
+                {this.renderPopConfirm({
+                    title: "Are you sure？There is no going back once you confirm",
+                    okText: "Yes Remove My Account",
+                    okType: "danger",
+                    cancelText: "No way, I want to stay!!",
+                    onConfirm: this.props.deleteAccount,
+                    icon: <QuestionCircleOutlined style={{ color: 'red' }} />,
+                    children: <Button disabled={this.props.progress} id="btnRemoveAccount" icon={<DeleteOutlined />} type="danger" size="large">Remove My Account Forever</Button> 
+                })}
+            </StyledAccountCard>
+        );
     }
 
     renderPopConfirm({ title, okText, okType, cancelText, onConfirm, icon, children }) {
@@ -299,7 +304,7 @@ export const mapStateToProps = (state) => {
       progress: state.base.progress
     }
   }
-  
+
 export const mapDispatchToProps = (dispatch) => {
     return {
         cancelSubscription: () => dispatch(cancelSubscription()),

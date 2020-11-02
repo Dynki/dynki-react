@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { connect } from 'react-redux'
-import { Button, message } from 'antd'
+import { Button } from 'antd'
 import styles from 'styled-components'
 import { convertToRaw, Editor, EditorState, RichUtils } from 'draft-js'
 

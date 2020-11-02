@@ -129,7 +129,7 @@ class SideNav extends React.Component {
 
     render() {
 
-        const { boards, channels, hideHome, isActiveSubscriber, selectedKeys, teams } = this.props;
+        const { boards, hideHome, isActiveSubscriber, selectedKeys, teams } = this.props;
         const teamName = this.props.team ? this.props.team.display_name : '';
         const loading = !this.props.team || this.state.loadingTeam ? true : false;
 

@@ -1,6 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Alert, Button, Card, Form, Input } from 'antd';
+import { SaveOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Alert, Button, Card, Input } from 'antd';
 import styles from 'styled-components';
 
 import { changePassword } from '../../../store/actions/authActions';
@@ -98,7 +101,7 @@ class ResetPasswordForm extends React.Component {
             <Card 
                 title="Change Password"
                 actions={[
-                    <Button type="primary" size="large" icon="save" onClick={this.handleSubmit}>Change Password</Button>
+                    <Button type="primary" size="large" icon={<SaveOutlined />} onClick={this.handleSubmit}>Change Password</Button>
                 ]}
             >
             <StyledForm onSubmit={this.handleSubmit}>
@@ -192,7 +195,7 @@ export const mapStateToProps = (state) => {
       currentUser: state.auth.currentUser
     }
   }
-  
+
 export const mapDispatchToProps = (dispatch) => {
     return {
         changePassword: (password, newpassword) => dispatch(changePassword(password, newpassword))

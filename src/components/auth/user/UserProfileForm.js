@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-    Card, Form, Input, Button, Icon,
-} from 'antd';
+import { MailOutlined, SaveOutlined, UserOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Card, Input, Button } from 'antd';
 import styles from 'styled-components';
 
 import { updateUserProfile, deleteAccount } from '../../../store/actions/authActions';
@@ -45,7 +46,7 @@ class UserProfileForm extends React.Component {
             <Card
                 title="User Profile Information"
                 actions={[
-                    <Button type="primary" size="large" icon="save" onClick={this.handleSubmit}>Apply Changes</Button>
+                    <Button type="primary" size="large" icon={<SaveOutlined />} onClick={this.handleSubmit}>Apply Changes</Button>
                 ]}
             >
 
@@ -63,7 +64,7 @@ class UserProfileForm extends React.Component {
                             <Input 
                                 disabled
                                 placeholder="Enter your email"
-                                prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                prefix={<MailOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
                             />
                         )}
                     </Form.Item>
@@ -74,7 +75,7 @@ class UserProfileForm extends React.Component {
                         })(
                             <Input 
                                 placeholder="Give yourself a name to be proud of"
-                                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
                             />
                         )}
                     </Form.Item>
@@ -106,7 +107,7 @@ export const mapStateToProps = (state) => {
       currentUser: state.auth.currentUser
     }
   }
-  
+
 export const mapDispatchToProps = (dispatch) => {
     return {
         updateUserProfile: (updatedValues) => dispatch(updateUserProfile(updatedValues)),

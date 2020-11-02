@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Drawer, Icon } from 'antd';
+import { BarsOutlined } from '@ant-design/icons';
+import { Drawer } from 'antd';
 import styled from 'styled-components';
 
 import SideNav from './SideNav';
@@ -24,7 +25,7 @@ const SidenavDrawer = (props) => {
 
     return (
         <React.Fragment>
-            <Icon type="bars" onClick={showDrawer} className="sidenav-drawer__burger"/>
+            <BarsOutlined onClick={showDrawer} className="sidenav-drawer__burger" />
 
             <StyledDrawer
                 title="Main menu"

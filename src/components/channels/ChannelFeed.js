@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useRef, useCallback } from 'react'
 import styles from 'styled-components'
 import { Button, Divider } from 'antd'
 import * as moment from 'moment'
@@ -6,7 +6,6 @@ import { Waypoint } from 'react-waypoint'
 
 import ChannelMessage from './ChannelMessage'
 import useChannelContext from '../../hooks/useChannelContext'
-import { useScrollPosition } from '../../hooks/useScrollPosition'
 
 const Container = styles.div`
     display: flex;

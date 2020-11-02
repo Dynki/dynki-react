@@ -1,8 +1,17 @@
 import React, { useState } from 'react'
 import styles from 'styled-components'
-import { Card, Divider, Statistic, Icon, Popconfirm, Popover, Tooltip, Typography } from 'antd';
+import { 
+    Card, 
+    Divider, 
+    Statistic, 
+    Popconfirm, 
+    Popover, 
+    Tooltip, 
+    Typography 
+} from 'antd'
+import { DeleteOutlined, RightCircleOutlined } from '@ant-design/icons'
 
-const { Text } = Typography;
+const { Text } = Typography
 
 const Container = styles.div`
     bottom: 10px;
@@ -96,12 +105,12 @@ const PopButton = styles.button`
     }
 `
 
-const PopButtonIcon = styles(Icon)`
+const PopButtonIcon = styles(RightCircleOutlined)`
     font-size: 15px;
     margin-right: 10px;
 `
 
-const StyledIcon = styles(Icon)`
+const StyledIcon = styles(DeleteOutlined)`
     font-size: 35px;
 `
 
@@ -172,4 +181,4 @@ const BoardSelections = ({ onDeselect, onMoveGroup, onDelete, selectedRows, grou
     )
 }
 
-export default React.memo(BoardSelections);
+export default React.memo(BoardSelections)

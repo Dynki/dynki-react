@@ -1,6 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Form, Icon, Input, Popconfirm } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Input, Popconfirm } from 'antd';
 import { updateBoardTitle, removeFolder } from '../../../store/actions/boardActions';
 
 const BForm = Form.create({
@@ -30,34 +33,35 @@ const BForm = Form.create({
     }
 
     return (
-    <React.Fragment>
-        <Form autoComplete="off">
-            <Form.Item
-                label="Folder name"
+        <React.Fragment>
+            <Form autoComplete="off">
+                <Form.Item
+                    label="Folder name"
+                >
+                    {getFieldDecorator('title', {
+                        rules: [],
+                    })(
+                        <Input 
+                            placeholder="Folder name goes here" 
+                            autoComplete="no way" 
+                            onBlur={() => handleBlur()}
+                        />
+                    )}
+                </Form.Item>
+            </Form>
+            <Popconfirm 
+                className="userprofile__removeac-btn"
+                title="Are you sure？There is no going back once you confirm!" 
+                okText="Yes Remove This Folder!"
+                okType="danger"
+                cancelText="No keep my folder"
+                onConfirm={props.deleteFolder}
+                icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
             >
-                {getFieldDecorator('title', {
-                    rules: [],
-                })(
-                    <Input 
-                        placeholder="Folder name goes here" 
-                        autoComplete="no way" 
-                        onBlur={() => handleBlur()}
-                    />
-                )}
-            </Form.Item>
-        </Form>
-        <Popconfirm 
-            className="userprofile__removeac-btn"
-            title="Are you sure？There is no going back once you confirm!" 
-            okText="Yes Remove This Folder!"
-            okType="danger"
-            cancelText="No keep my folder"
-            onConfirm={props.deleteFolder}
-            icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
-        >
-            <Button id="btnRemoveAccount" className="userprofile__deleteac-btn" type="danger" htmlType="submit">Remove this folder</Button>
-        </Popconfirm>
-    </React.Fragment>)
+                <Button id="btnRemoveAccount" className="userprofile__deleteac-btn" type="danger" htmlType="submit">Remove this folder</Button>
+            </Popconfirm>
+        </React.Fragment>
+    );
 });
 
 class FolderForm extends React.Component {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Drawer, Button, Card, Checkbox, Icon, Switch } from 'antd';
+import { EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { Drawer, Button, Card, Checkbox, Switch } from 'antd';
 import SelectCellForm from './SelectCellInput';
 import SelectColorSwatch from './SelectColorSwatch';
 import { Droppable } from 'react-beautiful-dnd';
@@ -83,7 +84,7 @@ const SelectDrawer = (props) => {
     return (
         <React.Fragment>
             <Button disabled={!props.allowWrite} onClick={showDrawer} type="dashed" size="small">
-                <Icon type="edit"/> Edit Labels
+                <EditOutlined /> Edit Labels
             </Button>
 
             <Drawer
@@ -98,7 +99,7 @@ const SelectDrawer = (props) => {
                 }}
             >
                 <Button onClick={addNewValue} className="select__newbtn"  type="dashed" size="small">
-                    <Icon type="plus" />New Label
+                    <PlusOutlined />New Label
                 </Button>
                 <Droppable droppableId={props.column.model} type="select">
                     {outerProvided =>(

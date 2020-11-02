@@ -1,7 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { Login, mapDispatchToProps, mapStateToProps } from './Login';
-import { Form } from 'antd';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
 import { BrowserRouter, Redirect } from 'react-router-dom';
 
 it('should render full component when domain has been checked', () => {

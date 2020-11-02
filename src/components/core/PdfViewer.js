@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
-import { Icon, Pagination, Tooltip } from 'antd';
+import { DownloadOutlined } from '@ant-design/icons';
+import { Pagination, Tooltip } from 'antd';
 import styles from 'styled-components';
 import ScrollToTop from './ScrollToTop';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -88,7 +89,7 @@ const PdfViewer = ({ url }) => {
                     />
                     <StyledDownload href={url} download>
                         <Tooltip title="Download PDF Document">
-                            <Icon type="download"/>
+                            <DownloadOutlined />
                         </Tooltip>
                     </StyledDownload>
                 </StyledToolbar>
@@ -103,7 +104,7 @@ const PdfViewer = ({ url }) => {
                 </StyledWrapper>
             </Container>
         </ScrollToTop>
-    )
+    );
 }
 
 export default PdfViewer;

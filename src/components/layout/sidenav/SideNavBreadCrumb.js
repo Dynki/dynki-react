@@ -1,5 +1,6 @@
 import React from 'react';
-import { Breadcrumb, Icon, Dropdown, Menu, Tooltip } from 'antd';
+import { HomeOutlined, LoadingOutlined, TeamOutlined } from '@ant-design/icons';
+import { Breadcrumb, Dropdown, Menu, Tooltip } from 'antd';
 import styled from 'styled-components';
 
 const StyledBreadcrumb = styled(Breadcrumb)`
@@ -21,13 +22,13 @@ const SideNavBreadCrumb = ({ loading, teams, teamName, displayTeam, isActiveSubs
     const menu = (
         <Menu onClick={selectTeam}>
             {teams && teams.length > 0 ? teams.map(t => {
-                return <Menu.Item key={t.id}><Icon type="team" /> {t.display_name}</Menu.Item>
+                return <Menu.Item key={t.id}><TeamOutlined /> {t.display_name}</Menu.Item>;
             }) : null }
         </Menu>
     );
 
     const renderHome = (hideHome) => {
-        return hideHome ? null : <Breadcrumb.Item><Icon type="home"/></Breadcrumb.Item>
+        return hideHome ? null : <Breadcrumb.Item><HomeOutlined /></Breadcrumb.Item>;
     }
 
     const teamTooltip = !isActiveSubscriber() ? null : 'Choose a team';
@@ -42,14 +43,14 @@ const SideNavBreadCrumb = ({ loading, teams, teamName, displayTeam, isActiveSubs
                             data-testid="displayTeam" 
                             type="dashed" 
                             overlay={menu}
-                            icon={<Icon type="team" />} 
+                            icon={<TeamOutlined />} 
                             onClick={displayTeam}
                             disabled={!isActiveSubscriber()}
                         >
                             {loading ? 
                                 <React.Fragment>
                                     {'Loading team - '}
-                                    <Icon type="loading" />
+                                    <LoadingOutlined />
                                 </React.Fragment>
                                 :
                                 teamName
@@ -59,7 +60,7 @@ const SideNavBreadCrumb = ({ loading, teams, teamName, displayTeam, isActiveSubs
                 </Tooltip>
             </Breadcrumb.Item>
         </StyledBreadcrumb>
-    )
+    );
 }
 
 export default SideNavBreadCrumb;

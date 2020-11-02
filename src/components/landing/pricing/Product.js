@@ -1,8 +1,9 @@
-import React from 'react';
-import styles from 'styled-components';
-import { Link } from 'react-router-dom';
-import { Icon, Tooltip, Typography } from 'antd';
-const { Title, Text } = Typography;
+import React from 'react'
+import styles from 'styled-components'
+import { Link } from 'react-router-dom'
+import { Tooltip, Typography } from 'antd'
+import { CheckCircleFilled, QuestionCircleOutlined } from '@ant-design/icons'
+const { Title, Text } = Typography
 
 const StyledPicture = styles.img`
     display: block;
@@ -12,13 +13,13 @@ const StyledPicture = styles.img`
     background-position: center center;  
     width: 100%;
     height: 100%;
-`;
+`
 
 const StyledWrapper = styles.div`
     display: flex;
     flex-direction: column;
     margin: 10px;
-`;
+`
 
 const ProductName = styles.div`
     background-color: ${props => props.bgColor};
@@ -32,7 +33,7 @@ const ProductName = styles.div`
         color: #ffffff;
         margin: 0px;
     }
-`;
+`
 
 const StyledContent = styles.div`
     position: relative;
@@ -53,12 +54,12 @@ const StyledContent = styles.div`
     @media only screen and (min-device-width : 0px) and (max-device-width : 680px) {
         min-height: 10px;
     }
-`;
+`
 
 const StyledLink = styles(Link)`
     margin-top:auto;
     width: 100%;
-`;
+`
 
 const StyledButtonLink = styles.div`
     border: solid 2px #3095de;
@@ -77,7 +78,7 @@ const StyledButtonLink = styles.div`
         background-color: #3095de!important;
         color: #ffffff;
     }
-`;
+`
 
 const StyledButtonAnchor = styles.a`
     border-radius: 3px;
@@ -98,16 +99,14 @@ const StyledButtonAnchor = styles.a`
         background-color: #3095de!important;
         color: #ffffff;
     }
-`;
-
-
+`
 
 const StyledFeatures = styles.div`
     margin-top: 25px;
     margin-bottom: 25px;
     display: flex;
     flex-direction: column;
-`;
+`
 
 const StyledFeature = styles.div`
     display: flex;
@@ -122,31 +121,31 @@ const StyledFeature = styles.div`
             fill: #00D084;
         }
     }
-`;
+`
 
 const StyledCost = styles.div`
     .ant-typography {
         color: ${props => props.color ? props.color : 'rgba(0, 0, 0, 0.65)'}
     }
-`;
+`
 
 const StyledText = styles(Text)`
     margin-right: auto;
     padding-right: 10px;
-`;
+`
 
-const HelpIcon = styles(Icon)`
+const HelpIcon = styles(QuestionCircleOutlined)`
     cursor: pointer;
     font-size: 16px;
 
     svg {
         fill: #A5A4A4!important;
     }
-`;
+`
 
-const CheckIcon = styles(Icon)`
+const CheckIcon = styles(CheckCircleFilled)`
     font-size: 16px;
-`;
+`
 
 const Product = ({ billingBasis, billingFrequency, blurb, buttonText, color, cost, description, free, href, imageSource, main, redirectLink, title }) => {
     return (
@@ -182,7 +181,7 @@ const Product = ({ billingBasis, billingFrequency, blurb, buttonText, color, cos
                 }
             </StyledContent>
         </StyledWrapper>
-    );
+    )
 }
 
-export default Product;
+export default Product

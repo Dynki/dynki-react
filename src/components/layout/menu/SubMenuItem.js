@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Tree,  Menu, Icon, Button, Tooltip } from 'antd';
+import { DownOutlined, PlusOutlined } from '@ant-design/icons';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Tree, Menu, Button, Tooltip } from 'antd';
 
 import { addNewFolder } from '../../../store/actions/boardActions';
 import FolderMenu from './FolderMenu';
@@ -48,13 +50,13 @@ class DynSubMenu extends React.Component {
                 <div className="submenu">
                     <DirectoryTree 
                         onSelect={this.onSelect} 
-                        switcherIcon={<Icon type="down" />} 
+                        switcherIcon={<DownOutlined />} 
                         draggable 
                         defaultExpandedKeys={['000001']} 
                         onDrop={this.onDrop}
                         className="firstitem"
                     >
-                        <TreeNode title={title} key={'000001'} icon={<Icon type={icon} />}>
+                        <TreeNode title={title} key={'000001'} icon={<LegacyIcon type={icon} />}>
                             { items.map((i, idx) => {
 
                                 return i.isFolder ?
@@ -71,12 +73,12 @@ class DynSubMenu extends React.Component {
                         </TreeNode>
                     </DirectoryTree>
                     <Tooltip placement="right" title={tooltip}>
-                        <Button id={'btn' + title} disabled={progress || !hasRole('BOARD_CREATORS')} className="btn-add-board" onClick={(e) => this.handleBtnClick(e, act)}  type="dashed" shape="circle" icon="plus"></Button>
+                        <Button id={'btn' + title} disabled={progress || !hasRole('BOARD_CREATORS')} className="btn-add-board" onClick={(e) => this.handleBtnClick(e, act)}  type="dashed" shape="circle" icon={<PlusOutlined />}></Button>
                     </Tooltip>
                 </div>
             ): (
                 <Tooltip placement="right" title="Coming Soon">
-                    <Menu.Item {...other} key={title}><Icon type={icon}/>{title}</Menu.Item>
+                    <Menu.Item {...other} key={title}><LegacyIcon type={icon}/>{title}</Menu.Item>
                 </Tooltip>
             )}
             </React.Fragment>

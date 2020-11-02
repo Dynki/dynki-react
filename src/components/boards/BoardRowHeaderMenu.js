@@ -1,5 +1,16 @@
 import React from 'react';
-import { Icon, Dropdown, Menu } from 'antd';
+
+import {
+    ArrowDownOutlined,
+    CalendarOutlined,
+    FormOutlined,
+    HourglassOutlined,
+    NumberOutlined,
+    PlusCircleOutlined,
+    UsergroupAddOutlined,
+} from '@ant-design/icons';
+
+import { Dropdown, Menu } from 'antd';
 import { connect } from 'react-redux';
 import { addColumn } from '../../store/actions/boardActions';
 import styles from 'styled-components';
@@ -32,35 +43,37 @@ class BoardRowHeaderMenu extends React.PureComponent {
     menu = (
         <Menu onClick={this.onClick} className="table__header__menu">
           <Menu.Item key="text">
-            <StyledLink className="table_menu__link"><Icon type="form" />Text</StyledLink>
+            <StyledLink className="table_menu__link"><FormOutlined />Text</StyledLink>
           </Menu.Item>
           <Menu.Item key="number">
-            <StyledLink className="table_menu__link"><Icon type="number" />Number</StyledLink>
+            <StyledLink className="table_menu__link"><NumberOutlined />Number</StyledLink>
           </Menu.Item>
           <Menu.Item key="select">
-            <StyledLink className="table_menu__link"><Icon type="arrow-down" />Select</StyledLink>
+            <StyledLink className="table_menu__link"><ArrowDownOutlined />Select</StyledLink>
           </Menu.Item>
           <Menu.Item key="date">
-            <StyledLink className="table_menu__link"><Icon type="calendar" />Date</StyledLink>
+            <StyledLink className="table_menu__link"><CalendarOutlined />Date</StyledLink>
           </Menu.Item>
           <Menu.Item key="datedue">
-            <StyledLink className="table_menu__link"><Icon type="calendar" />Date Due</StyledLink>
+            <StyledLink className="table_menu__link"><CalendarOutlined />Date Due</StyledLink>
           </Menu.Item>
           <Menu.Item key="people">
-            <StyledLink className="table_menu__link"><Icon type="usergroup-add" />People</StyledLink>
+            <StyledLink className="table_menu__link"><UsergroupAddOutlined />People</StyledLink>
           </Menu.Item>
           <Menu.Item key="timer">
-            <StyledLink className="table_menu__link"><Icon type="hourglass" />Timer</StyledLink>
+            <StyledLink className="table_menu__link"><HourglassOutlined />Timer</StyledLink>
           </Menu.Item>
       </Menu>
     );
 
     render() {
-        return <th className="table__header__menu__container">
-            <Dropdown disabled={!this.props.allowWrite} overlay={this.menu} className="table__header__menu__container__dropdown">
-                <Icon type="plus-circle" />
-            </Dropdown>
-        </th>
+        return (
+            <th className="table__header__menu__container">
+                <Dropdown disabled={!this.props.allowWrite} overlay={this.menu} className="table__header__menu__container__dropdown">
+                    <PlusCircleOutlined />
+                </Dropdown>
+            </th>
+        );
     }
 }
 

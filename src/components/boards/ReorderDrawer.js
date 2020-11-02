@@ -1,21 +1,22 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { Drawer, Icon } from 'antd';
-import { Droppable } from 'react-beautiful-dnd';
-import styles from 'styled-components';
-import ReorderCell from './ReorderCell';
+import React, { useState } from 'react'
+import { connect } from 'react-redux'
+import { Drawer } from 'antd'
+import { SwapOutlined } from '@ant-design/icons'
+import { Droppable } from 'react-beautiful-dnd'
+import styles from 'styled-components'
+import ReorderCell from './ReorderCell'
 
-const MenuIcon = styles(Icon)`
+const MenuIcon = styles(SwapOutlined)`
     margin-right: 10px;
-`;
+`
 
 const ReorderDrawer = ({ board }) => {
 
-    const [visible, setVisible] = useState(false);
+    const [visible, setVisible] = useState(false)
 
     const onClose = () => {
         setVisible(false);
-    };
+    }
 
     return (
         <React.Fragment>
@@ -53,7 +54,7 @@ const ReorderDrawer = ({ board }) => {
                 </Droppable>
             </Drawer>
         </React.Fragment>
-    );
+    )
 }
 
 
@@ -63,4 +64,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, null)(ReorderDrawer);
+export default connect(mapStateToProps, null)(ReorderDrawer)

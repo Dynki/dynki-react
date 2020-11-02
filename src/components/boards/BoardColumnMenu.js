@@ -1,11 +1,12 @@
-import React from 'react';
-import { Dropdown, Icon, Menu, Popconfirm } from 'antd';
-import styles from 'styled-components';
-import authWrapper from '../auth/AuthWrapper';
+import React from 'react'
+import { EllipsisOutlined } from '@ant-design/icons'
+import { Dropdown, Menu, Popconfirm } from 'antd'
+import styles from 'styled-components'
+import authWrapper from '../auth/AuthWrapper'
 
-import ReorderDrawer from './ReorderDrawer';
+import ReorderDrawer from './ReorderDrawer'
 
-const MenuIcon = styles(Icon)`
+const MenuIcon = styles(EllipsisOutlined)`
     color: ${props => props.hovering === 'true' ? '#3095DE' : '#595959'};
     cursor: pointer;
     width: 7px;
@@ -17,22 +18,19 @@ const MenuIcon = styles(Icon)`
     -o-transform: rotate(90deg);
     transform: rotate(90deg);
 
-`;
+`
 
 const BoardColumnMenu = ({ allowWrite, column, columns, hasRole, onRemoveColumn, user }) => {
 
-    const [hover, setHover] = React.useState("false");
+    const [hover, setHover] = React.useState("false")
 
     const handleClick = object => {
-        console.log('click ', object.key);
-        // this.setState({
-        //   current: e.key,
-        // });
+        console.log('click ', object.key)
     };
 
     const renderMenu = () =>  {
         if (!user) {
-            return null;
+            return null
         }
 
         return (
@@ -50,12 +48,12 @@ const BoardColumnMenu = ({ allowWrite, column, columns, hasRole, onRemoveColumn,
                         placement="bottomLeft"
                         onConfirm={() => onRemoveColumn(column.model)}
                     >
-                        <a href="no-ref"><Icon type="delete" style={{ paddingRight: '10px' }}/> Delete Column</a>
+                        <a href="no-ref"><EllipsisOutlined style={{ paddingRight: '10px' }} /> Delete Column</a>
                     </Popconfirm>
                 </Menu.Item>
             </Menu>
-        );
-    };
+        )
+    }
 
     return (
         <Dropdown overlay={renderMenu()} placement="bottomRight" onMouseEnter={() => setHover("true")} onMouseLeave={() => setHover("false")}>
@@ -64,4 +62,4 @@ const BoardColumnMenu = ({ allowWrite, column, columns, hasRole, onRemoveColumn,
     )
 }
 
-export default authWrapper(BoardColumnMenu);
+export default authWrapper(BoardColumnMenu)

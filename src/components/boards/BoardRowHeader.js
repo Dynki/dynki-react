@@ -1,5 +1,15 @@
 import React from 'react';
-import { Icon, Popconfirm, Dropdown, Menu } from 'antd';
+
+import {
+    ArrowDownOutlined,
+    ArrowUpOutlined,
+    CaretDownOutlined,
+    CaretUpOutlined,
+    DeleteOutlined,
+    PlusCircleOutlined,
+} from '@ant-design/icons';
+
+import { Popconfirm, Dropdown, Menu } from 'antd';
 import { connect } from 'react-redux';
 import styles from 'styled-components';
 
@@ -82,7 +92,7 @@ class BoardRowHeader extends React.PureComponent {
                 <Menu.Item>
                 <StyledLink onClick={() => this.addGroup()}>
                     <div className="table__group__menu__row">
-                        <Icon className="table__group__menu__icon" type="plus-circle" />
+                        <PlusCircleOutlined className="table__group__menu__icon" />
                         <div>New Group</div>
                     </div>
                 </StyledLink>
@@ -98,7 +108,7 @@ class BoardRowHeader extends React.PureComponent {
                         >
                             <StyledLink>
                                 <div className="table__group__menu__row">
-                                    <Icon className="table__group__menu__icon" type="delete" />
+                                    <DeleteOutlined className="table__group__menu__icon" />
                                     <div>Remove Group</div>
                                 </div>
                             </StyledLink>
@@ -111,7 +121,7 @@ class BoardRowHeader extends React.PureComponent {
                     <Menu.Item>
                         <StyledLink onClick={() => this.props.selectAllRows()}>
                             <div className="table__group__menu__row">
-                                <Icon className="table__group__menu__icon" type="delete" />
+                                <DeleteOutlined className="table__group__menu__icon" />
                                 <div>Select All</div>
                             </div>
                         </StyledLink>
@@ -123,7 +133,7 @@ class BoardRowHeader extends React.PureComponent {
                     <Menu.Item>
                         <StyledLink onClick={() => this.props.selectAllRowsInGroup(this.props.board.groups[this.props.groupKey].id)}>
                             <div className="table__group__menu__row">
-                                <Icon className="table__group__menu__icon" type="delete" />
+                                <DeleteOutlined className="table__group__menu__icon" />
                                 <div>Select All in Group</div>
                             </div>
                         </StyledLink>
@@ -143,12 +153,12 @@ class BoardRowHeader extends React.PureComponent {
                         <div className="table__group__menu__row">
                         {collapsed ? 
                             <React.Fragment>
-                                <Icon className="table__group__menu__icon" type="arrow-down" />
+                                <ArrowDownOutlined className="table__group__menu__icon" />
                                 <div>Expand Group</div>
                             </React.Fragment>
                             :
                             <React.Fragment>
-                                <Icon className="table__group__menu__icon" type="arrow-up" />
+                                <ArrowUpOutlined className="table__group__menu__icon" />
                                 <div>Collapse Group</div>
                             </React.Fragment>
                         }
@@ -158,50 +168,56 @@ class BoardRowHeader extends React.PureComponent {
             </Menu>
         );
     
-        return <tr className="table__header"> 
-        <th>
-            <Dropdown overlay={menu} disabled={!this.props.allowWrite}>
-                <StyledLink>
-                    {collapsed ? 
-                        <Icon style={{ color: this.groupColor }} className="table__group__menu__icon--main" type="caret-up" />
-                    :
-                        <Icon style={{ color: this.groupColor }} className="table__group__menu__icon--main" type="caret-down" />
-                    }                    
-                </StyledLink>
-            </Dropdown>
-        </th>
-        <th
-            className="table__header__columns table__header__columns--first"
-        >
-            <BoardRowHeaderGroupForm
-                allowWrite={this.props.allowWrite}
-                onUpdateBoard={this.props.onUpdateBoard}
-                board={this.props.board}
-                groupKey={this.props.groupKey}>
-            </BoardRowHeaderGroupForm>
-        </th>
-        {this.props.board.columns.map((c, idx) => {
-            return idx === 0 ? null : <ColumnTh 
-                    key={idx} 
-                    id={'column'+idx}
-                    // className="table__header__columns"
-                >
-                <Column key={idx}>
-                    <BoardRowHeaderForm
-                        allowWrite={this.props.allowWrite}
-                        onUpdateBoard={this.props.onUpdateBoard}
-                        board={this.props.board}
-                        colIdx={idx}>
-                    </BoardRowHeaderForm>
-                    {idx > 0 ? 
-                        <BoardColumnMenu columns={this.props.board.columns} column={c} onRemoveColumn={this.props.removeColumn}/>
-                        : null
-                    }
-                </Column>
-            </ColumnTh>
-            })}
-            <BoardRowHeaderMenu allowWrite={this.props.allowWrite}/>
-        </tr>
+        return (
+            <tr className="table__header"> 
+            <th>
+                <Dropdown overlay={menu} disabled={!this.props.allowWrite}>
+                    <StyledLink>
+                        {collapsed ? 
+                            <CaretUpOutlined
+                                style={{ color: this.groupColor }}
+                                className="table__group__menu__icon--main" />
+                        :
+                            <CaretDownOutlined
+                                style={{ color: this.groupColor }}
+                                className="table__group__menu__icon--main" />
+                        }                    
+                    </StyledLink>
+                </Dropdown>
+            </th>
+            <th
+                className="table__header__columns table__header__columns--first"
+            >
+                <BoardRowHeaderGroupForm
+                    allowWrite={this.props.allowWrite}
+                    onUpdateBoard={this.props.onUpdateBoard}
+                    board={this.props.board}
+                    groupKey={this.props.groupKey}>
+                </BoardRowHeaderGroupForm>
+            </th>
+            {this.props.board.columns.map((c, idx) => {
+                return idx === 0 ? null : <ColumnTh 
+                        key={idx} 
+                        id={'column'+idx}
+                        // className="table__header__columns"
+                    >
+                    <Column key={idx}>
+                        <BoardRowHeaderForm
+                            allowWrite={this.props.allowWrite}
+                            onUpdateBoard={this.props.onUpdateBoard}
+                            board={this.props.board}
+                            colIdx={idx}>
+                        </BoardRowHeaderForm>
+                        {idx > 0 ? 
+                            <BoardColumnMenu columns={this.props.board.columns} column={c} onRemoveColumn={this.props.removeColumn}/>
+                            : null
+                        }
+                    </Column>
+                </ColumnTh>
+                })}
+                <BoardRowHeaderMenu allowWrite={this.props.allowWrite}/>
+            </tr>
+        );
     }
 }
 

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Divider, Icon, Popconfirm, Menu, Dropdown, Button } from 'antd';
+import { BarsOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Divider, Popconfirm, Menu, Dropdown, Button } from 'antd';
 import { connect } from 'react-redux';
 
 import { removeBoard } from '../../store/actions/boardActions';
@@ -38,7 +39,7 @@ const BoardHeaderMenu = ({ boardId, user, hasRole, removeBoard }) => {
                         placement="bottomLeft"
                         onConfirm={handleConfirm}
                     >
-                        <a href="no-ref"><Icon type="delete" style={{ paddingRight: '10px' }}/> Delete board</a>
+                        <a href="no-ref"><DeleteOutlined style={{ paddingRight: '10px' }} /> Delete board</a>
                     </Popconfirm>
                 </Menu.Item>
             </Menu>
@@ -49,11 +50,11 @@ const BoardHeaderMenu = ({ boardId, user, hasRole, removeBoard }) => {
         <div>
             {user ? 
                 <Dropdown overlay={renderMenu()}>
-                    <Button shape="circle" icon="bars" className="board__header__btn"/>
+                    <Button shape="circle" icon={<BarsOutlined />} className="board__header__btn"/>
                 </Dropdown>
             : null }
         </div>
-    )
+    );
 }
 
 const mapStateToProps = state => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from 'antd';
+import { RobotOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 
@@ -21,7 +21,7 @@ const UserProfileDrawer = (props) => {
 
     return (
         <React.Fragment>
-            <StyledAnchor id="userProfile" onClick={showDrawer}><Icon type="robot" /> Account Details</StyledAnchor>
+            <StyledAnchor id="userProfile" onClick={showDrawer}><RobotOutlined /> Account Details</StyledAnchor>
         </React.Fragment>
     );
 }

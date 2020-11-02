@@ -1,5 +1,6 @@
 import React from 'react';
-import { Icon, Popconfirm } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
+import { Popconfirm } from 'antd';
 import { connect } from 'react-redux';
 import { removeRow } from '../../store/actions/boardActions';
 
@@ -10,19 +11,21 @@ class BoardRowMenu extends React.PureComponent {
     }
 
     render() {
-        return <div className="row__content__menu">
-            {this.props.hovering ? 
-                <Popconfirm title="Are you sure delete this row?" 
-                    disabled={!this.props.allowWrite}
-                    okText="Yes"
-                    cancelText="No Way"
-                    trigger="click"
-                    onConfirm={this.handleConfirm.bind(this)}>
-                        <Icon type="delete" className="row__content__menu__delete"/>
-                </Popconfirm>
-            : null
-            }
-        </div>
+        return (
+            <div className="row__content__menu">
+                {this.props.hovering ? 
+                    <Popconfirm title="Are you sure delete this row?" 
+                        disabled={!this.props.allowWrite}
+                        okText="Yes"
+                        cancelText="No Way"
+                        trigger="click"
+                        onConfirm={this.handleConfirm.bind(this)}>
+                            <DeleteOutlined className="row__content__menu__delete" />
+                    </Popconfirm>
+                : null
+                }
+            </div>
+        );
     }
 }
 

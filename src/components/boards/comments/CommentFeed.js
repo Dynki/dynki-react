@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React from 'react'
 import styles from 'styled-components'
 import { Button, Divider, Skeleton } from 'antd'
 import * as moment from 'moment'
@@ -6,7 +6,6 @@ import { Waypoint } from 'react-waypoint'
 
 import CommentMessage from './CommentMessage'
 import useChannelContext from '../../../hooks/useChannelContext'
-import { useScrollPosition } from '../../../hooks/useScrollPosition'
 
 const Container = styles.div`
     display: flex;
@@ -51,8 +50,6 @@ function CommentFeed() {
             </Container>
         )
     }
-
-    console.log('messages', messages);
 
     return (
         <Container>

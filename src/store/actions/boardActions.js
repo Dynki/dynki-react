@@ -1277,7 +1277,6 @@ export const deleteTimerLogEntry = (entryId, model, rowId, groupKey) => {
             const firebase = getFirebase();
             const domainId = getState().domain.domainId;
             const currentBoard = getState().boards.currentBoard;
-            const user = firebase.auth().currentUser;
     
             currentBoard.groups[groupKey].entities = currentBoard.groups[groupKey].entities.map(e => {
                 // Is this the row we wish to update?

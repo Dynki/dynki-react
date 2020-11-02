@@ -1,17 +1,19 @@
-import React from 'react';
-import Media from 'react-media';
-import { Card, Dropdown, Icon, Menu, Popconfirm, Table } from 'antd';
-import styles from 'styled-components';
+import React from 'react'
+import Media from 'react-media'
+import { DashOutlined, PushpinTwoTone } from '@ant-design/icons'
+import { Card, Dropdown, Menu, Popconfirm, Table } from 'antd'
+import { DeleteOutlined } from '@ant-design/icons'
+import styles from 'styled-components'
 
-import PaymentMethodModal from './PaymentMethodModal';
+import PaymentMethodModal from './PaymentMethodModal'
 
 const StyledCard = styles(Card)`
     margin-top: 20px;
-`;
+`
 
-const StyledIcon = styles(Icon)`
+const StyledIcon = styles(DeleteOutlined)`
     margin-right: 15px;
-`;
+`
 
 const StyledLink = styles.button`
     background-color: transparent;
@@ -28,7 +30,7 @@ const StyledLink = styles.button`
     :focus {
         text-decoration: none;
     }
-`;
+`
 
 const PaymentMethods = ({ createPaymentIntent, subscription, handleDelete, handleSetDefault, reactivateAllowed }) => {
     const data = subscription && subscription.data ? subscription.data.paymentMethods : [];
@@ -52,8 +54,8 @@ const PaymentMethods = ({ createPaymentIntent, subscription, handleDelete, handl
             null
           }
         </Menu>
-    );
-    
+    )
+
     const columns = [
         {
           title: 'Brand',
@@ -74,7 +76,7 @@ const PaymentMethods = ({ createPaymentIntent, subscription, handleDelete, handl
         {
             title: 'Default',
             dataIndex: 'default',
-            render: text => text === 'Default' ?  <Icon type="pushpin" theme="twoTone" /> : null
+            render: text => text === 'Default' ?  <PushpinTwoTone /> : null
         },
         {
             title: 'Actions',
@@ -84,13 +86,13 @@ const PaymentMethods = ({ createPaymentIntent, subscription, handleDelete, handl
             render: (text, record) => (
                 <Dropdown overlay={menu(record)}>
                     <StyledLink className="ant-dropdown-link">
-                        <Icon type="dash" />
+                        <DashOutlined />
                     </StyledLink>
                 </Dropdown>
             )
     
         },
-    ];
+    ]
     
     return (
         <Media queries={{
@@ -121,7 +123,7 @@ const PaymentMethods = ({ createPaymentIntent, subscription, handleDelete, handl
                 </StyledCard>
             )}
         </Media>
-    );
+    )
 }
 
-export default PaymentMethods;
+export default PaymentMethods

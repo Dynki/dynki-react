@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { convertFromRaw, Editor, EditorState } from 'draft-js'
-import { Avatar, Icon, Popover, Tooltip } from 'antd'
+import { Avatar, Popover, Tooltip } from 'antd'
+import { SmileOutlined } from '@ant-design/icons'
 import * as moment from 'moment'
 import styles from 'styled-components'
 
-import useMessageContext from '../../hooks/useMessageContext';
+import useMessageContext from '../../hooks/useMessageContext'
 import ChannelEmoji from './ChannelEmoji'
 
 const Container = styles.div`
@@ -27,7 +28,7 @@ const Container = styles.div`
 const SubContainer = styles.div`
     display: flex;
     flex-direction: column;
-`;
+`
 
 const MessageOnlyContainer = styles.div`
     align-items: center;
@@ -41,35 +42,35 @@ const MessageOnlyContainer = styles.div`
         padding: 8px;
         margin-left: 2px;
     }
-`;
+`
 
 const UserDetails = styles.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-`;
+`
 
 const Name = styles.div`
     font-weight: bold;
     margin-left: 10px;
     margin-right: 10px;    
     margin-top: 5px;
-`;
+`
 
 const Time = styles.div`
     color: ${props => props.hover === 'true' ? '#59596E;' : '#ffffff;'}
     font-size: 12px;
     margin-right: 9px;
-`;
+`
 
 const FullMsgTime = styles.div`
     font-size: 12px;
     margin-top: 5px;
-`;
+`
 
 const StyledAvatar = styles(Avatar)`
     background-color: #3095DE;
-`;
+`
 
 const FullMsgContainer = styles.div`
     align-items: center;
@@ -77,25 +78,25 @@ const FullMsgContainer = styles.div`
     display: flex;
     flex-direction: row;
     width: 100%;
-`;
+`
 
 const StyledPopover = styles(Popover)`
     .ant-popover-inner-content {
         padding: 0px!important;
     }
-`;
+`
 
-const IconButton = styles(Icon)`
+const IconButton = styles(SmileOutlined)`
     font-size: 22px;
     // margin-left: auto;
     margin-right: 15px;
-`;
+`
 
 const Reactions = styles.div`
     display: flex;
     flex-direction: row;
     margin-left: auto;
-`;
+`
 
 function ChannelMessageContent() {
 

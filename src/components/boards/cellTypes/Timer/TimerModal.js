@@ -1,10 +1,18 @@
-import React from "react"
-import { Icon, Tooltip, Typography } from 'antd'
+import React from 'react'
+import { Tooltip, Typography } from 'antd'
+import { PauseCircleOutlined, PlayCircleOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons'
 import { connect } from 'react-redux'
 import * as moment from 'moment'
 import styles from 'styled-components'
 
-import { deleteTimerLogEntry, deleteAllTimerLogEntries, startATimer, stopATimer, toggleShowTeamDuration } from '../../../../store/actions/boardActions'
+import { 
+    deleteTimerLogEntry, 
+    deleteAllTimerLogEntries, 
+    startATimer, 
+    stopATimer, 
+    toggleShowTeamDuration 
+} from '../../../../store/actions/boardActions'
+
 import TimerLogs from "./TimerLogs"
 
 const { Text } = Typography
@@ -44,7 +52,7 @@ const TimerLabel = styles.div`
     width: 100%;
 `
 
-const StartIcon = styles(Icon)`
+const StartIcon = styles(PlayCircleOutlined)`
     font-size: 21px;
 
     & svg {
@@ -52,7 +60,7 @@ const StartIcon = styles(Icon)`
     }
 `
 
-const PauseIcon = styles(Icon)`
+const PauseIcon = styles(PauseCircleOutlined)`
     font-size: 21px;
 
     & svg {
@@ -60,7 +68,7 @@ const PauseIcon = styles(Icon)`
     }
 `
 
-const TeamIcon = styles(Icon)`
+const TeamIcon = styles(TeamOutlined)`
     cursor: pointer;
     font-size: 21px;
     margin-right: 10px;
@@ -70,7 +78,7 @@ const TeamIcon = styles(Icon)`
     }
 `
 
-const IndividualIcon = styles(Icon)`
+const IndividualIcon = styles(UserOutlined)`
     cursor: pointer;
     font-size: 21px;
     margin-right: 10px;
@@ -80,14 +88,13 @@ const IndividualIcon = styles(Icon)`
     }
 `
 
-
 const TimerModal = ({ deleteAllTimerLogEntries, deleteTimerLogEntry, 
     groupKey, model, rowId, rowValue, startATimer, stopATimer, toggleShowTeamDuration, user }) => {
 
     const [interval, assignInterval] = React.useState(false)
     const [visible, setVisible] = React.useState(false)
     const [started, setStarted] = React.useState(undefined)
-    const [tooltip, setTooltip] = React.useState(undefined)
+    const [undefined, setTooltip] = React.useState(undefined)
     const [hours, setHours] = React.useState(0)
     const [minutes, setMinutes] = React.useState(0)
     const [seconds, setSeconds] = React.useState(0)

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Dropdown, Icon, Menu, Avatar } from 'antd';
+import { LogoutOutlined } from '@ant-design/icons';
+import { Dropdown, Menu, Avatar } from 'antd';
 
 import UserProfileDrawer from '../../auth/user/UserProfileDrawer';
 
@@ -39,7 +40,7 @@ const UserProfileAvatar = ({ currentUser, signOut }) => {
             <Menu.Divider />
             <Menu.Item>
                 <StyledAnchor id="logout" onClick={signOut}>
-                    <Icon type="logout" /> Log Out
+                    <LogoutOutlined /> Log Out
                 </StyledAnchor>
             </Menu.Item>
         </Menu>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Elements, StripeProvider } from 'react-stripe-elements';
 import styles from 'styled-components';
-import { Button, Icon, Modal, Typography } from 'antd';
+import { ShoppingOutlined } from '@ant-design/icons';
+import { Button, Modal, Typography } from 'antd';
 import CheckoutForm from './CheckoutForm';
 
 const { Text, Title } = Typography;
@@ -46,7 +47,7 @@ const CheckoutModal = ({ label, teamName }) => {
 
     return (
         <div>
-            <Button icon="shopping" size="large" type="primary" onClick={() => setIsVisible(true)}>{label}</Button>
+            <Button icon={<ShoppingOutlined />} size="large" type="primary" onClick={() => setIsVisible(true)}>{label}</Button>
             <Modal
                 style={{ minWidth: '800px' }}
                 visible={isVisible}

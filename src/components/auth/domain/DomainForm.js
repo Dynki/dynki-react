@@ -1,5 +1,8 @@
 import React from 'react';
-import { Form, Icon, Input, Button } from 'antd';
+import { TeamOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Input, Button } from 'antd';
 
 const FormItem = Form.Item;
 
@@ -33,8 +36,7 @@ const DomainForm = ({ form, onUpdateDomain, pending, validateFeedback, validateS
                         size="large"
                         autoFocus
                         disabled={pending}
-                        prefix={<Icon type="team"
-                        style={{ color: 'rgba(0,0,0,.25)' }} />}
+                        prefix={<TeamOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
                         placeholder="Enter your team name"
                         autoComplete="off" 
                     />
@@ -46,7 +48,7 @@ const DomainForm = ({ form, onUpdateDomain, pending, validateFeedback, validateS
                 </Button>
             </FormItem>
         </Form>
-    )
+    );
 };
 
 export default Form.create()(DomainForm);

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Form, DatePicker } from 'antd';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { DatePicker } from 'antd';
 import moment from 'moment';
 
 const FormItem = Form.Item;

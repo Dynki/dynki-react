@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Drawer, Button, Icon, Tooltip } from 'antd';
-import { Editor } from 'draft-js';
+import { MessageOutlined } from '@ant-design/icons';
 import Comments from './Comments';
 import styles from 'styled-components';
 
@@ -15,7 +15,7 @@ const StyledButton = styles(Button)`
     border-bottom: solid;
     border-bottom-width: 1px;
     border-bottom-color: #D1D3D4;
-    height: 100%;
+    height: 40px!important;
 
     &:hover {
         background-color: #eff1f3;
@@ -34,47 +34,50 @@ const StyledButton = styles(Button)`
 
 `
 
-const StyledIcon = styles(Icon)`
-    color: #CFD3D7;
-    font-size: 18px;
-`
-
 const BoardRowDescription = ({ allowWrite, rowId }) => {
 
-    const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
 
-    const showDrawer = () => {
-        setVisible(true);
-    };
+  const showDrawer = () => {
+    setVisible(true);
+  };
 
-    const onClose = () => {
-        setVisible(false);
-    };
+  const onClose = () => {
+    setVisible(false);
+  };
 
-    return (
-        <React.Fragment>
-            <Tooltip title="Comments" placement="left">
-                <StyledButton disabled={!allowWrite} onClick={showDrawer} type="link" size="small">
-                    <StyledIcon type="message" />
-                </StyledButton>
-            </Tooltip>
+  return (
+    <React.Fragment>
+      <Tooltip title="Comments" placement="left">
+        <StyledButton
+          disabled={!allowWrite} 
+          onClick={showDrawer} 
+          type="link" 
+          size="small"
+          icon={<MessageOutlined
+            style={{
+              fontSize: '16px'
+            }}
+          />} 
+        />
+      </Tooltip>
 
-            <Drawer
+      <Drawer
 
-                title="Discussion"
-                width={570}
-                onClose={onClose}
-                visible={visible}
-                style={{
-                    overflow: 'auto',
-                    height: '100%',
-                    paddingBottom: '108px',
-                }}
-            >
-                {visible && <Comments rowId={rowId}/>}
-            </Drawer>
-        </React.Fragment>
-    );
+        title="Discussion"
+        width={570}
+        onClose={onClose}
+        visible={visible}
+        style={{
+          overflow: 'auto',
+          height: '100%',
+          paddingBottom: '108px',
+        }}
+      >
+        {visible && <Comments rowId={rowId} />}
+      </Drawer>
+    </React.Fragment>
+  );
 }
 
 export default BoardRowDescription;

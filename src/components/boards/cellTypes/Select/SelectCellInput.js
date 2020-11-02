@@ -1,5 +1,8 @@
 import React from 'react';
-import { Form, Input, Icon } from 'antd';
+import { CrownOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Input } from 'antd';
 import { Draggable } from 'react-beautiful-dnd';
 
 const FormItem = Form.Item;
@@ -90,9 +93,10 @@ const SelectCForm = Form.create({
                                 {...provided.dragHandleProps}
                                 style={{backgroundColor: shadeColor('#'+props.option.color, -40), color: `#${props.option.fgColor}`}}
                                 >
-                                    <Icon type="crown" style={{
-                                        color: props.option.default ? `#${props.option.fgColor}` : shadeColor('#'+props.option.color, -40)
-                                    }}/>
+                                    <CrownOutlined
+                                        style={{
+                                            color: props.option.default ? `#${props.option.fgColor}` : shadeColor('#'+props.option.color, -40)
+                                        }} />
                                 </div>
                         </div>
                     </FormItem>
@@ -100,7 +104,7 @@ const SelectCForm = Form.create({
             </div>
         )}
     </Draggable>
-    )
+    );
 });
 
 class SelectCellForm extends React.Component {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Card, Statistic, Tag } from 'antd';
+import { Tag } from 'antd';
 import { debounce } from 'lodash';
 import { Detector } from "react-detect-offline";
 import styles from 'styled-components';

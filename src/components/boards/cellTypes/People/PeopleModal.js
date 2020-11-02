@@ -14,7 +14,6 @@ const PeopleSelector = styles.div`
     padding: 10px;
 `
 
-
 const ChildContainer = styles.div`
     align-items: center;
     border-bottom: solid;
@@ -98,7 +97,7 @@ const PeopleModal = ({ groupKey, members, model, rowId, selectedPeople, updateSe
     const [selected, setSelected] = React.useState(selectedPeople ? selectedPeople : [])
     const [options, setOptions] = React.useState(members)
     const [value, setValue] = React.useState(selectedPeople ? selectedPeople.map(s => ({ key: s.uid, label: s.email })) : undefined)
-    const [tooltip, setTooltip] = React.useState(undefined)
+    const [undefined, setTooltip] = React.useState(undefined)
 
     React.useEffect(() => {
         setSelected(selectedPeople ? selectedPeople : [])

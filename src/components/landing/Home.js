@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Icon } from 'antd';
+import { AreaChartOutlined, CodeOutlined, ProjectOutlined } from '@ant-design/icons';
 
 const StyledContent = styles.div`
     display: flex;
@@ -123,17 +123,17 @@ const Home = props => {
             <div className="home__section3">
                 <div className="home__section3__container">
                     <div className="home-container">
-                        <Icon type="project" />
+                        <ProjectOutlined />
                         <div className="h1">Project Management</div>
                         <p className="h2">Use boards to organise project priorities, and assign tasks to resources</p>
                     </div>
                     <div className="home-container">
-                        <Icon type="code" />
+                        <CodeOutlined />
                         <div className="h1">Software Development</div>
                         <p className="h2">Plan and keep track of your agile software development projects. Organise and prioritise user stories.</p>
                     </div>
                     <div className="home-container">
-                        <Icon type="area-chart" />
+                        <AreaChartOutlined />
                         <div className="h1">Sales Pipelines</div>
                         <p className="h2">Create pipelines that allow you to focus on the actions that get deals closed.</p>
                     </div>
@@ -143,7 +143,7 @@ const Home = props => {
                 </Link>
             </div>
         </StyledContent>
-    )
+    );
 }
 
 export default Home;

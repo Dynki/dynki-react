@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Form, Input, Icon, Select, Popconfirm, Table, Tag } from 'antd';
+import { DeleteOutlined, SearchOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Input, Select, Popconfirm, Table, Tag } from 'antd';
 import Highlighter from 'react-highlight-words';
 import styles from 'styled-components';
 
@@ -30,7 +33,7 @@ const EditableRow = ({ form, index, ...props }) => (
       <tr {...props} />
     </EditableContext.Provider>
   );
-  
+
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
@@ -125,7 +128,7 @@ class EditableCell extends React.Component {
         );
     }
   }
-  
+
 
 const TeamMembers = (props) => {
 
@@ -150,7 +153,7 @@ const TeamMembers = (props) => {
                 <Button
                     type="primary"
                     onClick={() => handleSearch(selectedKeys, confirm)}
-                    icon="search"
+                    icon={<SearchOutlined />}
                     size="small"
                     style={{ width: 90, marginRight: 8 }}
                 >
@@ -162,7 +165,7 @@ const TeamMembers = (props) => {
             </div>
         ),
         filterIcon: filtered => (
-            <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
+            <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
         ),
         onFilter: (value, record) =>
             record[dataIndex]
@@ -270,7 +273,7 @@ const TeamMembers = (props) => {
           render: (text, record) =>
             ['ADMINISTRATORS', 'BOARD_USERS', 'BOARD_CREATORS'].indexOf(record.name) < 0 && hasRole('ADMINISTRATORS') ? (
               <Popconfirm placement="left" title="Delete really?" onConfirm={() => handleDelete(record.id)} okText="Yes delete member">
-                  <Icon data-testid={`delete-group-${record.email}`} type="delete" style={{'color': 'red'}}/>
+                  <DeleteOutlined data-testid={`delete-group-${record.email}`} style={{'color': 'red'}} />
               </Popconfirm>
             ) : null,
         },

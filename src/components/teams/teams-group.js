@@ -1,5 +1,8 @@
 import React from 'react';
-import { Table, Form, Input, Button, Popconfirm, Icon } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Table, Input, Button, Popconfirm } from 'antd';
 import styles from 'styled-components';
 
 const StyledLink = styles.button`
@@ -150,7 +153,9 @@ class TeamGroups extends React.Component {
           render: (text, record) =>
             ['ADMINISTRATORS', 'BOARD_USERS', 'BOARD_CREATORS'].indexOf(record.name) < 0 && hasRole('ADMINISTRATORS') ? (
               <Popconfirm title="Delete really?" onConfirm={() => this.handleDelete(record.id)} okText="Yes delete group">
-                  <Icon data-testid={`delete-group-${record.name.replace(' ', '-')}`} type="delete" style={{'color': 'red'}}/>
+                  <DeleteOutlined
+                    data-testid={`delete-group-${record.name.replace(' ', '-')}`}
+                    style={{'color': 'red'}} />
               </Popconfirm>
             ) : null,
         },

@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { connect } from 'react-redux';
-import { Checkbox, Tooltip, Icon } from 'antd';
+import { MoreOutlined } from '@ant-design/icons';
+import { Checkbox, Tooltip } from 'antd';
 
 import BoardRowForm from './BoardRowForm';
 import BoardRowMenu from './BoardRowMenu';
@@ -127,12 +128,12 @@ class BoardRow extends React.PureComponent {
     }
 
     render() {
-        return (
-            <>
-                {this.props.board.columns.map((c, idx) => {
-                    const isFirst = idx === 0;
+        return <>
+            {this.props.board.columns.map((c, idx) => {
+                const isFirst = idx === 0;
 
-                    return <td
+                return (
+                    <td
                         key={idx}
                         className={isFirst ? "table__column table__column--first" : "table__column"}
                         onMouseEnter={this.mouseEnter.bind(this)}
@@ -148,7 +149,7 @@ class BoardRow extends React.PureComponent {
                                     {this.state.hovering || this.props.selectedRows.includes(this.props.rowId) ? 
                                         <React.Fragment>
                                             <Tooltip title="Drag me">
-                                                <Icon type="more" />
+                                                <MoreOutlined />
                                             </Tooltip>
                                             <Checkbox 
                                                 checked={this.props.selectedRows.includes(this.props.rowId)}
@@ -162,15 +163,15 @@ class BoardRow extends React.PureComponent {
                     : null }
                     {this.renderSwitch(c, idx, isFirst)}
                 </td>
-            })}
-            <td>
-                <div className="row__terminator" tabIndex="-1">
-                    <div className="row__terminator__body"></div>
-                    <div className="row__terminator__border"></div>
-                </div>
-            </td>
-            </>
-        )
+                );
+        })}
+        <td>
+            <div className="row__terminator" tabIndex="-1">
+                <div className="row__terminator__body"></div>
+                <div className="row__terminator__border"></div>
+            </div>
+        </td>
+        </>;
     }
 }
 

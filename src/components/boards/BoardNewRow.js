@@ -1,5 +1,8 @@
 import React from 'react';
-import { Form, Input, Button, Icon } from 'antd';
+import { EnterOutlined, LoadingOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Input, Button } from 'antd';
 import styles from 'styled-components';
 
 const NewRowButton = styles(Button)`
@@ -54,12 +57,12 @@ const BNRForm = Form.create({})((props) => {
                         style={{ backgroundColor: '#' + props.group.color }}
                     >
                         Create
-                        {props.progress ? <Icon type="loading" /> : <Icon type="enter"/>}
+                        {props.progress ? <LoadingOutlined /> : <EnterOutlined />}
                     </NewRowButton>
                 </div>
             </FormItem>
         </Form>
-    )
+    );
 });
 
 const BoardNewRow = (props) => {
