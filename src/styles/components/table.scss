@@ -56,7 +56,7 @@ $mariner: #2b82c1;
 .text--no-border, .text__large--no-border {
     border: none !important;
     border-radius: 1px !important;
-    padding: 4px !important;
+    // padding: 4px !important;
     line-height: 1!important;
 }
 
@@ -118,8 +118,15 @@ $mariner: #2b82c1;
     &::-webkit-scrollbar-thumb
     {
         border-radius: 10px;
-        -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,.3);
-        background-color: #767676;
+        background-color: #ffffff;
+    }
+
+    &:hover {
+        &::-webkit-scrollbar-thumb
+        {
+            -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,.3);
+            background-color: #767676;
+        }
     }
 
     thead {
@@ -282,11 +289,16 @@ $mariner: #2b82c1;
             min-width: 163px;
 
             &__group-title {
-                font-size: 24px;
+                font-size: 18px;
+                font-weight: 500;
 
                 &:disabled{
                     background-color: #ffffff;
                     cursor: not-allowed!important;
+                }
+
+                &:hover {
+                    margin: 0px!important;
                 }
             }
 
