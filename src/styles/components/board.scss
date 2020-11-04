@@ -3,10 +3,14 @@
     margin-top: 9px;
 }
 
-.text, .text__large {
+.text {
     &--no-border {
-        border: none!important;
+        border: solid;
+        border-width: 1px;
+        border-color: #ffffff;
         border-radius: 1px!important;
+        padding: 3px!important;
+        outline-width: 0px;
         // padding: 4px!important;
         // line-height: 1!important;
 
@@ -15,7 +19,6 @@
             border: dashed!important;
             border-width: 1px!important;
             cursor: pointer!important;
-            padding: 3px!important;
         }
 
         &:focus {
@@ -30,6 +33,29 @@
 
 .text__large--no-border {
     font-size: 30px!important;
+    border: solid!important;
+    border-width: 1px!important;
+    border-color: #ffffff!important;
+    border-radius: 1px!important;
+    padding: 3px!important;
+    outline-width: 0px;
+    // padding: 4px!important;
+    // line-height: 1!important;
+
+    &:hover {
+        outline-width: 0px;
+        border: dashed!important;
+        border-width: 1px!important;
+        cursor: pointer!important;
+    }
+
+    &:focus {
+        padding: 3px!important;
+        outline-width: 0px!important;
+        // border: dashed!important;
+        // border-width: 1px!important;
+    }
+
 }
 
 .choose-board {
