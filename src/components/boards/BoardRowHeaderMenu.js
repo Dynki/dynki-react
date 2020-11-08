@@ -31,6 +31,10 @@ const StyledLink = styles.button`
     :focus {
         text-decoration: none;
     }
+
+    span {
+      margin-right: 10px;
+    }
 `;
 
 
@@ -55,7 +59,7 @@ class BoardRowHeaderMenu extends React.PureComponent {
             <StyledLink className="table_menu__link"><CalendarOutlined />Date</StyledLink>
           </Menu.Item>
           <Menu.Item key="datedue">
-            <StyledLink className="table_menu__link"><CalendarOutlined />Date Due</StyledLink>
+            <StyledLink className="table_menu__link"><CalendarOutlined />Due Date</StyledLink>
           </Menu.Item>
           <Menu.Item key="people">
             <StyledLink className="table_menu__link"><UsergroupAddOutlined />People</StyledLink>
