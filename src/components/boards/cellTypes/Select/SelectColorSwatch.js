@@ -22,7 +22,7 @@ const SelectColorSwatch = props => {
                 style={{backgroundColor: `#${c}`}}
                 onClick={() => props.onColorSelected(c)}
             >
-                {selectedColor === c ? <div className="text">{checkmark}</div> : null}
+                {selectedColor === c ? <div className="text">{checkmark}</div> : ' '}
             </Button>})}
         </div>
     </div>
