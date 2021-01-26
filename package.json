@@ -5,6 +5,7 @@
   "dependencies": {
     "@ant-design/compatible": "^1.0.5",
     "@ant-design/icons": "^4.2.2",
+    "@loadable/component": "^5.14.1",
     "antd": "^4.8.2",
     "axios": "^0.18.0",
     "detect-browser": "^4.8.0",

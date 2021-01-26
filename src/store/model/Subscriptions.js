@@ -316,7 +316,7 @@ export class Subscriptions {
         const users = quantity === 1 ? 'user' : 'users';
 
 
-        return subscriptionStatus[subscription.status].hasCost ?
+        return subscriptionStatus[subscription.status]?.hasCost ?
             `${currency}${total} Per Month ${incVat} - (${quantity} ${users})` : 'Free';
     }
 }
